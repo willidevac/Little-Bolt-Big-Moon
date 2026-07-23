@@ -198,6 +198,46 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "luma-animation-master-v1",
+      "file": "img/concepts/approvals/luma-animation-master-v1.png",
+      "role": "approved-luma-animation-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved character, story-prop, collectible and gameplay-VFX masters as references",
+      "created": "2026-07-23",
+      "modifications": "Approved as the exact 10-pose powered-off, hover-idle and revive reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "scrap-crawler-animation-master-v1",
+      "file": "img/concepts/approvals/scrap-crawler-animation-master-v1.png",
+      "role": "approved-scrap-crawler-animation-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and tile/hazard masters as references",
+      "created": "2026-07-23",
+      "modifications": "Approved as the exact 13-pose walk, attack, hurt and mechanical-defeat reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "drone-guard-animation-master-v1",
+      "file": "img/concepts/approvals/drone-guard-animation-master-v1.png",
+      "role": "approved-drone-guard-animation-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and background-zone masters as references",
+      "created": "2026-07-23",
+      "modifications": "Approved as the exact 20-pose idle, flight, telegraph, attack, hurt and mechanical-defeat reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-warden-animation-master-v1",
+      "file": "img/concepts/approvals/moon-warden-animation-master-v1.png",
+      "role": "approved-moon-warden-animation-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and Moon-background masters as references",
+      "created": "2026-07-23",
+      "modifications": "The missing fourth idle pose was added before approval; approved as the exact 26-pose boss animation and non-destructive shutdown reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",

@@ -385,3 +385,112 @@ Verbindliche Merkmale:
   kontrollierter Fall, schwacher Antennenfunke und erloschener Bildschirm.
 - Die Produktionssprites blicken nach rechts. Bewegungen nach links werden
   später im Canvas gespiegelt.
+
+## Luma-Animationen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | ruhige, schwerelose Bewegungen mit hoffnungsvollem Energieaufbau |
+| Masterdatei | `img/concepts/approvals/luma-animation-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/characters/luma.png` |
+| Produktionsraster | 32 × 32 px pro Frame, insgesamt 10 Frames |
+
+Verbindliche Merkmale:
+
+- Luma behält in jeder Pose ihre creme-mondblaue Lackierung, die gerade
+  Antenne, den cyanfarbenen Antennenkopf und ihre Mondhälfte.
+- Die zehn Frames gliedern sich in einen ausgeschalteten, vier schwebende
+  Leerlauf- und fünf Wiederbelebungsframes.
+- Der Leerlauf bildet einen sanften Schwebezyklus aus Höhenbewegung,
+  kleiner Armgegenbewegung, einmaligem Blinzeln und dezentem Licht unter den
+  Füßen.
+- Die Wiederbelebung beginnt mit dunklem Bildschirm und dunkler Antenne.
+  Cyanenergie läuft vom Brustabzeichen über den Bildschirm bis zur Antenne.
+- Der stärkste Energieimpuls verwendet nur wenige quadratische Partikel und
+  verdeckt Lumas Silhouette nicht.
+- Die letzte Wiederbelebungspose geht direkt in das freigegebene Schweben
+  über und kann deshalb ohne sichtbaren Sprung in die Leerlaufanimation wechseln.
+
+## Schrottkrabbler-Animationen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | niedriger vierbeiniger Gegner mit deutlich angekündigtem Vorstoß |
+| Masterdatei | `img/concepts/approvals/scrap-crawler-animation-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/enemies/scrap-crawler.png` |
+| Produktionsraster | 48 × 32 px pro Frame, insgesamt 13 Frames |
+
+Verbindliche Merkmale:
+
+- Der Schrottkrabbler bleibt in jeder Pose breit, niedrig, vierbeinig und von
+  oben eindeutig stompbar.
+- Die 13 Frames gliedern sich in vier Lauf-, drei Angriffs-, zwei Treffer- und
+  vier mechanische Ausschaltframes.
+- Beim Laufen wechseln die vier Beine in einem vollständigen Zyklus, während
+  der gepanzerte Körper nur leicht auf und ab federt.
+- Vor dem kurzen Vorstoß leuchtet der rote Frontsensor deutlich heller und
+  der Körper spannt sich sichtbar an.
+- Treffer werden durch kleinen orangefarbenen Funkenschlag und klaren
+  Rückstoß angezeigt, ohne die niedrige Silhouette zu verdecken.
+- Beim Ausschalten knicken die Beine kontrolliert ein, der Körper sinkt ab
+  und Sensor sowie Antenne erlöschen gewaltfrei.
+
+## Drohnenwächter-Animationen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kontrollierter Schwebeflug mit klar getrennter Warn- und Schussphase |
+| Masterdatei | `img/concepts/approvals/drone-guard-animation-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/enemies/drone-guard.png` |
+| Produktionsraster | 48 × 32 px pro Frame, insgesamt 20 Frames |
+
+Verbindliche Merkmale:
+
+- Der Drohnenwächter behält seinen kompakten silber-blauen Rumpf, die kurzen
+  Flügel, seitliche Waffenmodule, zwei obere Finnen und den unteren roten
+  Schubstrahl.
+- Die 20 Frames gliedern sich in vier Leerlauf-, vier Flug-, drei Warn-, drei
+  Angriffs-, zwei Treffer- und vier mechanische Ausschaltframes.
+- Der Leerlauf zeigt sanftes Schweben, während der Flug durch leichte
+  Vorwärtsneigung und kurze Schubspuren klar davon unterscheidbar bleibt.
+- In der Warnphase werden der rote Sensor und die seitlichen Waffenmodule
+  stufenweise heller. Erst danach wird ein einzelner roter Energiebolzen
+  abgefeuert.
+- Treffer verursachen kleinen orangefarbenen Funkenschlag und sichtbares
+  Zurückkippen, gefolgt von einer Stabilisierung.
+- Beim Ausschalten stottert der Schub, die Drohne verliert kontrolliert Höhe,
+  zeigt einen kleinen internen Energieausbruch und bleibt dunkel liegen.
+
+## Mondwächter-Animationen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | schwerer Sicherheitsboss mit zwei klar unterscheidbaren Angriffen |
+| Masterdatei | `img/concepts/approvals/moon-warden-animation-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/enemies/moon-warden.png` |
+| Produktionsraster | 96 × 96 px pro Frame, insgesamt 26 Frames |
+
+Verbindliche Merkmale:
+
+- Der Mondwächter behält seinen breiten silber-blauen Körper, den roten Kern,
+  beide Schulterwaffen, übergroße Fäuste und kurze stabile Beine.
+- Die 26 Frames gliedern sich in vier Leerlauf-, vier Lauf-, fünf Nahkampf-,
+  fünf Fernkampf-, zwei Treffer- und sechs Deaktivierungsframes.
+- Die Leerlaufanimation bewegt Fäuste und Servos nur leicht, während der rote
+  Kern langsam pulsiert. Der Lauf wirkt schwer und besitzt klar gesetzte Füße.
+- Der Nahkampf zeigt Ausholen, Faustschlag, kleinen Bodeneinschlag und
+  vollständige Erholung. Der Fernkampf öffnet zuerst die Schulterwaffen und
+  feuert erst nach sichtbarer roter Aufladung einen einzelnen Energiebolzen.
+- Treffer verursachen einen kleinen orangefarbenen Rüstungsfunken und
+  schweren Rückstoß, ohne die Bossform aufzubrechen.
+- Die Deaktivierung beendet den veralteten Schutzbefehl: Der Kern flackert,
+  der Wächter sinkt auf ein Knie, legt die Fäuste ab und bleibt vollständig
+  erhalten mit erloschenem Kern stehen.
