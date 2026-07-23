@@ -178,6 +178,16 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "ui-hud-menus-master-v1",
+      "file": "img/concepts/approvals/ui-hud-menus-master-v1.png",
+      "role": "approved-ui-hud-and-menus-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background, collectible, weapon and tile/hazard masters as references",
+      "created": "2026-07-23",
+      "modifications": "German interface labels were corrected before approval; approved as the 1280x720 HUD, overlay, icon, touch-control and contrast reference, not as runtime UI assets.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",

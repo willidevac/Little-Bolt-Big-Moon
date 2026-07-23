@@ -328,3 +328,31 @@ Verbindliche Merkmale:
   orangefarbener Energie, Graphitfragmenten, Pixelrauch und Glut.
 - Alle Effekte bleiben sowohl vor dunklem Weltraumblau als auch vor warmem
   Schrottplatzbraun eindeutig erkennbar.
+
+## HUD und Menüs
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kompakte industrielle Pixel-Oberfläche mit freier Spielfeldmitte |
+| Masterdatei | `img/concepts/approvals/ui-hud-menus-master-v1.png` |
+| Zielauflösung | 1280 × 720 px |
+
+Verbindliche Merkmale:
+
+- Energie steht links oben, Höhe und Zonenfortschritt mittig oben, Punkte und
+  Pause rechts oben. Waffen und Munition liegen links unten.
+- Drei kleine Upgrade-Sockel liegen rechts unten und verwenden dieselben
+  Symbole wie die Auswahlkarten.
+- Die Bossenergie besitzt einen silber-blauen Rahmen, roten Kern und klar
+  segmentierte rote Füllung.
+- Upgrade-Auswahl, Pause und Absturz verwenden dunkle Nine-Slice-Panels mit
+  cremefarbener Kante und cyanfarbener Fokusmarkierung.
+- Touch-Tasten sind 48 × 48 px groß, halbtransparent und besitzen einen
+  eindeutigen cyanfarbenen gedrückten Zustand. Auf Desktop bleiben sie aus.
+- HUD- und Menütexte verwenden die lokale Silkscreen-Schrift. Begriffe bleiben
+  kurz und deutsch: `UPGRADE`, `PAUSE`, `ABSTURZ`, `WEITER`, `NEUSTART`,
+  `MENÜ` und `NOCHMAL`.
+- Die Oberfläche bleibt sowohl vor warmen unteren Zonen als auch vor dunklem
+  Weltraum deutlich lesbar und hält die Spielfeldmitte frei.
