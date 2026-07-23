@@ -188,6 +188,16 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "byte-animation-master-v1",
+      "file": "img/concepts/approvals/byte-animation-master-v1.png",
+      "role": "approved-byte-animation-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved character, weapon and gameplay-VFX masters as references",
+      "created": "2026-07-23",
+      "modifications": "The missing sixth run pose was added and floating sleep symbols were removed before approval; approved as the exact 33-pose animation reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",

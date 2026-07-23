@@ -356,3 +356,32 @@ Verbindliche Merkmale:
   `MENÜ` und `NOCHMAL`.
 - Die Oberfläche bleibt sowohl vor warmen unteren Zonen als auch vor dunklem
   Weltraum deutlich lesbar und hält die Spielfeldmitte frei.
+
+## Byte-Animationen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | robuste, klar lesbare Bewegungen mit mechanischem Gewicht |
+| Masterdatei | `img/concepts/approvals/byte-animation-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/characters/byte.png` |
+| Produktionsraster | 32 × 32 px pro Frame, insgesamt 33 Frames |
+
+Verbindliche Merkmale:
+
+- Byte behält in jeder Pose seinen breiten rost-orangen Körper, die großen
+  Arbeitsstiefel, das Halbmond-Abzeichen und die geknickte Antenne.
+- Die 33 Frames gliedern sich in vier Leerlauf-, sechs Lauf-, einen Sprung-,
+  einen Fall-, zwei Lande-, vier Nahkampf-, drei Schuss-, zwei Treffer-, vier
+  Ruhe- und sechs mechanische Ausschaltframes.
+- Die Laufanimation zeigt einen vollständigen, energischen Zyklus. Sprung,
+  Fall und Landung bleiben trotz des kleinen Rasters klar unterscheidbar.
+- Im Nahkampf verwendet Byte den creme-mondblauen Reparaturschlüssel, beim
+  Schießen den Bolzenwerfer. Beide entsprechen dem freigegebenen Waffenmaster.
+- Treffer, Staub und Mündungsimpuls folgen dem freigegebenen VFX-Master und
+  bleiben klein genug, um Bytes Silhouette nicht zu verdecken.
+- Die Ausschaltsequenz ist mechanisch und vollständig gewaltfrei: Taumeln,
+  kontrollierter Fall, schwacher Antennenfunke und erloschener Bildschirm.
+- Die Produktionssprites blicken nach rechts. Bewegungen nach links werden
+  später im Canvas gespiegelt.
