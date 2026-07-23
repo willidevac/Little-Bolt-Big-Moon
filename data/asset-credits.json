@@ -48,6 +48,136 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "byte-luma-master-v1",
+      "file": "img/concepts/approvals/byte-luma-master-v1.png",
+      "role": "approved-character-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the project style sheet and the selected chunky character direction as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as concept reference, not as a runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "enemies-master-v1",
+      "file": "img/concepts/approvals/enemies-master-v1.png",
+      "role": "approved-enemy-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the project style sheet, approved character master and selected angular enemy direction as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime spritesheets.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "weapons-master-v1",
+      "file": "img/concepts/approvals/weapons-master-v1.png",
+      "role": "approved-weapon-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved character master and selected cream-and-blue weapon direction as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime sprites.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "collectibles-master-v1",
+      "file": "img/concepts/approvals/collectibles-master-v1.png",
+      "role": "approved-collectible-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the selected orange-and-dark-gray collectible direction as reference",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime sprites.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "background-zones-master-v1",
+      "file": "img/concepts/approvals/background-zones-master-v1.png",
+      "role": "approved-background-zone-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the project style sheet and approved character direction as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the atmosphere and visual progression reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "scrapyard-background-master-v1",
+      "file": "img/concepts/approvals/scrapyard-background-master-v1.png",
+      "role": "approved-scrapyard-background-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone master and project style sheet as references",
+      "created": "2026-07-23",
+      "modifications": "A generated character was removed before approval; approved as the composite, parallax and storytelling reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "factory-background-master-v1",
+      "file": "img/concepts/approvals/factory-background-master-v1.png",
+      "role": "approved-factory-background-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone, scrapyard and character masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the composite, parallax and wordless-story reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "launch-tower-background-master-v1",
+      "file": "img/concepts/approvals/launch-tower-background-master-v1.png",
+      "role": "approved-launch-tower-background-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone, factory and style masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the composite, parallax and atmospheric-transition reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "space-station-background-master-v1",
+      "file": "img/concepts/approvals/space-station-background-master-v1.png",
+      "role": "approved-space-station-background-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone, launch-tower and enemy masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the composite, parallax and security-story reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-background-master-v1",
+      "file": "img/concepts/approvals/moon-background-master-v1.png",
+      "role": "approved-moon-background-and-boss-arena-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone, space-station, enemy and character masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the composite, parallax, boss-arena and ending-story reference, not as runtime backgrounds.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "tiles-hazards-master-v1",
+      "file": "img/concepts/approvals/tiles-hazards-master-v1.png",
+      "role": "approved-tiles-platforms-and-hazards-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved background-zone, collectible and enemy masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the modular tile, platform-state and hazard-state reference, not as runtime tilesets.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "story-props-master-v1",
+      "file": "img/concepts/approvals/story-props-master-v1.png",
+      "role": "approved-story-props-and-interactions-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved character, collectible, factory and Moon masters as references",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation; approved as the static-prop, signal-animation and revive-socket reference, not as runtime sprites.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "gameplay-vfx-master-v1",
+      "file": "img/concepts/approvals/gameplay-vfx-master-v1.png",
+      "role": "approved-gameplay-vfx-design-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved weapon, collectible and tile/hazard masters as references",
+      "created": "2026-07-23",
+      "modifications": "The jump-dust sequence was corrected to four frames before approval; approved as the 23-frame animation and contrast reference, not as the runtime spritesheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",

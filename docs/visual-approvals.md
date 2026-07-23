@@ -1,0 +1,330 @@
+# Visuelle Freigaben
+
+Diese Datei hält verbindliche Designentscheidungen fest. Freigabebilder sind
+Konzeptreferenzen und noch keine direkt im Spiel verwendbaren Spritesheets.
+
+## Byte und Luma
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kantig, robust und werkstattgebaut |
+| Masterdatei | `img/concepts/approvals/byte-luma-master-v1.png` |
+| Produktionsraster | 32 × 32 px pro Frame |
+
+Verbindliche Merkmale:
+
+- Byte besitzt einen breiten eckigen Bildschirmkopf, kurze stabile Gliedmaßen,
+  große Arbeitsstiefel, Rostorange, Anthrazit und eine schiefe Antenne.
+- Luma verwendet dasselbe Grundchassis in Creme und Mondblau mit gerader
+  Antenne.
+- Beide besitzen cyanfarbene Bildschirmaugen.
+- Die beiden Brustabzeichen ergeben zusammen einen vollständigen Mond.
+- Verschleiß bleibt sichtbar, darf die Silhouette aber nicht unruhig machen.
+- Linke Blickrichtung wird später aus der rechten Masterrichtung gespiegelt.
+
+## Gegner
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kantige, silber-blaue Mond-Sicherheitsmaschinen |
+| Masterdatei | `img/concepts/approvals/enemies-master-v1.png` |
+| Produktionsraster | Krabbler/Drohne 48 × 32 px, Boss 96 × 96 px |
+
+Verbindliche Merkmale:
+
+- Alle Gegner gehören sichtbar zum selben alten Mond-Sicherheitsprogramm.
+- Silber, Anthrazit und Mondblau bilden die Rüstung; Rot markiert Gefahr,
+  Angriff und Energiekern.
+- Der Schrottkrabbler bleibt niedrig, vierbeinig und von oben gut stompbar.
+- Die Drohne besitzt kurze Flügel, seitliche Waffenmodule und einen sichtbaren
+  unteren Schubstrahl.
+- Der Mondwächter besitzt einen roten Kern, zwei Schulterwaffen, massive
+  Fäuste und kurze stabile Beine.
+- Die Gegner wirken technisch bedrohlich, aber nicht organisch oder grausam.
+
+## Waffen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kompakte creme-mondblaue Missionsausrüstung |
+| Masterdatei | `img/concepts/approvals/weapons-master-v1.png` |
+| Produktionsraster | Waffen 32 × 32 px, Projektil 16 × 8 px |
+
+Verbindliche Merkmale:
+
+- Reparaturschlüssel, Bolzenwerfer, Projektil und Munitionsbehälter gehören
+  sichtbar zu einem gemeinsamen Set.
+- Creme und Mondblau bilden die Außenhülle, Anthrazit die Mechanik und Cyan
+  die Energieanzeigen.
+- Leichte Kratzer zeigen das Alter der Ausrüstung, ohne sie wie
+  Schrottplatz-Eigenbauten wirken zu lassen.
+- Der Reparaturschlüssel bleibt als Werkzeug erkennbar.
+- Der Bolzenwerfer ist ein kompakter mechanischer Launcher und keine
+  realistische Schusswaffe.
+
+## Collectibles
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | orange-dunkelgraue Missions- und Schrottplatzfunde |
+| Masterdatei | `img/concepts/approvals/collectibles-master-v1.png` |
+| Produktionsraster | Collectibles 16 × 16 oder 24 × 24 px, Waffenfund 32 × 32 px |
+
+Verbindliche Merkmale:
+
+- Punktemarke, Energiezelle, Bolzenmunition und die beiden Abzeichenhälften
+  verwenden Rostorange, Anthrazit und cyanfarbene Energie.
+- Der Waffenfund gehört optisch zu diesem Collectible-Set. Das separat
+  freigegebene Waffen-Set bleibt dennoch creme-mondblau.
+- Die beiden Abzeichenhälften bilden zusammen einen cyanfarbenen Mond.
+- Alle Gegenstände benötigen auch in kleiner Darstellung eine eindeutige
+  Silhouette und dürfen nicht nur durch ihre Farbe unterscheidbar sein.
+- Das Masterblatt ist eine Konzeptreferenz und noch kein direkt einsetzbares
+  Spritesheet.
+
+## Hintergrundzonen
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | zusammenhängender vertikaler Aufstieg vom Schrottplatz bis zum Mond |
+| Masterdatei | `img/concepts/approvals/background-zones-master-v1.png` |
+| Produktionsaufbau | pro Zone getrennte Parallax-Ebenen |
+
+Verbindliche Merkmale:
+
+- Die fünf Zonen sind Schrottplatz, verlassene Roboterfabrik, Startturm mit
+  Wolken, Raumstation sowie Mond mit Sicherheitsanlage.
+- Die Farbdramaturgie entwickelt sich von warmem Rostorange über Violett und
+  tiefes Weltraumblau bis zu kaltem Mondlicht.
+- Jede Zone nutzt Vordergrund, spielnahe Architektur und einen ruhigeren
+  Fernhintergrund als getrennte Tiefenebenen.
+- Die Komposition unterstützt vertikales Klettern und verwendet zugleich die
+  gesamte Breite des Canvas.
+- Leere Transportvorrichtungen, Produktionsanlagen, Missionskisten, Antennen
+  und ein cyanfarbenes Signal erzählen Bytes Weg ohne erklärenden Text.
+- Das Masterbild legt Atmosphäre und Formsprache fest. Die späteren
+  Runtime-Hintergründe werden separat und für nahtloses Scrollen produziert.
+
+## Schrottplatz-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | warme, dichte Schrottlandschaft mit klarer vertikaler Route |
+| Masterdatei | `img/concepts/approvals/scrapyard-background-master-v1.png` |
+| Runtime-Zieldateien | `scrapyard-far.png`, `scrapyard-mid.png`, `scrapyard-near.png` |
+| Runtime-Größe | jeweils 320 × 360 px, vierfach skaliert |
+
+Verbindliche Merkmale:
+
+- Der Fernhintergrund besteht aus staubigem Himmel, Rauch, Schornsteinen,
+  Kränen und der verlassenen Fabrik als sichtbarem Ziel.
+- Die mittlere Ebene trägt Schrottberge, alte Maschinen, Container und
+  Gerüste, bleibt hinter den möglichen Sprungrouten aber kontrastarm.
+- Die nahe Ebene rahmt nur die Außenkanten mit dunklen Rohren, Kabeln,
+  Ketten und Kranhaken.
+- Der Spielbereich bleibt in der Mitte sowie auf beiden Seiten ausreichend
+  ruhig und unterstützt mehrere Wege nach oben.
+- Die leere Transporthalterung, cremefarbene Missionsreste mit Mondzeichen
+  und ein schwaches cyanfarbenes Signal erzählen Bytes Ausgangslage.
+- Die Helligkeit nimmt zur Fabrik hin leicht zu und macht den Aufstieg trotz
+  der einsamen Grundstimmung hoffnungsvoll.
+
+## Fabrik-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | verlassene vertikale Roboterfabrik mit zwei getrennten Montagelinien |
+| Masterdatei | `img/concepts/approvals/factory-background-master-v1.png` |
+| Runtime-Zieldateien | `factory-far.png`, `factory-mid.png`, `factory-near.png` |
+| Runtime-Größe | jeweils 320 × 360 px, vierfach skaliert |
+
+Verbindliche Merkmale:
+
+- Der Fernhintergrund zeigt hohe dunkle Fabrikschächte, Fenster, vertikale
+  Träger und vereinzeltes Ofenlicht mit geringerem Kontrast.
+- Die mittlere Ebene trägt Förderbänder, stillgelegte Montagearme, Kräne,
+  Transportstrecken und zwei nebeneinanderliegende Montageplätze.
+- Orange und creme-mondblaue Fertigungswege sowie zwei zusammengehörige
+  Mondhälften zeigen, dass Byte und Luma als Paar hergestellt wurden.
+- Ein aussortierter orangefarbener Produktionsweg und eine zum Ausgang
+  transportierte cremefarbene Missionskiste zeigen die spätere Trennung.
+- Die nahe Ebene rahmt den Spielraum mit dunklen Kabeln, Ketten, Kolben,
+  Rohren und angeschnittenen Maschinenarmen.
+- Der untere Eingang übernimmt warmes Licht vom Schrottplatz. Nach oben wird
+  die Fabrik heller und kühler und öffnet sich sichtbar zum Startturm.
+
+## Startturm-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | gewaltiger Startturm vom Fabrikdach bis in die obere Atmosphäre |
+| Masterdatei | `img/concepts/approvals/launch-tower-background-master-v1.png` |
+| Runtime-Zieldateien | `launch-tower-far.png`, `launch-tower-mid.png`, `launch-tower-near.png` |
+| Runtime-Größe | jeweils 320 × 360 px, vierfach skaliert |
+
+Verbindliche Merkmale:
+
+- Der Fernhintergrund wechselt von einer warmen Industriesilhouette über
+  pfirsichfarbene und violette Wolken zu tiefblauem Sternenhimmel.
+- Die mittlere Ebene zeigt das modulare Turmgerüst, Aufzugsschächte,
+  Versorgungsleitungen, Antennen und Missionsschienen.
+- Zwei getrennte Startwege erzählen Lumas alleinigen Start: Die orange
+  Strecke ist beschädigt und zurückgelassen, die creme-mondblaue Strecke
+  führt mit cyanfarbenen Signalen nach oben.
+- Die nahe Ebene rahmt den Spielraum mit dunklen Streben, Kabeln, Rohren,
+  Warnlichtern und angeschnittenen Wartungselementen.
+- Nach oben werden Konstruktion und Licht kühler und sauberer. Sterne und die
+  entfernte Raumstation machen das nächste Ziel früh sichtbar.
+- Die Zone nutzt die gesamte Breite, behält aber mehrere ruhige vertikale
+  Kletterkanäle für Plattformen, Aufzüge, Wind und Gegner.
+
+## Raumstations-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | verlassener orbitaler Wartungskomplex mit erwachender Sicherheit |
+| Masterdatei | `img/concepts/approvals/space-station-background-master-v1.png` |
+| Runtime-Zieldateien | `space-station-far.png`, `space-station-mid.png`, `space-station-near.png` |
+| Runtime-Größe | jeweils 320 × 360 px, vierfach skaliert |
+
+Verbindliche Merkmale:
+
+- Der Fernhintergrund zeigt tiefblauen Weltraum, die Erde unterhalb der
+  Station, den Mond oberhalb und kleine entfernte Satelliten.
+- Die mittlere Ebene besteht aus Stationsringen, Wartungsmodulen, Antennen,
+  Solartechnik, Frachtschienen und offenen Verbindungen.
+- Eine cyanfarbene Missionsspur, creme-mondblaue Halterungen und ein leerer
+  Kapselplatz zeigen Lumas Weg zum Mond.
+- Ein geteilter Zugangsscanner akzeptiert die cremefarbene Mondhälfte,
+  während die beschädigte orange Hälfte rot abgelehnt wird.
+- Rote Warnlichter und alte Sicherheitsschotts werden nach oben hin aktiver,
+  ohne die Anlage absichtlich böse wirken zu lassen.
+- Dunkle Rumpfkanten, Kabel, Luftschleusen und Scannerrahmen bilden die nahe
+  Ebene und lassen mehrere offene Kletter- und Kampfwege frei.
+
+## Mond-Hintergrund und Bossarena
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | Mondaufstieg durch eine alte Sicherheitsanlage bis zur offenen Bossarena |
+| Masterdatei | `img/concepts/approvals/moon-background-master-v1.png` |
+| Runtime-Zieldateien | `moon-far.png`, `moon-mid.png`, `moon-near.png` |
+| Runtime-Größe | jeweils 320 × 360 px, vierfach skaliert |
+
+Verbindliche Merkmale:
+
+- Der Fernhintergrund zeigt tiefblauen Sternenhimmel, die große blaue Erde,
+  entfernte Mondberge und einen ruhigen Kraterhorizont.
+- Der untere Bereich enthält eine beschädigte Missionskapsel, verstreute
+  cremefarbene Fracht und verlassene Mondtechnik.
+- Die mittlere Ebene führt durch Krater, Antennenfelder, Scanner, Türme und
+  eine silber-blaue Sicherheitsanlage mit roten Warnkernen.
+- Die Bossarena ist deutlich breiter und ruhiger als der Aufstieg. Ihre Mitte
+  bleibt für Mondwächter, Byte, Projektile und Ausweichbewegungen frei.
+- Hinter der Arena liegt ein leerer creme-mondblauer Rettungsplatz für Luma
+  mit unterbrochenem Stromkabel, Energiezellensockel und cyanfarbenem Signal.
+- Orange und cremefarbene Mondhälften vervollständigen sich am abschließenden
+  Aussichtspunkt vor der Erde.
+- Byte, Luma und der Mondwächter werden nicht in den Hintergrund gezeichnet,
+  sondern später als separate bewegliche Sprites eingesetzt.
+
+## Plattformen, Tilesets und Gefahren
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | zonenspezifische 32-px-Module mit einheitlicher Gameplay-Lesbarkeit |
+| Masterdatei | `img/concepts/approvals/tiles-hazards-master-v1.png` |
+| Runtime-Zieldateien | fünf Tilesets mit je 32 Tiles und ein Gefahren-Set mit 16 Tiles |
+| Produktionsraster | 32 × 32 px pro Tile |
+
+Verbindliche Merkmale:
+
+- Jede Zone besitzt linke, mittlere und rechte Plattformteile, Wand- und
+  Eckmodule, Unterseiten, dünne Einwegplattformen und modulare Blockflächen.
+- Bewegliche Plattformen besitzen unabhängig von der Zone eine eindeutige
+  cyanfarbene Mechanik an der Unterseite.
+- Zerfallende Plattformen zeigen drei zunehmend beschädigte Stufen mit
+  breiteren Rissen und herunterfallenden Fragmenten.
+- Sichere Laufkanten erhalten eine schmale helle Oberkante. Gefahr wird nie
+  ausschließlich über Farbe, sondern zusätzlich über Form kommuniziert.
+- Schrottplatz, Fabrik, Startturm, Raumstation und Mond behalten ihre
+  freigegebenen Materialien und Paletten, teilen aber dieselben Maße.
+- Das gemeinsame Gefahren-Set enthält vier Stufen für Stacheln, elektrische
+  Bodenknoten, Warnleuchten und das Arenator.
+- Cyan markiert Energie und Bewegung, Amber Vorsicht und Rot eine unmittelbar
+  aktive Gefahr.
+
+## Storyobjekte und interaktive Requisiten
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | wortlose Missionsspuren mit klaren Interaktionszuständen |
+| Masterdatei | `img/concepts/approvals/story-props-master-v1.png` |
+| Produktionsraster | je nach Objekt 64 × 64, 64 × 96 oder 96 × 64 px |
+
+Verbindliche Merkmale:
+
+- Die Transporthalterung besteht aus zwei sichtbar verbundenen Plätzen. Bytes
+  orange Seite ist beschädigt, Lumas creme-mondblaue Seite ist leer und zeigt
+  gelöste Halteklammern.
+- Das Fabrikmotiv nutzt nur Piktogramme: zwei Robotersilhouetten, eine schiefe
+  und eine gerade Antenne, zusammengehörige Mondhälften und zwei Wege, die
+  sich nach oben trennen.
+- Lumas Missionskiste besitzt creme-mondblaue Flächen, dunkle Eckschützer,
+  einen cyanfarbenen Status und ihre Mondhälfte.
+- Der Signalgeber behält über vier Frames dieselbe Silhouette und entwickelt
+  sich von dunkel über einen Cyanimpuls bis zum hellen vertikalen Signal.
+- Der Energiezellensockel passt formgenau zur freigegebenen Energiezelle und
+  zeigt in vier Frames Einsetzen, Energiefluss und vollständigen Mondglanz.
+- Orange verbindet Objekte mit Byte und seiner Aussortierung, Creme-Mondblau
+  mit Luma und der offiziellen Mission, Cyan mit Energie und Hoffnung.
+
+## Gameplay-Effekte
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 23.07.2026 |
+| Richtung | kompakte, farbcodierte Pixel-Effekte mit klarer Trefferreaktion |
+| Masterdatei | `img/concepts/approvals/gameplay-vfx-master-v1.png` |
+| Runtime-Zieldatei | `img/sprites/effects/gameplay-effects.png` |
+| Produktionsraster | 32 × 32 px pro Frame, insgesamt 23 Frames |
+
+Verbindliche Merkmale:
+
+- Sprungstaub besitzt vier kurze creme-graue Frames und verdeckt Bytes Füße
+  nur am stärksten Kontaktpunkt.
+- Der Trefferblitz besitzt vier Frames mit weißem Kern, orange-roten Spitzen
+  und wenigen quadratischen Fragmenten.
+- Der Bolzenwerfer verwendet drei gerichtete cyan-weiße Impulsframes ohne
+  realistische Mündungsflamme.
+- Der Collectible-Glanz entwickelt sich in sechs Frames von einem Lichtpunkt
+  zu Diamant, Ring und aufsteigenden quadratischen Partikeln.
+- Die mechanische Explosion umfasst sechs ungiftige Arcade-Frames aus
+  orangefarbener Energie, Graphitfragmenten, Pixelrauch und Glut.
+- Alle Effekte bleiben sowohl vor dunklem Weltraumblau als auch vor warmem
+  Schrottplatzbraun eindeutig erkennbar.

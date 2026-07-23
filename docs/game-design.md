@@ -41,3 +41,16 @@ Die Landschaft besteht in der Drei-Wochen-Version aus:
 
 Nach dem Bosskampf setzt Byte eine Energiezelle in Luma ein. Beide Roboter
 verbinden ihre Abzeichenhälften und betrachten gemeinsam die Erde.
+
+## Mond-Sicherheitsprogramm
+
+Schrottkrabbler, Drohnenwächter und Mondwächter stammen aus demselben alten
+Sicherheitsprogramm der Mondmission. Nach Bytes Aussortierung wurde seine
+Kennung aus der Mission entfernt. Die verlassenen Systeme erkennen ihn deshalb
+als nicht autorisierten Eindringling und greifen an. Der Mondwächter handelt
+nicht aus Bosheit, sondern folgt einem veralteten Schutzbefehl.
+
+Reparaturschlüssel und Bolzenwerfer sind keine improvisierten
+Schrottplatzwaffen. Sie gehörten zur ursprünglichen creme-mondblauen
+Reparaturausrüstung, die für Byte und Luma gemeinsam vorgesehen war. Byte
+findet die zurückgelassene Ausrüstung während seines Aufstiegs wieder.
