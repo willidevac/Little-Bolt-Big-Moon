@@ -494,3 +494,56 @@ Verbindliche Merkmale:
 - Die Deaktivierung beendet den veralteten Schutzbefehl: Der Kern flackert,
   der Wächter sinkt auf ein Knie, legt die Fäuste ab und bleibt vollständig
   erhalten mit erloschenem Kern stehen.
+
+## Byte-Runtime-Spritesheet
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 23.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/byte-production-layout-v1.png` |
+| Runtime-Datei | `img/sprites/characters/byte.png` |
+| Dateigröße | 256 × 160 px |
+| Raster | 8 × 5 Zellen mit jeweils 32 × 32 px |
+| Verarbeitung | JavaScript/Node, Chroma-Key und Nearest-Neighbor |
+
+Verbindliche Merkmale:
+
+- Die ersten 33 Zellen enthalten in Manifest-Reihenfolge Idle, Run, Jump,
+  Fall, Land, Melee, Shoot, Hurt, Sleep und Dead.
+- Die letzten sieben Zellen sind vollständig transparent und bleiben als
+  unbenutzte Reserve außerhalb aller Animationen.
+- Jede belegte Zelle enthält genau eine Pose. Figuren und Effekte überschreiten
+  keine Zellgrenze.
+- Hintergrund und Hilfsraster wurden per JavaScript entfernt. Die Skalierung
+  auf 32 × 32 px verwendet ausschließlich Nearest-Neighbor.
+- Die Runtime-PNG besitzt einen Alpha-Kanal und wurde auf 33 belegte sowie
+  sieben leere Zellen geprüft.
+- Im Repository und im Spiel werden für diesen Arbeitsschritt keine
+  Python-Dateien oder Python-Abhängigkeiten verwendet.
+
+## Luma-Runtime-Spritesheet
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 23.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/luma-production-layout-v1.png` |
+| Runtime-Datei | `img/sprites/characters/luma.png` |
+| Dateigröße | 160 × 64 px |
+| Raster | 5 × 2 Zellen mit jeweils 32 × 32 px |
+| Verarbeitung | JavaScript/Node, Chroma-Key und Nearest-Neighbor |
+
+Verbindliche Merkmale:
+
+- Zeile eins enthält einen vollständig ausgeschalteten Frame und vier
+  schwebende Leerlaufframes.
+- Zeile zwei enthält die fünfstufige Wiederbelebung von dunklem Zustand bis
+  zum stabilen Schweben.
+- Alle zehn Zellen sind belegt und enthalten jeweils genau eine Luma-Pose.
+- Für die Hintergrundentfernung wurde Magenta verwendet, damit sämtliche
+  cyanfarbenen Energieeffekte erhalten bleiben.
+- Sehr helle und sehr dunkle Magenta-Randpixel wurden per JavaScript entfernt.
+  Die Runtime-PNG besitzt einen geprüften Alpha-Kanal.
+- Im Repository und im Spiel werden für diesen Arbeitsschritt keine
+  Python-Dateien oder Python-Abhängigkeiten verwendet.
