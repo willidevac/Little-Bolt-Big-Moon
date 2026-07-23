@@ -18,8 +18,8 @@ function getGameCanvas() {
  * @param {HTMLCanvasElement} canvas
  */
 function configureCanvas(canvas) {
-  canvas.width = GAME_CONFIG.canvasWidth;
-  canvas.height = GAME_CONFIG.canvasHeight;
+  canvas.width = GAME_CONFIG.canvas.width;
+  canvas.height = GAME_CONFIG.canvas.height;
 }
 
 /**
