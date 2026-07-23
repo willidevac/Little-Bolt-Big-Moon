@@ -1,22 +1,81 @@
 {
+  "licenseProfiles": [
+    {
+      "id": "openai-generated-output",
+      "label": "OpenAI-generated project output",
+      "origin": "OpenAI image generation",
+      "terms": "https://openai.com/policies/eu-terms-of-use/",
+      "evidence": "docs/asset-licensing.md",
+      "notes": "Output rights apply between the user and OpenAI as described by the terms; exclusivity is not guaranteed."
+    },
+    {
+      "id": "openai-assisted-project-art",
+      "label": "OpenAI-assisted, manually adapted project pixel art",
+      "origin": "Project production based on the existing OpenAI-generated style sheet",
+      "terms": "https://openai.com/policies/eu-terms-of-use/",
+      "evidence": "docs/asset-licensing.md",
+      "notes": "Each finished file must be manually pixel-cleaned, palette-limited and added to this credits file before integration."
+    },
+    {
+      "id": "silkscreen-ofl-1.1",
+      "label": "Silkscreen under SIL Open Font License 1.1",
+      "origin": "The Silkscreen Project Authors via the official Google Fonts repository",
+      "source": "https://github.com/google/fonts/tree/main/ofl/silkscreen",
+      "terms": "https://github.com/google/fonts/blob/main/ofl/silkscreen/OFL.txt",
+      "evidence": "The font directory contains regular and bold font files plus its OFL.txt.",
+      "notes": "Copy OFL.txt into img/fonts/ when the font files are downloaded."
+    }
+  ],
   "assets": [
     {
       "id": "little-bolt-big-moon-style-sheet-v1",
       "file": "img/concepts/little-bolt-big-moon-style-sheet-v1.png",
       "role": "design-reference",
+      "status": "present",
       "origin": "OpenAI image generation",
       "created": "2026-07-23",
       "modifications": "Production sprites will be manually redesigned and animated.",
-      "terms": "https://openai.com/policies/eu-terms-of-use/"
+      "licenseId": "openai-generated-output"
     },
     {
       "id": "little-bolt-big-moon-cover-v1",
       "file": "img/cover/little-bolt-big-moon-cover-v1.png",
       "role": "game-cover",
+      "status": "present",
       "origin": "OpenAI image generation using the project style sheet as reference",
       "created": "2026-07-23",
       "modifications": "No manual modifications after generation.",
-      "terms": "https://openai.com/policies/eu-terms-of-use/"
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "p0-production-art-plan",
+      "file": "data/asset-manifest.json",
+      "role": "planned-production-assets",
+      "status": "planned",
+      "origin": "OpenAI-assisted project production with manual pixel-art adaptation",
+      "created": "2026-07-23",
+      "modifications": "Every generated draft will be redrawn to the fixed palette, frame grid and silhouette rules.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "silkscreen-regular-plan",
+      "file": "img/fonts/silkscreen-regular.ttf",
+      "role": "local-ui-font-regular",
+      "status": "approved-source-not-downloaded",
+      "origin": "The Silkscreen Project Authors via Google Fonts",
+      "created": "2026-07-23",
+      "modifications": "No font modifications planned.",
+      "licenseId": "silkscreen-ofl-1.1"
+    },
+    {
+      "id": "silkscreen-bold-plan",
+      "file": "img/fonts/silkscreen-bold.ttf",
+      "role": "local-ui-font-bold",
+      "status": "approved-source-not-downloaded",
+      "origin": "The Silkscreen Project Authors via Google Fonts",
+      "created": "2026-07-23",
+      "modifications": "No font modifications planned.",
+      "licenseId": "silkscreen-ofl-1.1"
     }
   ]
 }

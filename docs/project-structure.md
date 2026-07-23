@@ -21,7 +21,7 @@ Spiel/
 ├── data/                      JSON-Level, Upgrades und Assetnachweise
 ├── img/
 │   ├── concepts/              nicht direkt verwendete Designreferenzen
-│   ├── sprites/               Figuren, Gegner, Waffen und Items
+│   ├── sprites/               Figuren, Gegner, Waffen, Items, Effekte, Props
 │   ├── tilesets/              Plattform- und Umgebungskacheln
 │   ├── backgrounds/           Landschaft und Parallax-Ebenen
 │   ├── ui/                    Buttons, Karten und Anzeigen
@@ -41,4 +41,3 @@ Spiel/
 - Funktionen bleiben klein und erfüllen jeweils eine Aufgabe.
 - Keine JavaScript-Datei überschreitet 400 Zeilen.
 - Namen bleiben englisch und verwenden konsistentes `camelCase`.
-

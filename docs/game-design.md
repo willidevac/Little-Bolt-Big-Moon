@@ -34,9 +34,10 @@ blaues Signal erzählen diese Geschichte ohne Dialog.
 Die Landschaft besteht in der Drei-Wochen-Version aus:
 
 1. Schrottplatz
-2. Fabrik und Startturm
-3. Wolken und Raumstation
-4. Mond und Endboss
+2. Fabrik
+3. Startturm und Wolken
+4. Raumstation
+5. Mond und Endboss
 
 Nach dem Bosskampf setzt Byte eine Energiezelle in Luma ein. Beide Roboter
 verbinden ihre Abzeichenhälften und betrachten gemeinsam die Erde.

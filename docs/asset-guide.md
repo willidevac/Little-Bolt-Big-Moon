@@ -19,14 +19,19 @@ entwickelt sich von warmem Rost zu kühlem Mondlicht.
 
 ## Zielgrößen
 
-| Asset | Raster |
-|---|---:|
-| Byte und Luma | 32 × 32 px |
-| Normale Gegner | 32 × 32 oder 48 × 48 px |
-| Endboss | 96 × 96 px |
-| Plattform-Tiles | 32 × 32 px |
-| Waffen und Items | 24 × 24 oder 32 × 32 px |
-| UI-Symbole | 24 × 24 px |
+| Asset | Raster | Darstellung im Spiel |
+|---|---:|---:|
+| Byte und Luma | 32 × 32 px | 64 × 64 px |
+| Schrottkrabbler/Drohne | 48 × 32 px | 96 × 64 px |
+| Endboss | 96 × 96 px | 192 × 192 px |
+| Plattform-Tiles | 32 × 32 px | 64 × 64 px |
+| Waffen und Items | 16–32 px | ganzzahlig × 2 |
+| UI-Symbole | 24 × 24 px | 24 oder 48 px |
+| Hintergrundsegment | 320 × 360 px | 1280 × 1440 px |
+
+Die vollständigen Dateinamen, Sheetmaße und Framezahlen stehen im
+[`P0-Produktionskatalog`](asset-production-catalog.md) und maschinenlesbar in
+[`data/asset-manifest.json`](../data/asset-manifest.json).
 
 ## Produktionsablauf
 
@@ -36,6 +41,7 @@ entwickelt sich von warmem Rost zu kühlem Mondlicht.
 4. Erst danach Animationsframes erstellen.
 5. Jedes Spritesheet bei nativer Größe und vierfacher Vergrößerung prüfen.
 6. Assets mit beschreibenden englischen Dateinamen exportieren.
+7. Tatsächliche Datei und Herkunft vor Integration in
+   `data/asset-credits.json` ergänzen.
 
 Sound gehört nicht zur aktuellen Assetphase.
-
