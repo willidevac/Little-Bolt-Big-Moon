@@ -1,0 +1,22 @@
+{
+  "assets": [
+    {
+      "id": "little-bolt-big-moon-style-sheet-v1",
+      "file": "img/concepts/little-bolt-big-moon-style-sheet-v1.png",
+      "role": "design-reference",
+      "origin": "OpenAI image generation",
+      "created": "2026-07-23",
+      "modifications": "Production sprites will be manually redesigned and animated.",
+      "terms": "https://openai.com/policies/eu-terms-of-use/"
+    },
+    {
+      "id": "little-bolt-big-moon-cover-v1",
+      "file": "img/cover/little-bolt-big-moon-cover-v1.png",
+      "role": "game-cover",
+      "origin": "OpenAI image generation using the project style sheet as reference",
+      "created": "2026-07-23",
+      "modifications": "No manual modifications after generation.",
+      "terms": "https://openai.com/policies/eu-terms-of-use/"
+    }
+  ]
+}

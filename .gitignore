@@ -1,0 +1,19 @@
+# Betriebssystem
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editoren
+.idea/
+.vscode/
+*.code-workspace
+
+# Temporäre Dateien
+*.log
+*.tmp
+tmp/
+
+# Lokale Server- und Buildartefakte
+dist/
+coverage/
+

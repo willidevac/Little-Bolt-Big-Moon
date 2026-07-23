@@ -1,0 +1,12 @@
+body {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+}
+
+.game-shell {
+  width: min(100vw, 1280px);
+  aspect-ratio: 16 / 9;
+}
+

@@ -1,0 +1,12 @@
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #242733;
+  image-rendering: pixelated;
+}
+
+.portrait-notice {
+  display: none;
+}
+

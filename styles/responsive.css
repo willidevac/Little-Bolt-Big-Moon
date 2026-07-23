@@ -1,0 +1,14 @@
+@media (max-width: 900px) and (orientation: portrait) {
+  .game-shell {
+    display: none;
+  }
+
+  .portrait-notice {
+    display: grid;
+    min-height: 100dvh;
+    padding: 2rem;
+    place-items: center;
+    text-align: center;
+  }
+}
+
