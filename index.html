@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <main class="game-shell">
+    <main class="game-shell" data-game-root>
       <canvas
         id="game-canvas"
         width="1280"
         height="720"
         aria-label="Spielfläche von Little Bolt, Big Moon"
-      ></canvas>
+        data-game-canvas
+      >
+        Dein Browser unterstützt das Canvas-Element leider nicht.
+      </canvas>
     </main>
 
     <aside class="portrait-notice" aria-live="polite">

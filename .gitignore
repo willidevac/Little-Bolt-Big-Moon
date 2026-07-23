@@ -17,3 +17,5 @@ tmp/
 dist/
 coverage/
 
+# Lokale Arbeitskoordination (nicht veröffentlichen)
+/Arbeitsplan.md
