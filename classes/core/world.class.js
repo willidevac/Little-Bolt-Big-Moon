@@ -1,3 +1,5 @@
+import { CollisionManager } from "../systems/collision-manager.class.js";
+
 export const WORLD_ENTITY_GROUPS = Object.freeze({
   CHARACTERS: "characters",
   PLATFORMS: "platforms",
@@ -30,6 +32,7 @@ export class World {
   #pendingAdditions;
   #pendingRemovals;
   #isProcessing;
+  #collisionManager;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -43,6 +46,7 @@ export class World {
     this.#pendingAdditions = this.#createGroupMap(Set);
     this.#pendingRemovals = this.#createGroupMap(Set);
     this.#isProcessing = false;
+    this.#collisionManager = new CollisionManager();
   }
 
   /**
@@ -106,9 +110,12 @@ export class World {
    */
   update(deltaTimeSeconds) {
     if (!this.isInitialized) return;
+    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+    this.#collisionManager.resetGroundStates(characters);
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
+    this.#resolvePlatformLandings(deltaTimeSeconds);
   }
 
   /**
@@ -140,6 +147,12 @@ export class World {
 
   #createGroupMap(CollectionType) {
     return new Map(ENTITY_GROUP_NAMES.map((name) => [name, new CollectionType()]));
+  }
+
+  #resolvePlatformLandings(deltaTimeSeconds) {
+    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
+    this.#collisionManager.resolvePlatformLandings(characters, platforms, deltaTimeSeconds);
   }
 
   #processEntities(groupOrder, callback) {
