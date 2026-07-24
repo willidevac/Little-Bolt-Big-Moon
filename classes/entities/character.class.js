@@ -1,4 +1,5 @@
 import { MovableObject } from "../base/movable-object.class.js";
+import { AnimationController } from "../systems/animation-controller.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
 import { clamp } from "../../js/utils/math.js";
 
@@ -9,6 +10,7 @@ const BYTE_SPRITE_CONFIG = Object.freeze({
   frameCount: 33,
 });
 const BYTE_RENDER_SCALE = 2;
+const STATE_TIME_EPSILON_SECONDS = 1e-9;
 const NEUTRAL_INPUT = Object.freeze({ left: false, right: false, jump: false });
 const ACTIVITY_ACTIONS = Object.freeze([
   "left",
@@ -28,6 +30,19 @@ export const CHARACTER_STATES = Object.freeze({
   DEAD: "dead",
 });
 
+const createAnimationClip = (startFrame, frameCount, frameDurationSeconds, loop = true) =>
+  Object.freeze({ startFrame, frameCount, frameDurationSeconds, loop });
+
+const BYTE_ANIMATION_CLIPS = Object.freeze({
+  [CHARACTER_STATES.IDLE]: createAnimationClip(0, 4, 0.18),
+  [CHARACTER_STATES.RUN]: createAnimationClip(4, 6, 0.08),
+  [CHARACTER_STATES.JUMP]: createAnimationClip(10, 1, 1),
+  [CHARACTER_STATES.FALL]: createAnimationClip(11, 1, 1),
+  [CHARACTER_STATES.HURT]: createAnimationClip(21, 2, 0.1),
+  [CHARACTER_STATES.SLEEP]: createAnimationClip(23, 4, 0.3),
+  [CHARACTER_STATES.DEAD]: createAnimationClip(27, 6, 0.14, false),
+});
+
 /**
  * Spielbarer Hauptcharakter Byte.
  */
@@ -44,7 +59,25 @@ export class Character extends MovableObject {
     this.facingDirection = 1;
     this.isHurt = false;
     this.isDead = false;
+    this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
     this.loadSprite(BYTE_SPRITE_CONFIG);
+    this.setFrameIndex(this.animationController.setState(this.state));
+  }
+
+  /**
+   * Zeichnet Byte nach links gespiegelt, wenn er nach links schaut.
+   * @param {CanvasRenderingContext2D} context
+   */
+  draw(context) {
+    if (this.facingDirection >= 0) {
+      super.draw(context);
+      return;
+    }
+    context.save();
+    context.translate(this.x + this.width, this.y);
+    context.scale(-1, 1);
+    this.drawCurrentFrame(context, 0, 0, this.width, this.height);
+    context.restore();
   }
 
   /**
@@ -55,7 +88,7 @@ export class Character extends MovableObject {
   update(deltaTimeSeconds, world) {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
     const input = world.input ?? NEUTRAL_INPUT;
-    if (this.isDead) return this.#maintainDeadState();
+    if (this.isDead) return this.#maintainDeadState(deltaTimeSeconds);
     const config = world.config.character;
     const jumpStarted = this.#consumeJumpPress(input);
     this.#updateInactivity(deltaTimeSeconds, input, config);
@@ -63,6 +96,7 @@ export class Character extends MovableObject {
     super.update(deltaTimeSeconds, world);
     this.#keepInsideWorld(world.config.world.width);
     this.#changeState(this.#resolveState(config));
+    this.#updateAnimation(deltaTimeSeconds);
     this.wasJumpPressed = input.jump;
   }
 
@@ -196,7 +230,10 @@ export class Character extends MovableObject {
     if (this.velocityY < -threshold) return CHARACTER_STATES.JUMP;
     if (!this.isOnGround || this.velocityY > threshold) return CHARACTER_STATES.FALL;
     if (Math.abs(this.velocityX) > threshold) return CHARACTER_STATES.RUN;
-    if (this.inactivitySeconds >= config.sleepAfterInactivitySeconds) {
+    if (
+      this.inactivitySeconds + STATE_TIME_EPSILON_SECONDS >=
+      config.sleepAfterInactivitySeconds
+    ) {
       return CHARACTER_STATES.SLEEP;
     }
     return CHARACTER_STATES.IDLE;
@@ -205,12 +242,19 @@ export class Character extends MovableObject {
   #changeState(nextState) {
     if (this.state === nextState) return false;
     this.state = nextState;
+    this.setFrameIndex(this.animationController.setState(nextState));
     return true;
   }
 
-  #maintainDeadState() {
+  #updateAnimation(deltaTimeSeconds) {
+    const frameIndex = this.animationController.update(this.state, deltaTimeSeconds);
+    this.setFrameIndex(frameIndex);
+  }
+
+  #maintainDeadState(deltaTimeSeconds) {
     this.#stopMovement();
     this.#changeState(CHARACTER_STATES.DEAD);
+    this.#updateAnimation(deltaTimeSeconds);
   }
 
   #stopMovement() {
