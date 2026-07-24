@@ -24,6 +24,7 @@ const PREVENTED_DEFAULT_CODES = Object.freeze([
  */
 export class Keyboard {
   #pressedKeyCodes;
+  #pressedActions;
 
   /**
    * @param {EventTarget} [eventTarget=globalThis]
@@ -32,6 +33,7 @@ export class Keyboard {
     this.eventTarget = eventTarget;
     this.isListening = false;
     this.#pressedKeyCodes = new Set();
+    this.#pressedActions = new Set();
     this.boundKeyDown = this.handleKeyDown.bind(this);
     this.boundKeyUp = this.handleKeyUp.bind(this);
     this.boundReset = this.reset.bind(this);
@@ -83,10 +85,20 @@ export class Keyboard {
   }
 
   /**
+   * Liefert einen neuen Aktionsdruck genau einmal aus.
+   * @param {string} action
+   * @returns {boolean}
+   */
+  consumePress(action) {
+    return this.#pressedActions.delete(action);
+  }
+
+  /**
    * Setzt alle Eingaben in den neutralen Zustand zurück.
    */
   reset() {
     this.#pressedKeyCodes.clear();
+    this.#pressedActions.clear();
     this.left = false;
     this.right = false;
     this.jump = false;
@@ -98,9 +110,11 @@ export class Keyboard {
   #updateKeyState(event, isPressed) {
     const action = ACTION_BY_KEY_CODE[event.code];
     if (!action || (isPressed && this.#hasModifier(event))) return;
+    const wasPressed = this.#isActionPressed(action);
     this.#preventBrowserAction(event);
     this.#updatePressedKeys(event.code, isPressed);
     this[action] = this.#isActionPressed(action);
+    if (isPressed && !wasPressed) this.#pressedActions.add(action);
   }
 
   #updatePressedKeys(keyCode, isPressed) {

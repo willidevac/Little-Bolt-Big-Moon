@@ -47,10 +47,12 @@ export class World {
   /**
    * @param {CanvasRenderingContext2D} context
    * @param {Readonly<object>} config
+   * @param {Readonly<object>|null} [input=null]
    */
-  constructor(context, config) {
+  constructor(context, config, input = null) {
     this.context = context;
     this.config = config;
+    this.input = input;
     this.isInitialized = false;
     this.#entityGroups = this.#createGroupMap(Array);
     this.#pendingAdditions = this.#createGroupMap(Set);
@@ -123,10 +125,10 @@ export class World {
   update(deltaTimeSeconds) {
     if (!this.isInitialized) return;
     const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
-    this.#collisionManager.resetGroundStates(characters);
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
+    this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
   }
 

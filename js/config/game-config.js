@@ -19,6 +19,16 @@ const PHYSICS_CONFIG = Object.freeze({
   platformLandingTolerancePixels: 1,
 });
 
+const CHARACTER_CONFIG = Object.freeze({
+  horizontalAccelerationPixelsPerSecondSquared: 1800,
+  horizontalBrakingPixelsPerSecondSquared: 2400,
+  maximumHorizontalSpeedPixelsPerSecond: 300,
+  jumpSpeedPixelsPerSecond: 800,
+  jumpReleaseSpeedPixelsPerSecond: 320,
+  coyoteTimeSeconds: 0.1,
+  jumpBufferSeconds: 0.12,
+});
+
 const DEBUG_CONFIG = Object.freeze({
   enabled: false,
   showCollisionBoxes: false,
@@ -31,5 +41,6 @@ export const GAME_CONFIG = Object.freeze({
   world: WORLD_CONFIG,
   timing: TIMING_CONFIG,
   physics: PHYSICS_CONFIG,
+  character: CHARACTER_CONFIG,
   debug: DEBUG_CONFIG,
 });

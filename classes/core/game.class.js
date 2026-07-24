@@ -21,8 +21,8 @@ export class Game {
     this.previousTimestamp = null;
     this.boundGameLoop = this.gameLoop.bind(this);
     this.validateContext();
-    this.world = new World(this.context, this.config);
     this.keyboard = new Keyboard(inputTarget);
+    this.world = new World(this.context, this.config, this.keyboard);
   }
 
   /**
