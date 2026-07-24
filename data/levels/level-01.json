@@ -3,46 +3,101 @@
   "width": 1280,
   "height": 8000,
   "playerStart": {
-    "x": 160,
-    "y": 240
+    "x": 128,
+    "y": 7760
   },
-  "sections": [],
-  "platforms": [
-    {
-      "id": "scrapyard-start",
-      "x": 64,
-      "y": 624,
+  "sections": [
+    { "id": "scrapyard", "name": "Schrottplatz", "topY": 6400, "bottomY": 8000 },
+    { "id": "factory", "name": "Fabrik", "topY": 4800, "bottomY": 6400 },
+    { "id": "launch-tower", "name": "Startturm", "topY": 3200, "bottomY": 4800 },
+    { "id": "space-station", "name": "Raumstation", "topY": 1600, "bottomY": 3200 },
+    { "id": "moon", "name": "Mond", "topY": 0, "bottomY": 1600 }
+  ],
+  "platformTypes": {
+    "floor": {
       "tileset": "scrapyard",
-      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 3]
+      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
     },
-    {
-      "id": "scrapyard-step-right",
-      "x": 768,
-      "y": 512,
-      "tileset": "scrapyard",
-      "tileFrames": [0, 2, 2, 3]
-    },
-    {
-      "id": "scrapyard-step-middle",
-      "x": 448,
-      "y": 400,
-      "tileset": "scrapyard",
-      "tileFrames": [0, 2, 2, 3]
-    },
-    {
-      "id": "scrapyard-step-high",
-      "x": 832,
-      "y": 288,
+    "path": {
       "tileset": "scrapyard",
       "tileFrames": [0, 2, 3]
     },
-    {
-      "id": "scrapyard-step-top",
-      "x": 576,
-      "y": 176,
+    "catch": {
       "tileset": "scrapyard",
-      "tileFrames": [0, 2, 3]
+      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 3]
     }
+  },
+  "platforms": [
+    { "id": "scrapyard-floor", "x": 64, "y": 7840, "type": "floor" },
+    { "id": "scrapyard-path-01", "x": 160, "y": 7728, "type": "path" },
+    { "id": "scrapyard-path-02", "x": 384, "y": 7616, "type": "path" },
+    { "id": "scrapyard-path-03", "x": 608, "y": 7504, "type": "path" },
+    { "id": "scrapyard-path-04", "x": 832, "y": 7392, "type": "path" },
+    { "id": "scrapyard-path-05", "x": 960, "y": 7280, "type": "path" },
+    { "id": "scrapyard-path-06", "x": 736, "y": 7168, "type": "path" },
+    { "id": "scrapyard-catch-07", "x": 384, "y": 7056, "type": "catch" },
+    { "id": "scrapyard-path-08", "x": 928, "y": 6944, "type": "path" },
+    { "id": "scrapyard-path-09", "x": 704, "y": 6832, "type": "path" },
+    { "id": "scrapyard-path-10", "x": 480, "y": 6720, "type": "path" },
+    { "id": "scrapyard-path-11", "x": 256, "y": 6608, "type": "path" },
+    { "id": "scrapyard-path-12", "x": 128, "y": 6496, "type": "path" },
+    { "id": "factory-path-01", "x": 352, "y": 6384, "type": "path" },
+    { "id": "factory-catch-02", "x": 384, "y": 6272, "type": "catch" },
+    { "id": "factory-path-03", "x": 160, "y": 6160, "type": "path" },
+    { "id": "factory-path-04", "x": 384, "y": 6048, "type": "path" },
+    { "id": "factory-path-05", "x": 608, "y": 5936, "type": "path" },
+    { "id": "factory-path-06", "x": 832, "y": 5824, "type": "path" },
+    { "id": "factory-path-07", "x": 960, "y": 5712, "type": "path" },
+    { "id": "factory-path-08", "x": 736, "y": 5600, "type": "path" },
+    { "id": "factory-catch-09", "x": 384, "y": 5488, "type": "catch" },
+    { "id": "factory-path-10", "x": 928, "y": 5376, "type": "path" },
+    { "id": "factory-path-11", "x": 704, "y": 5264, "type": "path" },
+    { "id": "factory-path-12", "x": 480, "y": 5152, "type": "path" },
+    { "id": "factory-path-13", "x": 256, "y": 5040, "type": "path" },
+    { "id": "factory-path-14", "x": 128, "y": 4928, "type": "path" },
+    { "id": "factory-path-15", "x": 352, "y": 4816, "type": "path" },
+    { "id": "launch-tower-catch-01", "x": 384, "y": 4704, "type": "catch" },
+    { "id": "launch-tower-path-02", "x": 160, "y": 4592, "type": "path" },
+    { "id": "launch-tower-path-03", "x": 384, "y": 4480, "type": "path" },
+    { "id": "launch-tower-path-04", "x": 608, "y": 4368, "type": "path" },
+    { "id": "launch-tower-path-05", "x": 832, "y": 4256, "type": "path" },
+    { "id": "launch-tower-path-06", "x": 960, "y": 4144, "type": "path" },
+    { "id": "launch-tower-path-07", "x": 736, "y": 4032, "type": "path" },
+    { "id": "launch-tower-catch-08", "x": 384, "y": 3920, "type": "catch" },
+    { "id": "launch-tower-path-09", "x": 928, "y": 3808, "type": "path" },
+    { "id": "launch-tower-path-10", "x": 704, "y": 3696, "type": "path" },
+    { "id": "launch-tower-path-11", "x": 480, "y": 3584, "type": "path" },
+    { "id": "launch-tower-path-12", "x": 256, "y": 3472, "type": "path" },
+    { "id": "launch-tower-path-13", "x": 128, "y": 3360, "type": "path" },
+    { "id": "launch-tower-path-14", "x": 352, "y": 3248, "type": "path" },
+    { "id": "space-station-catch-01", "x": 384, "y": 3136, "type": "catch" },
+    { "id": "space-station-path-02", "x": 160, "y": 3024, "type": "path" },
+    { "id": "space-station-path-03", "x": 384, "y": 2912, "type": "path" },
+    { "id": "space-station-path-04", "x": 608, "y": 2800, "type": "path" },
+    { "id": "space-station-path-05", "x": 832, "y": 2688, "type": "path" },
+    { "id": "space-station-path-06", "x": 960, "y": 2576, "type": "path" },
+    { "id": "space-station-path-07", "x": 736, "y": 2464, "type": "path" },
+    { "id": "space-station-catch-08", "x": 384, "y": 2352, "type": "catch" },
+    { "id": "space-station-path-09", "x": 928, "y": 2240, "type": "path" },
+    { "id": "space-station-path-10", "x": 704, "y": 2128, "type": "path" },
+    { "id": "space-station-path-11", "x": 480, "y": 2016, "type": "path" },
+    { "id": "space-station-path-12", "x": 256, "y": 1904, "type": "path" },
+    { "id": "space-station-path-13", "x": 128, "y": 1792, "type": "path" },
+    { "id": "space-station-path-14", "x": 352, "y": 1680, "type": "path" },
+    { "id": "moon-catch-01", "x": 384, "y": 1568, "type": "catch" },
+    { "id": "moon-path-02", "x": 160, "y": 1456, "type": "path" },
+    { "id": "moon-path-03", "x": 384, "y": 1344, "type": "path" },
+    { "id": "moon-path-04", "x": 608, "y": 1232, "type": "path" },
+    { "id": "moon-path-05", "x": 832, "y": 1120, "type": "path" },
+    { "id": "moon-path-06", "x": 960, "y": 1008, "type": "path" },
+    { "id": "moon-path-07", "x": 736, "y": 896, "type": "path" },
+    { "id": "moon-catch-08", "x": 384, "y": 784, "type": "catch" },
+    { "id": "moon-path-09", "x": 928, "y": 672, "type": "path" },
+    { "id": "moon-path-10", "x": 704, "y": 560, "type": "path" },
+    { "id": "moon-path-11", "x": 480, "y": 448, "type": "path" },
+    { "id": "moon-path-12", "x": 256, "y": 336, "type": "path" },
+    { "id": "moon-path-13", "x": 128, "y": 224, "type": "path" },
+    { "id": "moon-summit-14", "x": 384, "y": 112, "type": "catch" }
   ],
   "combatZones": [],
   "collectables": []

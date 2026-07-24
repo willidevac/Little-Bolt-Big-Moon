@@ -24,23 +24,37 @@ export function createLevelOne() {
     width: levelData.width,
     height: levelData.height,
     playerStart: Object.freeze({ ...levelData.playerStart }),
+    sections: Object.freeze(levelData.sections.map(createSection)),
     platforms: Object.freeze(levelData.platforms.map(createPlatform)),
   });
 }
 
 function createPlatform(platformData) {
-  const tilesetConfig = TILESET_CONFIGS[platformData.tileset];
-  if (!tilesetConfig) {
-    throw new RangeError(`Unbekanntes Plattform-Tileset: ${platformData.tileset}`);
+  const platformType = levelData.platformTypes[platformData.type];
+  if (!platformType) {
+    throw new RangeError(`Unbekannter Plattformtyp: ${platformData.type}`);
   }
-  return new Platform(platformData, tilesetConfig);
+  const resolvedData = { ...platformType, ...platformData };
+  const tilesetConfig = TILESET_CONFIGS[resolvedData.tileset];
+  if (!tilesetConfig) {
+    throw new RangeError(`Unbekanntes Plattform-Tileset: ${resolvedData.tileset}`);
+  }
+  return new Platform(resolvedData, tilesetConfig);
+}
+
+function createSection(sectionData) {
+  return Object.freeze({ ...sectionData });
 }
 
 function validateLevelData(data) {
   const hasSize = Number.isFinite(data?.width) && Number.isFinite(data?.height);
   const hasStart = Number.isFinite(data?.playerStart?.x) &&
     Number.isFinite(data?.playerStart?.y);
-  if (typeof data?.id === "string" && hasSize && hasStart && Array.isArray(data.platforms)) {
+  const hasCollections = Array.isArray(data?.sections) &&
+    Array.isArray(data?.platforms) &&
+    data?.platformTypes &&
+    typeof data.platformTypes === "object";
+  if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {
     return;
   }
   throw new TypeError("Die Leveldaten sind unvollständig oder ungültig.");
