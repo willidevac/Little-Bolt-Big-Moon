@@ -547,3 +547,152 @@ Verbindliche Merkmale:
   Die Runtime-PNG besitzt einen geprüften Alpha-Kanal.
 - Im Repository und im Spiel werden für diesen Arbeitsschritt keine
   Python-Dateien oder Python-Abhängigkeiten verwendet.
+
+## Gegner-Runtime-Spritesheets
+
+| Gegner | Produktionsmuster | Runtime-Datei | Raster | Belegung |
+| --- | --- | --- | --- | --- |
+| Schrottkrabbler | `img/concepts/approvals/scrap-crawler-production-layout-v1.png` | `img/sprites/enemies/scrap-crawler.png` | 7 × 2 Zellen à 48 × 32 px, 336 × 64 px | 13 belegt, 1 transparent |
+| Wächterdrohne | `img/concepts/approvals/drone-guard-production-layout-v1.png` | `img/sprites/enemies/drone-guard.png` | 5 × 4 Zellen à 48 × 32 px, 240 × 128 px | 20 belegt |
+| Mondwächter | `img/concepts/approvals/moon-warden-production-layout-v1.png` | `img/sprites/enemies/moon-warden.png` | 7 × 4 Zellen à 96 × 96 px, 672 × 384 px | 26 belegt, 2 transparent |
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Verarbeitung | JavaScript/Node, Chroma-Key und Nearest-Neighbor |
+
+Verbindliche Merkmale:
+
+- Die Frames stehen bei allen drei Gegnern in der Reihenfolge ihrer
+  freigegebenen Animationsmaster und können zeilenweise von links nach rechts
+  ausgelesen werden.
+- Der Schrottkrabbler enthält Lauf, angekündigten Vorstoß, Treffer und eine
+  mechanische Abschaltung. Nur die letzte Zelle bleibt transparent.
+- Die Wächterdrohne enthält Schweben, Flug, Angriffsankündigung, Schuss,
+  Treffer und mechanische Abschaltung. Alle 20 Zellen sind belegt.
+- Der Mondwächter enthält Leerlauf, schweren Lauf, Nahkampf, Fernkampf,
+  Treffer und Deaktivierung. Die letzten beiden Zellen bleiben transparent.
+- Der grüne Produktionshintergrund und das Hilfsraster wurden per
+  JavaScript entfernt. Die Skalierung verwendet ausschließlich
+  Nearest-Neighbor, damit harte Pixelkanten erhalten bleiben.
+- Alle drei Runtime-PNGs besitzen einen geprüften Alpha-Kanal. Jede belegte
+  Zelle enthält genau eine Pose oder einen zur Pose gehörenden Effekt.
+- Im Repository und im Spiel werden für diesen Arbeitsschritt keine
+  Python-Dateien oder Python-Abhängigkeiten verwendet.
+
+## Waffen- und Projektil-Runtime-Spritesheets
+
+| Asset | Runtime-Datei | Raster | Frames |
+| --- | --- | --- | --- |
+| Spielerwaffen | `img/sprites/weapons/player-weapons.png` | 2 × 1 Zellen à 32 × 32 px, 64 × 32 px | Reparaturschlüssel, Bolzenwerfer |
+| Bolzenprojektil | `img/sprites/weapons/bolt-projectile.png` | 2 × 1 Zellen à 16 × 8 px, 32 × 8 px | zwei Flugimpulse |
+| Drohnenprojektil | `img/sprites/weapons/drone-projectile.png` | 4 × 1 Zellen à 16 × 16 px, 64 × 16 px | vier Energieimpulse |
+| Bossprojektile | `img/sprites/weapons/boss-projectiles.png` | 4 × 2 Zellen à 32 × 16 px, 128 × 32 px | vier Schockwellen, vier Energiebolzen |
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/weapons-projectiles-production-layout-v1.png` |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Reparaturschlüssel und Bolzenwerfer übernehmen Creme, Mondblau, Anthrazit
+  und Cyan aus dem freigegebenen Waffenmaster.
+- Der kleine Bolzen wurde nach dem automatischen Zuschnitt pixelgenau
+  nachbearbeitet, damit Metallspitze, Energiering, Schaft und Cyanimpuls auch
+  im Raster von 16 × 8 px erkennbar bleiben.
+- Drohnenmunition verwendet einen dunklen mechanischen Kern mit rotem
+  Gefahrenring. Vier Frames bilden einen klaren pulsierenden Flugzyklus.
+- Die erste Bosszeile enthält eine wachsende bodennahe Schockwelle, die zweite
+  Zeile einen frei fliegenden Energiebolzen.
+- Alle 16 Runtime-Zellen sind belegt, besitzen einen Alpha-Kanal und wurden
+  auf unerwünschte Chroma-Key-Randpixel geprüft.
+- Im Repository und im Spiel werden für diesen Arbeitsschritt keine
+  Python-Dateien oder Python-Abhängigkeiten verwendet.
+
+## Collectible-, Upgrade- und Effekt-Runtime-Spritesheets
+
+| Asset | Runtime-Datei | Raster | Belegung |
+| --- | --- | --- | --- |
+| Collectibles | `img/sprites/items/collectables.png` | 5 × 3 Zellen à 32 × 32 px, 160 × 96 px | 15 belegt |
+| Upgrade-Symbole | `img/sprites/items/upgrade-icons.png` | 5 × 1 Zellen à 32 × 32 px, 160 × 32 px | 5 belegt |
+| Gameplay-Effekte | `img/sprites/effects/gameplay-effects.png` | 6 × 4 Zellen à 32 × 32 px, 192 × 128 px | 23 belegt, 1 transparent |
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `collectables-production-layout-v1.png`, `upgrade-icons-production-layout-v1.png`, `gameplay-effects-production-layout-v1.png` |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Die Collectibles stehen in Manifest-Reihenfolge: vier Zahnräder, vier
+  Energiezellen, eine Bolzenmunition, vier Bolzenwerfer-Funde und zwei
+  zusammengehörige Abzeichenhälften.
+- Die fünf Upgrade-Symbole zeigen maximale Energie, Schraubenschaden,
+  Munitionskapazität, Rückstoßschutz und Sprungkontrolle. Jedes Symbol besitzt
+  eine eigenständige Silhouette.
+- Die Gameplay-Effekte enthalten vier Sprungstaub-, vier Trefferfunken-, drei
+  Mündungsimpuls-, sechs Collectible-Glanz- und sechs Explosionsframes.
+- Die letzte Zelle des Effektblatts ist vollständig transparent und liegt
+  außerhalb aller Animationen.
+- Alle belegten Zellen wurden auf Alpha-Kanal, Chroma-Key-Reste und
+  Zellbelegung geprüft.
+- Im Repository und im Spiel werden für diesen Arbeitsschritt keine
+  Python-Dateien oder Python-Abhängigkeiten verwendet.
+
+## Schrottplatz-Runtime-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/scrapyard-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/scrapyard-tiles.png` |
+| Raster | 8 × 4 Zellen à 32 × 32 px, 256 × 128 px |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Alle 32 Zellen sind belegt und verwenden die gemeinsame, für alle Zonen
+  verbindliche Tile-Reihenfolge.
+- Zeile eins enthält Plattformenden, Mittelstücke, dünne Einwegplattformen und
+  eine kleine Einzelplattform.
+- Zeile zwei enthält massive Blöcke, vertikale Wände sowie Außen- und
+  Innenecken.
+- Zeile drei enthält Unterseiten, eine Hängestütze und bewegliche Plattformen
+  mit eindeutig cyanfarbener Mechanik.
+- Zeile vier enthält drei Zerfallsstufen, Trümmer, Säule, Säulenkopf, sichere
+  Laufkante und Füllblock.
+- Rostorange, dunkler Stahl, Verschleiß und kleine Cyananzeigen verbinden das
+  Tileset mit dem freigegebenen Schrottplatz-Hintergrund.
+- Die Runtime-PNG besitzt einen geprüften Alpha-Kanal und keine
+  Chroma-Key-Randpixel.
+
+## Fabrik-Runtime-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/factory-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/factory-tiles.png` |
+| Raster | 8 × 4 Zellen à 32 × 32 px, 256 × 128 px |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs und ihre Anschlusspositionen entsprechen exakt der
+  gemeinsamen Reihenfolge des Schrottplatz-Tilesets.
+- Dunkler Industriestahl, regelmäßige Paneele, Verstrebungen, Förderdetails
+  und dezente Warnstreifen unterscheiden die Fabrik vom Schrottplatz.
+- Bewegliche Plattformen verwenden dieselbe klar erkennbare Cyanmechanik.
+- Drei Beschädigungsstufen und Metallfragmente bilden die zerfallende
+  Fabrikplattform.
+- Sichere Laufkanten bleiben heller als Unterseiten und Wände.
+- Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
+  geprüft.

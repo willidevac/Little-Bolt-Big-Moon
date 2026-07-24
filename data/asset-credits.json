@@ -278,6 +278,216 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "scrap-crawler-production-layout-v1",
+      "file": "img/concepts/approvals/scrap-crawler-production-layout-v1.png",
+      "role": "approved-scrap-crawler-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved Scrap Crawler animation and enemy masters as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the exact 7x2 packing reference with 13 filled cells and one empty cell.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "scrap-crawler-runtime-spritesheet-v1",
+      "file": "img/sprites/enemies/scrap-crawler.png",
+      "role": "runtime-scrap-crawler-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated Scrap Crawler production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing into 48x32 cells and alpha validation were performed with JavaScript; final size 336x64 with 13 occupied and one transparent cell.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "drone-guard-production-layout-v1",
+      "file": "img/concepts/approvals/drone-guard-production-layout-v1.png",
+      "role": "approved-drone-guard-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved Drone Guard animation and enemy masters as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the exact 5x4 packing reference with 20 filled cells.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "drone-guard-runtime-spritesheet-v1",
+      "file": "img/sprites/enemies/drone-guard.png",
+      "role": "runtime-drone-guard-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated Drone Guard production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing into 48x32 cells and alpha validation were performed with JavaScript; final size 240x128 with 20 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-warden-production-layout-v1",
+      "file": "img/concepts/approvals/moon-warden-production-layout-v1.png",
+      "role": "approved-moon-warden-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved Moon Warden animation, enemy and Moon-background masters as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the exact 7x4 packing reference with 26 filled cells and two empty cells.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-warden-runtime-spritesheet-v1",
+      "file": "img/sprites/enemies/moon-warden.png",
+      "role": "runtime-moon-warden-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated Moon Warden production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing into 96x96 cells and alpha validation were performed with JavaScript; final size 672x384 with 26 occupied and two transparent cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "weapons-projectiles-production-layout-v1",
+      "file": "img/concepts/approvals/weapons-projectiles-production-layout-v1.png",
+      "role": "approved-weapons-and-projectiles-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved weapon, enemy and gameplay-VFX masters as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the production reference for two player weapons, two bolt frames, four drone-projectile frames and eight boss-projectile frames.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "player-weapons-runtime-v1",
+      "file": "img/sprites/weapons/player-weapons.png",
+      "role": "runtime-player-weapons-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x32 with two occupied 32x32 cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "bolt-projectile-runtime-v1",
+      "file": "img/sprites/weapons/bolt-projectile.png",
+      "role": "runtime-player-projectile-spritesheet",
+      "status": "present",
+      "origin": "Pixel-precise JavaScript adaptation of the approved bolt design and OpenAI-generated weapons production layout",
+      "created": "2026-07-24",
+      "modifications": "The generated bolt was manually refined in JavaScript for readability at 16x8 pixels; final size 32x8 with two occupied cells and validated alpha.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "drone-projectile-runtime-v1",
+      "file": "img/sprites/weapons/drone-projectile.png",
+      "role": "runtime-drone-projectile-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x16 with four occupied 16x16 cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "boss-projectiles-runtime-v1",
+      "file": "img/sprites/weapons/boss-projectiles.png",
+      "role": "runtime-boss-projectiles-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
+      "created": "2026-07-24",
+      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 128x32 with four shockwave and four energy-bolt cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "collectables-production-layout-v1",
+      "file": "img/concepts/approvals/collectables-production-layout-v1.png",
+      "role": "approved-collectables-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved collectible and weapon masters, arranged with JavaScript",
+      "created": "2026-07-24",
+      "modifications": "Fifteen generated collectible poses were chroma-keyed and arranged into the exact 5x3 manifest order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "collectables-runtime-v1",
+      "file": "img/sprites/items/collectables.png",
+      "role": "runtime-collectables-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated collectables production material",
+      "created": "2026-07-24",
+      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x96 with fifteen occupied 32x32 cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "upgrade-icons-production-layout-v1",
+      "file": "img/concepts/approvals/upgrade-icons-production-layout-v1.png",
+      "role": "approved-upgrade-icons-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved HUD and collectible masters, arranged with JavaScript",
+      "created": "2026-07-24",
+      "modifications": "Five generated upgrade icons were chroma-keyed, isolated and arranged in manifest order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "upgrade-icons-runtime-v1",
+      "file": "img/sprites/items/upgrade-icons.png",
+      "role": "runtime-upgrade-icons-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated upgrade icon production material",
+      "created": "2026-07-24",
+      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x32 with five occupied 32x32 cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "gameplay-effects-production-layout-v1",
+      "file": "img/concepts/approvals/gameplay-effects-production-layout-v1.png",
+      "role": "approved-gameplay-effects-runtime-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved gameplay-VFX and weapon masters, selected and arranged with JavaScript",
+      "created": "2026-07-24",
+      "modifications": "Twenty-three required effects were selected from generated variants and arranged in the exact 6x4 manifest order with the final cell empty.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "gameplay-effects-runtime-v1",
+      "file": "img/sprites/effects/gameplay-effects.png",
+      "role": "runtime-gameplay-effects-spritesheet",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated gameplay-effects production material",
+      "created": "2026-07-24",
+      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 192x128 with 23 occupied cells and one transparent reserve cell.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-tiles-production-layout-v1",
+      "file": "img/concepts/approvals/scrapyard-tiles-production-layout-v1.png",
+      "role": "approved-scrapyard-runtime-tiles-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved tiles/hazards and scrapyard-background masters as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the exact 8x4 production layout for the shared 32-tile semantic order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "scrapyard-tiles-runtime-v1",
+      "file": "img/tilesets/scrapyard-tiles.png",
+      "role": "runtime-scrapyard-tileset",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard tiles production layout",
+      "created": "2026-07-24",
+      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-tiles-production-layout-v1",
+      "file": "img/concepts/approvals/factory-tiles-production-layout-v1.png",
+      "role": "approved-factory-runtime-tiles-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved scrapyard tile layout, tiles/hazards master and factory-background master as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the exact factory-material variant of the shared 8x4, 32-tile semantic order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "factory-tiles-runtime-v1",
+      "file": "img/tilesets/factory-tiles.png",
+      "role": "runtime-factory-tileset",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory tiles production layout",
+      "created": "2026-07-24",
+      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",
