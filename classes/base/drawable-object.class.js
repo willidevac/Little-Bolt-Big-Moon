@@ -53,10 +53,22 @@ export class DrawableObject {
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
-    if (this.width <= 0 || this.height <= 0) return;
+    this.drawCurrentFrame(context, this.x, this.y, this.width, this.height);
+  }
+
+  /**
+   * Zeichnet den aktuellen Frame in einen frei gewählten Zielbereich.
+   * @param {CanvasRenderingContext2D} context
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   */
+  drawCurrentFrame(context, x, y, width, height) {
+    if (width <= 0 || height <= 0) return;
     context.save();
-    if (this.imageState === "ready") this.#drawSpriteFrame(context);
-    else this.#drawPlaceholder(context);
+    if (this.imageState === "ready") this.#drawSpriteFrame(context, x, y, width, height);
+    else this.#drawPlaceholder(context, x, y, width, height);
     context.restore();
   }
 
@@ -82,9 +94,9 @@ export class DrawableObject {
     return false;
   }
 
-  #drawSpriteFrame(context) {
+  #drawSpriteFrame(context, x, y, width, height) {
     const sourceFrame = this.#getSourceFrame();
-    const targetFrame = [this.x, this.y, this.width, this.height];
+    const targetFrame = [x, y, width, height];
     context.drawImage(this.image, ...sourceFrame, ...targetFrame);
   }
 
@@ -96,13 +108,13 @@ export class DrawableObject {
     return [sourceX, sourceY, frameWidth, frameHeight];
   }
 
-  #drawPlaceholder(context) {
+  #drawPlaceholder(context, x, y, width, height) {
     const fillColor = PLACEHOLDER_COLORS[this.imageState] ?? PLACEHOLDER_COLORS.loading;
     context.fillStyle = fillColor;
-    context.fillRect(this.x, this.y, this.width, this.height);
+    context.fillRect(x, y, width, height);
     context.strokeStyle = PLACEHOLDER_COLORS.border;
     context.lineWidth = 2;
-    context.strokeRect(this.x, this.y, this.width, this.height);
+    context.strokeRect(x, y, width, height);
   }
 
   #hasExpectedFrames(image) {

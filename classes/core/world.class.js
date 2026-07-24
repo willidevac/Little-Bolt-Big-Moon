@@ -48,11 +48,13 @@ export class World {
    * @param {CanvasRenderingContext2D} context
    * @param {Readonly<object>} config
    * @param {Readonly<object>|null} [input=null]
+   * @param {Readonly<object>|null} [level=null]
    */
-  constructor(context, config, input = null) {
+  constructor(context, config, input = null, level = null) {
     this.context = context;
     this.config = config;
     this.input = input;
+    this.level = level;
     this.isInitialized = false;
     this.#entityGroups = this.#createGroupMap(Array);
     this.#pendingAdditions = this.#createGroupMap(Set);
@@ -68,6 +70,7 @@ export class World {
    */
   initialize() {
     if (this.isInitialized) return false;
+    this.#addLevelPlatforms();
     this.#ensureFallbackScene();
     this.isInitialized = true;
     return true;
@@ -171,9 +174,17 @@ export class World {
     if (platforms.length === 0) this.#addFallbackPlatform();
   }
 
+  #addLevelPlatforms() {
+    if (!Array.isArray(this.level?.platforms)) return;
+    this.level.platforms.forEach((platform) => {
+      this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
+    });
+  }
+
   #addFallbackCharacter() {
     this.character = new Character();
-    Object.assign(this.character, FALLBACK_CHARACTER_POSITION);
+    const startPosition = this.level?.playerStart ?? FALLBACK_CHARACTER_POSITION;
+    Object.assign(this.character, startPosition);
     this.addEntity(WORLD_ENTITY_GROUPS.CHARACTERS, this.character);
   }
 

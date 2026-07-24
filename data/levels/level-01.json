@@ -2,9 +2,48 @@
   "id": "scrapyard-to-moon",
   "width": 1280,
   "height": 8000,
+  "playerStart": {
+    "x": 160,
+    "y": 240
+  },
   "sections": [],
-  "platforms": [],
+  "platforms": [
+    {
+      "id": "scrapyard-start",
+      "x": 64,
+      "y": 624,
+      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 3]
+    },
+    {
+      "id": "scrapyard-step-right",
+      "x": 768,
+      "y": 512,
+      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 2, 3]
+    },
+    {
+      "id": "scrapyard-step-middle",
+      "x": 448,
+      "y": 400,
+      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 2, 3]
+    },
+    {
+      "id": "scrapyard-step-high",
+      "x": 832,
+      "y": 288,
+      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 3]
+    },
+    {
+      "id": "scrapyard-step-top",
+      "x": 576,
+      "y": 176,
+      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 3]
+    }
+  ],
   "combatZones": [],
   "collectables": []
 }
-

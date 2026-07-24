@@ -3,5 +3,68 @@ import { DrawableObject } from "../base/drawable-object.class.js";
 /**
  * Kollisionsfläche für statische und bewegliche Plattformen.
  */
-export class Platform extends DrawableObject {}
+export class Platform extends DrawableObject {
+  /**
+   * @param {Readonly<object>} [platformData]
+   * @param {Readonly<object>} [tilesetConfig]
+   */
+  constructor(platformData, tilesetConfig) {
+    super();
+    if (platformData === undefined && tilesetConfig === undefined) return;
+    this.#validatePlatformData(platformData, tilesetConfig);
+    this.id = platformData.id;
+    this.x = platformData.x;
+    this.y = platformData.y;
+    this.tileSize = tilesetConfig.frameWidth * tilesetConfig.renderScale;
+    this.visualOffsetY = tilesetConfig.surfaceOffset * tilesetConfig.renderScale;
+    this.tileFrames = Object.freeze([...platformData.tileFrames]);
+    this.width = this.tileFrames.length * this.tileSize;
+    this.height = this.tileSize;
+    this.loadSprite(tilesetConfig);
+  }
 
+  /**
+   * Zeichnet jedes Plattformfeld ohne das Spritesheet zu verzerren.
+   * @param {CanvasRenderingContext2D} context
+   */
+  draw(context) {
+    if (!this.tileFrames) return super.draw(context);
+    this.tileFrames.forEach((frameIndex, columnIndex) => {
+      this.setFrameIndex(frameIndex);
+      const tileX = this.x + columnIndex * this.tileSize;
+      const tileY = this.y - this.visualOffsetY;
+      this.drawCurrentFrame(context, tileX, tileY, this.tileSize, this.tileSize);
+    });
+  }
+
+  #validatePlatformData(data, tilesetConfig) {
+    if (typeof data?.id !== "string" || data.id.length === 0) {
+      throw new TypeError("Eine Plattform benötigt eine ID.");
+    }
+    if (!Number.isFinite(data.x) || !Number.isFinite(data.y)) {
+      throw new TypeError(`Plattform ${data.id} benötigt eine gültige Position.`);
+    }
+    this.#validateTileFrames(data, tilesetConfig);
+  }
+
+  #validateTileFrames(data, tilesetConfig) {
+    if (!Array.isArray(data.tileFrames) || data.tileFrames.length === 0) {
+      throw new TypeError(`Plattform ${data.id} benötigt mindestens ein Feld.`);
+    }
+    const frameCount = tilesetConfig?.frameCount ?? 0;
+    const hasInvalidFrame = data.tileFrames.some((frame) => {
+      return !Number.isInteger(frame) || frame < 0 || frame >= frameCount;
+    });
+    if (hasInvalidFrame) throw new RangeError(`Plattform ${data.id} enthält ungültige Felder.`);
+    this.#validateTilesetConfig(tilesetConfig);
+  }
+
+  #validateTilesetConfig(tilesetConfig) {
+    if (!Number.isInteger(tilesetConfig?.renderScale) || tilesetConfig.renderScale <= 0) {
+      throw new TypeError("Die Plattform-Skalierung ist ungültig.");
+    }
+    if (!Number.isInteger(tilesetConfig.surfaceOffset) || tilesetConfig.surfaceOffset < 0) {
+      throw new TypeError("Der Plattform-Oberflächenabstand ist ungültig.");
+    }
+  }
+}

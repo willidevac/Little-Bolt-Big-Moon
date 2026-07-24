@@ -1,5 +1,6 @@
 import { World } from "./world.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
+import { createLevelOne } from "../../js/levels/level-01.js";
 
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
@@ -22,7 +23,7 @@ export class Game {
     this.boundGameLoop = this.gameLoop.bind(this);
     this.validateContext();
     this.keyboard = new Keyboard(inputTarget);
-    this.world = new World(this.context, this.config, this.keyboard);
+    this.world = new World(this.context, this.config, this.keyboard, createLevelOne());
   }
 
   /**
