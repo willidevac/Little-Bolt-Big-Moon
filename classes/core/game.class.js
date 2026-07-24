@@ -1,4 +1,5 @@
 import { World } from "./world.class.js";
+import { Keyboard } from "../input/keyboard.class.js";
 
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
@@ -7,8 +8,9 @@ export class Game {
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {Readonly<object>} config
+   * @param {EventTarget} [inputTarget=globalThis]
    */
-  constructor(canvas, config) {
+  constructor(canvas, config, inputTarget = globalThis) {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
     this.config = config;
@@ -20,6 +22,7 @@ export class Game {
     this.boundGameLoop = this.gameLoop.bind(this);
     this.validateContext();
     this.world = new World(this.context, this.config);
+    this.keyboard = new Keyboard(inputTarget);
   }
 
   /**
@@ -27,6 +30,7 @@ export class Game {
    */
   initialize() {
     if (this.isInitialized) return;
+    this.keyboard.bind();
     this.world.initialize();
     this.clearCanvas();
     this.canvas.dataset.gameState = "initialized";
