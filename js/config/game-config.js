@@ -27,6 +27,8 @@ const CHARACTER_CONFIG = Object.freeze({
   jumpReleaseSpeedPixelsPerSecond: 320,
   coyoteTimeSeconds: 0.1,
   jumpBufferSeconds: 0.12,
+  movementStateThresholdPixelsPerSecond: 1,
+  sleepAfterInactivitySeconds: 15,
 });
 
 const DEBUG_CONFIG = Object.freeze({
