@@ -2,9 +2,105 @@
  * Übersetzt Weltkoordinaten in die vertikale Canvas-Ansicht.
  */
 export class Camera {
-  constructor() {
+  /**
+   * @param {Readonly<object>} config
+   */
+  constructor(config) {
+    this.#validateConfig(config);
     this.x = 0;
     this.y = 0;
+    this.viewportHeight = config.canvas.height;
+    this.worldHeight = config.world.height;
+    this.deadZoneTop = config.camera.deadZoneTopPixels;
+    this.deadZoneBottom = config.camera.deadZoneBottomPixels;
+    this.upwardFollowSpeed = config.camera.upwardFollowSpeedPixelsPerSecond;
+    this.downwardFollowSpeed = config.camera.downwardFollowSpeedPixelsPerSecond;
+  }
+
+  /**
+   * Setzt die Ansicht an den Start und zeigt ein gültiges Ziel sofort.
+   * @param {{y:number, height:number}|null} [target=null]
+   */
+  reset(target = null) {
+    this.x = 0;
+    this.y = 0;
+    if (this.#isValidTarget(target)) {
+      this.y = this.#clampY(this.#getDesiredY(target));
+    }
+  }
+
+  /**
+   * Folgt einem Ziel innerhalb der vertikalen Deadzone zeitbasiert.
+   * @param {{y:number, height:number}} target
+   * @param {number} deltaTimeSeconds
+   * @returns {boolean} Ob die Kamera bewegt wurde.
+   */
+  update(target, deltaTimeSeconds) {
+    if (!this.#isValidTarget(target) || !this.#isValidDeltaTime(deltaTimeSeconds)) {
+      return false;
+    }
+    const desiredY = this.#clampY(this.#getDesiredY(target));
+    const speed = this.#getFollowSpeed(desiredY);
+    const nextY = this.#moveTowards(this.y, desiredY, speed * deltaTimeSeconds);
+    if (nextY === this.y) return false;
+    this.y = nextY;
+    return true;
+  }
+
+  #getDesiredY(target) {
+    const targetCenterY = target.y + target.height / 2;
+    const screenY = targetCenterY - this.y;
+    if (screenY < this.deadZoneTop) return targetCenterY - this.deadZoneTop;
+    if (screenY > this.deadZoneBottom) return targetCenterY - this.deadZoneBottom;
+    return this.y;
+  }
+
+  #getFollowSpeed(desiredY) {
+    return desiredY < this.y ? this.upwardFollowSpeed : this.downwardFollowSpeed;
+  }
+
+  #moveTowards(current, target, maximumDistance) {
+    if (current < target) return Math.min(current + maximumDistance, target);
+    return Math.max(current - maximumDistance, target);
+  }
+
+  #clampY(y) {
+    const maximumY = Math.max(0, this.worldHeight - this.viewportHeight);
+    return Math.min(Math.max(0, y), maximumY);
+  }
+
+  #isValidTarget(target) {
+    return (
+      Number.isFinite(target?.y) &&
+      Number.isFinite(target?.height) &&
+      target.height >= 0
+    );
+  }
+
+  #isValidDeltaTime(deltaTimeSeconds) {
+    return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
+  }
+
+  #validateConfig(config) {
+    const hasValidWorld = Number.isFinite(config?.world?.height) &&
+      Number.isFinite(config?.canvas?.height) &&
+      config.world.height > 0 &&
+      config.canvas.height > 0;
+    if (!hasValidWorld || !this.#hasValidCameraConfig(config.camera, config.canvas.height)) {
+      throw new TypeError("Die Kamera-Konfiguration ist ungültig.");
+    }
+  }
+
+  #hasValidCameraConfig(camera, viewportHeight) {
+    const hasValidDeadZone = Number.isFinite(camera?.deadZoneTopPixels) &&
+      Number.isFinite(camera?.deadZoneBottomPixels) &&
+      camera.deadZoneTopPixels >= 0 &&
+      camera.deadZoneTopPixels < camera.deadZoneBottomPixels &&
+      camera.deadZoneBottomPixels <= viewportHeight;
+    const hasValidSpeeds = Number.isFinite(camera?.upwardFollowSpeedPixelsPerSecond) &&
+      Number.isFinite(camera?.downwardFollowSpeedPixelsPerSecond) &&
+      camera.upwardFollowSpeedPixelsPerSecond > 0 &&
+      camera.downwardFollowSpeedPixelsPerSecond > 0;
+    return hasValidDeadZone && hasValidSpeeds;
   }
 }
-

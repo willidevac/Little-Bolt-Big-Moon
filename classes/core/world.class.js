@@ -1,6 +1,7 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
+import { Camera } from "./camera.class.js";
 
 const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
 const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
@@ -62,6 +63,7 @@ export class World {
     this.#isProcessing = false;
     this.#collisionManager = new CollisionManager(config.physics);
     this.character = null;
+    this.camera = new Camera(config);
   }
 
   /**
@@ -72,6 +74,7 @@ export class World {
     if (this.isInitialized) return false;
     this.#addLevelPlatforms();
     this.#ensureFallbackScene();
+    this.camera.reset(this.character);
     this.isInitialized = true;
     return true;
   }
@@ -133,6 +136,7 @@ export class World {
     });
     this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
+    this.camera.update(this.character, deltaTimeSeconds);
   }
 
   /**
@@ -140,6 +144,16 @@ export class World {
    */
   draw() {
     if (!this.isInitialized) return;
+    this.context.save();
+    this.context.translate(-this.camera.x, -this.camera.y);
+    try {
+      this.#drawEntities();
+    } finally {
+      this.context.restore();
+    }
+  }
+
+  #drawEntities() {
     this.#processEntities(DRAW_ORDER, (entity) => {
       if (typeof entity.draw === "function") entity.draw(this.context, this);
     });
@@ -159,6 +173,7 @@ export class World {
    */
   destroy() {
     this.clear();
+    this.camera.reset();
     this.isInitialized = false;
   }
 

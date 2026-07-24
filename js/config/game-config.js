@@ -31,6 +31,13 @@ const CHARACTER_CONFIG = Object.freeze({
   sleepAfterInactivitySeconds: 15,
 });
 
+const CAMERA_CONFIG = Object.freeze({
+  deadZoneTopPixels: 216,
+  deadZoneBottomPixels: 504,
+  upwardFollowSpeedPixelsPerSecond: 900,
+  downwardFollowSpeedPixelsPerSecond: 1400,
+});
+
 const DEBUG_CONFIG = Object.freeze({
   enabled: false,
   showCollisionBoxes: false,
@@ -44,5 +51,6 @@ export const GAME_CONFIG = Object.freeze({
   timing: TIMING_CONFIG,
   physics: PHYSICS_CONFIG,
   character: CHARACTER_CONFIG,
+  camera: CAMERA_CONFIG,
   debug: DEBUG_CONFIG,
 });
