@@ -488,6 +488,46 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "launch-tower-tiles-production-layout-v1",
+      "file": "img/concepts/approvals/launch-tower-tiles-production-layout-v1.png",
+      "role": "approved-launch-tower-runtime-tiles-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved factory tile layout, tiles/hazards master and launch-tower-background master as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the launch-tower material variant of the shared 8x4, 32-tile semantic order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "launch-tower-tiles-runtime-v1",
+      "file": "img/tilesets/launch-tower-tiles.png",
+      "role": "runtime-launch-tower-tileset",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower tiles production layout",
+      "created": "2026-07-24",
+      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-tiles-production-layout-v1",
+      "file": "img/concepts/approvals/space-station-tiles-production-layout-v1.png",
+      "role": "approved-space-station-runtime-tiles-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved launch-tower tile layout, tiles/hazards master and space-station-background master as references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the space-station material variant of the shared 8x4, 32-tile semantic order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "space-station-tiles-runtime-v1",
+      "file": "img/tilesets/space-station-tiles.png",
+      "role": "runtime-space-station-tileset",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station tiles production layout",
+      "created": "2026-07-24",
+      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",

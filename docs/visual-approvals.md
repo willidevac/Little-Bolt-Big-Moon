@@ -696,3 +696,51 @@ Verbindliche Merkmale:
 - Sichere Laufkanten bleiben heller als Unterseiten und Wände.
 - Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
   geprüft.
+
+## Startturm-Runtime-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/launch-tower-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/launch-tower-tiles.png` |
+| Raster | 8 × 4 Zellen à 32 × 32 px, 256 × 128 px |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs und Anschlusspositionen entsprechen der gemeinsamen
+  Zonenreihenfolge.
+- Cremefarbene Außenpaneele, dunkle Turmstruktur, orange Warnverstrebungen
+  und Cyan-Lifttechnik unterscheiden den Startturm von der Fabrik.
+- Bewegliche Plattformen und Zerfallsstufen bleiben anhand derselben
+  Silhouetten sofort erkennbar.
+- Die hellen sicheren Laufkanten funktionieren sowohl vor Wolken als auch vor
+  dem dunkleren oberen Atmosphärenhintergrund.
+- Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
+  geprüft.
+
+## Raumstations-Runtime-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 24.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/space-station-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/space-station-tiles.png` |
+| Raster | 8 × 4 Zellen à 32 × 32 px, 256 × 128 px |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+Verbindliche Merkmale:
+
+- Alle Tile-IDs und Anschlusspositionen entsprechen weiterhin der gemeinsamen
+  32-Tile-Reihenfolge.
+- Silber-blaue Hüllenplatten, Luftschleusennähte, kalte Schatten und wenige
+  rote Statuslichter kennzeichnen die alte Raumstation.
+- Bewegliche Plattformen verwenden eine stärkere cyanfarbene
+  Antigravitationsmechanik.
+- Die Zerfallsstufen zeigen zunehmend beschädigte Stationsplatten und frei
+  schwebende Metallfragmente.
+- Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
+  geprüft.
