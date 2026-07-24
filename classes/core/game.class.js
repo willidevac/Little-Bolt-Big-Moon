@@ -1,3 +1,5 @@
+import { World } from "./world.class.js";
+
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
  */
@@ -17,6 +19,7 @@ export class Game {
     this.previousTimestamp = null;
     this.boundGameLoop = this.gameLoop.bind(this);
     this.validateContext();
+    this.world = new World(this.context, this.config);
   }
 
   /**
@@ -24,6 +27,7 @@ export class Game {
    */
   initialize() {
     if (this.isInitialized) return;
+    this.world.initialize();
     this.clearCanvas();
     this.canvas.dataset.gameState = "initialized";
     this.isInitialized = true;
@@ -98,16 +102,19 @@ export class Game {
   }
 
   /**
-   * Aktualisiert zukünftig alle Spielsysteme zeitbasiert.
-   * @param {number} _deltaTimeSeconds
+   * Aktualisiert alle Spielsysteme zeitbasiert.
+   * @param {number} deltaTimeSeconds
    */
-  update(_deltaTimeSeconds) {}
+  update(deltaTimeSeconds) {
+    this.world.update(deltaTimeSeconds);
+  }
 
   /**
    * Zeichnet den aktuellen Spielzustand.
    */
   draw() {
     this.clearCanvas();
+    this.world.draw();
   }
 
   /**
