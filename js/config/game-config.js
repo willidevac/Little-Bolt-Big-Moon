@@ -16,6 +16,7 @@ const TIMING_CONFIG = Object.freeze({
 const PHYSICS_CONFIG = Object.freeze({
   gravityPixelsPerSecondSquared: 2200,
   maximumFallSpeedPixelsPerSecond: 1200,
+  platformLandingTolerancePixels: 1,
 });
 
 const DEBUG_CONFIG = Object.freeze({

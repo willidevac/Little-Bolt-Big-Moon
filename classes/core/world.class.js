@@ -1,4 +1,14 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
+import { Character } from "../entities/character.class.js";
+import { Platform } from "../environment/platform.class.js";
+
+const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
+const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
+  x: 96,
+  y: 560,
+  width: 512,
+  height: 32,
+});
 
 export const WORLD_ENTITY_GROUPS = Object.freeze({
   CHARACTERS: "characters",
@@ -46,7 +56,8 @@ export class World {
     this.#pendingAdditions = this.#createGroupMap(Set);
     this.#pendingRemovals = this.#createGroupMap(Set);
     this.#isProcessing = false;
-    this.#collisionManager = new CollisionManager();
+    this.#collisionManager = new CollisionManager(config.physics);
+    this.character = null;
   }
 
   /**
@@ -55,6 +66,7 @@ export class World {
    */
   initialize() {
     if (this.isInitialized) return false;
+    this.#ensureFallbackScene();
     this.isInitialized = true;
     return true;
   }
@@ -147,6 +159,26 @@ export class World {
 
   #createGroupMap(CollectionType) {
     return new Map(ENTITY_GROUP_NAMES.map((name) => [name, new CollectionType()]));
+  }
+
+  #ensureFallbackScene() {
+    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
+    if (characters.length === 0) this.#addFallbackCharacter();
+    else this.character = characters[0];
+    if (platforms.length === 0) this.#addFallbackPlatform();
+  }
+
+  #addFallbackCharacter() {
+    this.character = new Character();
+    Object.assign(this.character, FALLBACK_CHARACTER_POSITION);
+    this.addEntity(WORLD_ENTITY_GROUPS.CHARACTERS, this.character);
+  }
+
+  #addFallbackPlatform() {
+    const platform = new Platform();
+    Object.assign(platform, FALLBACK_PLATFORM_BOUNDS);
+    this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
 
   #resolvePlatformLandings(deltaTimeSeconds) {

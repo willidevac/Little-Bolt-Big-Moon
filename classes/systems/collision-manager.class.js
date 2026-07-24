@@ -3,6 +3,13 @@
  */
 export class CollisionManager {
   /**
+   * @param {Readonly<object>} physicsConfig
+   */
+  constructor(physicsConfig) {
+    this.landingTolerancePixels = physicsConfig.platformLandingTolerancePixels;
+  }
+
+  /**
    * Prüft, ob sich zwei rechteckige Flächen überschneiden.
    * @param {import("../base/drawable-object.class.js").DrawableObject} firstObject
    * @param {import("../base/drawable-object.class.js").DrawableObject} secondObject
@@ -54,7 +61,8 @@ export class CollisionManager {
     if (!this.#hasHorizontalOverlap(movableObject, platform)) return false;
     const currentBottom = movableObject.y + movableObject.height;
     const previousBottom = currentBottom - movableObject.velocityY * deltaTimeSeconds;
-    return previousBottom <= platform.y && currentBottom >= platform.y;
+    const toleratedPlatformTop = platform.y + this.landingTolerancePixels;
+    return previousBottom <= toleratedPlatformTop && currentBottom >= platform.y;
   }
 
   #hasHorizontalOverlap(firstObject, secondObject) {

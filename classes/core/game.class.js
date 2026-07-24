@@ -32,6 +32,7 @@ export class Game {
     if (this.isInitialized) return;
     this.keyboard.bind();
     this.world.initialize();
+    this.configureRendering();
     this.clearCanvas();
     this.canvas.dataset.gameState = "initialized";
     this.isInitialized = true;
@@ -155,6 +156,13 @@ export class Game {
    */
   clearCanvas() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * Bewahrt beim Skalieren die klaren Kanten der Pixelgrafiken.
+   */
+  configureRendering() {
+    this.context.imageSmoothingEnabled = false;
   }
 
   /**
