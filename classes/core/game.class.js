@@ -8,6 +8,7 @@ import { createLevelOne } from "../../js/levels/level-01.js";
  */
 export class Game {
   #stateMachine;
+  #stateListeners;
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -25,6 +26,7 @@ export class Game {
     this.boundGameLoop = this.gameLoop.bind(this);
     this.validateContext();
     this.#stateMachine = new GameStateMachine();
+    this.#stateListeners = new Set();
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
   }
@@ -54,6 +56,19 @@ export class Game {
   }
 
   /**
+   * Informiert einen Beobachter über spätere Zustandswechsel.
+   * @param {(state: string) => void} listener
+   * @returns {() => void} Funktion zum Abmelden.
+   */
+  onStateChange(listener) {
+    if (typeof listener !== "function") {
+      throw new TypeError("Der Zustandsbeobachter muss eine Funktion sein.");
+    }
+    this.#stateListeners.add(listener);
+    return () => this.#stateListeners.delete(listener);
+  }
+
+  /**
    * Initialisiert Spielfläche und Hauptloop höchstens einmal.
    */
   initialize() {
@@ -65,7 +80,6 @@ export class Game {
     this.canvas.dataset.gameState = this.state;
     this.isInitialized = true;
     this.start();
-    this.play();
   }
 
   /**
@@ -274,7 +288,15 @@ export class Game {
   #setGameState(nextState) {
     const changed = this.#stateMachine.transitionTo(nextState);
     this.canvas.dataset.gameState = this.state;
+    if (changed) this.#notifyStateChange();
     return changed;
+  }
+
+  /**
+   * Meldet den aktuellen Zustand an alle registrierten Beobachter.
+   */
+  #notifyStateChange() {
+    this.#stateListeners.forEach((listener) => listener(this.state));
   }
 
   /**

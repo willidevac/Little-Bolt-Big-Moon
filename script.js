@@ -1,5 +1,6 @@
 import { Game } from "./classes/core/game.class.js";
 import { GAME_CONFIG } from "./js/config/game-config.js";
+import { initializeScreens } from "./js/ui/screens.js";
 
 let gameInstance = null;
 
@@ -43,4 +44,6 @@ export function getGame() {
   return gameInstance;
 }
 
-globalThis.littleBoltGame = initializeGame();
+const game = initializeGame();
+initializeScreens(game);
+globalThis.littleBoltGame = game;

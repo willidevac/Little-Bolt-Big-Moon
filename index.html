@@ -21,7 +21,7 @@
       </canvas>
 
       <section
-        class="start-screen"
+        class="game-screen start-screen"
         aria-labelledby="game-title"
         data-game-screen="home"
       >
@@ -70,6 +70,88 @@
         >
           Ton: an
         </button>
+      </section>
+
+      <section
+        class="game-screen overlay-screen"
+        aria-labelledby="pause-title"
+        data-game-screen="paused"
+        hidden
+      >
+        <div class="screen-panel screen-panel--pause">
+          <p class="screen-panel__eyebrow">Byte wartet auf dich</p>
+          <h2 id="pause-title" class="screen-panel__title">Pause</h2>
+
+          <nav class="start-menu" aria-label="Pausenmenü">
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-ui-action="resume"
+            >
+              Weiterspielen
+            </button>
+            <button class="menu-button" type="button" data-ui-action="controls">
+              Steuerung
+            </button>
+            <button class="menu-button" type="button" data-ui-action="home">
+              Zum Hauptmenü
+            </button>
+          </nav>
+
+          <p class="screen-panel__hint">Mit Escape geht es ebenfalls weiter.</p>
+        </div>
+      </section>
+
+      <section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="controls-title"
+        data-game-dialog="controls"
+        hidden
+      >
+        <div class="screen-panel screen-panel--controls">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Steuerung schließen"
+            data-ui-action="close-controls"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow">Deine Aufgabe</p>
+          <h2 id="controls-title" class="screen-panel__title">
+            Hilfe &amp; Steuerung
+          </h2>
+          <p class="screen-panel__copy">
+            Klettere mit Byte vom Schrottplatz bis zum Mond. Ein Sturz kostet
+            dich Höhe, aber nicht sofort den ganzen Lauf.
+          </p>
+
+          <dl class="controls-list">
+            <div class="controls-list__row">
+              <dt>Laufen</dt>
+              <dd><kbd>A</kbd> <kbd>D</kbd> oder Pfeiltasten</dd>
+            </div>
+            <div class="controls-list__row">
+              <dt>Springen</dt>
+              <dd><kbd>W</kbd>, <kbd>↑</kbd> oder Leertaste</dd>
+            </div>
+            <div class="controls-list__row">
+              <dt>Angreifen</dt>
+              <dd><kbd>F</kbd> oder <kbd>J</kbd></dd>
+            </div>
+            <div class="controls-list__row">
+              <dt>Waffe wechseln</dt>
+              <dd><kbd>Q</kbd></dd>
+            </div>
+            <div class="controls-list__row">
+              <dt>Pause</dt>
+              <dd><kbd>Escape</kbd></dd>
+            </div>
+          </dl>
+        </div>
       </section>
     </main>
 

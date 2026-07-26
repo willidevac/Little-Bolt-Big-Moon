@@ -13,11 +13,14 @@
 }
 
 @media (max-width: 700px) and (orientation: landscape) {
-  .start-screen {
+  .start-screen,
+  .overlay-screen,
+  .game-dialog {
     padding: 0.65rem;
   }
 
-  .start-screen__menu {
+  .start-screen__menu,
+  .screen-panel {
     width: 100%;
     min-width: 0;
     padding: 0.65rem;
@@ -54,6 +57,36 @@
     min-height: 2rem;
     padding: 0.35rem 0.55rem;
   }
+
+  .screen-panel--controls {
+    padding-right: 3.5rem;
+  }
+
+  .screen-panel--pause .start-menu {
+    margin-top: 0.45rem;
+  }
+
+  .screen-panel__copy {
+    margin-top: 0.4rem;
+  }
+
+  .controls-list {
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+  }
+
+  .controls-list__row {
+    grid-template-columns: minmax(5.5rem, 0.75fr) 1.5fr;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .close-button {
+    top: 0.4rem;
+    right: 0.4rem;
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 @media (max-height: 430px) and (orientation: landscape) {
@@ -63,6 +96,10 @@
   }
 
   .start-screen__story {
+    display: none;
+  }
+
+  .screen-panel__hint {
     display: none;
   }
 }
