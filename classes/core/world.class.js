@@ -1,4 +1,5 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
+import { FallTracker } from "../systems/fall-tracker.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { Camera } from "./camera.class.js";
@@ -44,6 +45,7 @@ export class World {
   #pendingRemovals;
   #isProcessing;
   #collisionManager;
+  #fallTracker;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -62,6 +64,7 @@ export class World {
     this.#pendingRemovals = this.#createGroupMap(Set);
     this.#isProcessing = false;
     this.#collisionManager = new CollisionManager(config.physics);
+    this.#fallTracker = new FallTracker(config.world);
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -75,6 +78,7 @@ export class World {
     this.#addLevelPlatforms();
     this.#ensureFallbackScene();
     this.camera.reset(this.character);
+    this.#fallTracker.reset(this.character);
     this.isInitialized = true;
     return true;
   }
@@ -136,7 +140,25 @@ export class World {
     });
     this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
+    this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
+  }
+
+  /**
+   * Liefert die seit dem höchsten Punkt verlorene Höhe.
+   * @returns {number}
+   */
+  getHeightLossPixels() {
+    return this.#fallTracker.getHeightLossPixels();
+  }
+
+  /**
+   * Prüft, ob Byte unter die untere Todeszone gefallen ist.
+   * @returns {boolean}
+   */
+  isCharacterInDeathZone() {
+    if (!this.character) return false;
+    return this.#fallTracker.hasReachedDeathZone(this.character);
   }
 
   /**

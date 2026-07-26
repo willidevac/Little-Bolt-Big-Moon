@@ -6,6 +6,7 @@ const CANVAS_CONFIG = Object.freeze({
 const WORLD_CONFIG = Object.freeze({
   width: 1280,
   height: 8000,
+  deathZoneOffsetPixels: 128,
 });
 
 const TIMING_CONFIG = Object.freeze({

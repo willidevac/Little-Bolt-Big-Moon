@@ -46,6 +46,14 @@ export class Game {
   }
 
   /**
+   * Liefert Bytes aktuellen Höhenverlust in Weltpixeln.
+   * @returns {number}
+   */
+  get heightLossPixels() {
+    return this.world.getHeightLossPixels();
+  }
+
+  /**
    * Initialisiert Spielfläche und Hauptloop höchstens einmal.
    */
   initialize() {
@@ -188,6 +196,7 @@ export class Game {
    */
   update(deltaTimeSeconds) {
     this.world.update(deltaTimeSeconds);
+    if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
   }
 
   /**
@@ -292,6 +301,11 @@ export class Game {
     if (!this.#isPlaying()) return false;
     this.keyboard.reset();
     return this.#setGameState(endState);
+  }
+
+  #handleDeathZone() {
+    this.world.character?.die();
+    this.lose();
   }
 
   /**
