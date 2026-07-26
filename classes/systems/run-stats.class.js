@@ -1,9 +1,17 @@
 import { clamp } from "../../js/utils/math.js";
 
+const STAT_BY_PICKUP_TYPE = Object.freeze({
+  gear: "gears",
+  energy: "energy",
+  ammo: "ammo",
+});
+
 /**
  * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
  */
 export class RunStats {
+  #listeners;
+
   /**
    * @param {Readonly<object>} config
    * @param {number} startY
@@ -11,19 +19,36 @@ export class RunStats {
   constructor(config, startY) {
     this.validateConfig(config, startY);
     this.config = config;
-    this.startY = startY;
-    this.reset();
+    this.#listeners = new Set();
+    this.reset(startY);
   }
 
   /**
    * Setzt alle Laufwerte auf ihren konfigurierten Anfang zurück.
+   * @param {number} [startY=this.startY]
    */
-  reset() {
+  reset(startY = this.startY) {
+    this.#validateStartY(startY);
+    this.startY = startY;
     this.energy = this.config.startingEnergy;
     this.ammo = this.config.startingAmmo;
     this.gears = this.config.startingGears;
     this.score = this.config.startingScore;
     this.heightMeters = 0;
+    this.#notifyChange();
+  }
+
+  /**
+   * Registriert eine Anzeige und liefert ihre Abmeldefunktion.
+   * @param {(snapshot: Readonly<object>) => void} listener
+   * @returns {() => void}
+   */
+  onChange(listener) {
+    if (typeof listener !== "function") {
+      throw new TypeError("Der Laufwert-Beobachter muss eine Funktion sein.");
+    }
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
   }
 
   /**
@@ -37,7 +62,25 @@ export class RunStats {
     const nextHeight = Math.floor(climbedPixels / this.config.heightPixelsPerMeter);
     if (nextHeight === this.heightMeters) return false;
     this.heightMeters = nextHeight;
+    this.#notifyChange();
     return true;
+  }
+
+  /**
+   * Rechnet neue Funde gesammelt auf die passenden Laufwerte.
+   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
+   * @returns {boolean} Ob sich mindestens ein sichtbarer Wert geändert hat.
+   */
+  applyPickups(pickups) {
+    if (!Array.isArray(pickups)) {
+      throw new TypeError("Funde müssen als Liste übergeben werden.");
+    }
+    let changed = false;
+    pickups.forEach((pickup) => {
+      if (this.#applyPickup(pickup)) changed = true;
+    });
+    if (changed) this.#notifyChange();
+    return changed;
   }
 
   /**
@@ -88,5 +131,30 @@ export class RunStats {
     const energy = clamp(config.startingEnergy, 0, config.maximumEnergy);
     if (energy === config.startingEnergy && config.maximumEnergy > 0) return;
     throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
+  }
+
+  #validateStartY(startY) {
+    if (Number.isFinite(startY) && startY >= 0) return;
+    throw new TypeError("Die Lauf-Starthöhe ist ungültig.");
+  }
+
+  #applyPickup(pickup) {
+    const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
+    if (!statName || !Number.isFinite(pickup.amount) || pickup.amount <= 0) {
+      throw new TypeError("Der eingesammelte Fund ist ungültig.");
+    }
+    const previousValue = this[statName];
+    this[statName] = this.#getPickupValue(statName, pickup.amount);
+    return this[statName] !== previousValue;
+  }
+
+  #getPickupValue(statName, amount) {
+    if (statName !== "energy") return this[statName] + amount;
+    return clamp(this.energy + amount, 0, this.config.maximumEnergy);
+  }
+
+  #notifyChange() {
+    const snapshot = this.getSnapshot();
+    this.#listeners.forEach((listener) => listener(snapshot));
   }
 }

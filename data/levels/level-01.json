@@ -100,5 +100,21 @@
     { "id": "moon-summit-14", "x": 384, "y": 112, "type": "catch" }
   ],
   "combatZones": [],
-  "collectables": []
+  "collectables": [
+    { "id": "scrapyard-gear-01", "type": "gear", "amount": 1, "x": 288, "y": 7776 },
+    { "id": "scrapyard-ammo-01", "type": "ammo", "amount": 4, "x": 480, "y": 7776 },
+    { "id": "scrapyard-energy-01", "type": "energy", "amount": 20, "x": 672, "y": 7776 },
+    { "id": "factory-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 6208 },
+    { "id": "factory-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 6096 },
+    { "id": "factory-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 5984 },
+    { "id": "launch-tower-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 4640 },
+    { "id": "launch-tower-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 4528 },
+    { "id": "launch-tower-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 4416 },
+    { "id": "space-station-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 3072 },
+    { "id": "space-station-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 2960 },
+    { "id": "space-station-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 2848 },
+    { "id": "moon-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 1504 },
+    { "id": "moon-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 1392 },
+    { "id": "moon-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 1280 }
+  ]
 }

@@ -1,5 +1,6 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
+import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
 const TILESET_CONFIGS = Object.freeze({
@@ -26,7 +27,12 @@ export function createLevelOne() {
     playerStart: Object.freeze({ ...levelData.playerStart }),
     sections: Object.freeze(levelData.sections.map(createSection)),
     platforms: Object.freeze(levelData.platforms.map(createPlatform)),
+    collectables: Object.freeze(levelData.collectables.map(createCollectable)),
   });
+}
+
+function createCollectable(collectableData) {
+  return new CollectableObject(collectableData);
 }
 
 function createPlatform(platformData) {
@@ -52,6 +58,7 @@ function validateLevelData(data) {
     Number.isFinite(data?.playerStart?.y);
   const hasCollections = Array.isArray(data?.sections) &&
     Array.isArray(data?.platforms) &&
+    Array.isArray(data?.collectables) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
   if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {

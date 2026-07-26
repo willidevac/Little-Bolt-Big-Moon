@@ -46,6 +46,7 @@ export class World {
   #isProcessing;
   #collisionManager;
   #fallTracker;
+  #collectedPickups;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -65,6 +66,7 @@ export class World {
     this.#isProcessing = false;
     this.#collisionManager = new CollisionManager(config.physics);
     this.#fallTracker = new FallTracker(config.world);
+    this.#collectedPickups = [];
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -76,6 +78,7 @@ export class World {
   initialize() {
     if (this.isInitialized) return false;
     this.#addLevelPlatforms();
+    this.#addLevelCollectables();
     this.#ensureFallbackScene();
     this.camera.reset(this.character);
     this.#fallTracker.reset(this.character);
@@ -140,6 +143,7 @@ export class World {
     });
     this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
+    this.#resolveCollectablePickups();
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
   }
@@ -159,6 +163,16 @@ export class World {
   isCharacterInDeathZone() {
     if (!this.character) return false;
     return this.#fallTracker.hasReachedDeathZone(this.character);
+  }
+
+  /**
+   * Übergibt alle neuen Funde genau einmal an die Laufwerte.
+   * @returns {ReadonlyArray<Readonly<{type:string, amount:number}>>}
+   */
+  takeCollectedPickups() {
+    const pickups = Object.freeze([...this.#collectedPickups]);
+    this.#collectedPickups.length = 0;
+    return pickups;
   }
 
   /**
@@ -185,6 +199,7 @@ export class World {
    * Entfernt alle aktiven und vorgemerkten Entitäten.
    */
   clear() {
+    this.#collectedPickups.length = 0;
     this.#pendingAdditions.forEach((entities) => entities.clear());
     if (!this.#isProcessing) this.#entityGroups.forEach((entities) => entities.splice(0));
     else this.#queueAllEntitiesForRemoval();
@@ -218,6 +233,13 @@ export class World {
     });
   }
 
+  #addLevelCollectables() {
+    if (!Array.isArray(this.level?.collectables)) return;
+    this.level.collectables.forEach((collectable) => {
+      this.addEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
+    });
+  }
+
   #addFallbackCharacter() {
     this.character = new Character();
     const startPosition = this.level?.playerStart ?? FALLBACK_CHARACTER_POSITION;
@@ -235,6 +257,20 @@ export class World {
     const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
     const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
     this.#collisionManager.resolvePlatformLandings(characters, platforms, deltaTimeSeconds);
+  }
+
+  #resolveCollectablePickups() {
+    if (!this.character) return;
+    const collectables = this.#entityGroups.get(WORLD_ENTITY_GROUPS.COLLECTABLES);
+    const overlaps = collectables.filter((collectable) => {
+      return this.#collisionManager.areOverlapping(this.character, collectable);
+    });
+    overlaps.forEach((collectable) => this.#collect(collectable));
+  }
+
+  #collect(collectable) {
+    this.#collectedPickups.push(collectable.getPickup());
+    this.removeEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
   }
 
   #processEntities(groupOrder, callback) {

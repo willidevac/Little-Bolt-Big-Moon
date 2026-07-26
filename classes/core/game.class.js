@@ -10,7 +10,6 @@ import { createLevelOne } from "../../js/levels/level-01.js";
 export class Game {
   #stateMachine;
   #stateListeners;
-  #hudListeners;
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -29,7 +28,6 @@ export class Game {
     this.validateContext();
     this.#stateMachine = new GameStateMachine();
     this.#stateListeners = new Set();
-    this.#hudListeners = new Set();
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
@@ -78,11 +76,7 @@ export class Game {
    * @returns {() => void} Funktion zum Abmelden.
    */
   onHudChange(listener) {
-    if (typeof listener !== "function") {
-      throw new TypeError("Der HUD-Beobachter muss eine Funktion sein.");
-    }
-    this.#hudListeners.add(listener);
-    return () => this.#hudListeners.delete(listener);
+    return this.runStats.onChange(listener);
   }
 
   /**
@@ -208,11 +202,10 @@ export class Game {
     this.keyboard.reset();
     this.world = this.#createWorld();
     this.world.initialize();
-    this.runStats = this.#createRunStats();
+    this.runStats.reset(this.world.level?.playerStart?.y ?? 0);
     this.previousTimestamp = null;
     this.#setGameState(GAME_STATES.PLAYING);
     this.setLoopState("running");
-    this.#notifyHudChange();
     if (!this.isRunning) this.start();
   }
 
@@ -337,19 +330,11 @@ export class Game {
   }
 
   /**
-   * Aktualisiert die Höhe nur bei einer sichtbaren Meteränderung.
+   * Überträgt Weltposition und neue Funde in die Laufwerte.
    */
   #updateRunStats() {
-    const changed = this.runStats.updateHeight(this.world.character?.y);
-    if (changed) this.#notifyHudChange();
-  }
-
-  /**
-   * Meldet eine Momentaufnahme an alle HUD-Beobachter.
-   */
-  #notifyHudChange() {
-    const snapshot = this.getHudSnapshot();
-    this.#hudListeners.forEach((listener) => listener(snapshot));
+    this.runStats.updateHeight(this.world.character?.y);
+    this.runStats.applyPickups(this.world.takeCollectedPickups());
   }
 
   /**
