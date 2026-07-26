@@ -12,3 +12,57 @@
   }
 }
 
+@media (max-width: 700px) and (orientation: landscape) {
+  .start-screen {
+    padding: 0.65rem;
+  }
+
+  .start-screen__menu {
+    width: 100%;
+    min-width: 0;
+    padding: 0.65rem;
+    border-width: 2px;
+    box-shadow:
+      0 0 0 2px rgb(4 9 15 / 85%),
+      0.3rem 0.3rem 0 rgb(2 7 13 / 65%);
+  }
+
+  .start-screen__eyebrow,
+  .start-screen__story {
+    display: none;
+  }
+
+  .start-menu {
+    grid-template-columns: 1.25fr 1fr 1fr;
+    gap: 0.4rem;
+    margin-top: 0;
+  }
+
+  .menu-button {
+    min-height: 2.3rem;
+    padding: 0.4rem;
+    font-size: clamp(0.5rem, 1.8vw, 0.7rem);
+  }
+
+  .start-screen__hint {
+    margin-top: 0.45rem;
+    font-size: clamp(0.45rem, 1.35vw, 0.58rem);
+    text-align: center;
+  }
+
+  .sound-button {
+    min-height: 2rem;
+    padding: 0.35rem 0.55rem;
+  }
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  .start-screen__menu {
+    width: min(48%, 19rem);
+    min-width: 16rem;
+  }
+
+  .start-screen__story {
+    display: none;
+  }
+}

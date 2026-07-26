@@ -541,21 +541,31 @@
       "id": "silkscreen-regular-plan",
       "file": "img/fonts/silkscreen-regular.ttf",
       "role": "local-ui-font-regular",
-      "status": "approved-source-not-downloaded",
+      "status": "present",
       "origin": "The Silkscreen Project Authors via Google Fonts",
-      "created": "2026-07-23",
-      "modifications": "No font modifications planned.",
+      "created": "2026-07-26",
+      "modifications": "Original Silkscreen Regular file stored locally without modifications; OFL.txt is included in the same folder.",
       "licenseId": "silkscreen-ofl-1.1"
     },
     {
       "id": "silkscreen-bold-plan",
       "file": "img/fonts/silkscreen-bold.ttf",
       "role": "local-ui-font-bold",
-      "status": "approved-source-not-downloaded",
+      "status": "present",
       "origin": "The Silkscreen Project Authors via Google Fonts",
-      "created": "2026-07-23",
-      "modifications": "No font modifications planned.",
+      "created": "2026-07-26",
+      "modifications": "Original Silkscreen Bold file stored locally without modifications; OFL.txt is included in the same folder.",
       "licenseId": "silkscreen-ofl-1.1"
+    },
+    {
+      "id": "little-bolt-big-moon-favicon-v1",
+      "file": "img/favicon.png",
+      "role": "browser-favicon",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved game cover as a style and character reference",
+      "created": "2026-07-26",
+      "modifications": "Square pixel-art reduction to Byte's head and a cream crescent moon for legibility at browser-tab size.",
+      "licenseId": "openai-generated-output"
     }
   ]
 }

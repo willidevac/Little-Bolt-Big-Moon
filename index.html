@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#242733">
     <title>Little Bolt, Big Moon</title>
+    <link rel="icon" type="image/png" href="./img/favicon.png">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
@@ -18,6 +19,58 @@
       >
         Dein Browser unterstützt das Canvas-Element leider nicht.
       </canvas>
+
+      <section
+        class="start-screen"
+        aria-labelledby="game-title"
+        data-game-screen="home"
+      >
+        <img
+          class="start-screen__cover"
+          src="./img/cover/little-bolt-big-moon-cover-v1.png"
+          alt=""
+          width="1672"
+          height="941"
+        >
+
+        <div class="start-screen__menu">
+          <p class="start-screen__eyebrow">Vertikales Pixel-Abenteuer</p>
+          <h1 id="game-title" class="visually-hidden">
+            Little Bolt, Big Moon
+          </h1>
+          <p class="start-screen__story">
+            Ein kleiner Roboter. Ein großer Weg nach oben.
+          </p>
+
+          <nav class="start-menu" aria-label="Hauptmenü">
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-ui-action="start"
+            >
+              Spiel starten
+            </button>
+            <button class="menu-button" type="button" data-ui-action="controls">
+              Steuerung
+            </button>
+            <button class="menu-button" type="button" data-ui-action="imprint">
+              Impressum
+            </button>
+          </nav>
+
+          <p class="start-screen__hint">Hilf Byte vom Schrottplatz bis zum Mond.</p>
+        </div>
+
+        <button
+          class="sound-button"
+          type="button"
+          aria-label="Ton stummschalten"
+          aria-pressed="false"
+          data-ui-action="mute"
+        >
+          Ton: an
+        </button>
+      </section>
     </main>
 
     <aside class="portrait-notice" aria-live="polite">

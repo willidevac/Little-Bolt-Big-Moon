@@ -3,10 +3,16 @@ body {
   min-height: 100dvh;
   place-items: center;
   overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 0%, #28334e 0, transparent 48%),
+    var(--color-night);
 }
 
 .game-shell {
-  width: min(100vw, 1280px);
+  position: relative;
+  width: min(100vw, calc(100dvh * 16 / 9), 1280px);
   aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-night);
+  box-shadow: 0 0 3rem rgb(0 0 0 / 70%);
 }
-
