@@ -115,13 +115,18 @@
             class="close-button"
             type="button"
             aria-label="Steuerung schließen"
-            data-ui-action="close-controls"
+            data-ui-action="close-dialog"
           >
             ×
           </button>
 
           <p class="screen-panel__eyebrow">Deine Aufgabe</p>
-          <h2 id="controls-title" class="screen-panel__title">
+          <h2
+            id="controls-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+          >
             Hilfe &amp; Steuerung
           </h2>
           <p class="screen-panel__copy">
@@ -151,6 +156,74 @@
               <dd><kbd>Escape</kbd></dd>
             </div>
           </dl>
+        </div>
+      </section>
+
+      <section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="imprint-title"
+        data-game-dialog="imprint"
+        hidden
+      >
+        <div class="screen-panel screen-panel--legal">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Impressum schließen"
+            data-ui-action="close-dialog"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow">Projektangaben</p>
+          <h2
+            id="imprint-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+          >
+            Impressum
+          </h2>
+
+          <section class="legal-section" aria-labelledby="responsible-title">
+            <h3 id="responsible-title">Projektverantwortlich</h3>
+            <p>
+              <strong>Willi Kasberg</strong><br>
+              Idee und Umsetzung des nicht kommerziellen Weiterbildungsprojekts
+            </p>
+          </section>
+
+          <section class="legal-section" aria-labelledby="academy-title">
+            <h3 id="academy-title">Weiterbildungsträger und Kontakt</h3>
+            <address>
+              <strong>Developer Akademie GmbH</strong><br>
+              Tassiloplatz 25<br>
+              81541 München<br>
+              Deutschland<br>
+              E-Mail:
+              <a href="mailto:info@developerakademie.com">
+                info@developerakademie.com
+              </a>
+            </address>
+          </section>
+
+          <p class="legal-note">
+            Die Developer Akademie GmbH wird als Weiterbildungsträger
+            aufgeführt. Die Projektverantwortung für das Spiel liegt bei
+            Willi Kasberg.
+          </p>
+
+          <a
+            class="legal-link"
+            href="https://developerakademie.com/impressum/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Offizielles Impressum der Developer Akademie
+            <span class="visually-hidden">– öffnet einen neuen Tab</span>
+          </a>
         </div>
       </section>
     </main>

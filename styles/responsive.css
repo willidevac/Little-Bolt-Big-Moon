@@ -58,7 +58,8 @@
     padding: 0.35rem 0.55rem;
   }
 
-  .screen-panel--controls {
+  .screen-panel--controls,
+  .screen-panel--legal {
     padding-right: 3.5rem;
   }
 
@@ -86,6 +87,16 @@
     right: 0.4rem;
     width: 2rem;
     height: 2rem;
+  }
+
+  .legal-section {
+    margin-top: 0.55rem;
+    padding: 0.45rem;
+  }
+
+  .legal-note,
+  .legal-link {
+    margin-top: 0.55rem;
   }
 }
 
