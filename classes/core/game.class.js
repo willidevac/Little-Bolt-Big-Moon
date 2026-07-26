@@ -2,6 +2,7 @@ import { World } from "./world.class.js";
 import { GameStateMachine, GAME_STATES } from "./game-state-machine.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
+import { CombatSystem } from "../systems/combat-system.class.js";
 import { createLevelOne } from "../../js/levels/level-01.js";
 
 /**
@@ -31,6 +32,7 @@ export class Game {
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
+    this.combatSystem = new CombatSystem(config.combat);
   }
 
   /**
@@ -183,6 +185,19 @@ export class Game {
   }
 
   /**
+   * Verarbeitet einen Treffer über Energie, Rückstoß und möglichen Tod.
+   * @param {Readonly<{amount:number, direction:number}>} hit
+   * @returns {boolean} Ob Byte den Treffer angenommen hat.
+   */
+  takeDamage(hit) {
+    if (!this.#isPlaying()) return false;
+    const character = this.world.character;
+    const accepted = this.combatSystem.applyHit(hit, character, this.runStats);
+    if (character?.isDead) this.lose();
+    return accepted;
+  }
+
+  /**
    * Kehrt in den Home-Zustand zurück.
    * @returns {boolean}
    */
@@ -231,6 +246,7 @@ export class Game {
   update(deltaTimeSeconds) {
     this.world.update(deltaTimeSeconds);
     this.#updateRunStats();
+    this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
     if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
   }
 

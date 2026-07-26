@@ -84,6 +84,22 @@ export class RunStats {
   }
 
   /**
+   * Zieht Trefferenergie ab und liefert den verbleibenden Wert.
+   * @param {number} amount
+   * @returns {number}
+   */
+  takeDamage(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new TypeError("Schaden muss eine positive Zahl sein.");
+    }
+    const nextEnergy = clamp(this.energy - amount, 0, this.config.maximumEnergy);
+    if (nextEnergy === this.energy) return this.energy;
+    this.energy = nextEnergy;
+    this.#notifyChange();
+    return this.energy;
+  }
+
+  /**
    * Liefert eine unveränderliche Momentaufnahme für das HUD.
    * @returns {Readonly<object>}
    */

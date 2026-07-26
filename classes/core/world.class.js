@@ -18,6 +18,7 @@ export const WORLD_ENTITY_GROUPS = Object.freeze({
   ENEMIES: "enemies",
   PROJECTILES: "projectiles",
   COLLECTABLES: "collectables",
+  HAZARDS: "hazards",
 });
 
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
@@ -27,9 +28,11 @@ const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.ENEMIES,
   WORLD_ENTITY_GROUPS.PROJECTILES,
   WORLD_ENTITY_GROUPS.COLLECTABLES,
+  WORLD_ENTITY_GROUPS.HAZARDS,
 ]);
 const DRAW_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
+  WORLD_ENTITY_GROUPS.HAZARDS,
   WORLD_ENTITY_GROUPS.COLLECTABLES,
   WORLD_ENTITY_GROUPS.ENEMIES,
   WORLD_ENTITY_GROUPS.PROJECTILES,
@@ -47,6 +50,7 @@ export class World {
   #collisionManager;
   #fallTracker;
   #collectedPickups;
+  #damageEvents;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -67,6 +71,7 @@ export class World {
     this.#collisionManager = new CollisionManager(config.physics);
     this.#fallTracker = new FallTracker(config.world);
     this.#collectedPickups = [];
+    this.#damageEvents = [];
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -79,6 +84,7 @@ export class World {
     if (this.isInitialized) return false;
     this.#addLevelPlatforms();
     this.#addLevelCollectables();
+    this.#addLevelHazards();
     this.#ensureFallbackScene();
     this.camera.reset(this.character);
     this.#fallTracker.reset(this.character);
@@ -144,6 +150,7 @@ export class World {
     this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
     this.#resolveCollectablePickups();
+    this.#resolveHazardHits();
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
   }
@@ -176,6 +183,16 @@ export class World {
   }
 
   /**
+   * Übergibt neue Treffer genau einmal an die Kampfsteuerung.
+   * @returns {ReadonlyArray<Readonly<{amount:number, direction:number}>>}
+   */
+  takeDamageEvents() {
+    const events = Object.freeze([...this.#damageEvents]);
+    this.#damageEvents.length = 0;
+    return events;
+  }
+
+  /**
    * Zeichnet alle dafür geeigneten Entitäten in fester Ebenenreihenfolge.
    */
   draw() {
@@ -200,6 +217,7 @@ export class World {
    */
   clear() {
     this.#collectedPickups.length = 0;
+    this.#damageEvents.length = 0;
     this.#pendingAdditions.forEach((entities) => entities.clear());
     if (!this.#isProcessing) this.#entityGroups.forEach((entities) => entities.splice(0));
     else this.#queueAllEntitiesForRemoval();
@@ -240,6 +258,13 @@ export class World {
     });
   }
 
+  #addLevelHazards() {
+    if (!Array.isArray(this.level?.hazards)) return;
+    this.level.hazards.forEach((hazard) => {
+      this.addEntity(WORLD_ENTITY_GROUPS.HAZARDS, hazard);
+    });
+  }
+
   #addFallbackCharacter() {
     this.character = new Character();
     const startPosition = this.level?.playerStart ?? FALLBACK_CHARACTER_POSITION;
@@ -271,6 +296,15 @@ export class World {
   #collect(collectable) {
     this.#collectedPickups.push(collectable.getPickup());
     this.removeEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
+  }
+
+  #resolveHazardHits() {
+    if (!this.character) return;
+    const hazards = this.#entityGroups.get(WORLD_ENTITY_GROUPS.HAZARDS);
+    const hazard = hazards.find((candidate) => {
+      return this.#collisionManager.areOverlapping(this.character, candidate);
+    });
+    if (hazard) this.#damageEvents.push(hazard.createHit(this.character));
   }
 
   #processEntities(groupOrder, callback) {

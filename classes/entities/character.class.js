@@ -59,6 +59,8 @@ export class Character extends MovableObject {
     this.facingDirection = 1;
     this.isHurt = false;
     this.isDead = false;
+    this.hurtSecondsRemaining = 0;
+    this.invulnerabilitySecondsRemaining = 0;
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
     this.loadSprite(BYTE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState(this.state));
@@ -69,6 +71,13 @@ export class Character extends MovableObject {
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
+    context.save();
+    context.globalAlpha = this.#getHitOpacity();
+    this.#drawFacingDirection(context);
+    context.restore();
+  }
+
+  #drawFacingDirection(context) {
     if (this.facingDirection >= 0) {
       super.draw(context);
       return;
@@ -89,6 +98,7 @@ export class Character extends MovableObject {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
     const input = world.input ?? NEUTRAL_INPUT;
     if (this.isDead) return this.#maintainDeadState(deltaTimeSeconds);
+    this.#updateHitTimers(deltaTimeSeconds);
     const config = world.config.character;
     const jumpStarted = this.#consumeJumpPress(input);
     this.#updateInactivity(deltaTimeSeconds, input, config);
@@ -116,6 +126,33 @@ export class Character extends MovableObject {
   }
 
   /**
+   * Startet Rückstoß, Trefferanimation und die kurze Schutzzeit.
+   * @param {number} direction
+   * @param {Readonly<object>} combatConfig
+   * @returns {boolean} Ob Byte den Treffer angenommen hat.
+   */
+  receiveHit(direction, combatConfig) {
+    this.#validateHit(direction, combatConfig);
+    if (this.isDead || this.isInvulnerable) return false;
+    this.enterHurtState();
+    this.hurtSecondsRemaining = combatConfig.hurtStateSeconds;
+    this.invulnerabilitySecondsRemaining = combatConfig.invulnerabilitySeconds;
+    this.velocityX = Math.sign(direction) *
+      combatConfig.knockbackHorizontalPixelsPerSecond;
+    this.velocityY = -combatConfig.knockbackVerticalPixelsPerSecond;
+    this.setOnGround(false);
+    return true;
+  }
+
+  /**
+   * Zeigt, ob Byte gerade keinen weiteren Treffer annehmen darf.
+   * @returns {boolean}
+   */
+  get isInvulnerable() {
+    return this.invulnerabilitySecondsRemaining > 0;
+  }
+
+  /**
    * Gibt Byte nach einem Treffer wieder für normale Zustände frei.
    * @returns {boolean} Ob der Trefferzustand beendet wurde.
    */
@@ -133,6 +170,8 @@ export class Character extends MovableObject {
     if (this.isDead) return false;
     this.isDead = true;
     this.isHurt = false;
+    this.hurtSecondsRemaining = 0;
+    this.invulnerabilitySecondsRemaining = 0;
     this.isAffectedByGravity = false;
     this.#stopMovement();
     this.#changeState(CHARACTER_STATES.DEAD);
@@ -255,6 +294,37 @@ export class Character extends MovableObject {
     this.#stopMovement();
     this.#changeState(CHARACTER_STATES.DEAD);
     this.#updateAnimation(deltaTimeSeconds);
+  }
+
+  #updateHitTimers(deltaTimeSeconds) {
+    this.hurtSecondsRemaining = Math.max(
+      0,
+      this.hurtSecondsRemaining - deltaTimeSeconds,
+    );
+    this.invulnerabilitySecondsRemaining = Math.max(
+      0,
+      this.invulnerabilitySecondsRemaining - deltaTimeSeconds,
+    );
+    if (this.hurtSecondsRemaining === 0) this.leaveHurtState();
+  }
+
+  #getHitOpacity() {
+    if (!this.isInvulnerable || this.isDead) return 1;
+    const blinkFrame = Math.floor(this.invulnerabilitySecondsRemaining * 12);
+    return blinkFrame % 2 === 0 ? 0.35 : 1;
+  }
+
+  #validateHit(direction, config) {
+    const hasDirection = Number.isFinite(direction) && Math.sign(direction) !== 0;
+    const values = [
+      config?.hurtStateSeconds,
+      config?.invulnerabilitySeconds,
+      config?.knockbackHorizontalPixelsPerSecond,
+      config?.knockbackVerticalPixelsPerSecond,
+    ];
+    const hasValues = values.every((value) => Number.isFinite(value) && value > 0);
+    if (hasDirection && hasValues) return;
+    throw new TypeError("Die Trefferreaktion ist ungültig.");
   }
 
   #stopMovement() {

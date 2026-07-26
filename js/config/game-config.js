@@ -32,6 +32,13 @@ const CHARACTER_CONFIG = Object.freeze({
   sleepAfterInactivitySeconds: 15,
 });
 
+const COMBAT_CONFIG = Object.freeze({
+  invulnerabilitySeconds: 1,
+  hurtStateSeconds: 0.25,
+  knockbackHorizontalPixelsPerSecond: 420,
+  knockbackVerticalPixelsPerSecond: 460,
+});
+
 const CAMERA_CONFIG = Object.freeze({
   deadZoneTopPixels: 216,
   deadZoneBottomPixels: 504,
@@ -61,6 +68,7 @@ export const GAME_CONFIG = Object.freeze({
   timing: TIMING_CONFIG,
   physics: PHYSICS_CONFIG,
   character: CHARACTER_CONFIG,
+  combat: COMBAT_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,

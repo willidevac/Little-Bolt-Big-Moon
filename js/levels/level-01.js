@@ -1,6 +1,7 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
+import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
 const TILESET_CONFIGS = Object.freeze({
@@ -28,11 +29,16 @@ export function createLevelOne() {
     sections: Object.freeze(levelData.sections.map(createSection)),
     platforms: Object.freeze(levelData.platforms.map(createPlatform)),
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
+    hazards: Object.freeze(levelData.hazards.map(createHazard)),
   });
 }
 
 function createCollectable(collectableData) {
   return new CollectableObject(collectableData);
+}
+
+function createHazard(hazardData) {
+  return new DamageZone(hazardData);
 }
 
 function createPlatform(platformData) {
@@ -59,6 +65,7 @@ function validateLevelData(data) {
   const hasCollections = Array.isArray(data?.sections) &&
     Array.isArray(data?.platforms) &&
     Array.isArray(data?.collectables) &&
+    Array.isArray(data?.hazards) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
   if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {
