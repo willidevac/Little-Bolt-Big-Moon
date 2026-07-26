@@ -39,6 +39,15 @@ const CAMERA_CONFIG = Object.freeze({
   downwardFollowSpeedPixelsPerSecond: 1400,
 });
 
+const HUD_CONFIG = Object.freeze({
+  maximumEnergy: 100,
+  startingEnergy: 100,
+  startingAmmo: 0,
+  startingGears: 0,
+  startingScore: 0,
+  heightPixelsPerMeter: 4,
+});
+
 const DEBUG_CONFIG = Object.freeze({
   enabled: false,
   showCollisionBoxes: false,
@@ -53,5 +62,6 @@ export const GAME_CONFIG = Object.freeze({
   physics: PHYSICS_CONFIG,
   character: CHARACTER_CONFIG,
   camera: CAMERA_CONFIG,
+  hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,
 });

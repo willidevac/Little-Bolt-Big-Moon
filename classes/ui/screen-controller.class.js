@@ -153,6 +153,7 @@ export class ScreenController {
       controls: () => this.openDialog("controls"),
       imprint: () => this.openDialog("imprint"),
       "close-dialog": () => this.closeDialog(),
+      pause: () => this.game.togglePause(),
       resume: () => this.game.resume(),
       home: () => this.game.goHome(),
     });

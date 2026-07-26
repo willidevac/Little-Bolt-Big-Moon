@@ -21,6 +21,89 @@
       </canvas>
 
       <section
+        class="game-hud"
+        aria-label="Spielstatus"
+        data-game-hud
+        hidden
+      >
+        <div class="hud-panel hud-energy">
+          <span class="hud-symbol" aria-hidden="true">⚡</span>
+          <div class="hud-energy__body">
+            <span class="hud-label">Energie</span>
+            <div
+              class="hud-energy__bar"
+              role="progressbar"
+              aria-label="Energie"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="100"
+              data-hud-energy-bar
+            >
+              <span class="hud-energy__fill"></span>
+            </div>
+          </div>
+          <output class="hud-number" aria-label="Energiepunkte">
+            <span data-hud-value="energy">100</span>
+          </output>
+        </div>
+
+        <div class="hud-panel hud-height">
+          <span class="hud-symbol" aria-hidden="true">↑</span>
+          <span class="hud-label">Höhe</span>
+          <output class="hud-number" aria-label="Höhe in Metern">
+            <span data-hud-value="height">0</span> m
+          </output>
+        </div>
+
+        <div class="hud-score-group">
+          <div class="hud-panel hud-score">
+            <span class="hud-symbol" aria-hidden="true">⚙</span>
+            <span class="hud-label">Punkte</span>
+            <output
+              class="hud-number"
+              aria-label="Punkte"
+              data-hud-value="score"
+            >
+              000000
+            </output>
+          </div>
+          <button
+            class="hud-pause-button"
+            type="button"
+            aria-label="Spiel pausieren"
+            data-ui-action="pause"
+          >
+            Ⅱ
+          </button>
+        </div>
+
+        <div class="hud-resources" aria-label="Ressourcen">
+          <div class="hud-panel hud-resource">
+            <span class="hud-symbol" aria-hidden="true">✦</span>
+            <span class="hud-label">Munition</span>
+            <output
+              class="hud-number"
+              aria-label="Munition"
+              data-hud-value="ammo"
+            >
+              0
+            </output>
+          </div>
+          <div class="hud-panel hud-resource">
+            <span class="hud-symbol" aria-hidden="true">⚙</span>
+            <span class="hud-label">Zahnräder</span>
+            <output
+              class="hud-number"
+              aria-label="Zahnräder"
+              data-hud-value="gears"
+            >
+              0
+            </output>
+          </div>
+        </div>
+      </section>
+
+      <section
         class="game-screen start-screen"
         aria-labelledby="game-title"
         data-game-screen="home"
