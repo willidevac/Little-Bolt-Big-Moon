@@ -99,7 +99,19 @@
     { "id": "moon-path-13", "x": 128, "y": 224, "type": "path" },
     { "id": "moon-summit-14", "x": 384, "y": 112, "type": "catch" }
   ],
-  "combatZones": [],
+  "combatZones": [
+    {
+      "id": "scrapyard-arena-01",
+      "x": 640,
+      "y": 7264,
+      "width": 576,
+      "height": 576,
+      "enemyIds": [
+        "scrapyard-crawler-01",
+        "scrapyard-drone-01"
+      ]
+    }
+  ],
   "enemies": [
     {
       "id": "scrapyard-crawler-01",
@@ -113,10 +125,10 @@
     {
       "id": "scrapyard-drone-01",
       "type": "droneGuard",
-      "x": 512,
-      "y": 7650,
-      "patrolMinX": 448,
-      "patrolMaxX": 800
+      "x": 840,
+      "y": 7540,
+      "patrolMinX": 736,
+      "patrolMaxX": 1088
     },
     {
       "id": "factory-crawler-01",

@@ -2,6 +2,7 @@ import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
+import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
@@ -37,10 +38,15 @@ export function createLevelOne(enemyConfig) {
     platforms: Object.freeze(levelData.platforms.map(createPlatform)),
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
+    combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
     enemies: Object.freeze(levelData.enemies.map((enemy) => {
       return createEnemy(enemy, enemyConfig);
     })),
   });
+}
+
+function createCombatZone(zoneData) {
+  return new CombatZone(zoneData);
 }
 
 function createEnemy(enemyData, enemyConfig) {
@@ -85,6 +91,7 @@ function validateLevelData(data) {
     Array.isArray(data?.platforms) &&
     Array.isArray(data?.collectables) &&
     Array.isArray(data?.hazards) &&
+    Array.isArray(data?.combatZones) &&
     Array.isArray(data?.enemies) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";

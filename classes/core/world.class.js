@@ -3,6 +3,7 @@ import { FallTracker } from "../systems/fall-tracker.class.js";
 import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.class.js";
 import { ProjectileSystem } from "../systems/projectile-system.class.js";
 import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
+import { WaveManager } from "../systems/wave-manager.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
@@ -81,6 +82,7 @@ export class World {
       config.enemyCombat,
       this.#collisionManager,
     );
+    this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -92,7 +94,7 @@ export class World {
   initialize() {
     if (this.isInitialized) return false;
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
-    this.#addLevelEntities(WORLD_ENTITY_GROUPS.ENEMIES, "enemies");
+    this.waveManager.initialize(this);
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.COLLECTABLES, "collectables");
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.HAZARDS, "hazards");
     this.#ensureFallbackScene();
@@ -163,6 +165,7 @@ export class World {
     this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
+    this.waveManager.update(this, deltaTimeSeconds);
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
   }
@@ -223,6 +226,7 @@ export class World {
     this.context.translate(-this.camera.x, -this.camera.y);
     try {
       this.#drawEntities();
+      this.waveManager.draw(this.context);
       this.#collisionDebugRenderer.draw(this.context, this.#entityGroups);
     } finally {
       this.context.restore();
