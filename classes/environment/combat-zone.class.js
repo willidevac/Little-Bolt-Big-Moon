@@ -1,25 +1,3 @@
-import { DrawableObject } from "../base/drawable-object.class.js";
-import { AnimationController } from "../systems/animation-controller.class.js";
-import { getAssetPath } from "../../js/config/asset-paths.js";
-import { clamp } from "../../js/utils/math.js";
-
-const GATE_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("effects", "gameplay-effects.png"),
-  frameWidth: 32,
-  frameHeight: 32,
-  frameCount: 23,
-});
-const GATE_RENDER_SCALE = 2;
-const GATE_TILE_SIZE = GATE_SPRITE_CONFIG.frameWidth * GATE_RENDER_SCALE;
-const GATE_ANIMATION = Object.freeze({
-  active: Object.freeze({
-    startFrame: 11,
-    frameCount: 6,
-    frameDurationSeconds: 0.1,
-    loop: true,
-  }),
-});
-
 export const COMBAT_ZONE_STATES = Object.freeze({
   WAITING: "waiting",
   ACTIVE: "active",
@@ -27,16 +5,15 @@ export const COMBAT_ZONE_STATES = Object.freeze({
 });
 
 /**
- * Sichtbarer rechteckiger Arenabereich mit einem kleinen Zustandsautomaten.
+ * Unsichtbarer Auslöser für eine überspringbare Gegnergruppe.
  */
-export class CombatZone extends DrawableObject {
+export class CombatZone {
   #state;
 
   /**
    * @param {Readonly<object>} zoneData
    */
   constructor(zoneData) {
-    super();
     this.#validateData(zoneData);
     this.id = zoneData.id;
     this.x = zoneData.x;
@@ -45,13 +22,10 @@ export class CombatZone extends DrawableObject {
     this.height = zoneData.height;
     this.enemyIds = Object.freeze([...zoneData.enemyIds]);
     this.#state = COMBAT_ZONE_STATES.WAITING;
-    this.animationController = new AnimationController(GATE_ANIMATION);
-    this.loadSprite(GATE_SPRITE_CONFIG);
-    this.setFrameIndex(this.animationController.setState("active"));
   }
 
   /**
-   * Startet die Arena höchstens einmal.
+   * Startet die Begegnung höchstens einmal.
    * @returns {boolean}
    */
   activate() {
@@ -61,7 +35,7 @@ export class CombatZone extends DrawableObject {
   }
 
   /**
-   * Öffnet die aktive Arena dauerhaft.
+   * Schließt die aktive Begegnung dauerhaft ab.
    * @returns {boolean}
    */
   complete() {
@@ -86,48 +60,7 @@ export class CombatZone extends DrawableObject {
   }
 
   /**
-   * Hält ein Ziel während der Kampfphase innerhalb des sichtbaren Rahmens.
-   * @param {import("../base/movable-object.class.js").MovableObject} target
-   * @returns {boolean} Ob eine Position korrigiert wurde.
-   */
-  constrain(target) {
-    if (this.#state !== COMBAT_ZONE_STATES.ACTIVE) return false;
-    const nextX = clamp(target.x, this.x, this.x + this.width - target.width);
-    const nextY = clamp(target.y, this.y, this.y + this.height - target.height);
-    const changedX = nextX !== target.x;
-    const changedY = nextY !== target.y;
-    target.x = nextX;
-    target.y = nextY;
-    if (changedX) target.velocityX = 0;
-    if (changedY) target.velocityY = 0;
-    return changedX || changedY;
-  }
-
-  /**
-   * Animiert ausschließlich eine geschlossene Arena.
-   * @param {number} deltaTimeSeconds
-   */
-  update(deltaTimeSeconds) {
-    if (this.#state !== COMBAT_ZONE_STATES.ACTIVE) return;
-    const frame = this.animationController.update("active", deltaTimeSeconds);
-    this.setFrameIndex(frame);
-  }
-
-  /**
-   * Zeichnet im Wartezustand Eckmarken und im Kampf einen geschlossenen Rahmen.
-   * @param {CanvasRenderingContext2D} context
-   */
-  draw(context) {
-    if (this.#state === COMBAT_ZONE_STATES.COMPLETED) return;
-    context.save();
-    context.globalAlpha = this.#state === COMBAT_ZONE_STATES.WAITING ? 0.5 : 1;
-    if (this.#state === COMBAT_ZONE_STATES.WAITING) this.#drawCorners(context);
-    else this.#drawPerimeter(context);
-    context.restore();
-  }
-
-  /**
-   * Liefert einen unveränderlichen Stand für Tests und spätere UI-Anbindung.
+   * Liefert einen unveränderlichen Stand für Tests und Upgrade-Auslösung.
    * @returns {Readonly<object>}
    */
   getSnapshot() {
@@ -146,49 +79,13 @@ export class CombatZone extends DrawableObject {
     return this.#state;
   }
 
-  #drawCorners(context) {
-    const rightX = this.x + this.width - GATE_TILE_SIZE;
-    const bottomY = this.y + this.height - GATE_TILE_SIZE;
-    this.#drawTile(context, this.x, this.y);
-    this.#drawTile(context, rightX, this.y);
-    this.#drawTile(context, this.x, bottomY);
-    this.#drawTile(context, rightX, bottomY);
-  }
-
-  #drawPerimeter(context) {
-    const columns = this.width / GATE_TILE_SIZE;
-    const rows = this.height / GATE_TILE_SIZE;
-    for (let column = 0; column < columns; column += 1) {
-      const tileX = this.x + column * GATE_TILE_SIZE;
-      this.#drawTile(context, tileX, this.y);
-      this.#drawTile(context, tileX, this.y + this.height - GATE_TILE_SIZE);
-    }
-    for (let row = 1; row < rows - 1; row += 1) {
-      const tileY = this.y + row * GATE_TILE_SIZE;
-      this.#drawTile(context, this.x, tileY);
-      this.#drawTile(context, this.x + this.width - GATE_TILE_SIZE, tileY);
-    }
-  }
-
-  #drawTile(context, x, y) {
-    this.drawCurrentFrame(
-      context,
-      x,
-      y,
-      GATE_TILE_SIZE,
-      GATE_TILE_SIZE,
-    );
-  }
-
   #validateData(data) {
     const hasId = typeof data?.id === "string" && data.id.length > 0;
     const position = [data?.x, data?.y];
-    const hasPosition = position.every((value) => Number.isFinite(value));
+    const hasPosition = position.every(Number.isFinite);
     const dimensions = [data?.width, data?.height];
     const hasDimensions = dimensions.every((value) => {
-      return Number.isInteger(value) &&
-        value >= GATE_TILE_SIZE * 3 &&
-        value % GATE_TILE_SIZE === 0;
+      return Number.isFinite(value) && value > 0;
     });
     if (hasId && hasPosition && hasDimensions && this.#hasEnemyIds(data)) return;
     throw new TypeError("Die Kampfzonendaten sind ungültig.");

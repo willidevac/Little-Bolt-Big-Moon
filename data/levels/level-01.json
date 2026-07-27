@@ -126,9 +126,9 @@
       "id": "scrapyard-drone-01",
       "type": "droneGuard",
       "x": 840,
-      "y": 7540,
-      "patrolMinX": 736,
-      "patrolMaxX": 1088
+      "y": 7328,
+      "patrolMinX": 768,
+      "patrolMaxX": 1056
     },
     {
       "id": "factory-crawler-01",

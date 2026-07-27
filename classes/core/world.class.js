@@ -166,7 +166,7 @@ export class World {
     this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
-    this.waveManager.update(this, deltaTimeSeconds);
+    this.waveManager.update(this);
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
   }
@@ -227,7 +227,6 @@ export class World {
     this.context.translate(-this.camera.x, -this.camera.y);
     try {
       this.#drawEntities();
-      this.waveManager.draw(this.context);
       this.#collisionDebugRenderer.draw(this.context, this.#entityGroups);
     } finally {
       this.context.restore();

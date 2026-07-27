@@ -2,7 +2,7 @@ import { CombatZone, COMBAT_ZONE_STATES } from "../environment/combat-zone.class
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 /**
- * Aktiviert Arenagegner, sperrt laufende Phasen und meldet sichere Abschlüsse.
+ * Aktiviert Begegnungsgegner und meldet sichere Abschlüsse ohne Einsperren.
  */
 export class WaveManager {
   #zones;
@@ -42,29 +42,18 @@ export class WaveManager {
   }
 
   /**
-   * Aktualisiert genau eine aktive Phase oder löst die nächste Arena aus.
+   * Aktualisiert genau eine Begegnung oder löst die nächste Gegnergruppe aus.
    * @param {import("../core/world.class.js").World} world
-   * @param {number} deltaTimeSeconds
    */
-  update(world, deltaTimeSeconds) {
+  update(world) {
     if (!this.#isInitialized) return;
-    this.#zones.forEach((zone) => zone.update(deltaTimeSeconds));
     const activeZone = this.#getActiveZone();
     if (activeZone) {
-      activeZone.constrain(world.character);
       if (this.#hasEnded(activeZone, world)) this.#complete(activeZone);
       return;
     }
     const waitingZone = this.#zones.find((zone) => zone.canTrigger(world.character));
     if (waitingZone) this.#activate(waitingZone, world);
-  }
-
-  /**
-   * Zeichnet alle noch relevanten Arenamarkierungen.
-   * @param {CanvasRenderingContext2D} context
-   */
-  draw(context) {
-    this.#zones.forEach((zone) => zone.draw(context));
   }
 
   /**

@@ -107,6 +107,8 @@ const ENEMY_CONFIG = Object.freeze({
     speedPixelsPerSecond: 86,
     hoverAmplitudePixels: 12,
     hoverCyclesPerSecond: 0.45,
+    verticalTrackingSpeedPixelsPerSecond: 96,
+    verticalTrackingRangePixels: 120,
     maximumHealth: 36,
     contactDamage: 20,
     attackCooldownSeconds: 1.4,

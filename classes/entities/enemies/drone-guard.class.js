@@ -1,5 +1,6 @@
 import { Enemy } from "./enemy.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
+import { clamp } from "../../../js/utils/math.js";
 
 const FULL_CIRCLE_RADIANS = Math.PI * 2;
 const VISUAL_CONFIG = Object.freeze({
@@ -59,6 +60,10 @@ export class DroneGuard extends Enemy {
     this.speedPixelsPerSecond = config.speedPixelsPerSecond;
     this.hoverAmplitudePixels = config.hoverAmplitudePixels;
     this.hoverCyclesPerSecond = config.hoverCyclesPerSecond;
+    this.verticalTrackingSpeedPixelsPerSecond =
+      config.verticalTrackingSpeedPixelsPerSecond;
+    this.verticalTrackingRangePixels = config.verticalTrackingRangePixels;
+    this.hoverHomeY = this.y;
     this.hoverCenterY = this.y;
     this.hoverSeconds = 0;
     this.isAffectedByGravity = false;
@@ -75,15 +80,28 @@ export class DroneGuard extends Enemy {
     this.velocityX = this.direction * this.speedPixelsPerSecond;
     super.update(deltaTimeSeconds, world);
     this.stayInsidePatrol();
-    this.#updateHover(deltaTimeSeconds);
+    this.#updateHover(deltaTimeSeconds, world.character);
     this.updateAnimation(deltaTimeSeconds);
   }
 
-  #updateHover(deltaTimeSeconds) {
+  #updateHover(deltaTimeSeconds, target) {
+    this.#trackTarget(deltaTimeSeconds, target);
     this.hoverSeconds += deltaTimeSeconds;
     const angle = this.hoverSeconds * this.hoverCyclesPerSecond *
       FULL_CIRCLE_RADIANS;
     this.y = this.hoverCenterY + Math.sin(angle) * this.hoverAmplitudePixels;
+  }
+
+  #trackTarget(deltaTimeSeconds, target) {
+    if (!target) return;
+    const desiredY = target.y + target.height / 2 - this.height / 2;
+    const minimumY = this.hoverHomeY - this.verticalTrackingRangePixels;
+    const maximumY = this.hoverHomeY + this.verticalTrackingRangePixels;
+    const targetY = clamp(desiredY, minimumY, maximumY);
+    const distance = targetY - this.hoverCenterY;
+    const maximumStep = this.verticalTrackingSpeedPixelsPerSecond *
+      deltaTimeSeconds;
+    this.hoverCenterY += clamp(distance, -maximumStep, maximumStep);
   }
 
   #validateConfig(config) {
@@ -91,6 +109,8 @@ export class DroneGuard extends Enemy {
       config?.speedPixelsPerSecond,
       config?.hoverAmplitudePixels,
       config?.hoverCyclesPerSecond,
+      config?.verticalTrackingSpeedPixelsPerSecond,
+      config?.verticalTrackingRangePixels,
     ];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
     throw new TypeError("Die Bewegung des Drohnenwächters ist ungültig.");
