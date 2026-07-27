@@ -1,14 +1,30 @@
-@media (max-width: 900px) and (orientation: portrait) {
+@media (max-width: 1024px) and (orientation: portrait) {
   .game-shell {
     display: none;
   }
 
   .portrait-notice {
     display: grid;
+    width: 100%;
+    min-height: 100vh;
     min-height: 100dvh;
-    padding: 2rem;
-    place-items: center;
+    grid-template-columns: auto minmax(0, 24rem);
+    gap: clamp(1.5rem, 8vw, 3rem);
+    padding:
+      max(2rem, env(safe-area-inset-top))
+      max(2rem, env(safe-area-inset-right))
+      max(2rem, env(safe-area-inset-bottom))
+      max(2rem, env(safe-area-inset-left));
+    align-items: center;
+    justify-content: center;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) and (orientation: portrait) {
+  .portrait-notice {
+    grid-template-columns: 1fr;
+    align-content: center;
   }
 }
 

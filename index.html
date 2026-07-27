@@ -2,7 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#242733">
     <title>Little Bolt, Big Moon</title>
     <link rel="icon" type="image/png" href="./img/favicon.png">
@@ -19,7 +19,6 @@
       >
         Dein Browser unterstützt das Canvas-Element leider nicht.
       </canvas>
-
       <section
         class="game-hud"
         aria-label="Spielstatus"
@@ -389,11 +388,13 @@
         </div>
       </section>
     </main>
-
-    <aside class="portrait-notice" aria-live="polite">
-      Bitte drehe dein Gerät ins Querformat.
+    <aside class="portrait-notice" aria-labelledby="portrait-title" aria-live="polite">
+      <span class="portrait-notice__device" aria-hidden="true"></span>
+      <div>
+        <h1 id="portrait-title">Bitte Gerät drehen</h1>
+        <p>Das Spiel funktioniert im Querformat.</p>
+      </div>
     </aside>
-
     <script type="module" src="./script.js"></script>
   </body>
 </html>
