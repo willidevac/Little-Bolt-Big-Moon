@@ -4,6 +4,7 @@ import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.clas
 import { ProjectileSystem } from "../systems/projectile-system.class.js";
 import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
 import { WaveManager } from "../systems/wave-manager.class.js";
+import { BossFightManager } from "../systems/boss-fight-manager.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
@@ -83,6 +84,7 @@ export class World {
       this.#collisionManager,
     );
     this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
+    this.bossFight = new BossFightManager(level?.enemies);
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -167,6 +169,7 @@ export class World {
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
     this.waveManager.update(this);
+    this.bossFight.update(this);
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
   }

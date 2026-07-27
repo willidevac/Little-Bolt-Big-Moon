@@ -101,6 +101,35 @@
             </output>
           </div>
         </div>
+
+        <div
+          class="hud-panel hud-boss"
+          aria-label="Bossstatus"
+          aria-live="polite"
+          data-hud-boss
+          hidden
+        >
+          <div class="hud-boss__heading">
+            <strong data-hud-boss-name>Mondwächter</strong>
+            <span>
+              Phase <output data-hud-boss-phase>1</output>
+            </span>
+          </div>
+          <div
+            class="hud-boss__bar"
+            role="progressbar"
+            aria-label="Lebensenergie des Mondwächters"
+            aria-valuemin="0"
+            aria-valuemax="400"
+            aria-valuenow="400"
+            data-hud-boss-bar
+          >
+            <span class="hud-boss__fill"></span>
+          </div>
+          <output class="hud-boss__health" data-hud-boss-health>
+            400 / 400
+          </output>
+        </div>
       </section>
 
       <section

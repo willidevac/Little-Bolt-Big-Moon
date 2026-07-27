@@ -44,7 +44,6 @@ export class Game {
       getCharacter: () => this.world.character,
     });
   }
-
   /**
    * Zeigt, ob das Spiel gerade pausiert ist.
    * @returns {boolean}
@@ -199,7 +198,6 @@ export class Game {
    * @returns {boolean}
    */
   win() { return this.#finishGame(GAME_STATES.WON); }
-
   /**
    * Friert die Welt nach einer Niederlage ein.
    * @returns {boolean}
@@ -275,6 +273,7 @@ export class Game {
     this.#updateRunStats();
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
     if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
+    if (this.world.bossFight.takeVictory()) this.win();
     this.#openWaveUpgrade();
   }
 
@@ -357,6 +356,7 @@ export class Game {
   #updateRunStats() {
     this.runStats.updateHeight(this.world.character?.y);
     this.runStats.applyPickups(this.world.takeCollectedPickups());
+    this.runStats.updateBoss(this.world.bossFight.getSnapshot());
   }
 
   /**

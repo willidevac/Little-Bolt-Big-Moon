@@ -108,6 +108,50 @@
   justify-self: start;
 }
 
+.hud-boss {
+  --boss-health-percent: 100%;
+  display: grid;
+  grid-column: 2;
+  grid-row: 3;
+  width: clamp(14rem, 38vw, 30rem);
+  gap: 0.3rem;
+  align-self: end;
+  justify-self: center;
+}
+
+.hud-boss[hidden] {
+  display: none;
+}
+
+.hud-boss__heading {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-cream);
+  font-size: clamp(0.55rem, 0.9vw, 0.78rem);
+  text-transform: uppercase;
+}
+
+.hud-boss__bar {
+  height: clamp(0.55rem, 1.2vw, 0.85rem);
+  padding: 2px;
+  border: 1px solid #8aa0aa;
+  background: #02070d;
+}
+
+.hud-boss__fill {
+  display: block;
+  width: var(--boss-health-percent);
+  height: 100%;
+  background: linear-gradient(90deg, #ff7a2f, #ffe26f);
+  transition: width 120ms linear;
+}
+
+.hud-boss__health {
+  color: white;
+  font-size: clamp(0.52rem, 0.8vw, 0.7rem);
+  text-align: center;
+}
+
 .hud-resource {
   min-width: clamp(6.5rem, 12vw, 9rem);
 }
@@ -169,5 +213,15 @@
   .hud-resources,
   .hud-score-group {
     gap: 0.25rem;
+  }
+
+  .hud-boss {
+    width: clamp(9rem, 42vw, 15rem);
+    gap: 0.15rem;
+  }
+
+  .hud-boss__bar {
+    height: 0.42rem;
+    padding: 1px;
   }
 }

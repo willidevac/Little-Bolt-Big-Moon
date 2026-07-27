@@ -7,6 +7,11 @@ const VALUE_SELECTORS = Object.freeze({
   heightMeters: '[data-hud-value="height"]',
   score: '[data-hud-value="score"]',
   energyBar: "[data-hud-energy-bar]",
+  boss: "[data-hud-boss]",
+  bossName: "[data-hud-boss-name]",
+  bossHealth: "[data-hud-boss-health]",
+  bossPhase: "[data-hud-boss-phase]",
+  bossBar: "[data-hud-boss-bar]",
 });
 
 /**
@@ -70,6 +75,7 @@ export class StatusBar {
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);
     this.setText(this.elements.score, this.formatScore(data.score));
+    this.renderBoss(data.boss);
   }
 
   /**
@@ -110,6 +116,24 @@ export class StatusBar {
     this.elements.energyBar.setAttribute("aria-valuenow", String(energy));
     this.elements.energyBar.setAttribute("aria-valuemax", String(maximumEnergy));
     this.elements.energyBar.setAttribute("aria-valuetext", `${energy} von ${maximumEnergy}`);
+  }
+
+  /**
+   * Zeigt den Mondwächter erst nach dem kontrollierten Kampfstart.
+   * @param {Readonly<object>|null} boss
+   */
+  renderBoss(boss) {
+    const isVisible = Boolean(boss?.isVisible);
+    this.elements.boss.hidden = !isVisible;
+    if (!isVisible) return;
+    const percentage = Math.round((boss.health / boss.maximumHealth) * 100);
+    this.setText(this.elements.bossName, boss.name);
+    this.setText(this.elements.bossHealth, `${boss.health} / ${boss.maximumHealth}`);
+    this.setText(this.elements.bossPhase, boss.phase);
+    this.elements.bossBar.style.setProperty("--boss-health-percent", `${percentage}%`);
+    this.elements.bossBar.setAttribute("aria-valuenow", String(boss.health));
+    this.elements.bossBar.setAttribute("aria-valuemax", String(boss.maximumHealth));
+    this.elements.bossBar.setAttribute("aria-valuetext", `${boss.health} von ${boss.maximumHealth}`);
   }
 
   /**

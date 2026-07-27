@@ -11,6 +11,7 @@ const STAT_BY_PICKUP_TYPE = Object.freeze({
  */
 export class RunStats {
   #listeners;
+  #bossSignature;
 
   /**
    * @param {Readonly<object>} config
@@ -37,6 +38,8 @@ export class RunStats {
     this.gears = this.config.startingGears;
     this.score = this.config.startingScore;
     this.heightMeters = 0;
+    this.boss = null;
+    this.#bossSignature = "";
     this.#notifyChange();
   }
 
@@ -140,6 +143,21 @@ export class RunStats {
   }
 
   /**
+   * Übernimmt Bosswerte nur, wenn sich die Anzeige wirklich geändert hat.
+   * @param {Readonly<object>} snapshot
+   * @returns {boolean}
+   */
+  updateBoss(snapshot) {
+    this.#validateBossSnapshot(snapshot);
+    const signature = this.#getBossSignature(snapshot);
+    if (signature === this.#bossSignature) return false;
+    this.boss = Object.freeze({ ...snapshot });
+    this.#bossSignature = signature;
+    this.#notifyChange();
+    return true;
+  }
+
+  /**
    * Liefert eine unveränderliche Momentaufnahme für das HUD.
    * @returns {Readonly<object>}
    */
@@ -152,6 +170,7 @@ export class RunStats {
       gears: this.gears,
       heightMeters: this.heightMeters,
       score: this.score,
+      boss: this.boss,
     });
   }
 
@@ -232,6 +251,32 @@ export class RunStats {
   #validateUpgradeAmount(amount) {
     if (Number.isFinite(amount) && amount > 0) return;
     throw new TypeError("Eine Verbesserung muss eine positive Zahl sein.");
+  }
+
+  #getBossSignature(snapshot) {
+    return [
+      snapshot.name,
+      snapshot.health,
+      snapshot.maximumHealth,
+      snapshot.phase,
+      snapshot.isActive,
+      snapshot.isDead,
+      snapshot.isVisible,
+    ].join("|");
+  }
+
+  #validateBossSnapshot(snapshot) {
+    const values = [snapshot?.health, snapshot?.maximumHealth, snapshot?.phase];
+    const hasNumbers = values.every(Number.isFinite);
+    const hasName = typeof snapshot?.name === "string" && snapshot.name;
+    const flags = [snapshot?.isActive, snapshot?.isDead, snapshot?.isVisible];
+    const hasFlags = flags.every((flag) => typeof flag === "boolean");
+    const hasHealth = snapshot?.health >= 0 &&
+      snapshot?.maximumHealth > 0 &&
+      snapshot?.health <= snapshot?.maximumHealth;
+    const hasPhase = Number.isInteger(snapshot?.phase) && snapshot.phase > 0;
+    if (hasNumbers && hasName && hasFlags && hasHealth && hasPhase) return;
+    throw new TypeError("Die Bossanzeige enthält ungültige Werte.");
   }
 
   #notifyChange() {
