@@ -1,9 +1,13 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
 import { FallTracker } from "../systems/fall-tracker.class.js";
 import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.class.js";
+import { ProjectileSystem } from "../systems/projectile-system.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
+import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
+
+export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 
 const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
 const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
@@ -11,15 +15,6 @@ const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
   y: 560,
   width: 512,
   height: 32,
-});
-
-export const WORLD_ENTITY_GROUPS = Object.freeze({
-  CHARACTERS: "characters",
-  PLATFORMS: "platforms",
-  ENEMIES: "enemies",
-  PROJECTILES: "projectiles",
-  COLLECTABLES: "collectables",
-  HAZARDS: "hazards",
 });
 
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
@@ -53,6 +48,7 @@ export class World {
   #collectedPickups;
   #damageEvents;
   #collisionDebugRenderer;
+  #projectileSystem;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -75,6 +71,10 @@ export class World {
     this.#collectedPickups = [];
     this.#damageEvents = [];
     this.#collisionDebugRenderer = new CollisionDebugRenderer(config.debug);
+    this.#projectileSystem = new ProjectileSystem(
+      config.projectiles,
+      this.#collisionManager,
+    );
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -150,6 +150,7 @@ export class World {
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
+    this.#projectileSystem.resolve(this);
     this.#collisionManager.resetGroundStates(characters);
     this.#resolvePlatformLandings(deltaTimeSeconds);
     this.#resolveCollectablePickups();
@@ -173,6 +174,15 @@ export class World {
   isCharacterInDeathZone() {
     if (!this.character) return false;
     return this.#fallTracker.hasReachedDeathZone(this.character);
+  }
+
+  /**
+   * Wandelt einen neuen Fernkampfangriff in ein Projektil um.
+   * @param {Readonly<object>|null} attack
+   * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}
+   */
+  handlePlayerAttack(attack) {
+    return this.#projectileSystem.spawn(attack, this);
   }
 
   /**

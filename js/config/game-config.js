@@ -73,6 +73,15 @@ const WEAPONS_CONFIG = Object.freeze({
   definitions: WEAPON_DEFINITIONS,
 });
 
+const PROJECTILE_CONFIG = Object.freeze({
+  playerBolt: Object.freeze({
+    speedPixelsPerSecond: 900,
+    lifetimeSeconds: 1.6,
+    worldPaddingPixels: 64,
+    animationFrameDurationSeconds: 0.08,
+  }),
+});
+
 const CAMERA_CONFIG = Object.freeze({
   deadZoneTopPixels: 216,
   deadZoneBottomPixels: 504,
@@ -104,6 +113,7 @@ export const GAME_CONFIG = Object.freeze({
   character: CHARACTER_CONFIG,
   combat: COMBAT_CONFIG,
   weapons: WEAPONS_CONFIG,
+  projectiles: PROJECTILE_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,

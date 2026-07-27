@@ -247,7 +247,8 @@ export class Game {
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
-    this.weaponSystem.update(deltaTimeSeconds, this.world.character);
+    const attack = this.weaponSystem.update(deltaTimeSeconds, this.world.character);
+    this.world.handlePlayerAttack(attack);
     this.world.update(deltaTimeSeconds);
     this.#updateRunStats();
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
