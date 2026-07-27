@@ -220,6 +220,23 @@
   margin-top: 0.85rem;
 }
 
+.screen-panel--end {
+  width: min(100%, 30rem);
+  text-align: center;
+}
+
+.end-screen[data-end-state="won"] .screen-panel--end {
+  border-color: var(--color-cyan);
+}
+
+.end-screen[data-end-state="lost"] .screen-panel--end {
+  border-color: var(--color-orange);
+}
+
+.screen-panel--end .start-menu {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .screen-panel__hint {
   margin-top: 0.9rem;
   text-align: center;

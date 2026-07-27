@@ -390,9 +390,9 @@ export class Game {
   #finishGame(endState) {
     if (!this.#isPlaying()) return false;
     this.keyboard.reset();
+    this.gameCanvas.setLoopState("paused");
     return this.#setGameState(endState);
   }
-
   #handleDeathZone() {
     this.world.character?.die();
     this.lose();

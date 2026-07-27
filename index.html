@@ -245,6 +245,24 @@
       </section>
 
       <section
+        class="game-screen overlay-screen end-screen"
+        aria-labelledby="end-title"
+        aria-live="assertive"
+        data-game-screen="end"
+        hidden
+      >
+        <div class="screen-panel screen-panel--end">
+          <p class="screen-panel__eyebrow" data-end-eyebrow></p>
+          <h2 id="end-title" class="screen-panel__title" tabindex="-1" data-end-title></h2>
+          <p class="screen-panel__copy" data-end-copy></p>
+          <nav class="start-menu" aria-label="Lauf beenden">
+            <button class="menu-button menu-button--primary" type="button" data-ui-action="restart">Nochmal versuchen</button>
+            <button class="menu-button" type="button" data-ui-action="home">Zum Hauptmenü</button>
+          </nav>
+        </div>
+      </section>
+
+      <section
         class="game-dialog"
         role="dialog"
         aria-modal="true"

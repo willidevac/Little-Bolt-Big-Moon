@@ -4,11 +4,28 @@ const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
   paused: '[data-game-screen="paused"]',
   upgrading: '[data-game-screen="upgrading"]',
+  end: '[data-game-screen="end"]',
+  endEyebrow: "[data-end-eyebrow]",
+  endTitle: "[data-end-title]",
+  endCopy: "[data-end-copy]",
   upgradeOptions: "[data-upgrade-options]",
   dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
   resume: '[data-ui-action="resume"]',
   dialogFocus: "[data-dialog-focus]",
+});
+
+const END_SCREEN_CONTENT = Object.freeze({
+  [GAME_STATES.WON]: Object.freeze({
+    eyebrow: "Aufstieg geschafft",
+    title: "Mond erreicht!",
+    copy: "Byte hat den Mondwächter besiegt und seinen großen Traum erreicht.",
+  }),
+  [GAME_STATES.LOST]: Object.freeze({
+    eyebrow: "Der Aufstieg endet hier",
+    title: "Byte braucht eine Pause",
+    copy: "Der Weg war dieses Mal zu gefährlich. Beim nächsten Versuch geht es höher.",
+  }),
 });
 
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
@@ -36,12 +53,7 @@ export class ScreenController {
   constructor(game, root) {
     this.game = game;
     this.root = root;
-    this.homeScreen = getRequiredElement(root, SELECTORS.home);
-    this.pauseScreen = getRequiredElement(root, SELECTORS.paused);
-    this.upgradeScreen = getRequiredElement(root, SELECTORS.upgrading);
-    this.upgradeOptions = getRequiredElement(root, SELECTORS.upgradeOptions);
-    this.startButton = getRequiredElement(root, SELECTORS.start);
-    this.resumeButton = getRequiredElement(root, SELECTORS.resume);
+    this.#assignRequiredElements();
     this.dialogs = [...root.querySelectorAll(SELECTORS.dialogs)];
     this.activeDialog = null;
     this.previousFocus = null;
@@ -49,6 +61,23 @@ export class ScreenController {
     this.boundClick = this.handleClick.bind(this);
     this.boundDialogKeydown = this.handleDialogKeydown.bind(this);
     this.actions = this.createActions();
+  }
+
+  #assignRequiredElements() {
+    this.homeScreen = getRequiredElement(this.root, SELECTORS.home);
+    this.pauseScreen = getRequiredElement(this.root, SELECTORS.paused);
+    this.upgradeScreen = getRequiredElement(this.root, SELECTORS.upgrading);
+    this.endScreen = getRequiredElement(this.root, SELECTORS.end);
+    this.upgradeOptions = getRequiredElement(this.root, SELECTORS.upgradeOptions);
+    this.startButton = getRequiredElement(this.root, SELECTORS.start);
+    this.resumeButton = getRequiredElement(this.root, SELECTORS.resume);
+    this.#assignEndElements();
+  }
+
+  #assignEndElements() {
+    this.endEyebrow = getRequiredElement(this.root, SELECTORS.endEyebrow);
+    this.endTitle = getRequiredElement(this.root, SELECTORS.endTitle);
+    this.endCopy = getRequiredElement(this.root, SELECTORS.endCopy);
   }
 
   /**
@@ -138,15 +167,31 @@ export class ScreenController {
    * @param {boolean} [moveFocus=true]
    */
   render(state, moveFocus = true) {
-    this.homeScreen.hidden = state !== GAME_STATES.HOME;
-    this.pauseScreen.hidden = state !== GAME_STATES.PAUSED;
-    this.upgradeScreen.hidden = state !== GAME_STATES.UPGRADING;
+    this.#setScreenVisibility(state);
     if (state === GAME_STATES.UPGRADING) this.#renderUpgradeOptions();
-    if (!this.homeScreen.hidden || !this.pauseScreen.hidden || !this.upgradeScreen.hidden) {
+    if (this.#hasVisibleScreen()) {
       if (moveFocus) this.focusScreen(state);
       return;
     }
     this.closeDialog(false);
+  }
+
+  #setScreenVisibility(state) {
+    const endContent = END_SCREEN_CONTENT[state];
+    this.homeScreen.hidden = state !== GAME_STATES.HOME;
+    this.pauseScreen.hidden = state !== GAME_STATES.PAUSED;
+    this.upgradeScreen.hidden = state !== GAME_STATES.UPGRADING;
+    this.endScreen.hidden = !endContent;
+    if (endContent) this.#renderEndScreen(state, endContent);
+  }
+
+  #hasVisibleScreen() {
+    return [
+      this.homeScreen,
+      this.pauseScreen,
+      this.upgradeScreen,
+      this.endScreen,
+    ].some((screen) => !screen.hidden);
   }
 
   /**
@@ -162,6 +207,7 @@ export class ScreenController {
       pause: () => this.game.togglePause(),
       resume: () => this.game.resume(),
       upgrade: (button) => this.game.chooseUpgrade(button.dataset.upgradeId),
+      restart: () => this.game.reset(),
       home: () => this.game.goHome(),
     });
   }
@@ -214,6 +260,7 @@ export class ScreenController {
     if (state === GAME_STATES.UPGRADING) {
       this.upgradeOptions.querySelector("button")?.focus();
     }
+    if (END_SCREEN_CONTENT[state]) this.endTitle.focus();
   }
 
   /**
@@ -224,6 +271,14 @@ export class ScreenController {
     this.homeScreen.inert = isInert;
     this.pauseScreen.inert = isInert;
     this.upgradeScreen.inert = isInert;
+    this.endScreen.inert = isInert;
+  }
+
+  #renderEndScreen(state, content) {
+    this.endScreen.dataset.endState = state;
+    this.endEyebrow.textContent = content.eyebrow;
+    this.endTitle.textContent = content.title;
+    this.endCopy.textContent = content.copy;
   }
 
   /**
