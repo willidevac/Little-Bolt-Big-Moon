@@ -5,11 +5,13 @@ import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
+import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
 const ENEMY_CLASSES = Object.freeze({
   scrapCrawler: ScrapCrawler,
   droneGuard: DroneGuard,
+  moonWarden: MoonWarden,
 });
 const TILESET_CONFIGS = Object.freeze({
   scrapyard: Object.freeze({

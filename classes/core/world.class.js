@@ -159,7 +159,8 @@ export class World {
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
-    this.#projectileSystem.resolve(this);
+    const projectileHits = this.#projectileSystem.resolve(this);
+    this.#damageEvents.push(...projectileHits);
     this.#resolveEnemyCombat(deltaTimeSeconds);
     this.#collisionManager.resetGroundStates(groundMovables);
     this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);

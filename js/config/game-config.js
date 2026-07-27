@@ -80,6 +80,20 @@ const PROJECTILE_CONFIG = Object.freeze({
     worldPaddingPixels: 64,
     animationFrameDurationSeconds: 0.08,
   }),
+  boss: Object.freeze({
+    shockwave: Object.freeze({
+      speedPixelsPerSecond: 520,
+      lifetimeSeconds: 1.6,
+      worldPaddingPixels: 64,
+      animationFrameDurationSeconds: 0.08,
+    }),
+    moonBolt: Object.freeze({
+      speedPixelsPerSecond: 430,
+      lifetimeSeconds: 2.4,
+      worldPaddingPixels: 64,
+      animationFrameDurationSeconds: 0.09,
+    }),
+  }),
 });
 
 const ENEMY_CONFIG = Object.freeze({
@@ -96,6 +110,17 @@ const ENEMY_CONFIG = Object.freeze({
     maximumHealth: 36,
     contactDamage: 20,
     attackCooldownSeconds: 1.4,
+  }),
+  moonWarden: Object.freeze({
+    speedPixelsPerSecond: 72,
+    maximumHealth: 400,
+    contactDamage: 25,
+    attackCooldownSeconds: 2.4,
+    activationDistancePixels: 760,
+    movementStopDistancePixels: 176,
+    attackReleaseSeconds: 0.3,
+    shockwaveDamage: 25,
+    moonBoltDamage: 18,
   }),
 });
 

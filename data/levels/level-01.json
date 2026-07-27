@@ -146,6 +146,15 @@
       "patrolMinX": 320,
       "patrolMaxX": 704,
       "startDirection": -1
+    },
+    {
+      "id": "moon-warden-01",
+      "type": "moonWarden",
+      "x": 544,
+      "y": 600,
+      "patrolMinX": 384,
+      "patrolMaxX": 896,
+      "startDirection": -1
     }
   ],
   "hazards": [

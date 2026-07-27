@@ -1,5 +1,6 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 import { BoltProjectile } from "../entities/weapons/bolt-projectile.class.js";
+import { BossProjectile } from "../entities/weapons/boss-projectile.class.js";
 
 /**
  * Erzeugt Spielerprojektile, prüft Treffer und entfernt verbrauchte Bolzen.
@@ -33,25 +34,61 @@ export class ProjectileSystem {
    * @param {import("../core/world.class.js").World} world
    */
   resolve(world) {
-    const projectiles = world
-      .getEntities(WORLD_ENTITY_GROUPS.PROJECTILES)
-      .filter((projectile) => projectile.team === "player");
+    this.#spawnBossProjectiles(world);
+    const projectiles = world.getEntities(WORLD_ENTITY_GROUPS.PROJECTILES);
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
+    const characterHits = [];
     projectiles.forEach((projectile) => {
-      if (!projectile.isExpired) this.#resolveHit(projectile, enemies);
-      if (projectile.isExpired) {
-        world.removeEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
-      }
+      this.#resolveProjectile(projectile, enemies, world.character, characterHits);
+      if (projectile.isExpired) this.#removeProjectile(projectile, world);
+    });
+    return Object.freeze(characterHits);
+  }
+
+  #resolveProjectile(projectile, enemies, character, characterHits) {
+    if (projectile.team === "player") {
+      this.#resolveEnemyHit(projectile, enemies);
+      return;
+    }
+    if (projectile.team !== "enemy") return;
+    const hit = this.#resolveCharacterHit(projectile, character);
+    if (hit) characterHits.push(hit);
+  }
+
+  #spawnBossProjectiles(world) {
+    const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
+    enemies.forEach((enemy) => {
+      if (typeof enemy.takeAttackEvents !== "function") return;
+      enemy.takeAttackEvents().forEach((event) => {
+        const projectile = new BossProjectile(event, this.config.boss);
+        world.addEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
+      });
     });
   }
 
-  #resolveHit(projectile, enemies) {
+  #resolveEnemyHit(projectile, enemies) {
+    if (projectile.isExpired) return;
     const target = this.#findFirstTarget(projectile, enemies);
     if (!target) return;
     if (typeof target.receivePlayerHit === "function") {
       target.receivePlayerHit(projectile.createHit());
     }
     projectile.expire();
+  }
+
+  #resolveCharacterHit(projectile, character) {
+    if (projectile.isExpired || !character || character.isDead) return null;
+    const wasHit = this.collisionManager.areOverlapping(
+      projectile.getTravelBounds(),
+      character,
+    );
+    if (!wasHit) return null;
+    projectile.expire();
+    return projectile.createHit();
+  }
+
+  #removeProjectile(projectile, world) {
+    world.removeEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
   }
 
   #findFirstTarget(projectile, enemies) {
@@ -79,9 +116,11 @@ export class ProjectileSystem {
   }
 
   #validateDependencies(config, collisionManager) {
-    const hasConfig = config?.playerBolt && typeof config.playerBolt === "object";
+    const hasPlayerConfig = config?.playerBolt &&
+      typeof config.playerBolt === "object";
+    const hasBossConfig = config?.boss?.shockwave && config?.boss?.moonBolt;
     const hasCollision = typeof collisionManager?.areOverlapping === "function";
-    if (hasConfig && hasCollision) return;
+    if (hasPlayerConfig && hasBossConfig && hasCollision) return;
     throw new TypeError("Das Projektilsystem ist unvollständig konfiguriert.");
   }
 }

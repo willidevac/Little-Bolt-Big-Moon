@@ -1,0 +1,201 @@
+import { MovableObject } from "../../base/movable-object.class.js";
+
+const LIFETIME_EPSILON_SECONDS = 1e-9;
+
+/**
+ * Gemeinsame Bewegung, Animation und Flugstreifenprüfung aller Projektile.
+ */
+export class Projectile extends MovableObject {
+  /**
+   * @param {Readonly<object>} projectileData
+   * @param {Readonly<object>} runtimeConfig
+   * @param {Readonly<object>} visualConfig
+   */
+  constructor(projectileData, runtimeConfig, visualConfig) {
+    super();
+    this.#validateInputs(projectileData, runtimeConfig, visualConfig);
+    this.#setVisualData(visualConfig);
+    this.#setRuntimeData(projectileData, runtimeConfig);
+    this.#setStartPosition(projectileData.origin, visualConfig.originOffsetY);
+    this.loadSprite(visualConfig.sprite);
+    this.setFrameIndex(visualConfig.animationStartFrame);
+  }
+
+  /**
+   * Bewegt und animiert das Projektil unabhängig von der Bildrate.
+   * @param {number} deltaTimeSeconds
+   * @param {import("../../core/world.class.js").World} world
+   */
+  update(deltaTimeSeconds, world) {
+    if (this.isExpired || !this.#isValidDeltaTime(deltaTimeSeconds)) return;
+    this.previousX = this.x;
+    this.previousY = this.y;
+    super.update(deltaTimeSeconds, world);
+    this.#updateLifetime(deltaTimeSeconds);
+    this.#updateAnimation(deltaTimeSeconds);
+    if (this.#isOutsideWorld(world.config.world)) this.expire();
+  }
+
+  /**
+   * Spiegelt ein nach links fliegendes Projektil.
+   * @param {CanvasRenderingContext2D} context
+   */
+  draw(context) {
+    if (this.velocityX >= 0) return super.draw(context);
+    context.save();
+    context.translate(this.x + this.width, this.y);
+    context.scale(-1, 1);
+    this.drawCurrentFrame(context, 0, 0, this.width, this.height);
+    context.restore();
+  }
+
+  /**
+   * Liefert den vollständigen Flugstreifen seit dem letzten Frame.
+   * @returns {Readonly<{x:number,y:number,width:number,height:number}>}
+   */
+  getTravelBounds() {
+    const current = this.getCollisionBounds();
+    const previous = this.#getPreviousBounds(current);
+    const x = Math.min(previous.x, current.x);
+    const y = Math.min(previous.y, current.y);
+    return Object.freeze({
+      x,
+      y,
+      width: Math.max(previous.x + previous.width, current.x + current.width) - x,
+      height: Math.max(previous.y + previous.height, current.y + current.height) - y,
+    });
+  }
+
+  /**
+   * Erzeugt ein unveränderliches Trefferpaket.
+   * @returns {Readonly<{amount:number,direction:number,source:string}>}
+   */
+  createHit() {
+    return Object.freeze({
+      amount: this.damage,
+      direction: Math.sign(this.velocityX) || 1,
+      source: this.source,
+    });
+  }
+
+  /**
+   * Markiert das Projektil genau einmal zum Entfernen.
+   * @returns {boolean}
+   */
+  expire() {
+    if (this.isExpired) return false;
+    this.isExpired = true;
+    return true;
+  }
+
+  #setVisualData(config) {
+    this.width = config.sprite.frameWidth * config.renderScale;
+    this.height = config.sprite.frameHeight * config.renderScale;
+    this.setCollisionBox(config.collisionBox);
+    this.animationStartFrame = config.animationStartFrame;
+    this.animationFrameCount = config.animationFrameCount;
+  }
+
+  #setRuntimeData(data, config) {
+    const direction = this.#normalizeDirection(data.direction);
+    this.team = data.team;
+    this.source = data.source;
+    this.damage = data.damage;
+    this.velocityX = direction.x * config.speedPixelsPerSecond;
+    this.velocityY = direction.y * config.speedPixelsPerSecond;
+    this.isAffectedByGravity = false;
+    this.lifetimeSecondsRemaining = config.lifetimeSeconds;
+    this.worldPaddingPixels = config.worldPaddingPixels;
+    this.animationFrameDurationSeconds = config.animationFrameDurationSeconds;
+    this.animationSeconds = 0;
+    this.isExpired = false;
+  }
+
+  #setStartPosition(origin, originOffsetY) {
+    this.x = this.velocityX >= 0 ? origin.x : origin.x - this.width;
+    this.y = origin.y - this.height * originOffsetY;
+    this.previousX = this.x;
+    this.previousY = this.y;
+  }
+
+  #updateAnimation(deltaTimeSeconds) {
+    this.animationSeconds += deltaTimeSeconds;
+    const offset = Math.floor(
+      this.animationSeconds / this.animationFrameDurationSeconds,
+    ) % this.animationFrameCount;
+    this.setFrameIndex(this.animationStartFrame + offset);
+  }
+
+  #updateLifetime(deltaTimeSeconds) {
+    const hasElapsed = deltaTimeSeconds + LIFETIME_EPSILON_SECONDS >=
+      this.lifetimeSecondsRemaining;
+    this.lifetimeSecondsRemaining = hasElapsed
+      ? 0
+      : this.lifetimeSecondsRemaining - deltaTimeSeconds;
+  }
+
+  #isOutsideWorld(worldConfig) {
+    if (this.lifetimeSecondsRemaining <= 0) return true;
+    const padding = this.worldPaddingPixels;
+    const outsideX = this.x + this.width < -padding ||
+      this.x > worldConfig.width + padding;
+    const outsideY = this.y + this.height < -padding ||
+      this.y > worldConfig.height + padding;
+    return outsideX || outsideY;
+  }
+
+  #getPreviousBounds(current) {
+    return {
+      x: this.previousX + (current.x - this.x),
+      y: this.previousY + (current.y - this.y),
+      width: current.width,
+      height: current.height,
+    };
+  }
+
+  #normalizeDirection(direction) {
+    const length = Math.hypot(direction.x, direction.y);
+    return Object.freeze({
+      x: direction.x / length,
+      y: direction.y / length,
+    });
+  }
+
+  #validateInputs(data, runtime, visual) {
+    const dataNumbers = [data?.damage, data?.origin?.x, data?.origin?.y,
+      data?.direction?.x, data?.direction?.y];
+    const runtimeNumbers = [runtime?.speedPixelsPerSecond, runtime?.lifetimeSeconds,
+      runtime?.worldPaddingPixels, runtime?.animationFrameDurationSeconds];
+    const hasData = ["player", "enemy"].includes(data?.team) &&
+      typeof data?.source === "string" && data.source.length > 0 &&
+      dataNumbers.every(Number.isFinite) &&
+      data.damage > 0 &&
+      Math.hypot(data.direction.x, data.direction.y) > 0;
+    if (hasData && this.#hasValidRuntime(runtimeNumbers) &&
+      this.#hasValidVisual(visual)) return;
+    throw new TypeError("Die Projektilkonfiguration ist unvollständig.");
+  }
+
+  #hasValidRuntime(values) {
+    return values.every((value) => Number.isFinite(value) && value > 0);
+  }
+
+  #hasValidVisual(config) {
+    const values = [config?.renderScale, config?.originOffsetY,
+      config?.animationStartFrame, config?.animationFrameCount];
+    const hasValues = values.every(Number.isFinite) &&
+      config.renderScale > 0 &&
+      config.originOffsetY >= 0 && config.originOffsetY <= 1 &&
+      Number.isInteger(config.animationStartFrame) &&
+      config.animationStartFrame >= 0 &&
+      Number.isInteger(config.animationFrameCount) &&
+      config.animationFrameCount > 0 &&
+      config.animationStartFrame + config.animationFrameCount <=
+        config.sprite?.frameCount;
+    return hasValues && config?.sprite && config?.collisionBox;
+  }
+
+  #isValidDeltaTime(deltaTimeSeconds) {
+    return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
+  }
+}

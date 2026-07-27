@@ -21,7 +21,11 @@ export class Enemy extends MovableObject {
     this.#setVisualSize(visualConfig);
     this.#validateEnemyData(enemyData);
     this.#setEnemyData(enemyData);
-    this.#setCombatData(combatConfig, visualConfig.animations);
+    this.#setCombatData(
+      combatConfig,
+      visualConfig.animations,
+      visualConfig.initialAttackState ?? "attack",
+    );
     this.setCollisionBox(visualConfig.collisionBox);
     this.animationController = new AnimationController(visualConfig.animations);
     this.loadSprite(visualConfig.sprite);
@@ -65,7 +69,7 @@ export class Enemy extends MovableObject {
     const lockedState = this.#getLockedState();
     if (lockedState) return this.#maintainTimedState(
       lockedState,
-      STATE_TIMER_PROPERTIES[lockedState],
+      this.#getTimerProperty(lockedState),
       deltaTimeSeconds,
     );
     this.setAnimationState(movementState);
@@ -97,11 +101,24 @@ export class Enemy extends MovableObject {
   attack(target) {
     if (!this.#canAttack()) return null;
     this.#validateTarget(target);
-    this.attackSecondsRemaining = this.attackStateSeconds;
-    this.attackCooldownSecondsRemaining = this.attackCooldownSeconds;
-    this.setAnimationState("attack");
+    this.startAttackState(this.defaultAttackState);
     const direction = this.#getCenterX(target) < this.#getCenterX(this) ? -1 : 1;
     return this.#createContactHit(direction);
+  }
+
+  /**
+   * Startet einen vorhandenen Angriffsclip mit gemeinsamem Cooldown.
+   * @param {string} animationState
+   * @returns {boolean}
+   */
+  startAttackState(animationState) {
+    if (!this.#canAttack()) return false;
+    const clip = this.animationController.clips[animationState];
+    this.attackSecondsRemaining = this.#getAnimationDuration(clip);
+    this.attackCooldownSecondsRemaining = this.attackCooldownSeconds;
+    this.attackAnimationState = animationState;
+    this.setAnimationState(animationState);
+    return true;
   }
 
   /**
@@ -171,13 +188,17 @@ export class Enemy extends MovableObject {
     this.animationState = null;
   }
 
-  #setCombatData(config, animations) {
+  #setCombatData(config, animations, defaultAttackState) {
     this.#validateCombatConfig(config);
+    if (!animations?.[defaultAttackState]) {
+      throw new RangeError(`Unbekannter Standardangriff: ${defaultAttackState}`);
+    }
     this.maximumHealth = config.maximumHealth;
     this.health = this.maximumHealth;
     this.contactDamage = config.contactDamage;
     this.attackCooldownSeconds = config.attackCooldownSeconds;
-    this.#setStateDurations(animations);
+    this.defaultAttackState = defaultAttackState;
+    this.#setStateDurations(animations, defaultAttackState);
     this.#resetCombatTimers();
   }
 
@@ -192,9 +213,11 @@ export class Enemy extends MovableObject {
     }
   }
 
-  #setStateDurations(animations) {
+  #setStateDurations(animations, defaultAttackState) {
     this.hurtStateSeconds = this.#getAnimationDuration(animations?.hurt);
-    this.attackStateSeconds = this.#getAnimationDuration(animations?.attack);
+    this.attackStateSeconds = this.#getAnimationDuration(
+      animations?.[defaultAttackState],
+    );
     this.deathStateSeconds = this.#getAnimationDuration(animations?.dead);
   }
 
@@ -203,13 +226,19 @@ export class Enemy extends MovableObject {
     this.attackSecondsRemaining = 0;
     this.deathSecondsRemaining = 0;
     this.attackCooldownSecondsRemaining = 0;
+    this.attackAnimationState = this.defaultAttackState;
   }
 
   #getLockedState() {
     if (this.isDead) return "dead";
     if (this.isHurt) return "hurt";
-    if (this.attackSecondsRemaining > 0) return "attack";
+    if (this.attackSecondsRemaining > 0) return this.attackAnimationState;
     return null;
+  }
+
+  #getTimerProperty(state) {
+    if (state === this.attackAnimationState) return "attackSecondsRemaining";
+    return STATE_TIMER_PROPERTIES[state];
   }
 
   #maintainTimedState(state, timerProperty, deltaTimeSeconds) {
