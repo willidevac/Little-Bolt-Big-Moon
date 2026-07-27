@@ -17,6 +17,7 @@ export class DrawableObject {
     this.imageState = "empty";
     this.spriteConfig = null;
     this.frameIndex = 0;
+    this.collisionBox = null;
   }
 
   /**
@@ -46,6 +47,36 @@ export class DrawableObject {
       throw new RangeError(`Ungültiger Spriteframe: ${frameIndex}`);
     }
     this.frameIndex = frameIndex;
+  }
+
+  /**
+   * Legt eine präzise Kollisionsfläche innerhalb des sichtbaren Bildes fest.
+   * @param {{offsetX:number, offsetY:number, width:number, height:number}} box
+   */
+  setCollisionBox(box) {
+    if (!this.#isValidCollisionBox(box)) {
+      throw new RangeError("Die Kollisionsfläche liegt außerhalb des Objekts.");
+    }
+    this.collisionBox = Object.freeze({ ...box });
+  }
+
+  /**
+   * Liefert die Kollisionsfläche in absoluten Weltkoordinaten.
+   * @returns {Readonly<{x:number, y:number, width:number, height:number}>}
+   */
+  getCollisionBounds() {
+    const box = this.collisionBox ?? {
+      offsetX: 0,
+      offsetY: 0,
+      width: this.width,
+      height: this.height,
+    };
+    return Object.freeze({
+      x: this.x + box.offsetX,
+      y: this.y + box.offsetY,
+      width: box.width,
+      height: box.height,
+    });
   }
 
   /**
@@ -128,5 +159,14 @@ export class DrawableObject {
     if (!config || typeof config.source !== "string" || config.source.length === 0) return false;
     const frameValues = [config.frameWidth, config.frameHeight, config.frameCount];
     return frameValues.every((value) => Number.isInteger(value) && value > 0);
+  }
+
+  #isValidCollisionBox(box) {
+    const values = [box?.offsetX, box?.offsetY, box?.width, box?.height];
+    const hasValidValues = values.every((value) => Number.isFinite(value));
+    if (!hasValidValues || box.width <= 0 || box.height <= 0) return false;
+    const fitsWidth = box.offsetX >= 0 && box.offsetX + box.width <= this.width;
+    const fitsHeight = box.offsetY >= 0 && box.offsetY + box.height <= this.height;
+    return fitsWidth && fitsHeight;
   }
 }

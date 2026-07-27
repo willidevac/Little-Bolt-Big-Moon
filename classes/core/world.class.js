@@ -1,5 +1,6 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
 import { FallTracker } from "../systems/fall-tracker.class.js";
+import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { Camera } from "./camera.class.js";
@@ -51,6 +52,7 @@ export class World {
   #fallTracker;
   #collectedPickups;
   #damageEvents;
+  #collisionDebugRenderer;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -72,6 +74,7 @@ export class World {
     this.#fallTracker = new FallTracker(config.world);
     this.#collectedPickups = [];
     this.#damageEvents = [];
+    this.#collisionDebugRenderer = new CollisionDebugRenderer(config.debug);
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -201,6 +204,7 @@ export class World {
     this.context.translate(-this.camera.x, -this.camera.y);
     try {
       this.#drawEntities();
+      this.#collisionDebugRenderer.draw(this.context, this.#entityGroups);
     } finally {
       this.context.restore();
     }

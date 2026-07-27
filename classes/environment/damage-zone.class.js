@@ -9,6 +9,12 @@ const DAMAGE_ZONE_SPRITE_CONFIG = Object.freeze({
   frameCount: 23,
 });
 const DAMAGE_ZONE_RENDER_SCALE = 2;
+const DAMAGE_ZONE_COLLISION_BOX = Object.freeze({
+  offsetX: 16,
+  offsetY: 10,
+  width: 32,
+  height: 48,
+});
 const ELECTRIC_ANIMATION = Object.freeze({
   electric: Object.freeze({
     startFrame: 11,
@@ -34,6 +40,7 @@ export class DamageZone extends DrawableObject {
     this.y = zoneData.y;
     this.width = DAMAGE_ZONE_SPRITE_CONFIG.frameWidth * DAMAGE_ZONE_RENDER_SCALE;
     this.height = DAMAGE_ZONE_SPRITE_CONFIG.frameHeight * DAMAGE_ZONE_RENDER_SCALE;
+    this.setCollisionBox(DAMAGE_ZONE_COLLISION_BOX);
     this.animationController = new AnimationController(ELECTRIC_ANIMATION);
     this.loadSprite(DAMAGE_ZONE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState("electric"));

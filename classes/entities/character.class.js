@@ -10,6 +10,18 @@ const BYTE_SPRITE_CONFIG = Object.freeze({
   frameCount: 33,
 });
 const BYTE_RENDER_SCALE = 2;
+const BYTE_HURTBOX = Object.freeze({
+  offsetX: 12,
+  offsetY: 6,
+  width: 40,
+  height: 58,
+});
+const BYTE_STOMP_BOX = Object.freeze({
+  offsetX: 16,
+  offsetY: 50,
+  width: 32,
+  height: 14,
+});
 const STATE_TIME_EPSILON_SECONDS = 1e-9;
 const NEUTRAL_INPUT = Object.freeze({ left: false, right: false, jump: false });
 const ACTIVITY_ACTIONS = Object.freeze([
@@ -51,6 +63,7 @@ export class Character extends MovableObject {
     super();
     this.width = BYTE_SPRITE_CONFIG.frameWidth * BYTE_RENDER_SCALE;
     this.height = BYTE_SPRITE_CONFIG.frameHeight * BYTE_RENDER_SCALE;
+    this.setCollisionBox(BYTE_HURTBOX);
     this.coyoteTimeRemaining = 0;
     this.jumpBufferRemaining = 0;
     this.wasJumpPressed = false;
@@ -150,6 +163,19 @@ export class Character extends MovableObject {
    */
   get isInvulnerable() {
     return this.invulnerabilitySecondsRemaining > 0;
+  }
+
+  /**
+   * Liefert Bytes kleine Fußfläche für Treffer ausschließlich von oben.
+   * @returns {Readonly<{x:number, y:number, width:number, height:number}>}
+   */
+  getStompBounds() {
+    return Object.freeze({
+      x: this.x + BYTE_STOMP_BOX.offsetX,
+      y: this.y + BYTE_STOMP_BOX.offsetY,
+      width: BYTE_STOMP_BOX.width,
+      height: BYTE_STOMP_BOX.height,
+    });
   }
 
   /**

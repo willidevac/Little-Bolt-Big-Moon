@@ -16,10 +16,32 @@ export class CollisionManager {
    * @returns {boolean}
    */
   areOverlapping(firstObject, secondObject) {
+    const firstBounds = this.#getCollisionBounds(firstObject);
+    const secondBounds = this.#getCollisionBounds(secondObject);
     return (
-      this.#hasHorizontalOverlap(firstObject, secondObject) &&
-      this.#hasVerticalOverlap(firstObject, secondObject)
+      this.#hasHorizontalOverlap(firstBounds, secondBounds) &&
+      this.#hasVerticalOverlap(firstBounds, secondBounds)
     );
+  }
+
+  /**
+   * Erkennt einen Gegnerkontakt ausschließlich beim fallenden Überqueren von oben.
+   * @param {import("../entities/character.class.js").Character} character
+   * @param {import("../base/drawable-object.class.js").DrawableObject} target
+   * @param {number} deltaTimeSeconds
+   * @returns {boolean}
+   */
+  isStompCollision(character, target, deltaTimeSeconds) {
+    if (character.velocityY <= 0 || !this.#isValidDeltaTime(deltaTimeSeconds)) {
+      return false;
+    }
+    const stompBounds = character.getStompBounds();
+    const targetBounds = this.#getCollisionBounds(target);
+    if (!this.#hasHorizontalOverlap(stompBounds, targetBounds)) return false;
+    const currentBottom = stompBounds.y + stompBounds.height;
+    const previousBottom = currentBottom - character.velocityY * deltaTimeSeconds;
+    const toleratedTop = targetBounds.y + this.landingTolerancePixels;
+    return previousBottom <= toleratedTop && currentBottom >= targetBounds.y;
   }
 
   /**
@@ -51,18 +73,24 @@ export class CollisionManager {
     let landingPlatform = null;
     platforms.forEach((platform) => {
       if (!this.#canLandOn(movableObject, platform, deltaTimeSeconds)) return;
-      if (!landingPlatform || platform.y < landingPlatform.y) landingPlatform = platform;
+      const platformTop = this.#getCollisionBounds(platform).y;
+      const landingTop = landingPlatform
+        ? this.#getCollisionBounds(landingPlatform).y
+        : Infinity;
+      if (platformTop < landingTop) landingPlatform = platform;
     });
     return landingPlatform;
   }
 
   #canLandOn(movableObject, platform, deltaTimeSeconds) {
     if (movableObject.velocityY < 0) return false;
-    if (!this.#hasHorizontalOverlap(movableObject, platform)) return false;
-    const currentBottom = movableObject.y + movableObject.height;
+    const movableBounds = this.#getCollisionBounds(movableObject);
+    const platformBounds = this.#getCollisionBounds(platform);
+    if (!this.#hasHorizontalOverlap(movableBounds, platformBounds)) return false;
+    const currentBottom = movableBounds.y + movableBounds.height;
     const previousBottom = currentBottom - movableObject.velocityY * deltaTimeSeconds;
-    const toleratedPlatformTop = platform.y + this.landingTolerancePixels;
-    return previousBottom <= toleratedPlatformTop && currentBottom >= platform.y;
+    const toleratedPlatformTop = platformBounds.y + this.landingTolerancePixels;
+    return previousBottom <= toleratedPlatformTop && currentBottom >= platformBounds.y;
   }
 
   #hasHorizontalOverlap(firstObject, secondObject) {
@@ -80,7 +108,21 @@ export class CollisionManager {
   }
 
   #landOnPlatform(movableObject, platform) {
-    movableObject.y = platform.y - movableObject.height;
+    const movableBounds = this.#getCollisionBounds(movableObject);
+    const platformBounds = this.#getCollisionBounds(platform);
+    const bottomOffset = movableBounds.y + movableBounds.height - movableObject.y;
+    movableObject.y = platformBounds.y - bottomOffset;
     movableObject.setOnGround(true);
+  }
+
+  #getCollisionBounds(object) {
+    if (typeof object?.getCollisionBounds === "function") {
+      return object.getCollisionBounds();
+    }
+    return object;
+  }
+
+  #isValidDeltaTime(deltaTimeSeconds) {
+    return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }
 }

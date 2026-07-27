@@ -10,6 +10,12 @@ const COLLECTABLE_SPRITE_CONFIG = Object.freeze({
 });
 const COLLECTABLE_RENDER_SCALE = 2;
 const FRAME_DURATION_SECONDS = 0.14;
+const COLLECTABLE_COLLISION_BOX = Object.freeze({
+  offsetX: 8,
+  offsetY: 8,
+  width: 48,
+  height: 48,
+});
 
 export const COLLECTABLE_TYPES = Object.freeze({
   GEAR: "gear",
@@ -49,6 +55,7 @@ export class CollectableObject extends DrawableObject {
     this.y = collectableData.y;
     this.width = COLLECTABLE_SPRITE_CONFIG.frameWidth * COLLECTABLE_RENDER_SCALE;
     this.height = COLLECTABLE_SPRITE_CONFIG.frameHeight * COLLECTABLE_RENDER_SCALE;
+    this.setCollisionBox(COLLECTABLE_COLLISION_BOX);
     this.animationController = new AnimationController(ANIMATION_CLIPS);
     this.loadSprite(COLLECTABLE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState(this.type));
