@@ -4,6 +4,8 @@ import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
  * Verbindet Spielerangriffe, Stomp und Gegnerkontakt ohne eigene Energieverwaltung.
  */
 export class EnemyCombatSystem {
+  #defeatedEnemies;
+
   /**
    * @param {Readonly<object>} config
    * @param {import("./collision-manager.class.js").CollisionManager} collisionManager
@@ -12,6 +14,7 @@ export class EnemyCombatSystem {
     this.#validateDependencies(config, collisionManager);
     this.config = config;
     this.collisionManager = collisionManager;
+    this.#defeatedEnemies = [];
   }
 
   /**
@@ -50,6 +53,16 @@ export class EnemyCombatSystem {
       : this.#resolveContact(world.character, enemies);
     this.#removeDefeated(world);
     return hit;
+  }
+
+  /**
+   * Übergibt besiegte Gegner genau einmal an die zentrale Laufwertung.
+   * @returns {ReadonlyArray<Readonly<{id:string,type:string}>>}
+   */
+  takeDefeatedEnemies() {
+    const enemies = Object.freeze([...this.#defeatedEnemies]);
+    this.#defeatedEnemies.length = 0;
+    return enemies;
   }
 
   #getMeleeTargets(hitbox, world) {
@@ -96,6 +109,10 @@ export class EnemyCombatSystem {
   #removeDefeated(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     enemies.filter((enemy) => enemy.isReadyForRemoval).forEach((enemy) => {
+      this.#defeatedEnemies.push(Object.freeze({
+        id: enemy.id,
+        type: enemy.type,
+      }));
       world.removeEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
     });
   }

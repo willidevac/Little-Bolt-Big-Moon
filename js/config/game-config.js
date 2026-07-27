@@ -138,6 +138,20 @@ const CAMERA_CONFIG = Object.freeze({
   downwardFollowSpeedPixelsPerSecond: 1400,
 });
 
+const SCORE_CONFIG = Object.freeze({
+  pointsPerHeightMeter: 10,
+  pointsPerGear: 250,
+  pointsPerCombatPhase: 1500,
+  pointsPerRemainingEnergy: 10,
+  targetTimeSeconds: 600,
+  pointsPerSavedSecond: 5,
+  enemyPoints: Object.freeze({
+    scrapCrawler: 750,
+    droneGuard: 1000,
+    moonWarden: 5000,
+  }),
+});
+
 const HUD_CONFIG = Object.freeze({
   maximumEnergy: 100,
   maximumAmmo: 12,
@@ -146,6 +160,7 @@ const HUD_CONFIG = Object.freeze({
   startingGears: 0,
   startingScore: 0,
   heightPixelsPerMeter: 4,
+  scoring: SCORE_CONFIG,
 });
 
 const DEBUG_CONFIG = Object.freeze({

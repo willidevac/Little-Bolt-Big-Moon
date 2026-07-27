@@ -270,7 +270,7 @@ export class Game {
     const attack = this.weaponSystem.update(deltaTimeSeconds, this.world.character);
     this.world.handlePlayerAttack(attack);
     this.world.update(deltaTimeSeconds);
-    this.#updateRunStats();
+    this.#updateRunStats(deltaTimeSeconds);
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
     if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
     if (this.world.bossFight.takeVictory()) this.win();
@@ -349,13 +349,14 @@ export class Game {
   #notifyStateChange() {
     this.#stateListeners.forEach((listener) => listener(this.state));
   }
-
   /**
    * Überträgt Weltposition und neue Funde in die Laufwerte.
    */
-  #updateRunStats() {
+  #updateRunStats(deltaTimeSeconds) {
+    this.runStats.updateTime(deltaTimeSeconds);
     this.runStats.updateHeight(this.world.character?.y);
     this.runStats.applyPickups(this.world.takeCollectedPickups());
+    this.runStats.applyEnemyDefeats(this.world.takeDefeatedEnemies());
     this.runStats.updateBoss(this.world.bossFight.getSnapshot());
   }
 
@@ -365,7 +366,6 @@ export class Game {
   #handleStateInput() {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
-
   #openWaveUpgrade() {
     if (!this.#isPlaying() || !this.upgradeFlow.openFrom(this.world)) return;
     this.keyboard.reset();
@@ -381,7 +381,6 @@ export class Game {
   #isPlaying() {
     return this.#stateMachine.is(GAME_STATES.PLAYING);
   }
-
   /**
    * Setzt einen Endzustand nur aus dem laufenden Spiel.
    * @param {string} endState
@@ -389,6 +388,7 @@ export class Game {
    */
   #finishGame(endState) {
     if (!this.#isPlaying()) return false;
+    this.runStats.finalizeScore(endState === GAME_STATES.WON);
     this.keyboard.reset();
     this.gameCanvas.setLoopState("paused");
     return this.#setGameState(endState);

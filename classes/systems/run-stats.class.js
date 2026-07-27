@@ -1,18 +1,18 @@
 import { clamp } from "../../js/utils/math.js";
+import { RunScore } from "./run-score.class.js";
 
 const STAT_BY_PICKUP_TYPE = Object.freeze({
   gear: "gears",
   energy: "energy",
   ammo: "ammo",
 });
-
 /**
  * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
  */
 export class RunStats {
   #listeners;
   #bossSignature;
-
+  #score;
   /**
    * @param {Readonly<object>} config
    * @param {number} startY
@@ -21,6 +21,7 @@ export class RunStats {
     this.validateConfig(config, startY);
     this.config = config;
     this.#listeners = new Set();
+    this.#score = new RunScore(config.startingScore, config.scoring);
     this.reset(startY);
   }
 
@@ -36,13 +37,12 @@ export class RunStats {
     this.energy = this.config.startingEnergy;
     this.ammo = this.config.startingAmmo;
     this.gears = this.config.startingGears;
-    this.score = this.config.startingScore;
     this.heightMeters = 0;
+    this.#score.reset();
     this.boss = null;
     this.#bossSignature = "";
     this.#notifyChange();
   }
-
   /**
    * Registriert eine Anzeige und liefert ihre Abmeldefunktion.
    * @param {(snapshot: Readonly<object>) => void} listener
@@ -65,12 +65,20 @@ export class RunStats {
     if (!Number.isFinite(characterY)) return false;
     const climbedPixels = Math.max(0, this.startY - characterY);
     const nextHeight = Math.floor(climbedPixels / this.config.heightPixelsPerMeter);
-    if (nextHeight === this.heightMeters) return false;
+    if (nextHeight <= this.heightMeters) return false;
+    this.#score.addHeightMeters(nextHeight - this.heightMeters);
     this.heightMeters = nextHeight;
     this.#notifyChange();
     return true;
   }
 
+  /**
+   * Zählt nur tatsächliche Spielzeit und informiert das HUD nicht jeden Frame.
+   * @param {number} deltaTimeSeconds
+   */
+  updateTime(deltaTimeSeconds) {
+    this.#score.updateTime(deltaTimeSeconds);
+  }
   /**
    * Rechnet neue Funde gesammelt auf die passenden Laufwerte.
    * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
@@ -87,7 +95,37 @@ export class RunStats {
     if (changed) this.#notifyChange();
     return changed;
   }
-
+  /**
+   * Bewertet jeden besiegten Gegner anhand seiner eindeutigen ID genau einmal.
+   * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
+   * @returns {boolean}
+   */
+  applyEnemyDefeats(enemies) {
+    const changed = this.#score.addEnemies(enemies);
+    if (changed) this.#notifyChange();
+    return changed;
+  }
+  /**
+   * Bewertet jede abgeschlossene Kampfphase genau einmal.
+   * @param {ReadonlyArray<string>} phaseIds
+   * @returns {boolean}
+   */
+  applyCombatPhases(phaseIds) {
+    const changed = this.#score.addCombatPhases(phaseIds);
+    if (changed) this.#notifyChange();
+    return changed;
+  }
+  /**
+   * Ergänzt am Laufende Restenergie und bei Sieg den Zeitbonus genau einmal.
+   * @param {boolean} isVictory
+   * @returns {boolean}
+   */
+  finalizeScore(isVictory) {
+    const changed = this.#score.finalize(isVictory, this.energy);
+    if (!changed) return false;
+    this.#notifyChange();
+    return true;
+  }
   /**
    * Zieht Trefferenergie ab und liefert den verbleibenden Wert.
    * @param {number} amount
@@ -103,7 +141,6 @@ export class RunStats {
     this.#notifyChange();
     return this.energy;
   }
-
   /**
    * Verbraucht Bolzen nur, wenn die angeforderte Menge vorhanden ist.
    * @param {number} amount
@@ -119,7 +156,6 @@ export class RunStats {
     this.#notifyChange();
     return true;
   }
-
   /**
    * Vergrößert Bytes Batterie und repariert den neu gewonnenen Bereich.
    * @param {number} amount
@@ -130,7 +166,6 @@ export class RunStats {
     this.energy = clamp(this.energy + amount, 0, this.maximumEnergy);
     this.#notifyChange();
   }
-
   /**
    * Vergrößert das Magazin und füllt die neuen Plätze sofort.
    * @param {number} amount
@@ -169,7 +204,8 @@ export class RunStats {
       maximumAmmo: this.maximumAmmo,
       gears: this.gears,
       heightMeters: this.heightMeters,
-      score: this.score,
+      score: this.#score.value,
+      elapsedSeconds: Math.floor(this.#score.elapsedSeconds),
       boss: this.boss,
     });
   }
@@ -235,6 +271,7 @@ export class RunStats {
     }
     const previousValue = this[statName];
     this[statName] = this.#getPickupValue(statName, pickup.amount);
+    if (pickup.type === "gear") this.#score.addGears(pickup.amount);
     return this[statName] !== previousValue;
   }
 

@@ -211,6 +211,11 @@ export class World {
     return pickups;
   }
 
+  /** Übergibt besiegte Gegner genau einmal an die Laufwertung. */
+  takeDefeatedEnemies() {
+    return this.#enemyCombatSystem.takeDefeatedEnemies();
+  }
+
   /**
    * Übergibt neue Treffer genau einmal an die Kampfsteuerung.
    * @returns {ReadonlyArray<Readonly<{amount:number, direction:number}>>}
@@ -235,7 +240,6 @@ export class World {
       this.context.restore();
     }
   }
-
   #drawEntities() {
     this.#processEntities(DRAW_ORDER, (entity) => {
       if (typeof entity.draw === "function") entity.draw(this.context, this);
@@ -261,7 +265,6 @@ export class World {
     this.camera.reset();
     this.isInitialized = false;
   }
-
   #createGroupMap(CollectionType) {
     return new Map(ENTITY_GROUP_NAMES.map((name) => [name, new CollectionType()]));
   }
@@ -292,7 +295,6 @@ export class World {
     Object.assign(platform, FALLBACK_PLATFORM_BOUNDS);
     this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
-
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
     const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
     this.#collisionManager.resolvePlatformLandings(

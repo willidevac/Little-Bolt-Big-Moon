@@ -31,7 +31,9 @@ export class RunUpgradeFlow {
    * @returns {boolean}
    */
   openFrom(world) {
-    if (world.waveManager.takeCompletedWaveIds().length === 0) return false;
+    const completedIds = world.waveManager.takeCompletedWaveIds();
+    this.#dependencies.runStats.applyCombatPhases(completedIds);
+    if (completedIds.length === 0) return false;
     return this.#manager.openSelection().length > 0;
   }
 
@@ -70,6 +72,7 @@ export class RunUpgradeFlow {
     const methods = [
       dependencies?.runStats?.increaseMaximumEnergy,
       dependencies?.runStats?.increaseAmmoCapacity,
+      dependencies?.runStats?.applyCombatPhases,
       dependencies?.weaponSystem?.increaseDamage,
       dependencies?.combatSystem?.increaseKnockbackResistance,
       dependencies?.getCharacter,

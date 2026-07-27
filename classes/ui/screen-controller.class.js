@@ -1,4 +1,5 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
+import { formatScore } from "../../js/utils/format.js";
 
 const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
@@ -8,6 +9,8 @@ const SELECTORS = Object.freeze({
   endEyebrow: "[data-end-eyebrow]",
   endTitle: "[data-end-title]",
   endCopy: "[data-end-copy]",
+  endHeight: "[data-end-height]",
+  endScore: "[data-end-score]",
   upgradeOptions: "[data-upgrade-options]",
   dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
@@ -78,6 +81,8 @@ export class ScreenController {
     this.endEyebrow = getRequiredElement(this.root, SELECTORS.endEyebrow);
     this.endTitle = getRequiredElement(this.root, SELECTORS.endTitle);
     this.endCopy = getRequiredElement(this.root, SELECTORS.endCopy);
+    this.endHeight = getRequiredElement(this.root, SELECTORS.endHeight);
+    this.endScore = getRequiredElement(this.root, SELECTORS.endScore);
   }
 
   /**
@@ -275,10 +280,13 @@ export class ScreenController {
   }
 
   #renderEndScreen(state, content) {
+    const stats = this.game.getHudSnapshot();
     this.endScreen.dataset.endState = state;
     this.endEyebrow.textContent = content.eyebrow;
     this.endTitle.textContent = content.title;
     this.endCopy.textContent = content.copy;
+    this.endHeight.textContent = `${stats.heightMeters} m`;
+    this.endScore.textContent = formatScore(stats.score);
   }
 
   /**

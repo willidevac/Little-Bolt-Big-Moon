@@ -1,4 +1,5 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
+import { formatScore } from "../../js/utils/format.js";
 
 const VALUE_SELECTORS = Object.freeze({
   energy: '[data-hud-value="energy"]',
@@ -74,7 +75,7 @@ export class StatusBar {
     this.setText(this.elements.ammo, data.ammo);
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);
-    this.setText(this.elements.score, this.formatScore(data.score));
+    this.setText(this.elements.score, formatScore(data.score));
     this.renderBoss(data.boss);
   }
 
@@ -134,15 +135,6 @@ export class StatusBar {
     this.elements.bossBar.setAttribute("aria-valuenow", String(boss.health));
     this.elements.bossBar.setAttribute("aria-valuemax", String(boss.maximumHealth));
     this.elements.bossBar.setAttribute("aria-valuetext", `${boss.health} von ${boss.maximumHealth}`);
-  }
-
-  /**
-   * Formatiert Punkte immer sechsstellig wie in der HUD-Vorlage.
-   * @param {number} score
-   * @returns {string}
-   */
-  formatScore(score) {
-    return String(Math.max(0, Math.floor(score))).padStart(6, "0");
   }
 
   /**
