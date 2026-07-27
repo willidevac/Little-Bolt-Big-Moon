@@ -100,6 +100,42 @@
     { "id": "moon-summit-14", "x": 384, "y": 112, "type": "catch" }
   ],
   "combatZones": [],
+  "enemies": [
+    {
+      "id": "scrapyard-crawler-01",
+      "type": "scrapCrawler",
+      "x": 992,
+      "y": 7776,
+      "patrolMinX": 896,
+      "patrolMaxX": 1216,
+      "startDirection": -1
+    },
+    {
+      "id": "scrapyard-drone-01",
+      "type": "droneGuard",
+      "x": 512,
+      "y": 7650,
+      "patrolMinX": 448,
+      "patrolMaxX": 800
+    },
+    {
+      "id": "factory-crawler-01",
+      "type": "scrapCrawler",
+      "x": 608,
+      "y": 6208,
+      "patrolMinX": 512,
+      "patrolMaxX": 896
+    },
+    {
+      "id": "space-station-drone-01",
+      "type": "droneGuard",
+      "x": 384,
+      "y": 2288,
+      "patrolMinX": 320,
+      "patrolMaxX": 704,
+      "startDirection": -1
+    }
+  ],
   "hazards": [
     { "id": "scrapyard-electric-01", "damage": 20, "x": 672, "y": 7776 }
   ],

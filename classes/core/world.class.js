@@ -86,6 +86,7 @@ export class World {
   initialize() {
     if (this.isInitialized) return false;
     this.#addLevelPlatforms();
+    this.#addLevelEnemies();
     this.#addLevelCollectables();
     this.#addLevelHazards();
     this.#ensureFallbackScene();
@@ -146,13 +147,13 @@ export class World {
    */
   update(deltaTimeSeconds) {
     if (!this.isInitialized) return;
-    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const groundMovables = this.#getGroundMovables();
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
     this.#projectileSystem.resolve(this);
-    this.#collisionManager.resetGroundStates(characters);
-    this.#resolvePlatformLandings(deltaTimeSeconds);
+    this.#collisionManager.resetGroundStates(groundMovables);
+    this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
     this.#fallTracker.update(this.character);
@@ -265,6 +266,13 @@ export class World {
     });
   }
 
+  #addLevelEnemies() {
+    if (!Array.isArray(this.level?.enemies)) return;
+    this.level.enemies.forEach((enemy) => {
+      this.addEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
+    });
+  }
+
   #addLevelCollectables() {
     if (!Array.isArray(this.level?.collectables)) return;
     this.level.collectables.forEach((collectable) => {
@@ -292,10 +300,20 @@ export class World {
     this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
 
-  #resolvePlatformLandings(deltaTimeSeconds) {
-    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+  #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
     const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
-    this.#collisionManager.resolvePlatformLandings(characters, platforms, deltaTimeSeconds);
+    this.#collisionManager.resolvePlatformLandings(
+      movableObjects,
+      platforms,
+      deltaTimeSeconds,
+    );
+  }
+
+  #getGroundMovables() {
+    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const enemies = this.#entityGroups.get(WORLD_ENTITY_GROUPS.ENEMIES);
+    const groundEnemies = enemies.filter((enemy) => enemy.isAffectedByGravity);
+    return [...characters, ...groundEnemies];
   }
 
   #resolveCollectablePickups() {

@@ -319,7 +319,7 @@ export class Game {
    * @returns {World}
    */
   #createWorld() {
-    return new World(this.context, this.config, this.keyboard, createLevelOne());
+    return new World(this.context, this.config, this.keyboard, createLevelOne(this.config.enemies));
   }
 
   /**

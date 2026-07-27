@@ -82,6 +82,17 @@ const PROJECTILE_CONFIG = Object.freeze({
   }),
 });
 
+const ENEMY_CONFIG = Object.freeze({
+  scrapCrawler: Object.freeze({
+    speedPixelsPerSecond: 58,
+  }),
+  droneGuard: Object.freeze({
+    speedPixelsPerSecond: 86,
+    hoverAmplitudePixels: 12,
+    hoverCyclesPerSecond: 0.45,
+  }),
+});
+
 const CAMERA_CONFIG = Object.freeze({
   deadZoneTopPixels: 216,
   deadZoneBottomPixels: 504,
@@ -114,6 +125,7 @@ export const GAME_CONFIG = Object.freeze({
   combat: COMBAT_CONFIG,
   weapons: WEAPONS_CONFIG,
   projectiles: PROJECTILE_CONFIG,
+  enemies: ENEMY_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,

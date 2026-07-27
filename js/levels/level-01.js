@@ -2,8 +2,14 @@ import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
+import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
+import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
+const ENEMY_CLASSES = Object.freeze({
+  scrapCrawler: ScrapCrawler,
+  droneGuard: DroneGuard,
+});
 const TILESET_CONFIGS = Object.freeze({
   scrapyard: Object.freeze({
     source: getAssetPath("tilesets", "scrapyard-tiles.png"),
@@ -17,9 +23,10 @@ const TILESET_CONFIGS = Object.freeze({
 
 /**
  * Erzeugt eine neue, unabhängige Instanz des ersten Levelabschnitts.
+ * @param {Readonly<object>} enemyConfig
  * @returns {Readonly<object>}
  */
-export function createLevelOne() {
+export function createLevelOne(enemyConfig) {
   validateLevelData(levelData);
   return Object.freeze({
     id: levelData.id,
@@ -30,7 +37,19 @@ export function createLevelOne() {
     platforms: Object.freeze(levelData.platforms.map(createPlatform)),
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
+    enemies: Object.freeze(levelData.enemies.map((enemy) => {
+      return createEnemy(enemy, enemyConfig);
+    })),
   });
+}
+
+function createEnemy(enemyData, enemyConfig) {
+  const EnemyClass = ENEMY_CLASSES[enemyData.type];
+  const config = enemyConfig?.[enemyData.type];
+  if (!EnemyClass || !config) {
+    throw new RangeError(`Unbekannter Gegnertyp: ${enemyData.type}`);
+  }
+  return new EnemyClass(enemyData, config);
 }
 
 function createCollectable(collectableData) {
@@ -66,6 +85,7 @@ function validateLevelData(data) {
     Array.isArray(data?.platforms) &&
     Array.isArray(data?.collectables) &&
     Array.isArray(data?.hazards) &&
+    Array.isArray(data?.enemies) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
   if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {
