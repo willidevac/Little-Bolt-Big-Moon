@@ -19,11 +19,13 @@ const PREVENTED_DEFAULT_CODES = Object.freeze([
   "Space",
 ]);
 
+const SUPPORTED_ACTIONS = new Set(Object.values(ACTION_BY_KEY_CODE));
+
 /**
- * Speichert den aktuellen Zustand relevanter Tasten.
+ * Speichert den aktuellen Zustand aller Tastatur- und Touch-Aktionen.
  */
 export class Keyboard {
-  #pressedKeyCodes;
+  #pressedSources;
   #pressedActions;
 
   /**
@@ -32,7 +34,7 @@ export class Keyboard {
   constructor(eventTarget = globalThis) {
     this.eventTarget = eventTarget;
     this.isListening = false;
-    this.#pressedKeyCodes = new Set();
+    this.#pressedSources = new Map();
     this.#pressedActions = new Set();
     this.boundKeyDown = this.handleKeyDown.bind(this);
     this.boundKeyUp = this.handleKeyUp.bind(this);
@@ -94,38 +96,37 @@ export class Keyboard {
   }
 
   /**
+   * Schaltet eine Aktion für genau eine Tastatur- oder Pointerquelle.
+   * @param {string} action
+   * @param {boolean} isPressed
+   * @param {string} sourceId
+   */
+  setAction(action, isPressed, sourceId) {
+    this.#validateActionSource(action, isPressed, sourceId);
+    const sources = this.#pressedSources.get(action) ?? new Set();
+    const wasPressed = sources.size > 0;
+    if (isPressed) sources.add(sourceId);
+    else sources.delete(sourceId);
+    if (sources.size > 0) this.#pressedSources.set(action, sources);
+    else this.#pressedSources.delete(action);
+    this[action] = sources.size > 0;
+    if (isPressed && !wasPressed) this.#pressedActions.add(action);
+  }
+
+  /**
    * Setzt alle Eingaben in den neutralen Zustand zurück.
    */
   reset() {
-    this.#pressedKeyCodes.clear();
+    this.#pressedSources.clear();
     this.#pressedActions.clear();
-    this.left = false;
-    this.right = false;
-    this.jump = false;
-    this.attack = false;
-    this.weaponSwitch = false;
-    this.pause = false;
+    SUPPORTED_ACTIONS.forEach((action) => { this[action] = false; });
   }
 
   #updateKeyState(event, isPressed) {
     const action = ACTION_BY_KEY_CODE[event.code];
     if (!action || (isPressed && this.#hasModifier(event))) return;
-    const wasPressed = this.#isActionPressed(action);
     this.#preventBrowserAction(event);
-    this.#updatePressedKeys(event.code, isPressed);
-    this[action] = this.#isActionPressed(action);
-    if (isPressed && !wasPressed) this.#pressedActions.add(action);
-  }
-
-  #updatePressedKeys(keyCode, isPressed) {
-    if (isPressed) this.#pressedKeyCodes.add(keyCode);
-    else this.#pressedKeyCodes.delete(keyCode);
-  }
-
-  #isActionPressed(action) {
-    return Object.entries(ACTION_BY_KEY_CODE).some(([keyCode, mappedAction]) => {
-      return mappedAction === action && this.#pressedKeyCodes.has(keyCode);
-    });
+    this.setAction(action, isPressed, `keyboard:${event.code}`);
   }
 
   #preventBrowserAction(event) {
@@ -134,6 +135,16 @@ export class Keyboard {
 
   #hasModifier(event) {
     return event.ctrlKey || event.altKey || event.metaKey;
+  }
+
+  #validateActionSource(action, isPressed, sourceId) {
+    if (!SUPPORTED_ACTIONS.has(action)) {
+      throw new RangeError(`Unbekannte Eingabeaktion: ${action}`);
+    }
+    const hasBoolean = typeof isPressed === "boolean";
+    const hasSource = typeof sourceId === "string" && sourceId.length > 0;
+    if (hasBoolean && hasSource) return;
+    throw new TypeError("Der Eingabezustand benötigt Boolean und Quellen-ID.");
   }
 
   #validateEventTarget() {

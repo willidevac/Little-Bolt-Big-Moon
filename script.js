@@ -3,6 +3,7 @@ import { GAME_CONFIG } from "./js/config/game-config.js";
 import { initializeScreens } from "./js/ui/screens.js";
 import { initializeHud } from "./js/ui/hud.js";
 import { initializeStorage } from "./js/ui/storage.js";
+import { initializeTouchControls } from "./js/ui/touch-controls.js";
 
 let gameInstance = null;
 
@@ -50,4 +51,5 @@ const game = initializeGame();
 initializeScreens(game);
 initializeHud(game);
 initializeStorage(game);
+initializeTouchControls(game);
 globalThis.littleBoltGame = game;
