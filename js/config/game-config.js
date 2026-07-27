@@ -113,6 +113,7 @@ const CAMERA_CONFIG = Object.freeze({
 
 const HUD_CONFIG = Object.freeze({
   maximumEnergy: 100,
+  maximumAmmo: 12,
   startingEnergy: 100,
   startingAmmo: 0,
   startingGears: 0,

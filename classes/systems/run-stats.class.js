@@ -30,6 +30,8 @@ export class RunStats {
   reset(startY = this.startY) {
     this.#validateStartY(startY);
     this.startY = startY;
+    this.maximumEnergy = this.config.maximumEnergy;
+    this.maximumAmmo = this.config.maximumAmmo;
     this.energy = this.config.startingEnergy;
     this.ammo = this.config.startingAmmo;
     this.gears = this.config.startingGears;
@@ -92,7 +94,7 @@ export class RunStats {
     if (!Number.isFinite(amount) || amount <= 0) {
       throw new TypeError("Schaden muss eine positive Zahl sein.");
     }
-    const nextEnergy = clamp(this.energy - amount, 0, this.config.maximumEnergy);
+    const nextEnergy = clamp(this.energy - amount, 0, this.maximumEnergy);
     if (nextEnergy === this.energy) return this.energy;
     this.energy = nextEnergy;
     this.#notifyChange();
@@ -116,14 +118,37 @@ export class RunStats {
   }
 
   /**
+   * Vergrößert Bytes Batterie und repariert den neu gewonnenen Bereich.
+   * @param {number} amount
+   */
+  increaseMaximumEnergy(amount) {
+    this.#validateUpgradeAmount(amount);
+    this.maximumEnergy += amount;
+    this.energy = clamp(this.energy + amount, 0, this.maximumEnergy);
+    this.#notifyChange();
+  }
+
+  /**
+   * Vergrößert das Magazin und füllt die neuen Plätze sofort.
+   * @param {number} amount
+   */
+  increaseAmmoCapacity(amount) {
+    this.#validateUpgradeAmount(amount);
+    this.maximumAmmo += amount;
+    this.ammo = clamp(this.ammo + amount, 0, this.maximumAmmo);
+    this.#notifyChange();
+  }
+
+  /**
    * Liefert eine unveränderliche Momentaufnahme für das HUD.
    * @returns {Readonly<object>}
    */
   getSnapshot() {
     return Object.freeze({
       energy: this.energy,
-      maximumEnergy: this.config.maximumEnergy,
+      maximumEnergy: this.maximumEnergy,
       ammo: this.ammo,
+      maximumAmmo: this.maximumAmmo,
       gears: this.gears,
       heightMeters: this.heightMeters,
       score: this.score,
@@ -138,6 +163,7 @@ export class RunStats {
   validateConfig(config, startY) {
     const values = [
       config?.maximumEnergy,
+      config?.maximumAmmo,
       config?.startingEnergy,
       config?.startingAmmo,
       config?.startingGears,
@@ -150,6 +176,7 @@ export class RunStats {
     });
     if (hasValidNumbers && config.heightPixelsPerMeter > 0) {
       this.validateEnergy(config);
+      this.validateAmmo(config);
       return;
     }
     throw new TypeError("Die HUD-Startwerte sind unvollständig oder ungültig.");
@@ -163,6 +190,18 @@ export class RunStats {
     const energy = clamp(config.startingEnergy, 0, config.maximumEnergy);
     if (energy === config.startingEnergy && config.maximumEnergy > 0) return;
     throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
+  }
+
+  /**
+   * Verhindert einen Munitionsstart außerhalb der Magazingrenze.
+   * @param {Readonly<object>} config
+   */
+  validateAmmo(config) {
+    const hasIntegers = Number.isInteger(config.startingAmmo) &&
+      Number.isInteger(config.maximumAmmo);
+    if (hasIntegers && config.maximumAmmo > 0 &&
+      config.startingAmmo <= config.maximumAmmo) return;
+    throw new RangeError("Die Startmunition liegt außerhalb der Magazingrenze.");
   }
 
   #validateStartY(startY) {
@@ -181,8 +220,18 @@ export class RunStats {
   }
 
   #getPickupValue(statName, amount) {
-    if (statName !== "energy") return this[statName] + amount;
-    return clamp(this.energy + amount, 0, this.config.maximumEnergy);
+    if (statName === "energy") {
+      return clamp(this.energy + amount, 0, this.maximumEnergy);
+    }
+    if (statName === "ammo") {
+      return clamp(this.ammo + amount, 0, this.maximumAmmo);
+    }
+    return this[statName] + amount;
+  }
+
+  #validateUpgradeAmount(amount) {
+    if (Number.isFinite(amount) && amount > 0) return;
+    throw new TypeError("Eine Verbesserung muss eine positive Zahl sein.");
   }
 
   #notifyChange() {

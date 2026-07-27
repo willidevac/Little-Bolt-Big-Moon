@@ -3,6 +3,8 @@ import { GAME_STATES } from "../core/game-state-machine.class.js";
 const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
   paused: '[data-game-screen="paused"]',
+  upgrading: '[data-game-screen="upgrading"]',
+  upgradeOptions: "[data-upgrade-options]",
   dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
   resume: '[data-ui-action="resume"]',
@@ -36,6 +38,8 @@ export class ScreenController {
     this.root = root;
     this.homeScreen = getRequiredElement(root, SELECTORS.home);
     this.pauseScreen = getRequiredElement(root, SELECTORS.paused);
+    this.upgradeScreen = getRequiredElement(root, SELECTORS.upgrading);
+    this.upgradeOptions = getRequiredElement(root, SELECTORS.upgradeOptions);
     this.startButton = getRequiredElement(root, SELECTORS.start);
     this.resumeButton = getRequiredElement(root, SELECTORS.resume);
     this.dialogs = [...root.querySelectorAll(SELECTORS.dialogs)];
@@ -79,7 +83,7 @@ export class ScreenController {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest("button[data-ui-action]");
     if (!button || !this.root.contains(button)) return;
-    this.actions[button.dataset.uiAction]?.();
+    this.actions[button.dataset.uiAction]?.(button);
   }
 
   /**
@@ -136,7 +140,9 @@ export class ScreenController {
   render(state, moveFocus = true) {
     this.homeScreen.hidden = state !== GAME_STATES.HOME;
     this.pauseScreen.hidden = state !== GAME_STATES.PAUSED;
-    if (!this.homeScreen.hidden || !this.pauseScreen.hidden) {
+    this.upgradeScreen.hidden = state !== GAME_STATES.UPGRADING;
+    if (state === GAME_STATES.UPGRADING) this.#renderUpgradeOptions();
+    if (!this.homeScreen.hidden || !this.pauseScreen.hidden || !this.upgradeScreen.hidden) {
       if (moveFocus) this.focusScreen(state);
       return;
     }
@@ -155,6 +161,7 @@ export class ScreenController {
       "close-dialog": () => this.closeDialog(),
       pause: () => this.game.togglePause(),
       resume: () => this.game.resume(),
+      upgrade: (button) => this.game.chooseUpgrade(button.dataset.upgradeId),
       home: () => this.game.goHome(),
     });
   }
@@ -204,6 +211,9 @@ export class ScreenController {
   focusScreen(state) {
     if (state === GAME_STATES.HOME) this.startButton.focus();
     if (state === GAME_STATES.PAUSED) this.resumeButton.focus();
+    if (state === GAME_STATES.UPGRADING) {
+      this.upgradeOptions.querySelector("button")?.focus();
+    }
   }
 
   /**
@@ -213,6 +223,65 @@ export class ScreenController {
   setBackgroundInert(isInert) {
     this.homeScreen.inert = isInert;
     this.pauseScreen.inert = isInert;
+    this.upgradeScreen.inert = isInert;
+  }
+
+  /**
+   * Baut die drei Upgrade-Schaltflächen aus sicheren DOM-Knoten neu auf.
+   */
+  #renderUpgradeOptions() {
+    this.upgradeOptions.replaceChildren(
+      ...this.game.getUpgradeOptions().map((upgrade) => {
+        return this.#createUpgradeButton(upgrade);
+      }),
+    );
+  }
+
+  /**
+   * Erstellt eine vollständig beschriftete Verbesserungsschaltfläche.
+   * @param {Readonly<object>} upgrade
+   * @returns {HTMLButtonElement}
+   */
+  #createUpgradeButton(upgrade) {
+    const button = this.root.ownerDocument.createElement("button");
+    button.type = "button";
+    button.className = "upgrade-card";
+    button.dataset.uiAction = "upgrade";
+    button.dataset.upgradeId = upgrade.id;
+    button.setAttribute("aria-label", this.#getUpgradeLabel(upgrade));
+    button.append(
+      this.#createUpgradeIcon(upgrade),
+      this.#createTextElement("strong", "upgrade-card__name", upgrade.name),
+      this.#createTextElement("span", "upgrade-card__level", this.#getLevelText(upgrade)),
+      this.#createTextElement("span", "upgrade-card__description", upgrade.description),
+    );
+    return button;
+  }
+
+  #createUpgradeIcon(upgrade) {
+    const document = this.root.ownerDocument;
+    const icon = document.createElement("span");
+    const source = new URL(upgrade.iconSheet.source, document.baseURI).href;
+    icon.className = "upgrade-card__icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.style.setProperty("--upgrade-icon", `url("${source}")`);
+    icon.style.setProperty("--upgrade-frame", upgrade.iconFrame);
+    return icon;
+  }
+
+  #createTextElement(tagName, className, text) {
+    const element = this.root.ownerDocument.createElement(tagName);
+    element.className = className;
+    element.textContent = text;
+    return element;
+  }
+
+  #getLevelText(upgrade) {
+    return `Stufe ${upgrade.nextLevel} von ${upgrade.maxLevel}`;
+  }
+
+  #getUpgradeLabel(upgrade) {
+    return `${upgrade.name}. ${this.#getLevelText(upgrade)}. ${upgrade.description}`;
   }
 
   /**

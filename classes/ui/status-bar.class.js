@@ -78,7 +78,9 @@ export class StatusBar {
    */
   renderState(state) {
     const isPlaying = state === GAME_STATES.PLAYING;
-    const isVisible = isPlaying || state === GAME_STATES.PAUSED;
+    const isVisible = isPlaying ||
+      state === GAME_STATES.PAUSED ||
+      state === GAME_STATES.UPGRADING;
     this.root.hidden = !isVisible;
     this.root.inert = !isPlaying;
     this.root.setAttribute("aria-hidden", String(!isPlaying));

@@ -69,6 +69,18 @@ export class WeaponSystem {
     return this.weapons[this.currentWeaponIndex].getSnapshot();
   }
 
+  /**
+   * Verstärkt genau eine bekannte Waffe.
+   * @param {string} weaponId
+   * @param {number} amount
+   * @returns {Readonly<object>}
+   */
+  increaseDamage(weaponId, amount) {
+    const weapon = this.weapons.find((candidate) => candidate.id === weaponId);
+    if (weapon) return weapon.increaseDamage(amount);
+    throw new RangeError(`Unbekannte Waffe: ${weaponId}`);
+  }
+
   #validateDependencies(config, input, runStats) {
     const orderIsValid = Array.isArray(config?.order) && config.order.length > 0;
     const hasDefinitions = config?.definitions && typeof config.definitions === "object";

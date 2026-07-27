@@ -5,12 +5,15 @@ const COOLDOWN_EPSILON_SECONDS = 1e-9;
  * Gemeinsame Werte, Cooldown und Angriffsdaten aller Waffen.
  */
 export class Weapon {
+  #startingDamage;
+
   /**
    * @param {Readonly<object>} config
    */
   constructor(config) {
     this.#validateConfig(config);
     Object.assign(this, config);
+    this.#startingDamage = config.damage;
     this.level = 1;
     this.cooldownSecondsRemaining = 0;
   }
@@ -56,7 +59,23 @@ export class Weapon {
    * Setzt ausschließlich den zeitlichen Waffenzustand zurück.
    */
   reset() {
+    this.damage = this.#startingDamage;
+    this.level = 1;
     this.cooldownSecondsRemaining = 0;
+  }
+
+  /**
+   * Erhöht den Schaden und die sichtbare Waffenstufe.
+   * @param {number} amount
+   * @returns {Readonly<object>}
+   */
+  increaseDamage(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new TypeError("Der zusätzliche Waffenschaden ist ungültig.");
+    }
+    this.damage += amount;
+    this.level += 1;
+    return this.getSnapshot();
   }
 
   /**

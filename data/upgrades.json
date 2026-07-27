@@ -1,4 +1,50 @@
 {
-  "upgrades": []
+  "selectionSize": 3,
+  "iconSheet": {
+    "source": "./img/sprites/items/upgrade-icons.png",
+    "frameWidth": 32,
+    "frameHeight": 32
+  },
+  "upgrades": [
+    {
+      "id": "maximumEnergy",
+      "name": "Stärkere Batterie",
+      "description": "Byte erhält 20 maximale Energie und wird um 20 Energie repariert.",
+      "value": 20,
+      "maxLevel": 5,
+      "iconFrame": 0
+    },
+    {
+      "id": "wrenchDamage",
+      "name": "Kräftiger Schlüssel",
+      "description": "Der Reparaturschlüssel verursacht 5 zusätzlichen Schaden.",
+      "value": 5,
+      "maxLevel": 5,
+      "iconFrame": 1
+    },
+    {
+      "id": "ammoCapacity",
+      "name": "Größeres Magazin",
+      "description": "Byte kann 4 weitere Bolzen tragen und erhält sofort 4 Bolzen.",
+      "value": 4,
+      "maxLevel": 5,
+      "iconFrame": 2
+    },
+    {
+      "id": "knockbackResistance",
+      "name": "Fester Stand",
+      "description": "Gegnerische Treffer stoßen Byte 15 Prozent weniger weit zurück.",
+      "value": 0.15,
+      "maxLevel": 4,
+      "iconFrame": 3
+    },
+    {
+      "id": "jumpControl",
+      "name": "Feinere Düsen",
+      "description": "Sprünge können 0,025 Sekunden länger gerettet oder vorgemerkt werden.",
+      "value": 0.025,
+      "maxLevel": 5,
+      "iconFrame": 4
+    }
+  ]
 }
-

@@ -2,6 +2,7 @@ export const GAME_STATES = Object.freeze({
   HOME: "home",
   PLAYING: "playing",
   PAUSED: "paused",
+  UPGRADING: "upgrading",
   WON: "won",
   LOST: "lost",
 });
@@ -11,10 +12,15 @@ const ALLOWED_TRANSITIONS = Object.freeze({
   [GAME_STATES.PLAYING]: Object.freeze([
     GAME_STATES.HOME,
     GAME_STATES.PAUSED,
+    GAME_STATES.UPGRADING,
     GAME_STATES.WON,
     GAME_STATES.LOST,
   ]),
   [GAME_STATES.PAUSED]: Object.freeze([
+    GAME_STATES.HOME,
+    GAME_STATES.PLAYING,
+  ]),
+  [GAME_STATES.UPGRADING]: Object.freeze([
     GAME_STATES.HOME,
     GAME_STATES.PLAYING,
   ]),

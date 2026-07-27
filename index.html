@@ -186,6 +186,36 @@
       </section>
 
       <section
+        class="game-screen overlay-screen upgrade-screen"
+        aria-labelledby="upgrade-title"
+        data-game-screen="upgrading"
+        hidden
+      >
+        <div class="screen-panel screen-panel--upgrade">
+          <p class="screen-panel__eyebrow">Arena geschafft</p>
+          <h2
+            id="upgrade-title"
+            class="screen-panel__title"
+            tabindex="-1"
+          >
+            Wähle eine Verbesserung
+          </h2>
+          <p class="screen-panel__copy">
+            Ein Fundstück darf Byte auf seinem Weg zum Mond stärker machen.
+          </p>
+          <div
+            class="upgrade-options"
+            role="group"
+            aria-label="Verfügbare Verbesserungen"
+            data-upgrade-options
+          ></div>
+          <p class="screen-panel__hint">
+            Die Auswahl gilt für diesen Lauf und kann nicht übersprungen werden.
+          </p>
+        </div>
+      </section>
+
+      <section
         class="game-dialog"
         role="dialog"
         aria-modal="true"

@@ -7,6 +7,7 @@ export class CombatSystem {
    */
   constructor(combatConfig) {
     this.config = combatConfig;
+    this.reset();
   }
 
   /**
@@ -18,10 +19,38 @@ export class CombatSystem {
    */
   applyHit(hit, character, runStats) {
     this.#validateHit(hit);
-    if (!character?.receiveHit(hit.direction, this.config)) return false;
+    if (!character?.receiveHit(hit.direction, this.#getReactionConfig())) return false;
     const remainingEnergy = runStats.takeDamage(hit.amount);
     if (remainingEnergy === 0) character.die();
     return true;
+  }
+
+  /**
+   * Verringert Bytes Rückstoß für den aktuellen Lauf.
+   * @param {number} amount Anteil zwischen null und eins.
+   */
+  increaseKnockbackResistance(amount) {
+    if (!Number.isFinite(amount) || amount <= 0 || amount >= 1) {
+      throw new TypeError("Der Rückstoßwiderstand ist ungültig.");
+    }
+    this.knockbackMultiplier = Math.max(0.4, this.knockbackMultiplier - amount);
+  }
+
+  /**
+   * Entfernt alle laufbezogenen Kampfverbesserungen.
+   */
+  reset() {
+    this.knockbackMultiplier = 1;
+  }
+
+  #getReactionConfig() {
+    return Object.freeze({
+      ...this.config,
+      knockbackHorizontalPixelsPerSecond:
+        this.config.knockbackHorizontalPixelsPerSecond * this.knockbackMultiplier,
+      knockbackVerticalPixelsPerSecond:
+        this.config.knockbackVerticalPixelsPerSecond * this.knockbackMultiplier,
+    });
   }
 
   #validateHit(hit) {

@@ -17,21 +17,12 @@ const BYTE_HURTBOX = Object.freeze({
   width: 40,
   height: 58,
 });
-const BYTE_STOMP_BOX = Object.freeze({
-  offsetX: 16,
-  offsetY: 50,
-  width: 32,
-  height: 14,
-});
+const BYTE_STOMP_BOX = Object.freeze({ offsetX: 16, offsetY: 50, width: 32, height: 14 });
 const STATE_TIME_EPSILON_SECONDS = 1e-9;
 const NEUTRAL_INPUT = Object.freeze({ left: false, right: false, jump: false });
-const ACTIVITY_ACTIONS = Object.freeze([
-  "left",
-  "right",
-  "jump",
-  "attack",
-  "weaponSwitch",
-]);
+const ACTIVITY_ACTIONS = Object.freeze(
+  ["left", "right", "jump", "attack", "weaponSwitch"],
+);
 
 export const CHARACTER_STATES = Object.freeze({
   IDLE: "idle",
@@ -71,6 +62,7 @@ export class Character extends MovableObject {
     this.setCollisionBox(BYTE_HURTBOX);
     this.coyoteTimeRemaining = 0;
     this.jumpBufferRemaining = 0;
+    this.jumpControlBonusSeconds = 0;
     this.wasJumpPressed = false;
     this.state = CHARACTER_STATES.IDLE;
     this.inactivitySeconds = 0;
@@ -208,6 +200,17 @@ export class Character extends MovableObject {
   }
 
   /**
+   * Verlängert Coyote Time und Jump Buffer für den aktuellen Lauf.
+   * @param {number} amountSeconds
+   */
+  increaseJumpControl(amountSeconds) {
+    if (!Number.isFinite(amountSeconds) || amountSeconds <= 0) {
+      throw new TypeError("Die zusätzliche Sprungkontrolle ist ungültig.");
+    }
+    this.jumpControlBonusSeconds += amountSeconds;
+  }
+
+  /**
    * Gibt Byte nach einem Treffer wieder für normale Zustände frei.
    * @returns {boolean} Ob der Trefferzustand beendet wurde.
    */
@@ -284,10 +287,10 @@ export class Character extends MovableObject {
 
   #updateJumpTimers(deltaTimeSeconds, jumpStarted, config) {
     this.coyoteTimeRemaining = this.isOnGround
-      ? config.coyoteTimeSeconds
+      ? config.coyoteTimeSeconds + this.jumpControlBonusSeconds
       : Math.max(0, this.coyoteTimeRemaining - deltaTimeSeconds);
     this.jumpBufferRemaining = jumpStarted
-      ? config.jumpBufferSeconds
+      ? config.jumpBufferSeconds + this.jumpControlBonusSeconds
       : Math.max(0, this.jumpBufferRemaining - deltaTimeSeconds);
   }
 

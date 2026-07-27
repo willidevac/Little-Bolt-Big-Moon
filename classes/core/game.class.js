@@ -1,10 +1,13 @@
 import { World } from "./world.class.js";
+import { GameCanvas } from "./game-canvas.class.js";
 import { GameStateMachine, GAME_STATES } from "./game-state-machine.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
 import { CombatSystem } from "../systems/combat-system.class.js";
 import { WeaponSystem } from "../systems/weapon-system.class.js";
+import { RunUpgradeFlow } from "../systems/run-upgrade-flow.class.js";
 import { createLevelOne } from "../../js/levels/level-01.js";
+import upgradeData from "../../data/upgrades.json" with { type: "json" };
 
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
@@ -12,22 +15,21 @@ import { createLevelOne } from "../../js/levels/level-01.js";
 export class Game {
   #stateMachine;
   #stateListeners;
-
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {Readonly<object>} config
    * @param {EventTarget} [inputTarget=globalThis]
    */
   constructor(canvas, config, inputTarget = globalThis) {
-    this.canvas = canvas;
-    this.context = canvas.getContext("2d");
+    this.gameCanvas = new GameCanvas(canvas);
+    this.canvas = this.gameCanvas.element;
+    this.context = this.gameCanvas.context;
     this.config = config;
     this.isInitialized = false;
     this.isRunning = false;
     this.animationFrameId = null;
     this.previousTimestamp = null;
     this.boundGameLoop = this.gameLoop.bind(this);
-    this.validateContext();
     this.#stateMachine = new GameStateMachine();
     this.#stateListeners = new Set();
     this.keyboard = new Keyboard(inputTarget);
@@ -35,31 +37,31 @@ export class Game {
     this.runStats = this.#createRunStats();
     this.combatSystem = new CombatSystem(config.combat);
     this.weaponSystem = new WeaponSystem(config.weapons, this.keyboard, this.runStats);
+    this.upgradeFlow = new RunUpgradeFlow(upgradeData, {
+      runStats: this.runStats,
+      weaponSystem: this.weaponSystem,
+      combatSystem: this.combatSystem,
+      getCharacter: () => this.world.character,
+    });
   }
 
   /**
    * Zeigt, ob das Spiel gerade pausiert ist.
    * @returns {boolean}
    */
-  get isPaused() {
-    return this.#stateMachine.is(GAME_STATES.PAUSED);
-  }
+  get isPaused() { return this.#stateMachine.is(GAME_STATES.PAUSED); }
 
   /**
    * Liefert den aktiven Spielzustand.
    * @returns {string}
    */
-  get state() {
-    return this.#stateMachine.getState();
-  }
+  get state() { return this.#stateMachine.getState(); }
 
   /**
    * Liefert Bytes aktuellen Höhenverlust in Weltpixeln.
    * @returns {number}
    */
-  get heightLossPixels() {
-    return this.world.getHeightLossPixels();
-  }
+  get heightLossPixels() { return this.world.getHeightLossPixels(); }
 
   /**
    * Informiert einen Beobachter über spätere Zustandswechsel.
@@ -92,14 +94,21 @@ export class Game {
   }
 
   /**
+   * Liefert die aktuell angebotenen Verbesserungen.
+   * @returns {ReadonlyArray<Readonly<object>>}
+   */
+  getUpgradeOptions() {
+    return this.upgradeFlow.getOptions();
+  }
+
+  /**
    * Initialisiert Spielfläche und Hauptloop höchstens einmal.
    */
   initialize() {
     if (this.isInitialized) return;
     this.keyboard.bind();
     this.world.initialize();
-    this.configureRendering();
-    this.clearCanvas();
+    this.gameCanvas.clear();
     this.canvas.dataset.gameState = this.state;
     this.isInitialized = true;
     this.start();
@@ -112,7 +121,7 @@ export class Game {
     if (this.isRunning) return;
     this.isRunning = true;
     this.previousTimestamp = null;
-    this.setLoopState("running");
+    this.gameCanvas.setLoopState("running");
     this.requestNextFrame();
   }
 
@@ -124,7 +133,7 @@ export class Game {
     this.isRunning = false;
     this.cancelScheduledFrame();
     this.previousTimestamp = null;
-    this.setLoopState("stopped");
+    this.gameCanvas.setLoopState("stopped");
   }
 
   /**
@@ -134,7 +143,7 @@ export class Game {
     if (!this.isRunning || !this.#isPlaying()) return false;
     this.previousTimestamp = null;
     this.#setGameState(GAME_STATES.PAUSED);
-    this.setLoopState("paused");
+    this.gameCanvas.setLoopState("paused");
     return true;
   }
 
@@ -145,7 +154,22 @@ export class Game {
     if (!this.isRunning || !this.isPaused) return false;
     this.previousTimestamp = null;
     this.#setGameState(GAME_STATES.PLAYING);
-    this.setLoopState("running");
+    this.gameCanvas.setLoopState("running");
+    return true;
+  }
+
+  /**
+   * Übernimmt eine angebotene Verbesserung und setzt den Lauf fort.
+   * @param {string} upgradeId
+   * @returns {boolean}
+   */
+  chooseUpgrade(upgradeId) {
+    if (!this.#stateMachine.is(GAME_STATES.UPGRADING)) return false;
+    if (!this.getUpgradeOptions().some(({ id }) => id === upgradeId)) return false;
+    this.upgradeFlow.choose(upgradeId);
+    this.previousTimestamp = null;
+    this.#setGameState(GAME_STATES.PLAYING);
+    this.gameCanvas.setLoopState("running");
     return true;
   }
 
@@ -174,17 +198,13 @@ export class Game {
    * Friert die Welt nach einem Sieg ein.
    * @returns {boolean}
    */
-  win() {
-    return this.#finishGame(GAME_STATES.WON);
-  }
+  win() { return this.#finishGame(GAME_STATES.WON); }
 
   /**
    * Friert die Welt nach einer Niederlage ein.
    * @returns {boolean}
    */
-  lose() {
-    return this.#finishGame(GAME_STATES.LOST);
-  }
+  lose() { return this.#finishGame(GAME_STATES.LOST); }
 
   /**
    * Verarbeitet einen Treffer über Energie, Rückstoß und möglichen Tod.
@@ -207,7 +227,7 @@ export class Game {
     if (this.#stateMachine.is(GAME_STATES.HOME)) return false;
     this.keyboard.reset();
     const changed = this.#setGameState(GAME_STATES.HOME);
-    this.setLoopState(this.isRunning ? "running" : "stopped");
+    this.gameCanvas.setLoopState(this.isRunning ? "running" : "stopped");
     return changed;
   }
 
@@ -221,9 +241,11 @@ export class Game {
     this.world.initialize();
     this.runStats.reset(this.world.level?.playerStart?.y ?? 0);
     this.weaponSystem.reset();
+    this.combatSystem.reset();
+    this.upgradeFlow.reset();
     this.previousTimestamp = null;
     this.#setGameState(GAME_STATES.PLAYING);
-    this.setLoopState("running");
+    this.gameCanvas.setLoopState("running");
     if (!this.isRunning) this.start();
   }
 
@@ -253,13 +275,14 @@ export class Game {
     this.#updateRunStats();
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
     if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
+    this.#openWaveUpgrade();
   }
 
   /**
    * Zeichnet den aktuellen Spielzustand.
    */
   draw() {
-    this.clearCanvas();
+    this.gameCanvas.clear();
     this.world.draw();
   }
 
@@ -290,28 +313,6 @@ export class Game {
     if (this.animationFrameId === null) return;
     cancelAnimationFrame(this.animationFrameId);
     this.animationFrameId = null;
-  }
-
-  /**
-   * Leert die sichtbare Spielfläche.
-   */
-  clearCanvas() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-
-  /**
-   * Bewahrt beim Skalieren die klaren Kanten der Pixelgrafiken.
-   */
-  configureRendering() {
-    this.context.imageSmoothingEnabled = false;
-  }
-
-  /**
-   * Spiegelt den Loopzustand für UI und Tests am Canvas.
-   * @param {"running"|"paused"|"stopped"} state
-   */
-  setLoopState(state) {
-    this.canvas.dataset.gameLoopState = state;
   }
 
   /**
@@ -365,6 +366,14 @@ export class Game {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
 
+  #openWaveUpgrade() {
+    if (!this.#isPlaying() || !this.upgradeFlow.openFrom(this.world)) return;
+    this.keyboard.reset();
+    this.previousTimestamp = null;
+    this.#setGameState(GAME_STATES.UPGRADING);
+    this.gameCanvas.setLoopState("paused");
+  }
+
   /**
    * Prüft, ob die Welt aktualisiert werden darf.
    * @returns {boolean}
@@ -387,13 +396,5 @@ export class Game {
   #handleDeathZone() {
     this.world.character?.die();
     this.lose();
-  }
-
-  /**
-   * Bricht kontrolliert ab, falls kein 2D-Kontext verfügbar ist.
-   */
-  validateContext() {
-    if (this.context) return;
-    throw new Error("Der 2D-Canvas-Kontext ist nicht verfügbar.");
   }
 }
