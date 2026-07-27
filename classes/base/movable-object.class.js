@@ -37,6 +37,18 @@ export class MovableObject extends DrawableObject {
     if (this.isOnGround) this.velocityY = 0;
   }
 
+  /**
+   * Gibt dem Objekt einen kontrollierten Impuls nach oben.
+   * @param {number} speedPixelsPerSecond
+   */
+  applyUpwardImpulse(speedPixelsPerSecond) {
+    if (!Number.isFinite(speedPixelsPerSecond) || speedPixelsPerSecond <= 0) {
+      throw new TypeError("Der Aufwärtsimpuls ist ungültig.");
+    }
+    this.velocityY = -speedPixelsPerSecond;
+    this.setOnGround(false);
+  }
+
   #applyAcceleration(deltaTimeSeconds) {
     this.velocityX += this.accelerationX * deltaTimeSeconds;
     this.velocityY += this.accelerationY * deltaTimeSeconds;

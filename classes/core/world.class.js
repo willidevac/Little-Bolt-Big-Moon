@@ -2,6 +2,7 @@ import { CollisionManager } from "../systems/collision-manager.class.js";
 import { FallTracker } from "../systems/fall-tracker.class.js";
 import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.class.js";
 import { ProjectileSystem } from "../systems/projectile-system.class.js";
+import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
@@ -49,6 +50,7 @@ export class World {
   #damageEvents;
   #collisionDebugRenderer;
   #projectileSystem;
+  #enemyCombatSystem;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -75,6 +77,10 @@ export class World {
       config.projectiles,
       this.#collisionManager,
     );
+    this.#enemyCombatSystem = new EnemyCombatSystem(
+      config.enemyCombat,
+      this.#collisionManager,
+    );
     this.character = null;
     this.camera = new Camera(config);
   }
@@ -85,10 +91,10 @@ export class World {
    */
   initialize() {
     if (this.isInitialized) return false;
-    this.#addLevelPlatforms();
-    this.#addLevelEnemies();
-    this.#addLevelCollectables();
-    this.#addLevelHazards();
+    this.#addLevelEntities(WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
+    this.#addLevelEntities(WORLD_ENTITY_GROUPS.ENEMIES, "enemies");
+    this.#addLevelEntities(WORLD_ENTITY_GROUPS.COLLECTABLES, "collectables");
+    this.#addLevelEntities(WORLD_ENTITY_GROUPS.HAZARDS, "hazards");
     this.#ensureFallbackScene();
     this.camera.reset(this.character);
     this.#fallTracker.reset(this.character);
@@ -152,6 +158,7 @@ export class World {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
     });
     this.#projectileSystem.resolve(this);
+    this.#resolveEnemyCombat(deltaTimeSeconds);
     this.#collisionManager.resetGroundStates(groundMovables);
     this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);
     this.#resolveCollectablePickups();
@@ -183,6 +190,7 @@ export class World {
    * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}
    */
   handlePlayerAttack(attack) {
+    this.#enemyCombatSystem.resolvePlayerAttack(attack, this);
     return this.#projectileSystem.spawn(attack, this);
   }
 
@@ -259,32 +267,10 @@ export class World {
     if (platforms.length === 0) this.#addFallbackPlatform();
   }
 
-  #addLevelPlatforms() {
-    if (!Array.isArray(this.level?.platforms)) return;
-    this.level.platforms.forEach((platform) => {
-      this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
-    });
-  }
-
-  #addLevelEnemies() {
-    if (!Array.isArray(this.level?.enemies)) return;
-    this.level.enemies.forEach((enemy) => {
-      this.addEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
-    });
-  }
-
-  #addLevelCollectables() {
-    if (!Array.isArray(this.level?.collectables)) return;
-    this.level.collectables.forEach((collectable) => {
-      this.addEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
-    });
-  }
-
-  #addLevelHazards() {
-    if (!Array.isArray(this.level?.hazards)) return;
-    this.level.hazards.forEach((hazard) => {
-      this.addEntity(WORLD_ENTITY_GROUPS.HAZARDS, hazard);
-    });
+  #addLevelEntities(groupName, propertyName) {
+    const entities = this.level?.[propertyName];
+    if (!Array.isArray(entities)) return;
+    entities.forEach((entity) => this.addEntity(groupName, entity));
   }
 
   #addFallbackCharacter() {
@@ -314,6 +300,11 @@ export class World {
     const enemies = this.#entityGroups.get(WORLD_ENTITY_GROUPS.ENEMIES);
     const groundEnemies = enemies.filter((enemy) => enemy.isAffectedByGravity);
     return [...characters, ...groundEnemies];
+  }
+
+  #resolveEnemyCombat(deltaTimeSeconds) {
+    const hit = this.#enemyCombatSystem.resolve(this, deltaTimeSeconds);
+    if (hit) this.#damageEvents.push(hit);
   }
 
   #resolveCollectablePickups() {

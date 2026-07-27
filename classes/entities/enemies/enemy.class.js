@@ -1,6 +1,12 @@
 import { MovableObject } from "../../base/movable-object.class.js";
 import { AnimationController } from "../../systems/animation-controller.class.js";
 
+const STATE_TIMER_PROPERTIES = Object.freeze({
+  hurt: "hurtSecondsRemaining",
+  attack: "attackSecondsRemaining",
+  dead: "deathSecondsRemaining",
+});
+
 /**
  * Gemeinsame Darstellung, Patrouille und Animation normaler Gegner.
  */
@@ -8,12 +14,14 @@ export class Enemy extends MovableObject {
   /**
    * @param {Readonly<object>} enemyData
    * @param {Readonly<object>} visualConfig
+   * @param {Readonly<object>} combatConfig
    */
-  constructor(enemyData, visualConfig) {
+  constructor(enemyData, visualConfig, combatConfig) {
     super();
     this.#setVisualSize(visualConfig);
     this.#validateEnemyData(enemyData);
     this.#setEnemyData(enemyData);
+    this.#setCombatData(combatConfig, visualConfig.animations);
     this.setCollisionBox(visualConfig.collisionBox);
     this.animationController = new AnimationController(visualConfig.animations);
     this.loadSprite(visualConfig.sprite);
@@ -41,6 +49,75 @@ export class Enemy extends MovableObject {
     if (this.x <= this.patrolMinX) this.#turnAt(this.patrolMinX, 1);
     else if (this.x >= maximumX) this.#turnAt(maximumX, -1);
     this.facingDirection = this.direction;
+  }
+
+  /**
+   * Pflegt gesperrte Treffer-, Angriffs- und Todeszustände.
+   * @param {number} deltaTimeSeconds
+   * @param {string} movementState
+   * @returns {boolean} Ob das normale Bewegungsmuster ausgeführt werden darf.
+   */
+  updateEnemyState(deltaTimeSeconds, movementState) {
+    this.attackCooldownSecondsRemaining = Math.max(
+      0,
+      this.attackCooldownSecondsRemaining - deltaTimeSeconds,
+    );
+    const lockedState = this.#getLockedState();
+    if (lockedState) return this.#maintainTimedState(
+      lockedState,
+      STATE_TIMER_PROPERTIES[lockedState],
+      deltaTimeSeconds,
+    );
+    this.setAnimationState(movementState);
+    return true;
+  }
+
+  /**
+   * Zieht Gegnerleben ab und startet Treffer oder mechanischen Tod.
+   * @param {Readonly<{amount:number}>} hit
+   * @returns {boolean} Ob der Gegner den Treffer angenommen hat.
+   */
+  receivePlayerHit(hit) {
+    if (this.isDead) return false;
+    this.#validateHit(hit);
+    this.health = Math.max(0, this.health - hit.amount);
+    if (this.health === 0) this.#die();
+    else {
+      this.hurtSecondsRemaining = this.hurtStateSeconds;
+      this.setAnimationState("hurt");
+    }
+    return true;
+  }
+
+  /**
+   * Erzeugt bei freiem Cooldown einen Kontakttreffer gegen Byte.
+   * @param {Readonly<object>} target
+   * @returns {Readonly<{amount:number,direction:number,source:string}>|null}
+   */
+  attack(target) {
+    if (!this.#canAttack()) return null;
+    this.#validateTarget(target);
+    this.attackSecondsRemaining = this.attackStateSeconds;
+    this.attackCooldownSecondsRemaining = this.attackCooldownSeconds;
+    this.setAnimationState("attack");
+    const direction = this.#getCenterX(target) < this.#getCenterX(this) ? -1 : 1;
+    return this.#createContactHit(direction);
+  }
+
+  /**
+   * Zeigt, ob die Todesanimation beendet und das Objekt entfernbar ist.
+   * @returns {boolean}
+   */
+  get isReadyForRemoval() {
+    return this.isDead && this.deathSecondsRemaining === 0;
+  }
+
+  /**
+   * Zeigt, ob gerade die Trefferanimation Vorrang hat.
+   * @returns {boolean}
+   */
+  get isHurt() {
+    return this.hurtSecondsRemaining > 0;
   }
 
   /**
@@ -92,6 +169,117 @@ export class Enemy extends MovableObject {
     this.team = "enemy";
     this.isDead = false;
     this.animationState = null;
+  }
+
+  #setCombatData(config, animations) {
+    this.#validateCombatConfig(config);
+    this.maximumHealth = config.maximumHealth;
+    this.health = this.maximumHealth;
+    this.contactDamage = config.contactDamage;
+    this.attackCooldownSeconds = config.attackCooldownSeconds;
+    this.#setStateDurations(animations);
+    this.#resetCombatTimers();
+  }
+
+  #validateCombatConfig(config) {
+    const values = [
+      config?.maximumHealth,
+      config?.contactDamage,
+      config?.attackCooldownSeconds,
+    ];
+    if (!values.every((value) => Number.isFinite(value) && value > 0)) {
+      throw new TypeError("Die Kampfwerte des Gegners sind ungültig.");
+    }
+  }
+
+  #setStateDurations(animations) {
+    this.hurtStateSeconds = this.#getAnimationDuration(animations?.hurt);
+    this.attackStateSeconds = this.#getAnimationDuration(animations?.attack);
+    this.deathStateSeconds = this.#getAnimationDuration(animations?.dead);
+  }
+
+  #resetCombatTimers() {
+    this.hurtSecondsRemaining = 0;
+    this.attackSecondsRemaining = 0;
+    this.deathSecondsRemaining = 0;
+    this.attackCooldownSecondsRemaining = 0;
+  }
+
+  #getLockedState() {
+    if (this.isDead) return "dead";
+    if (this.isHurt) return "hurt";
+    if (this.attackSecondsRemaining > 0) return "attack";
+    return null;
+  }
+
+  #maintainTimedState(state, timerProperty, deltaTimeSeconds) {
+    this[timerProperty] = Math.max(
+      0,
+      this[timerProperty] - deltaTimeSeconds,
+    );
+    this.setAnimationState(state);
+    this.updateAnimation(deltaTimeSeconds);
+    return false;
+  }
+
+  #die() {
+    this.isDead = true;
+    this.hurtSecondsRemaining = 0;
+    this.attackSecondsRemaining = 0;
+    this.deathSecondsRemaining = this.deathStateSeconds;
+    this.isAffectedByGravity = false;
+    this.#stopMovement();
+    this.setAnimationState("dead");
+  }
+
+  #stopMovement() {
+    this.velocityX = 0;
+    this.velocityY = 0;
+    this.accelerationX = 0;
+    this.accelerationY = 0;
+  }
+
+  #getAnimationDuration(clip) {
+    const values = [clip?.frameCount, clip?.frameDurationSeconds];
+    if (!values.every((value) => Number.isFinite(value) && value > 0)) {
+      throw new TypeError("Der Gegner-Kampfzustand hat keine gültige Animation.");
+    }
+    return clip.frameCount * clip.frameDurationSeconds;
+  }
+
+  #getCenterX(target) {
+    const bounds = typeof target.getCollisionBounds === "function"
+      ? target.getCollisionBounds()
+      : target;
+    return bounds.x + bounds.width / 2;
+  }
+
+  #canAttack() {
+    return !this.isDead &&
+      !this.isHurt &&
+      this.attackCooldownSecondsRemaining === 0;
+  }
+
+  #createContactHit(direction) {
+    return Object.freeze({
+      amount: this.contactDamage,
+      direction,
+      source: this.id,
+    });
+  }
+
+  #validateHit(hit) {
+    if (Number.isFinite(hit?.amount) && hit.amount > 0) return;
+    throw new TypeError("Der Gegnertreffer ist ungültig.");
+  }
+
+  #validateTarget(target) {
+    const bounds = typeof target?.getCollisionBounds === "function"
+      ? target.getCollisionBounds()
+      : target;
+    const values = [bounds?.x, bounds?.width];
+    if (values.every((value) => Number.isFinite(value))) return;
+    throw new TypeError("Das Angriffsziel ist ungültig.");
   }
 
   #turnAt(x, direction) {

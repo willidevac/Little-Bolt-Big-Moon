@@ -24,6 +24,24 @@ const VISUAL_CONFIG = Object.freeze({
       frameDurationSeconds: 0.1,
       loop: true,
     }),
+    attack: Object.freeze({
+      startFrame: 11,
+      frameCount: 3,
+      frameDurationSeconds: 0.09,
+      loop: false,
+    }),
+    hurt: Object.freeze({
+      startFrame: 14,
+      frameCount: 2,
+      frameDurationSeconds: 0.1,
+      loop: false,
+    }),
+    dead: Object.freeze({
+      startFrame: 16,
+      frameCount: 4,
+      frameDurationSeconds: 0.12,
+      loop: false,
+    }),
   }),
 });
 
@@ -36,7 +54,7 @@ export class DroneGuard extends Enemy {
    * @param {Readonly<object>} config
    */
   constructor(enemyData, config) {
-    super(enemyData, VISUAL_CONFIG);
+    super(enemyData, VISUAL_CONFIG, config);
     this.#validateConfig(config);
     this.speedPixelsPerSecond = config.speedPixelsPerSecond;
     this.hoverAmplitudePixels = config.hoverAmplitudePixels;
@@ -53,6 +71,7 @@ export class DroneGuard extends Enemy {
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
+    if (!this.updateEnemyState(deltaTimeSeconds, "move")) return;
     this.velocityX = this.direction * this.speedPixelsPerSecond;
     super.update(deltaTimeSeconds, world);
     this.stayInsidePatrol();

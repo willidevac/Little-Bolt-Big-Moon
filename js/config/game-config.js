@@ -85,12 +85,23 @@ const PROJECTILE_CONFIG = Object.freeze({
 const ENEMY_CONFIG = Object.freeze({
   scrapCrawler: Object.freeze({
     speedPixelsPerSecond: 58,
+    maximumHealth: 50,
+    contactDamage: 15,
+    attackCooldownSeconds: 1.1,
   }),
   droneGuard: Object.freeze({
     speedPixelsPerSecond: 86,
     hoverAmplitudePixels: 12,
     hoverCyclesPerSecond: 0.45,
+    maximumHealth: 36,
+    contactDamage: 20,
+    attackCooldownSeconds: 1.4,
   }),
+});
+
+const ENEMY_COMBAT_CONFIG = Object.freeze({
+  stompDamage: 30,
+  stompBounceSpeedPixelsPerSecond: 620,
 });
 
 const CAMERA_CONFIG = Object.freeze({
@@ -126,6 +137,7 @@ export const GAME_CONFIG = Object.freeze({
   weapons: WEAPONS_CONFIG,
   projectiles: PROJECTILE_CONFIG,
   enemies: ENEMY_CONFIG,
+  enemyCombat: ENEMY_COMBAT_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,
