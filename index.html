@@ -147,12 +147,16 @@
 
         <div class="start-screen__menu">
           <p class="start-screen__eyebrow">Vertikales Pixel-Abenteuer</p>
-          <h1 id="game-title" class="visually-hidden">
-            Little Bolt, Big Moon
-          </h1>
+          <h1 id="game-title" class="visually-hidden">Little Bolt, Big Moon</h1>
           <p class="start-screen__story">
             Ein kleiner Roboter. Ein großer Weg nach oben.
           </p>
+
+          <dl class="record-summary" aria-label="Deine lokalen Rekorde">
+            <div class="record-summary__item"><dt>Bestpunkte</dt><dd data-record-score>000000</dd></div>
+            <div class="record-summary__item"><dt>Höchste Höhe</dt><dd data-record-height>0 m</dd></div>
+            <div class="record-summary__item"><dt>Bestzeit</dt><dd data-record-time>–</dd></div>
+          </dl>
 
           <nav class="start-menu" aria-label="Hauptmenü">
             <button
@@ -173,13 +177,9 @@
           <p class="start-screen__hint">Hilf Byte vom Schrottplatz bis zum Mond.</p>
         </div>
 
-        <button
-          class="sound-button"
-          type="button"
-          aria-label="Ton stummschalten"
-          aria-pressed="false"
-          data-ui-action="mute"
-        >
+        <button class="sound-button" type="button"
+          aria-label="Ton stummschalten" aria-pressed="false"
+          data-ui-action="mute">
           Ton: an
         </button>
       </section>

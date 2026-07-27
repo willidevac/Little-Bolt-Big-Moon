@@ -6,3 +6,16 @@
 export function formatScore(score) {
   return String(Math.max(0, Math.floor(score))).padStart(6, "0");
 }
+
+/**
+ * Formatiert eine Bestzeit als Minuten und Sekunden oder als leeren Rekord.
+ * @param {number|null} seconds
+ * @returns {string}
+ */
+export function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return "–";
+  const wholeSeconds = Math.floor(seconds);
+  const minutes = Math.floor(wholeSeconds / 60);
+  const remainingSeconds = String(wholeSeconds % 60).padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
+}

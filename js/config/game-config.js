@@ -170,6 +170,11 @@ const DEBUG_CONFIG = Object.freeze({
   showFramesPerSecond: false,
 });
 
+const STORAGE_CONFIG = Object.freeze({
+  key: "little-bolt-big-moon",
+  version: 1,
+});
+
 export const GAME_CONFIG = Object.freeze({
   canvas: CANVAS_CONFIG,
   world: WORLD_CONFIG,
@@ -183,5 +188,6 @@ export const GAME_CONFIG = Object.freeze({
   enemyCombat: ENEMY_COMBAT_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
+  storage: STORAGE_CONFIG,
   debug: DEBUG_CONFIG,
 });
