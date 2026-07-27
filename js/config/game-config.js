@@ -1,3 +1,5 @@
+import { getAssetPath } from "./asset-paths.js";
+
 const CANVAS_CONFIG = Object.freeze({
   width: 1280,
   height: 720,
@@ -175,6 +177,48 @@ const STORAGE_CONFIG = Object.freeze({
   version: 1,
 });
 
+const createMusic = (fileName, volume) => Object.freeze({
+  source: getAssetPath("audio", `music/${fileName}`),
+  volume,
+});
+
+const createEffect = (
+  fileName,
+  volume,
+  maximumVoices = 2,
+  minimumIntervalMilliseconds = 80,
+) => Object.freeze({
+  source: getAssetPath("audio", `sfx/${fileName}`),
+  volume,
+  maximumVoices,
+  minimumIntervalMilliseconds,
+});
+
+const AUDIO_CONFIG = Object.freeze({
+  music: Object.freeze({
+    climb: createMusic("climb-loop.wav", 0.24),
+    boss: createMusic("boss-loop.wav", 0.28),
+  }),
+  effects: Object.freeze({
+    jump: createEffect("byte-jump.wav", 0.58, 2, 100),
+    land: createEffect("byte-land.wav", 0.5, 2, 120),
+    wrench: createEffect("wrench-swing.wav", 0.58, 2, 180),
+    bolt: createEffect("bolt-shot.wav", 0.55, 3, 100),
+    hurt: createEffect("byte-hurt.wav", 0.6, 1, 700),
+    lose: createEffect("game-lose.wav", 0.58, 1, 1_000),
+    pickupGear: createEffect("pickup-gear.wav", 0.5, 2, 100),
+    pickupEnergy: createEffect("pickup-energy.wav", 0.5, 2, 100),
+    pickupAmmo: createEffect("pickup-ammo.wav", 0.5, 2, 100),
+    enemyHit: createEffect("enemy-hit.wav", 0.5, 3, 80),
+    enemyDeath: createEffect("enemy-death.wav", 0.55, 2, 120),
+    bossAttack: createEffect("boss-attack.wav", 0.58, 2, 180),
+    bossPhase: createEffect("boss-phase.wav", 0.58, 1, 500),
+    bossDeath: createEffect("boss-death.wav", 0.62, 1, 1_000),
+    waveComplete: createEffect("wave-complete.wav", 0.52, 1, 500),
+    win: createEffect("game-win.wav", 0.58, 1, 1_000),
+  }),
+});
+
 export const GAME_CONFIG = Object.freeze({
   canvas: CANVAS_CONFIG,
   world: WORLD_CONFIG,
@@ -189,5 +233,6 @@ export const GAME_CONFIG = Object.freeze({
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   storage: STORAGE_CONFIG,
+  audio: AUDIO_CONFIG,
   debug: DEBUG_CONFIG,
 });

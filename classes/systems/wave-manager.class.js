@@ -1,5 +1,6 @@
 import { CombatZone, COMBAT_ZONE_STATES } from "../environment/combat-zone.class.js";
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
+import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
  * Aktiviert Begegnungsgegner und meldet sichere Abschlüsse ohne Einsperren.
@@ -49,7 +50,7 @@ export class WaveManager {
     if (!this.#isInitialized) return;
     const activeZone = this.#getActiveZone();
     if (activeZone) {
-      if (this.#hasEnded(activeZone, world)) this.#complete(activeZone);
+      if (this.#hasEnded(activeZone, world)) this.#complete(activeZone, world);
       return;
     }
     const waitingZone = this.#zones.find((zone) => zone.canTrigger(world.character));
@@ -94,9 +95,10 @@ export class WaveManager {
     return zone.enemyIds.every((enemyId) => !activeEnemyIds.has(enemyId));
   }
 
-  #complete(zone) {
+  #complete(zone, world) {
     if (!zone.complete()) return;
     this.#completedWaveIds.push(zone.id);
+    world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, { id: zone.id });
   }
 
   #getActiveZone() {

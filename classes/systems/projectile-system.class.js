@@ -1,6 +1,7 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 import { BoltProjectile } from "../entities/weapons/bolt-projectile.class.js";
 import { BossProjectile } from "../entities/weapons/boss-projectile.class.js";
+import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
  * Erzeugt Spielerprojektile, prüft Treffer und entfernt verbrauchte Bolzen.
@@ -39,19 +40,19 @@ export class ProjectileSystem {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     const characterHits = [];
     projectiles.forEach((projectile) => {
-      this.#resolveProjectile(projectile, enemies, world.character, characterHits);
+      this.#resolveProjectile(projectile, enemies, world, characterHits);
       if (projectile.isExpired) this.#removeProjectile(projectile, world);
     });
     return Object.freeze(characterHits);
   }
 
-  #resolveProjectile(projectile, enemies, character, characterHits) {
+  #resolveProjectile(projectile, enemies, world, characterHits) {
     if (projectile.team === "player") {
-      this.#resolveEnemyHit(projectile, enemies);
+      this.#resolveEnemyHit(projectile, enemies, world);
       return;
     }
     if (projectile.team !== "enemy") return;
-    const hit = this.#resolveCharacterHit(projectile, character);
+    const hit = this.#resolveCharacterHit(projectile, world.character);
     if (hit) characterHits.push(hit);
   }
 
@@ -60,19 +61,20 @@ export class ProjectileSystem {
     enemies.forEach((enemy) => {
       if (typeof enemy.takeAttackEvents !== "function") return;
       enemy.takeAttackEvents().forEach((event) => {
+        world.gameplayEvents.emit(GAMEPLAY_EVENTS.BOSS_ATTACK, {
+          kind: event.kind,
+        });
         const projectile = new BossProjectile(event, this.config.boss);
         world.addEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
       });
     });
   }
 
-  #resolveEnemyHit(projectile, enemies) {
+  #resolveEnemyHit(projectile, enemies, world) {
     if (projectile.isExpired) return;
     const target = this.#findFirstTarget(projectile, enemies);
     if (!target) return;
-    if (typeof target.receivePlayerHit === "function") {
-      target.receivePlayerHit(projectile.createHit());
-    }
+    world.eventReporter.damageEnemy(target, projectile.createHit());
     projectile.expire();
   }
 

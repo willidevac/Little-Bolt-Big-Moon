@@ -24,6 +24,13 @@
       "terms": "https://github.com/google/fonts/blob/main/ofl/silkscreen/OFL.txt",
       "evidence": "The font directory contains regular and bold font files plus its OFL.txt.",
       "notes": "Copy OFL.txt into img/fonts/ when the font files are downloaded."
+    },
+    {
+      "id": "project-original-audio",
+      "label": "Original procedural project audio",
+      "origin": "Deterministic JavaScript synthesis created for Little Bolt, Big Moon",
+      "evidence": "audio/README.md",
+      "notes": "No external recordings, samples or third-party sound libraries are included."
     }
   ],
   "assets": [
@@ -566,6 +573,16 @@
       "created": "2026-07-26",
       "modifications": "Square pixel-art reduction to Byte's head and a cream crescent moon for legibility at browser-tab size.",
       "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "little-bolt-audio-pack-v1",
+      "file": "audio/",
+      "role": "runtime-music-and-gameplay-sound-effects",
+      "status": "present",
+      "origin": "Original deterministic JavaScript synthesis for this project",
+      "created": "2026-07-27",
+      "modifications": "Selected soft sound directions were expanded into gameplay effects and two loopable music tracks.",
+      "licenseId": "project-original-audio"
     }
   ]
 }

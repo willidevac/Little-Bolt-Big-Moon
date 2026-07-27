@@ -4,6 +4,7 @@ import { initializeScreens } from "./js/ui/screens.js";
 import { initializeHud } from "./js/ui/hud.js";
 import { initializeStorage } from "./js/ui/storage.js";
 import { initializeTouchControls } from "./js/ui/touch-controls.js";
+import { initializeAudio } from "./js/ui/audio.js";
 
 let gameInstance = null;
 
@@ -48,6 +49,7 @@ export function getGame() {
 }
 
 const game = initializeGame();
+initializeAudio(game);
 initializeScreens(game);
 initializeHud(game);
 initializeStorage(game);

@@ -1,6 +1,10 @@
 import { World } from "./world.class.js";
 import { GameCanvas } from "./game-canvas.class.js";
 import { GameStateMachine, GAME_STATES } from "./game-state-machine.class.js";
+import {
+  GameplayEventHub,
+  GAMEPLAY_EVENTS,
+} from "./gameplay-event-hub.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
 import { CombatSystem } from "../systems/combat-system.class.js";
@@ -32,6 +36,7 @@ export class Game {
     this.boundGameLoop = this.gameLoop.bind(this);
     this.#stateMachine = new GameStateMachine();
     this.#stateListeners = new Set();
+    this.gameplayEvents = new GameplayEventHub();
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
@@ -44,22 +49,13 @@ export class Game {
       getCharacter: () => this.world.character,
     });
   }
-  /**
-   * Zeigt, ob das Spiel gerade pausiert ist.
-   * @returns {boolean}
-   */
+  /** @returns {boolean} Ob das Spiel gerade pausiert ist. */
   get isPaused() { return this.#stateMachine.is(GAME_STATES.PAUSED); }
 
-  /**
-   * Liefert den aktiven Spielzustand.
-   * @returns {string}
-   */
+  /** @returns {string} Der aktive Spielzustand. */
   get state() { return this.#stateMachine.getState(); }
 
-  /**
-   * Liefert Bytes aktuellen Höhenverlust in Weltpixeln.
-   * @returns {number}
-   */
+  /** @returns {number} Bytes aktueller Höhenverlust in Weltpixeln. */
   get heightLossPixels() { return this.world.getHeightLossPixels(); }
 
   /**
@@ -85,6 +81,15 @@ export class Game {
   }
 
   /**
+   * Informiert einen Beobachter über einmalige Gameplay-Ereignisse.
+   * @param {(event: Readonly<object>) => void} listener
+   * @returns {() => void}
+   */
+  onGameplayEvent(listener) {
+    return this.gameplayEvents.on(listener);
+  }
+
+  /**
    * Liefert die aktuellen Laufwerte als unveränderliche Momentaufnahme.
    * @returns {Readonly<object>}
    */
@@ -92,10 +97,7 @@ export class Game {
     return this.runStats.getSnapshot();
   }
 
-  /**
-   * Liefert die aktuell angebotenen Verbesserungen.
-   * @returns {ReadonlyArray<Readonly<object>>}
-   */
+  /** @returns {ReadonlyArray<Readonly<object>>} Aktuelle Verbesserungen. */
   getUpgradeOptions() {
     return this.upgradeFlow.getOptions();
   }
@@ -113,9 +115,7 @@ export class Game {
     this.start();
   }
 
-  /**
-   * Startet genau einen neuen Animationsloop.
-   */
+  /** Startet genau einen neuen Animationsloop. */
   start() {
     if (this.isRunning) return;
     this.isRunning = true;
@@ -124,9 +124,7 @@ export class Game {
     this.requestNextFrame();
   }
 
-  /**
-   * Stoppt den Loop und verwirft seine Zeitbasis.
-   */
+  /** Stoppt den Loop und verwirft seine Zeitbasis. */
   stop() {
     if (!this.isRunning) return;
     this.isRunning = false;
@@ -213,7 +211,12 @@ export class Game {
     if (!this.#isPlaying()) return false;
     const character = this.world.character;
     const accepted = this.combatSystem.applyHit(hit, character, this.runStats);
-    if (character?.isDead) this.lose();
+    if (!accepted) return false;
+    this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_HURT);
+    if (character?.isDead) {
+      this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);
+      this.lose();
+    }
     return accepted;
   }
 
@@ -277,9 +280,7 @@ export class Game {
     this.#openWaveUpgrade();
   }
 
-  /**
-   * Zeichnet den aktuellen Spielzustand.
-   */
+  /** Zeichnet den aktuellen Spielzustand. */
   draw() {
     this.gameCanvas.clear();
     this.world.draw();
@@ -297,17 +298,13 @@ export class Game {
     return Math.min(elapsed, maximum) / 1000;
   }
 
-  /**
-   * Plant einen Frame nur, wenn noch keiner aussteht.
-   */
+  /** Plant einen Frame nur, wenn noch keiner aussteht. */
   requestNextFrame() {
     if (!this.isRunning || this.animationFrameId !== null) return;
     this.animationFrameId = requestAnimationFrame(this.boundGameLoop);
   }
 
-  /**
-   * Verwirft einen noch nicht ausgeführten Frame.
-   */
+  /** Verwirft einen noch nicht ausgeführten Frame. */
   cancelScheduledFrame() {
     if (this.animationFrameId === null) return;
     cancelAnimationFrame(this.animationFrameId);
@@ -319,7 +316,13 @@ export class Game {
    * @returns {World}
    */
   #createWorld() {
-    return new World(this.context, this.config, this.keyboard, createLevelOne(this.config.enemies));
+    return new World(
+      this.context,
+      this.config,
+      this.keyboard,
+      createLevelOne(this.config.enemies),
+      this.gameplayEvents,
+    );
   }
 
   /**
@@ -343,9 +346,7 @@ export class Game {
     return changed;
   }
 
-  /**
-   * Meldet den aktuellen Zustand an alle registrierten Beobachter.
-   */
+  /** Meldet den aktuellen Zustand an alle registrierten Beobachter. */
   #notifyStateChange() {
     this.#stateListeners.forEach((listener) => listener(this.state));
   }
@@ -360,9 +361,7 @@ export class Game {
     this.runStats.updateBoss(this.world.bossFight.getSnapshot());
   }
 
-  /**
-   * Verarbeitet zustandsübergreifende Eingaben.
-   */
+  /** Verarbeitet zustandsübergreifende Eingaben. */
   #handleStateInput() {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
@@ -374,10 +373,7 @@ export class Game {
     this.gameCanvas.setLoopState("paused");
   }
 
-  /**
-   * Prüft, ob die Welt aktualisiert werden darf.
-   * @returns {boolean}
-   */
+  /** @returns {boolean} Ob die Welt aktualisiert werden darf. */
   #isPlaying() {
     return this.#stateMachine.is(GAME_STATES.PLAYING);
   }
@@ -394,7 +390,9 @@ export class Game {
     return this.#setGameState(endState);
   }
   #handleDeathZone() {
-    this.world.character?.die();
+    if (this.world.character?.die()) {
+      this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);
+    }
     this.lose();
   }
 }

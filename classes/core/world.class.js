@@ -5,10 +5,15 @@ import { ProjectileSystem } from "../systems/projectile-system.class.js";
 import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
 import { WaveManager } from "../systems/wave-manager.class.js";
 import { BossFightManager } from "../systems/boss-fight-manager.class.js";
+import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
+import {
+  GameplayEventHub,
+  GAMEPLAY_EVENTS,
+} from "./gameplay-event-hub.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 
@@ -59,12 +64,21 @@ export class World {
    * @param {Readonly<object>} config
    * @param {Readonly<object>|null} [input=null]
    * @param {Readonly<object>|null} [level=null]
+   * @param {GameplayEventHub} [gameplayEvents]
    */
-  constructor(context, config, input = null, level = null) {
+  constructor(
+    context,
+    config,
+    input = null,
+    level = null,
+    gameplayEvents = new GameplayEventHub(),
+  ) {
     this.context = context;
     this.config = config;
     this.input = input;
     this.level = level;
+    this.gameplayEvents = gameplayEvents;
+    this.eventReporter = new WorldEventReporter(gameplayEvents);
     this.isInitialized = false;
     this.#entityGroups = this.#createGroupMap(Array);
     this.#pendingAdditions = this.#createGroupMap(Set);
@@ -89,10 +103,7 @@ export class World {
     this.camera = new Camera(config);
   }
 
-  /**
-   * Aktiviert die Welt höchstens einmal.
-   * @returns {boolean} Ob die Welt neu aktiviert wurde.
-   */
+  /** @returns {boolean} Ob die Welt neu aktiviert wurde. */
   initialize() {
     if (this.isInitialized) return false;
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
@@ -141,11 +152,7 @@ export class World {
     return true;
   }
 
-  /**
-   * Liefert eine unveränderliche Momentaufnahme einer Entitätsgruppe.
-   * @param {string} groupName
-   * @returns {ReadonlyArray<object>}
-   */
+  /** @returns {ReadonlyArray<object>} Momentaufnahme einer Entitätsgruppe. */
   getEntities(groupName) {
     this.#validateGroupName(groupName);
     return Object.freeze([...this.#entityGroups.get(groupName)]);
@@ -157,6 +164,7 @@ export class World {
    */
   update(deltaTimeSeconds) {
     if (!this.isInitialized) return;
+    this.eventReporter.capture(this.character, this.bossFight.getSnapshot());
     const groundMovables = this.#getGroundMovables();
     this.#processEntities(UPDATE_ORDER, (entity) => {
       if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
@@ -172,20 +180,15 @@ export class World {
     this.bossFight.update(this);
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
+    this.eventReporter.report(this.character, this.bossFight.getSnapshot());
   }
 
-  /**
-   * Liefert die seit dem höchsten Punkt verlorene Höhe.
-   * @returns {number}
-   */
+  /** @returns {number} Die seit dem höchsten Punkt verlorene Höhe. */
   getHeightLossPixels() {
     return this.#fallTracker.getHeightLossPixels();
   }
 
-  /**
-   * Prüft, ob Byte unter die untere Todeszone gefallen ist.
-   * @returns {boolean}
-   */
+  /** @returns {boolean} Ob Byte die untere Todeszone erreicht hat. */
   isCharacterInDeathZone() {
     if (!this.character) return false;
     return this.#fallTracker.hasReachedDeathZone(this.character);
@@ -197,14 +200,16 @@ export class World {
    * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}
    */
   handlePlayerAttack(attack) {
+    if (attack) {
+      this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_ATTACK, {
+        weaponId: attack.weaponId,
+      });
+    }
     this.#enemyCombatSystem.resolvePlayerAttack(attack, this);
     return this.#projectileSystem.spawn(attack, this);
   }
 
-  /**
-   * Übergibt alle neuen Funde genau einmal an die Laufwerte.
-   * @returns {ReadonlyArray<Readonly<{type:string, amount:number}>>}
-   */
+  /** @returns {ReadonlyArray<Readonly<object>>} Alle neuen Funde genau einmal. */
   takeCollectedPickups() {
     const pickups = Object.freeze([...this.#collectedPickups]);
     this.#collectedPickups.length = 0;
@@ -216,19 +221,14 @@ export class World {
     return this.#enemyCombatSystem.takeDefeatedEnemies();
   }
 
-  /**
-   * Übergibt neue Treffer genau einmal an die Kampfsteuerung.
-   * @returns {ReadonlyArray<Readonly<{amount:number, direction:number}>>}
-   */
+  /** @returns {ReadonlyArray<Readonly<object>>} Neue Treffer genau einmal. */
   takeDamageEvents() {
     const events = Object.freeze([...this.#damageEvents]);
     this.#damageEvents.length = 0;
     return events;
   }
 
-  /**
-   * Zeichnet alle dafür geeigneten Entitäten in fester Ebenenreihenfolge.
-   */
+  /** Zeichnet alle Entitäten in fester Ebenenreihenfolge. */
   draw() {
     if (!this.isInitialized) return;
     this.context.save();
@@ -246,9 +246,7 @@ export class World {
     });
   }
 
-  /**
-   * Entfernt alle aktiven und vorgemerkten Entitäten.
-   */
+  /** Entfernt alle aktiven und vorgemerkten Entitäten. */
   clear() {
     this.#collectedPickups.length = 0;
     this.#damageEvents.length = 0;
@@ -257,9 +255,7 @@ export class World {
     else this.#queueAllEntitiesForRemoval();
   }
 
-  /**
-   * Leert und deaktiviert die Welt für einen kontrollierten Neuaufbau.
-   */
+  /** Leert und deaktiviert die Welt für einen kontrollierten Neuaufbau. */
   destroy() {
     this.clear();
     this.camera.reset();
@@ -326,7 +322,9 @@ export class World {
   }
 
   #collect(collectable) {
-    this.#collectedPickups.push(collectable.getPickup());
+    const pickup = collectable.getPickup();
+    this.#collectedPickups.push(pickup);
+    this.gameplayEvents.emit(GAMEPLAY_EVENTS.PICKUP, pickup);
     this.removeEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
   }
 

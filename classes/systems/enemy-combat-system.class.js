@@ -27,7 +27,7 @@ export class EnemyCombatSystem {
     if (attack?.type !== "melee" || !attack.hitbox) return 0;
     const targets = this.#getMeleeTargets(attack.hitbox, world);
     const hit = this.#createPlayerHit(attack);
-    targets.forEach((enemy) => enemy.receivePlayerHit(hit));
+    targets.forEach((enemy) => world.eventReporter.damageEnemy(enemy, hit));
     return targets.length;
   }
 
@@ -49,7 +49,7 @@ export class EnemyCombatSystem {
       deltaTimeSeconds,
     );
     const hit = stompTarget
-      ? this.#resolveStomp(world.character, stompTarget)
+      ? this.#resolveStomp(world.character, stompTarget, world)
       : this.#resolveContact(world.character, enemies);
     this.#removeDefeated(world);
     return hit;
@@ -89,8 +89,8 @@ export class EnemyCombatSystem {
     });
   }
 
-  #resolveStomp(character, enemy) {
-    enemy.receivePlayerHit(Object.freeze({
+  #resolveStomp(character, enemy, world) {
+    world.eventReporter.damageEnemy(enemy, Object.freeze({
       amount: this.config.stompDamage,
       direction: 1,
       source: "stomp",
