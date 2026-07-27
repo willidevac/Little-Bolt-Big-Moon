@@ -100,6 +100,22 @@ export class RunStats {
   }
 
   /**
+   * Verbraucht Bolzen nur, wenn die angeforderte Menge vorhanden ist.
+   * @param {number} amount
+   * @returns {boolean}
+   */
+  spendAmmo(amount) {
+    if (!Number.isInteger(amount) || amount < 0) {
+      throw new TypeError("Der Munitionsverbrauch muss eine ganze Zahl sein.");
+    }
+    if (amount > this.ammo) return false;
+    if (amount === 0) return true;
+    this.ammo -= amount;
+    this.#notifyChange();
+    return true;
+  }
+
+  /**
    * Liefert eine unveränderliche Momentaufnahme für das HUD.
    * @returns {Readonly<object>}
    */

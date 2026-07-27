@@ -39,6 +39,40 @@ const COMBAT_CONFIG = Object.freeze({
   knockbackVerticalPixelsPerSecond: 460,
 });
 
+const WEAPON_DEFINITIONS = Object.freeze({
+  repairWrench: Object.freeze({
+    id: "repairWrench",
+    name: "Reparaturschlüssel",
+    type: "melee",
+    damage: 25,
+    cooldownSeconds: 0.45,
+    ammoCost: 0,
+    animationState: "melee",
+    animationDurationSeconds: 0.32,
+    attackWidth: 44,
+    attackHeight: 32,
+    attackOffsetY: 32,
+  }),
+  boltThrower: Object.freeze({
+    id: "boltThrower",
+    name: "Bolzenwerfer",
+    type: "projectile",
+    damage: 18,
+    cooldownSeconds: 0.28,
+    ammoCost: 1,
+    animationState: "shoot",
+    animationDurationSeconds: 0.18,
+    attackWidth: 16,
+    attackHeight: 8,
+    attackOffsetY: 26,
+  }),
+});
+
+const WEAPONS_CONFIG = Object.freeze({
+  order: Object.freeze(["repairWrench", "boltThrower"]),
+  definitions: WEAPON_DEFINITIONS,
+});
+
 const CAMERA_CONFIG = Object.freeze({
   deadZoneTopPixels: 216,
   deadZoneBottomPixels: 504,
@@ -69,6 +103,7 @@ export const GAME_CONFIG = Object.freeze({
   physics: PHYSICS_CONFIG,
   character: CHARACTER_CONFIG,
   combat: COMBAT_CONFIG,
+  weapons: WEAPONS_CONFIG,
   camera: CAMERA_CONFIG,
   hud: HUD_CONFIG,
   debug: DEBUG_CONFIG,

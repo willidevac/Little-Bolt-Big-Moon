@@ -1,5 +1,6 @@
 import { MovableObject } from "../base/movable-object.class.js";
 import { AnimationController } from "../systems/animation-controller.class.js";
+import { CharacterAttackState } from "../systems/character-attack-state.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
 import { clamp } from "../../js/utils/math.js";
 
@@ -37,6 +38,8 @@ export const CHARACTER_STATES = Object.freeze({
   RUN: "run",
   JUMP: "jump",
   FALL: "fall",
+  MELEE: "melee",
+  SHOOT: "shoot",
   HURT: "hurt",
   SLEEP: "sleep",
   DEAD: "dead",
@@ -50,6 +53,8 @@ const BYTE_ANIMATION_CLIPS = Object.freeze({
   [CHARACTER_STATES.RUN]: createAnimationClip(4, 6, 0.08),
   [CHARACTER_STATES.JUMP]: createAnimationClip(10, 1, 1),
   [CHARACTER_STATES.FALL]: createAnimationClip(11, 1, 1),
+  [CHARACTER_STATES.MELEE]: createAnimationClip(14, 4, 0.08, false),
+  [CHARACTER_STATES.SHOOT]: createAnimationClip(18, 3, 0.06, false),
   [CHARACTER_STATES.HURT]: createAnimationClip(21, 2, 0.1),
   [CHARACTER_STATES.SLEEP]: createAnimationClip(23, 4, 0.3),
   [CHARACTER_STATES.DEAD]: createAnimationClip(27, 6, 0.14, false),
@@ -74,6 +79,7 @@ export class Character extends MovableObject {
     this.isDead = false;
     this.hurtSecondsRemaining = 0;
     this.invulnerabilitySecondsRemaining = 0;
+    this.attackState = new CharacterAttackState();
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
     this.loadSprite(BYTE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState(this.state));
@@ -111,6 +117,7 @@ export class Character extends MovableObject {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
     const input = world.input ?? NEUTRAL_INPUT;
     if (this.isDead) return this.#maintainDeadState(deltaTimeSeconds);
+    this.attackState.update(deltaTimeSeconds);
     this.#updateHitTimers(deltaTimeSeconds);
     const config = world.config.character;
     const jumpStarted = this.#consumeJumpPress(input);
@@ -129,6 +136,7 @@ export class Character extends MovableObject {
    */
   enterHurtState() {
     if (this.isDead || this.isHurt) return false;
+    this.attackState.clear();
     this.isHurt = true;
     this.inactivitySeconds = 0;
     this.coyoteTimeRemaining = 0;
@@ -166,6 +174,27 @@ export class Character extends MovableObject {
   }
 
   /**
+   * Zeigt, ob Byte gerade einen neuen Angriff beginnen darf.
+   * @returns {boolean}
+   */
+  get canAttack() {
+    return !this.isDead && !this.isHurt && !this.attackState.isActive;
+  }
+
+  /**
+   * Startet ausschließlich die zur Waffe passende Animation.
+   * @param {"melee"|"shoot"} animationState
+   * @param {number} durationSeconds
+   * @returns {boolean}
+   */
+  startAttack(animationState, durationSeconds) {
+    if (!this.canAttack) return false;
+    const started = this.attackState.start(animationState, durationSeconds);
+    if (started) this.#changeState(animationState);
+    return started;
+  }
+
+  /**
    * Liefert Bytes kleine Fußfläche für Treffer ausschließlich von oben.
    * @returns {Readonly<{x:number, y:number, width:number, height:number}>}
    */
@@ -194,6 +223,7 @@ export class Character extends MovableObject {
    */
   die() {
     if (this.isDead) return false;
+    this.attackState.clear();
     this.isDead = true;
     this.isHurt = false;
     this.hurtSecondsRemaining = 0;
@@ -292,6 +322,7 @@ export class Character extends MovableObject {
     const threshold = config.movementStateThresholdPixelsPerSecond;
     if (this.isDead) return CHARACTER_STATES.DEAD;
     if (this.isHurt) return CHARACTER_STATES.HURT;
+    if (this.attackState.isActive) return this.attackState.animationState;
     if (this.velocityY < -threshold) return CHARACTER_STATES.JUMP;
     if (!this.isOnGround || this.velocityY > threshold) return CHARACTER_STATES.FALL;
     if (Math.abs(this.velocityX) > threshold) return CHARACTER_STATES.RUN;

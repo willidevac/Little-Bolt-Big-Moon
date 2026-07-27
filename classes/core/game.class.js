@@ -3,6 +3,7 @@ import { GameStateMachine, GAME_STATES } from "./game-state-machine.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
 import { CombatSystem } from "../systems/combat-system.class.js";
+import { WeaponSystem } from "../systems/weapon-system.class.js";
 import { createLevelOne } from "../../js/levels/level-01.js";
 
 /**
@@ -33,6 +34,7 @@ export class Game {
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
     this.combatSystem = new CombatSystem(config.combat);
+    this.weaponSystem = new WeaponSystem(config.weapons, this.keyboard, this.runStats);
   }
 
   /**
@@ -218,6 +220,7 @@ export class Game {
     this.world = this.#createWorld();
     this.world.initialize();
     this.runStats.reset(this.world.level?.playerStart?.y ?? 0);
+    this.weaponSystem.reset();
     this.previousTimestamp = null;
     this.#setGameState(GAME_STATES.PLAYING);
     this.setLoopState("running");
@@ -244,6 +247,7 @@ export class Game {
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
+    this.weaponSystem.update(deltaTimeSeconds, this.world.character);
     this.world.update(deltaTimeSeconds);
     this.#updateRunStats();
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
