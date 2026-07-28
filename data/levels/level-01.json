@@ -339,7 +339,151 @@
         "horizontalPositions": [128, 352, 576, 800, 960, 736, 512, 288, 128, 384, 640, 896, 672, 448, 224],
         "catchEvery": 9,
         "narrowEvery": 6,
-        "movingEvery": 0
+        "movingEvery": 0,
+        "movingDistance": 96,
+        "movingSpeed": 45,
+        "rooms": [
+          {
+            "id": "funkturm-fuss",
+            "steps": [
+              { "x": 256, "gapY": 96, "type": "path" },
+              { "x": 480, "gapY": 112, "type": "path" },
+              { "x": 704, "gapY": 120, "type": "narrow" },
+              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 704, "gapY": 144, "type": "path" }
+            ]
+          },
+          {
+            "id": "erste-antenne",
+            "steps": [
+              { "x": 480, "gapY": 112, "type": "path" },
+              { "x": 256, "gapY": 128, "type": "narrow" },
+              { "x": 512, "gapY": 136, "type": "moving" },
+              { "x": 736, "gapY": 144, "type": "path" },
+              { "x": 960, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "pendelleitung",
+            "steps": [
+              { "x": 704, "gapY": 124, "type": "path" },
+              { "x": 448, "gapY": 136, "type": "moving" },
+              { "x": 192, "gapY": 140, "type": "narrow" },
+              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 672, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "kabelschacht",
+            "steps": [
+              { "x": 896, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "moving" },
+              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 160, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "signalbogen",
+            "steps": [
+              { "x": 672, "gapY": 124, "type": "path" },
+              { "x": 928, "gapY": 136, "type": "moving" },
+              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 192, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "schwingkreis",
+            "steps": [
+              { "x": 416, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "moving" },
+              { "x": 864, "gapY": 144, "type": "narrow" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "wartungsbalkon",
+            "steps": [
+              { "x": 128, "gapY": 120, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 832, "gapY": 144, "type": "narrow" },
+              { "x": 384, "gapY": 160, "type": "catch" }
+            ]
+          },
+          {
+            "id": "doppelschwinger",
+            "steps": [
+              { "x": 832, "gapY": 128, "type": "moving" },
+              { "x": 608, "gapY": 136, "type": "path" },
+              { "x": 352, "gapY": 144, "type": "moving" },
+              { "x": 128, "gapY": 152, "type": "narrow" },
+              { "x": 384, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "frequenzsprung",
+            "steps": [
+              { "x": 640, "gapY": 124, "type": "path" },
+              { "x": 896, "gapY": 136, "type": "moving" },
+              { "x": 672, "gapY": 140, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 160, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "kreuzsignal",
+            "steps": [
+              { "x": 384, "gapY": 128, "type": "moving" },
+              { "x": 640, "gapY": 136, "type": "narrow" },
+              { "x": 864, "gapY": 144, "type": "moving" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "antennenkranz",
+            "steps": [
+              { "x": 128, "gapY": 124, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "moving" },
+              { "x": 576, "gapY": 140, "type": "narrow" },
+              { "x": 832, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "phasendreher",
+            "steps": [
+              { "x": 864, "gapY": 128, "type": "moving" },
+              { "x": 640, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "moving" },
+              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "sendespitze",
+            "steps": [
+              { "x": 672, "gapY": 128, "type": "path" },
+              { "x": 928, "gapY": 136, "type": "moving" },
+              { "x": 704, "gapY": 144, "type": "narrow" },
+              { "x": 448, "gapY": 152, "type": "path" },
+              { "x": 192, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "tor-zur-fabrik",
+            "steps": [
+              { "x": 416, "gapY": 136, "type": "moving" },
+              { "x": 640, "gapY": 144, "type": "narrow" },
+              { "x": 864, "gapY": 148, "type": "moving" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "path" }
+            ]
+          }
+        ]
       }
     },
     {
