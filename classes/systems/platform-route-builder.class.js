@@ -130,13 +130,30 @@ export class PlatformRouteBuilder {
     section, room, roomIndex, step, stepIndex, y, previousPlatform,
   ) {
     this.#validateAuthoredJump(step, previousPlatform);
-    return Object.freeze({
+    const platform = this.#getAuthoredPlatformData(
+      section, room, roomIndex, step, stepIndex, y,
+    );
+    this.#addAuthoredBehavior(platform, section.route);
+    return Object.freeze(platform);
+  }
+
+  #getAuthoredPlatformData(section, room, roomIndex, step, stepIndex, y) {
+    return {
       id: `${section.id}-${room.id}-${roomIndex + 1}-${stepIndex + 1}`,
       x: step.x,
       y,
       type: step.type,
       tileset: section.tileset,
-    });
+    };
+  }
+
+  #addAuthoredBehavior(platform, route) {
+    if (platform.type === "falling") {
+      platform.fall = this.#createFall(route);
+    }
+    if (platform.type === "moving") {
+      platform.movement = this.#createMovement(route, platform.x);
+    }
   }
 
   #validateAuthoredJump(step, previousPlatform) {
@@ -353,7 +370,9 @@ export class PlatformRouteBuilder {
   }
 
   #hasValidMovingRules(route) {
-    if (route.movingEvery === 0) return true;
+    const needsMovement = route.movingEvery > 0 ||
+      this.#hasAuthoredType(route, "moving");
+    if (!needsMovement) return true;
     return Number.isFinite(route.movingDistance) &&
       route.movingDistance > 0 &&
       Number.isFinite(route.movingSpeed) &&
@@ -361,10 +380,18 @@ export class PlatformRouteBuilder {
   }
 
   #hasValidFallingRules(route) {
-    if ((route.fallingEvery ?? 0) === 0) return true;
+    const needsFalling = (route.fallingEvery ?? 0) > 0 ||
+      this.#hasAuthoredType(route, "falling");
+    if (!needsFalling) return true;
     return Number.isFinite(route.fallWarningSeconds) &&
       route.fallWarningSeconds > 0 &&
       Number.isFinite(route.fallSpeed) &&
       route.fallSpeed > 0;
+  }
+
+  #hasAuthoredType(route, type) {
+    return route.rooms?.some((room) => {
+      return room.steps.some((step) => step.type === type);
+    }) ?? false;
   }
 }

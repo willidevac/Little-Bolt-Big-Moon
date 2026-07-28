@@ -178,7 +178,152 @@
         "horizontalPositions": [160, 352, 544, 736, 928, 704, 480, 256, 128, 320, 512, 704, 896, 608, 320],
         "catchEvery": 8,
         "narrowEvery": 9,
-        "movingEvery": 0
+        "movingEvery": 0,
+        "fallingEvery": 0,
+        "fallWarningSeconds": 1,
+        "fallSpeed": 340,
+        "rooms": [
+          {
+            "id": "presswerk-eingang",
+            "steps": [
+              { "x": 320, "gapY": 96, "type": "path" },
+              { "x": 544, "gapY": 112, "type": "path" },
+              { "x": 768, "gapY": 120, "type": "narrow" },
+              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 704, "gapY": 144, "type": "path" }
+            ]
+          },
+          {
+            "id": "erste-fallplatte",
+            "steps": [
+              { "x": 480, "gapY": 112, "type": "path" },
+              { "x": 256, "gapY": 128, "type": "narrow" },
+              { "x": 512, "gapY": 136, "type": "path" },
+              { "x": 736, "gapY": 144, "type": "falling" },
+              { "x": 960, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "kolben-zickzack",
+            "steps": [
+              { "x": 704, "gapY": 124, "type": "path" },
+              { "x": 448, "gapY": 136, "type": "falling" },
+              { "x": 192, "gapY": 140, "type": "narrow" },
+              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 672, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "stempelkammer",
+            "steps": [
+              { "x": 896, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "falling" },
+              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 160, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "kettenwechsel",
+            "steps": [
+              { "x": 672, "gapY": 124, "type": "path" },
+              { "x": 928, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "falling" },
+              { "x": 192, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "druckwelle",
+            "steps": [
+              { "x": 416, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "narrow" },
+              { "x": 864, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "falling" },
+              { "x": 352, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "wartungssteg",
+            "steps": [
+              { "x": 128, "gapY": 120, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 832, "gapY": 144, "type": "narrow" },
+              { "x": 384, "gapY": 160, "type": "catch" }
+            ]
+          },
+          {
+            "id": "doppelkolben",
+            "steps": [
+              { "x": 832, "gapY": 128, "type": "path" },
+              { "x": 608, "gapY": 136, "type": "falling" },
+              { "x": 352, "gapY": 144, "type": "narrow" },
+              { "x": 128, "gapY": 152, "type": "falling" },
+              { "x": 384, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "ofenbruecke",
+            "steps": [
+              { "x": 640, "gapY": 124, "type": "path" },
+              { "x": 896, "gapY": 136, "type": "narrow" },
+              { "x": 672, "gapY": 140, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 160, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "pressen-takt",
+            "steps": [
+              { "x": 384, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "falling" },
+              { "x": 864, "gapY": 144, "type": "narrow" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "schmale-presse",
+            "steps": [
+              { "x": 128, "gapY": 124, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "falling" },
+              { "x": 832, "gapY": 148, "type": "narrow" },
+              { "x": 608, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "gegenpressung",
+            "steps": [
+              { "x": 864, "gapY": 128, "type": "path" },
+              { "x": 640, "gapY": 136, "type": "falling" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 160, "gapY": 152, "type": "narrow" },
+              { "x": 416, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "letzte-verdichtung",
+            "steps": [
+              { "x": 672, "gapY": 128, "type": "path" },
+              { "x": 928, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "falling" },
+              { "x": 448, "gapY": 152, "type": "narrow" },
+              { "x": 192, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "tor-zum-funkturm",
+            "steps": [
+              { "x": 416, "gapY": 136, "type": "path" },
+              { "x": 640, "gapY": 144, "type": "falling" },
+              { "x": 864, "gapY": 148, "type": "narrow" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "falling" }
+            ]
+          }
+        ]
       }
     },
     {
