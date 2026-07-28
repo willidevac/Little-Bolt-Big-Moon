@@ -1525,7 +1525,129 @@
         "movingSpeed": 100,
         "fallingEvery": 7,
         "fallWarningSeconds": 0.6,
-        "fallSpeed": 540
+        "fallSpeed": 540,
+        "rooms": [
+          {
+            "id": "forschungsschleuse",
+            "steps": [
+              { "x": 160, "gapY": 148, "type": "path" },
+              { "x": 416, "gapY": 160, "type": "moving" },
+              { "x": 672, "gapY": 168, "type": "falling" },
+              { "x": 928, "gapY": 172, "type": "moving" },
+              { "x": 672, "gapY": 172, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "probenregale",
+            "steps": [
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 160, "gapY": 168, "type": "moving" },
+              { "x": 384, "gapY": 172, "type": "narrow" },
+              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 896, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "laserbruecke",
+            "steps": [
+              { "x": 640, "gapY": 168, "type": "moving" },
+              { "x": 896, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 160, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "reaktorglas",
+            "steps": [
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 172, "type": "moving" },
+              { "x": 896, "gapY": 148, "type": "narrow" },
+              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "analysearme",
+            "steps": [
+              { "x": 160, "gapY": 172, "type": "moving" },
+              { "x": 384, "gapY": 148, "type": "falling" },
+              { "x": 640, "gapY": 160, "type": "moving" },
+              { "x": 896, "gapY": 168, "type": "narrow" },
+              { "x": 672, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "wartungsschleife",
+            "steps": [
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 160, "gapY": 168, "type": "moving" },
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 160, "type": "narrow" },
+              { "x": 896, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "testzellen",
+            "steps": [
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 192, "gapY": 168, "type": "falling" }
+            ]
+          },
+          {
+            "id": "magnetschacht",
+            "steps": [
+              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "antennenlabor",
+            "steps": [
+              { "x": 192, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
+              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 736, "gapY": 168, "type": "falling" }
+            ]
+          },
+          {
+            "id": "beobachtungsspalt",
+            "steps": [
+              { "x": 480, "gapY": 148, "type": "falling" },
+              { "x": 224, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 168, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "quarantaenerahmen",
+            "steps": [
+              { "x": 736, "gapY": 172, "type": "moving" },
+              { "x": 960, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 192, "gapY": 148, "type": "falling" }
+            ]
+          },
+          {
+            "id": "zugang-zur-kommandobruecke",
+            "steps": [
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 672, "gapY": 148, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "narrow" },
+              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1546,7 +1668,129 @@
         "movingSpeed": 110,
         "fallingEvery": 7,
         "fallWarningSeconds": 0.55,
-        "fallSpeed": 570
+        "fallSpeed": 570,
+        "rooms": [
+          {
+            "id": "kommandoschleuse",
+            "steps": [
+              { "x": 928, "gapY": 148, "type": "path" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 160, "gapY": 172, "type": "moving" },
+              { "x": 416, "gapY": 172, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "kartenprojektion",
+            "steps": [
+              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 928, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "narrow" },
+              { "x": 480, "gapY": 172, "type": "falling" },
+              { "x": 256, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "kommunikationsschienen",
+            "steps": [
+              { "x": 128, "gapY": 168, "type": "moving" },
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 172, "type": "moving" },
+              { "x": 896, "gapY": 148, "type": "narrow" },
+              { "x": 640, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "brueckenfenster",
+            "steps": [
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 128, "gapY": 172, "type": "moving" },
+              { "x": 352, "gapY": 148, "type": "narrow" },
+              { "x": 608, "gapY": 160, "type": "falling" },
+              { "x": 864, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "navigationsarme",
+            "steps": [
+              { "x": 640, "gapY": 172, "type": "moving" },
+              { "x": 896, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 416, "gapY": 168, "type": "narrow" },
+              { "x": 160, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "kommandozentrum",
+            "steps": [
+              { "x": 416, "gapY": 148, "type": "moving" },
+              { "x": 672, "gapY": 168, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "signalknoten",
+            "steps": [
+              { "x": 192, "gapY": 160, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 736, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "kapitaensring",
+            "steps": [
+              { "x": 480, "gapY": 168, "type": "moving" },
+              { "x": 256, "gapY": 172, "type": "falling" },
+              { "x": 128, "gapY": 160, "type": "moving" },
+              { "x": 384, "gapY": 148, "type": "narrow" },
+              { "x": 640, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "notschacht",
+            "steps": [
+              { "x": 896, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 160, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "verteidigungskonsolen",
+            "steps": [
+              { "x": 672, "gapY": 148, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "moving" },
+              { "x": 480, "gapY": 172, "type": "narrow" },
+              { "x": 256, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "aussenkommunikation",
+            "steps": [
+              { "x": 128, "gapY": 172, "type": "falling" },
+              { "x": 384, "gapY": 168, "type": "moving" },
+              { "x": 640, "gapY": 172, "type": "narrow" },
+              { "x": 896, "gapY": 160, "type": "falling" },
+              { "x": 640, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "ausstieg-zum-mond",
+            "steps": [
+              { "x": 384, "gapY": 160, "type": "moving" },
+              { "x": 128, "gapY": 148, "type": "falling" },
+              { "x": 352, "gapY": 172, "type": "narrow" },
+              { "x": 608, "gapY": 168, "type": "falling" },
+              { "x": 864, "gapY": 172, "type": "moving" }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1567,7 +1811,129 @@
         "movingSpeed": 110,
         "fallingEvery": 7,
         "fallWarningSeconds": 0.55,
-        "fallSpeed": 570
+        "fallSpeed": 570,
+        "rooms": [
+          {
+            "id": "mondlandung",
+            "steps": [
+              { "x": 160, "gapY": 148, "type": "path" },
+              { "x": 416, "gapY": 160, "type": "moving" },
+              { "x": 672, "gapY": 168, "type": "falling" },
+              { "x": 928, "gapY": 172, "type": "moving" },
+              { "x": 672, "gapY": 172, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "flacher-krater",
+            "steps": [
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 160, "gapY": 168, "type": "moving" },
+              { "x": 416, "gapY": 172, "type": "narrow" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 928, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "basaltzaehne",
+            "steps": [
+              { "x": 672, "gapY": 168, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 160, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "staubrinne",
+            "steps": [
+              { "x": 416, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 928, "gapY": 148, "type": "narrow" },
+              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "meteorboegen",
+            "steps": [
+              { "x": 160, "gapY": 172, "type": "moving" },
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 928, "gapY": 168, "type": "narrow" },
+              { "x": 672, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "roverwrack",
+            "steps": [
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 160, "gapY": 168, "type": "moving" },
+              { "x": 416, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "narrow" },
+              { "x": 928, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "stiller-grat",
+            "steps": [
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 192, "gapY": 168, "type": "falling" }
+            ]
+          },
+          {
+            "id": "kraterhals",
+            "steps": [
+              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "schattenseite",
+            "steps": [
+              { "x": 192, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
+              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 736, "gapY": 168, "type": "falling" }
+            ]
+          },
+          {
+            "id": "antennenwrack",
+            "steps": [
+              { "x": 480, "gapY": 148, "type": "falling" },
+              { "x": 224, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 168, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "hoher-kraterrand",
+            "steps": [
+              { "x": 736, "gapY": 172, "type": "moving" },
+              { "x": 960, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 192, "gapY": 148, "type": "falling" }
+            ]
+          },
+          {
+            "id": "eingang-zu-den-ruinen",
+            "steps": [
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 672, "gapY": 148, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "narrow" },
+              { "x": 672, "gapY": 168, "type": "falling" },
+              { "x": 416, "gapY": 172, "type": "moving" }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1588,7 +1954,129 @@
         "movingSpeed": 120,
         "fallingEvery": 5,
         "fallWarningSeconds": 0.5,
-        "fallSpeed": 600
+        "fallSpeed": 600,
+        "rooms": [
+          {
+            "id": "ruinentor",
+            "steps": [
+              { "x": 928, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 160, "gapY": 172, "type": "moving" },
+              { "x": 416, "gapY": 172, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "gebrochene-saeulen",
+            "steps": [
+              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 928, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 192, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "echoschacht",
+            "steps": [
+              { "x": 448, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
+              { "x": 736, "gapY": 148, "type": "narrow" },
+              { "x": 480, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "rissige-kuppel",
+            "steps": [
+              { "x": 224, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 960, "gapY": 160, "type": "falling" },
+              { "x": 736, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "satellitenkapelle",
+            "steps": [
+              { "x": 480, "gapY": 172, "type": "moving" },
+              { "x": 224, "gapY": 148, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "moving" },
+              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 960, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "wandernder-altar",
+            "steps": [
+              { "x": 736, "gapY": 148, "type": "moving" },
+              { "x": 480, "gapY": 168, "type": "moving" },
+              { "x": 224, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "moving" }
+            ]
+          },
+          {
+            "id": "eingestuerzte-bruecke",
+            "steps": [
+              { "x": 960, "gapY": 160, "type": "falling" },
+              { "x": 736, "gapY": 172, "type": "moving" },
+              { "x": 480, "gapY": 148, "type": "falling" },
+              { "x": 224, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "glyphenschacht",
+            "steps": [
+              { "x": 704, "gapY": 168, "type": "moving" },
+              { "x": 960, "gapY": 172, "type": "falling" },
+              { "x": 736, "gapY": 160, "type": "moving" },
+              { "x": 480, "gapY": 148, "type": "narrow" },
+              { "x": 224, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "orbitalring",
+            "steps": [
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "moving" },
+              { "x": 960, "gapY": 148, "type": "falling" },
+              { "x": 736, "gapY": 172, "type": "narrow" },
+              { "x": 480, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "mondbogen",
+            "steps": [
+              { "x": 224, "gapY": 148, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "moving" },
+              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 736, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "letzte-terrasse",
+            "steps": [
+              { "x": 480, "gapY": 172, "type": "falling" },
+              { "x": 224, "gapY": 168, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 960, "gapY": 148, "type": "moving" }
+            ]
+          },
+          {
+            "id": "festungstor",
+            "steps": [
+              { "x": 736, "gapY": 160, "type": "moving" },
+              { "x": 480, "gapY": 148, "type": "falling" },
+              { "x": 224, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1609,7 +2097,129 @@
         "movingSpeed": 130,
         "fallingEvery": 5,
         "fallWarningSeconds": 0.45,
-        "fallSpeed": 640
+        "fallSpeed": 640,
+        "rooms": [
+          {
+            "id": "aussere-bastion",
+            "steps": [
+              { "x": 160, "gapY": 148, "type": "moving" },
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 672, "gapY": 168, "type": "narrow" },
+              { "x": 928, "gapY": 172, "type": "moving" },
+              { "x": 672, "gapY": 172, "type": "falling" }
+            ]
+          },
+          {
+            "id": "ressourcenstufen",
+            "steps": [
+              { "x": 640, "gapY": 148, "type": "moving" },
+              { "x": 384, "gapY": 132, "type": "path" },
+              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 896, "gapY": 176, "type": "moving" },
+              { "x": 640, "gapY": 180, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "zersplitterter-damm",
+            "steps": [
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 176, "type": "moving" },
+              { "x": 416, "gapY": 180, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "moving" },
+              { "x": 160, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "waechterrippen",
+            "steps": [
+              { "x": 416, "gapY": 172, "type": "moving" },
+              { "x": 672, "gapY": 176, "type": "falling" },
+              { "x": 928, "gapY": 180, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "moving" },
+              { "x": 448, "gapY": 176, "type": "falling" }
+            ]
+          },
+          {
+            "id": "versorgungskammer",
+            "steps": [
+              { "x": 192, "gapY": 180, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "path" },
+              { "x": 640, "gapY": 148, "type": "moving" },
+              { "x": 896, "gapY": 160, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "gravitationstore",
+            "steps": [
+              { "x": 640, "gapY": 168, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "moving" },
+              { "x": 160, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 672, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "mondklingen",
+            "steps": [
+              { "x": 928, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
+              { "x": 192, "gapY": 148, "type": "narrow" },
+              { "x": 448, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "verteidigungskamm",
+            "steps": [
+              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
+              { "x": 736, "gapY": 172, "type": "falling" },
+              { "x": 480, "gapY": 148, "type": "narrow" },
+              { "x": 224, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "einstuerzende-krone",
+            "steps": [
+              { "x": 480, "gapY": 168, "type": "moving" },
+              { "x": 736, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 448, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "letzter-aufstieg",
+            "steps": [
+              { "x": 192, "gapY": 168, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 148, "type": "narrow" },
+              { "x": 736, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "arenaschwelle",
+            "steps": [
+              { "x": 480, "gapY": 168, "type": "moving" },
+              { "x": 224, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 640, "gapY": 152, "type": "falling" }
+            ]
+          },
+          {
+            "id": "waechterarena",
+            "steps": [
+              { "x": 384, "gapY": 152, "type": "catch" },
+              { "x": 640, "gapY": 140, "type": "moving" },
+              { "x": 896, "gapY": 144, "type": "falling" },
+              { "x": 640, "gapY": 140, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "moving" }
+            ]
+          }
+        ]
       }
     }
   ],
