@@ -953,7 +953,129 @@
         "movingSpeed": 70,
         "fallingEvery": 9,
         "fallWarningSeconds": 0.75,
-        "fallSpeed": 450
+        "fallSpeed": 450,
+        "rooms": [
+          {
+            "id": "versorgungsschleuse",
+            "steps": [
+              { "x": 320, "gapY": 152, "type": "path" },
+              { "x": 576, "gapY": 160, "type": "moving" },
+              { "x": 832, "gapY": 164, "type": "path" },
+              { "x": 608, "gapY": 168, "type": "falling" },
+              { "x": 352, "gapY": 176, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "kabelschacht",
+            "steps": [
+              { "x": 128, "gapY": 160, "type": "moving" },
+              { "x": 352, "gapY": 164, "type": "falling" },
+              { "x": 608, "gapY": 168, "type": "narrow" },
+              { "x": 864, "gapY": 176, "type": "moving" },
+              { "x": 640, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "wartungslift",
+            "steps": [
+              { "x": 384, "gapY": 164, "type": "falling" },
+              { "x": 160, "gapY": 168, "type": "moving" },
+              { "x": 416, "gapY": 176, "type": "narrow" },
+              { "x": 672, "gapY": 152, "type": "falling" },
+              { "x": 896, "gapY": 160, "type": "moving" }
+            ]
+          },
+          {
+            "id": "ventilkreuz",
+            "steps": [
+              { "x": 640, "gapY": 168, "type": "moving" },
+              { "x": 384, "gapY": 176, "type": "falling" },
+              { "x": 128, "gapY": 152, "type": "moving" },
+              { "x": 352, "gapY": 160, "type": "narrow" },
+              { "x": 608, "gapY": 164, "type": "falling" }
+            ]
+          },
+          {
+            "id": "druckleitung",
+            "steps": [
+              { "x": 864, "gapY": 176, "type": "falling" },
+              { "x": 640, "gapY": 152, "type": "narrow" },
+              { "x": 384, "gapY": 160, "type": "moving" },
+              { "x": 160, "gapY": 164, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "wartungsbucht",
+            "steps": [
+              { "x": 672, "gapY": 152, "type": "path" },
+              { "x": 928, "gapY": 164, "type": "moving" },
+              { "x": 704, "gapY": 176, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 192, "gapY": 168, "type": "path" }
+            ]
+          },
+          {
+            "id": "kuehlmittelleiter",
+            "steps": [
+              { "x": 416, "gapY": 160, "type": "falling" },
+              { "x": 640, "gapY": 168, "type": "moving" },
+              { "x": 864, "gapY": 152, "type": "narrow" },
+              { "x": 608, "gapY": 176, "type": "falling" },
+              { "x": 352, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "relaisschacht",
+            "steps": [
+              { "x": 128, "gapY": 168, "type": "moving" },
+              { "x": 352, "gapY": 152, "type": "falling" },
+              { "x": 608, "gapY": 164, "type": "moving" },
+              { "x": 864, "gapY": 176, "type": "narrow" },
+              { "x": 640, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "lose-gitter",
+            "steps": [
+              { "x": 416, "gapY": 176, "type": "falling" },
+              { "x": 160, "gapY": 160, "type": "moving" },
+              { "x": 384, "gapY": 168, "type": "narrow" },
+              { "x": 640, "gapY": 152, "type": "falling" },
+              { "x": 896, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "seitenwechsel",
+            "steps": [
+              { "x": 672, "gapY": 152, "type": "moving" },
+              { "x": 448, "gapY": 176, "type": "falling" },
+              { "x": 192, "gapY": 164, "type": "moving" },
+              { "x": 416, "gapY": 168, "type": "narrow" },
+              { "x": 672, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "druckausgleich",
+            "steps": [
+              { "x": 928, "gapY": 164, "type": "falling" },
+              { "x": 704, "gapY": 152, "type": "narrow" },
+              { "x": 448, "gapY": 176, "type": "moving" },
+              { "x": 224, "gapY": 160, "type": "falling" },
+              { "x": 480, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "ausstieg-zur-aussenhuelle",
+            "steps": [
+              { "x": 736, "gapY": 168, "type": "moving" },
+              { "x": 960, "gapY": 164, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "narrow" },
+              { "x": 448, "gapY": 176, "type": "moving" },
+              { "x": 192, "gapY": 152, "type": "falling" }
+            ]
+          }
+        ]
       }
     },
     {
