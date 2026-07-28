@@ -391,6 +391,7 @@
     { "id": "scrapyard-gear-01", "type": "gear", "amount": 1, "x": 288, "y": 149776 },
     { "id": "scrapyard-ammo-01", "type": "ammo", "amount": 4, "x": 480, "y": 149776 },
     { "id": "scrapyard-energy-01", "type": "energy", "amount": 20, "x": 864, "y": 149776 },
+    { "id": "scrapyard-bolt-thrower-01", "type": "weapon", "weaponId": "boltThrower", "amount": 6, "x": 224, "y": 149776 },
     { "id": "factory-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 118900 },
     { "id": "factory-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 117500 },
     { "id": "factory-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 116100 },

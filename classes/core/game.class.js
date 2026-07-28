@@ -41,7 +41,9 @@ export class Game {
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
     this.combatSystem = new CombatSystem(config.combat);
-    this.weaponSystem = new WeaponSystem(config.weapons, this.keyboard, this.runStats);
+    this.weaponSystem = new WeaponSystem(
+      config.weapons, this.keyboard, this.runStats, this.gameplayEvents,
+    );
     this.upgradeFlow = new RunUpgradeFlow(upgradeData, {
       runStats: this.runStats,
       weaponSystem: this.weaponSystem,

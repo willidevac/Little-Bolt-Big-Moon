@@ -1,4 +1,6 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
+import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
+import { PickupFeedback } from "./pickup-feedback.class.js";
 import { formatScore } from "../../js/utils/format.js";
 
 const VALUE_SELECTORS = Object.freeze({
@@ -7,6 +9,8 @@ const VALUE_SELECTORS = Object.freeze({
   gears: '[data-hud-value="gears"]',
   heightMeters: '[data-hud-value="height"]',
   score: '[data-hud-value="score"]',
+  weapon: '[data-hud-value="weapon"]',
+  pickupFeedback: "[data-hud-pickup-feedback]",
   energyBar: "[data-hud-energy-bar]",
   boss: "[data-hud-boss]",
   bossName: "[data-hud-boss-name]",
@@ -41,6 +45,8 @@ export class StatusBar {
     this.elements = this.getValueElements();
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
+    this.unsubscribeGameplay = null;
+    this.pickupFeedback = new PickupFeedback(this.elements.pickupFeedback);
   }
 
   /**
@@ -51,7 +57,11 @@ export class StatusBar {
     if (this.unsubscribeHud) return this;
     this.unsubscribeHud = this.game.onHudChange((data) => this.render(data));
     this.unsubscribeState = this.game.onStateChange((state) => this.renderState(state));
+    this.unsubscribeGameplay = this.game.onGameplayEvent((event) => {
+      this.handleGameplayEvent(event);
+    });
     this.render(this.game.getHudSnapshot());
+    this.setText(this.elements.weapon, this.game.weaponSystem.getCurrentWeapon().name);
     this.renderState(this.game.state);
     return this;
   }
@@ -62,8 +72,11 @@ export class StatusBar {
   destroy() {
     this.unsubscribeHud?.();
     this.unsubscribeState?.();
+    this.unsubscribeGameplay?.();
+    this.pickupFeedback.destroy();
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
+    this.unsubscribeGameplay = null;
   }
 
   /**
@@ -77,6 +90,16 @@ export class StatusBar {
     this.setText(this.elements.heightMeters, data.heightMeters);
     this.setText(this.elements.score, formatScore(data.score));
     this.renderBoss(data.boss);
+  }
+
+  /** Verbindet Gameplay-Ereignisse mit Waffen- und Fundanzeige. */
+  handleGameplayEvent(event) {
+    if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
+      this.setText(this.elements.weapon, event.detail.name);
+    }
+    if (event.type === GAMEPLAY_EVENTS.PICKUP) {
+      this.pickupFeedback.show(event.detail);
+    }
   }
 
   /**

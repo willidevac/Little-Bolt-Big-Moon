@@ -21,12 +21,14 @@ export const COLLECTABLE_TYPES = Object.freeze({
   GEAR: "gear",
   ENERGY: "energy",
   AMMO: "ammo",
+  WEAPON: "weapon",
 });
 
 const ANIMATION_CLIPS = Object.freeze({
   [COLLECTABLE_TYPES.GEAR]: createClip(0, 4),
   [COLLECTABLE_TYPES.ENERGY]: createClip(4, 4),
   [COLLECTABLE_TYPES.AMMO]: createClip(8, 1),
+  [COLLECTABLE_TYPES.WEAPON]: createClip(9, 4),
 });
 
 function createClip(startFrame, frameCount) {
@@ -51,6 +53,7 @@ export class CollectableObject extends DrawableObject {
     this.id = collectableData.id;
     this.type = collectableData.type;
     this.amount = collectableData.amount;
+    this.weaponId = collectableData.weaponId ?? null;
     this.x = collectableData.x;
     this.y = collectableData.y;
     this.width = COLLECTABLE_SPRITE_CONFIG.frameWidth * COLLECTABLE_RENDER_SCALE;
@@ -75,7 +78,9 @@ export class CollectableObject extends DrawableObject {
    * @returns {Readonly<{type:string, amount:number}>}
    */
   getPickup() {
-    return Object.freeze({ type: this.type, amount: this.amount });
+    const pickup = { type: this.type, amount: this.amount };
+    if (this.weaponId) pickup.weaponId = this.weaponId;
+    return Object.freeze(pickup);
   }
 
   #validateData(data) {
@@ -83,7 +88,9 @@ export class CollectableObject extends DrawableObject {
     const hasType = Object.values(COLLECTABLE_TYPES).includes(data?.type);
     const hasPosition = Number.isFinite(data?.x) && Number.isFinite(data?.y);
     const hasAmount = Number.isFinite(data?.amount) && data.amount > 0;
-    if (hasIdentity && hasType && hasPosition && hasAmount) return;
+    const hasWeapon = data?.type !== COLLECTABLE_TYPES.WEAPON ||
+      (typeof data?.weaponId === "string" && data.weaponId.length > 0);
+    if (hasIdentity && hasType && hasPosition && hasAmount && hasWeapon) return;
     throw new TypeError("Die Daten des Sammelobjekts sind ungültig.");
   }
 }

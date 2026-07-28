@@ -6,6 +6,7 @@ const STAT_BY_PICKUP_TYPE = Object.freeze({
   energy: "energy",
   ammo: "ammo",
 });
+const NON_STAT_PICKUP_TYPES = Object.freeze(["weapon"]);
 /**
  * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
  */
@@ -266,6 +267,7 @@ export class RunStats {
 
   #applyPickup(pickup) {
     const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
+    if (NON_STAT_PICKUP_TYPES.includes(pickup?.type)) return false;
     if (!statName || !Number.isFinite(pickup.amount) || pickup.amount <= 0) {
       throw new TypeError("Der eingesammelte Fund ist ungültig.");
     }

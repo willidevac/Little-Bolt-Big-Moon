@@ -72,6 +72,7 @@ const WEAPON_DEFINITIONS = Object.freeze({
 
 const WEAPONS_CONFIG = Object.freeze({
   order: Object.freeze(["repairWrench", "boltThrower"]),
+  startingUnlocked: Object.freeze(["repairWrench"]),
   definitions: WEAPON_DEFINITIONS,
 });
 

@@ -5,6 +5,7 @@ export const GAMEPLAY_EVENTS = Object.freeze({
   PLAYER_HURT: "playerHurt",
   PLAYER_DEATH: "playerDeath",
   PICKUP: "pickup",
+  WEAPON_CHANGED: "weaponChanged",
   ENEMY_HIT: "enemyHit",
   ENEMY_DEFEATED: "enemyDefeated",
   BOSS_ATTACK: "bossAttack",
