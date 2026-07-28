@@ -10,6 +10,7 @@ const PLATFORM_WIDTHS = Object.freeze({
   path: 192,
   narrow: 128,
   moving: 192,
+  falling: 192,
   catch: 512,
 });
 
@@ -124,6 +125,7 @@ export class PlatformRouteBuilder {
       tileset: section.tileset,
     };
     if (type === "moving") platform.movement = this.#createMovement(route, x);
+    if (type === "falling") platform.fall = this.#createFall(route);
     return Object.freeze(platform);
   }
 
@@ -136,6 +138,10 @@ export class PlatformRouteBuilder {
     if (route.narrowEvery > 0 && routeIndex % route.narrowEvery === 0) {
       return "narrow";
     }
+    const fallingEvery = route.fallingEvery ?? 0;
+    if (fallingEvery > 0 && routeIndex % fallingEvery === 0) {
+      return "falling";
+    }
     return "path";
   }
 
@@ -147,6 +153,13 @@ export class PlatformRouteBuilder {
         x + route.movingDistance,
       ),
       speedPixelsPerSecond: route.movingSpeed,
+    });
+  }
+
+  #createFall(route) {
+    return Object.freeze({
+      warningDelaySeconds: route.fallWarningSeconds,
+      speedPixelsPerSecond: route.fallSpeed,
     });
   }
 
@@ -225,13 +238,30 @@ export class PlatformRouteBuilder {
   }
 
   #hasValidChallengeRules(route) {
-    const frequenciesAreValid = [route?.narrowEvery, route?.movingEvery]
+    const frequenciesAreValid = [
+      route?.narrowEvery,
+      route?.movingEvery,
+      route?.fallingEvery ?? 0,
+    ]
       .every((value) => Number.isInteger(value) && value >= 0);
     if (!frequenciesAreValid) return false;
+    return this.#hasValidMovingRules(route) &&
+      this.#hasValidFallingRules(route);
+  }
+
+  #hasValidMovingRules(route) {
     if (route.movingEvery === 0) return true;
     return Number.isFinite(route.movingDistance) &&
       route.movingDistance > 0 &&
       Number.isFinite(route.movingSpeed) &&
       route.movingSpeed > 0;
+  }
+
+  #hasValidFallingRules(route) {
+    if ((route.fallingEvery ?? 0) === 0) return true;
+    return Number.isFinite(route.fallWarningSeconds) &&
+      route.fallWarningSeconds > 0 &&
+      Number.isFinite(route.fallSpeed) &&
+      route.fallSpeed > 0;
   }
 }

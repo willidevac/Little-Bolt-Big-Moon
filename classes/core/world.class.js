@@ -1,12 +1,12 @@
 import { CollisionManager } from "../systems/collision-manager.class.js";
 import { FallTracker } from "../systems/fall-tracker.class.js";
-import { CollisionDebugRenderer } from "../systems/collision-debug-renderer.class.js";
 import { ProjectileSystem } from "../systems/projectile-system.class.js";
 import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
 import { WaveManager } from "../systems/wave-manager.class.js";
 import { BossFightManager } from "../systems/boss-fight-manager.class.js";
 import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
-import { BackgroundRenderer } from "../systems/background-renderer.class.js";
+import { PlatformMotionSystem } from "../systems/platform-motion-system.class.js";
+import { WorldRenderer } from "../systems/world-renderer.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
@@ -34,15 +34,7 @@ const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.COLLECTABLES,
   WORLD_ENTITY_GROUPS.HAZARDS,
 ]);
-const DRAW_ORDER = Object.freeze([
-  WORLD_ENTITY_GROUPS.PLATFORMS,
-  WORLD_ENTITY_GROUPS.HAZARDS,
-  WORLD_ENTITY_GROUPS.COLLECTABLES,
-  WORLD_ENTITY_GROUPS.ENEMIES,
-  WORLD_ENTITY_GROUPS.PROJECTILES,
-  WORLD_ENTITY_GROUPS.CHARACTERS,
-]);
-const DRAW_CULLING_PADDING = 128;
+const NON_PLATFORM_UPDATE_ORDER = Object.freeze(UPDATE_ORDER.slice(1));
 
 /**
  * Verwaltet aktive Spielobjekte und ihren sicheren Frame-Lebenszyklus.
@@ -56,10 +48,10 @@ export class World {
   #fallTracker;
   #collectedPickups;
   #damageEvents;
-  #collisionDebugRenderer;
   #projectileSystem;
   #enemyCombatSystem;
-  #backgroundRenderer;
+  #platformMotionSystem;
+  #renderer;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -90,7 +82,6 @@ export class World {
     this.#fallTracker = new FallTracker(config.world);
     this.#collectedPickups = [];
     this.#damageEvents = [];
-    this.#collisionDebugRenderer = new CollisionDebugRenderer(config.debug);
     this.#projectileSystem = new ProjectileSystem(
       config.projectiles,
       this.#collisionManager,
@@ -99,11 +90,12 @@ export class World {
       config.enemyCombat,
       this.#collisionManager,
     );
+    this.#platformMotionSystem = new PlatformMotionSystem();
     this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
     this.bossFight = new BossFightManager(level?.enemies);
     this.character = null;
     this.camera = new Camera(config);
-    this.#backgroundRenderer = new BackgroundRenderer(level?.sections, config.canvas);
+    this.#renderer = new WorldRenderer(context, config, level?.sections);
   }
 
   /** @returns {boolean} Ob die Welt neu aktiviert wurde. */
@@ -169,21 +161,32 @@ export class World {
     if (!this.isInitialized) return;
     this.eventReporter.capture(this.character, this.bossFight.getSnapshot());
     const groundMovables = this.#getGroundMovables();
-    this.#processEntities(UPDATE_ORDER, (entity) => {
-      if (typeof entity.update === "function") entity.update(deltaTimeSeconds, this);
-    });
-    const projectileHits = this.#projectileSystem.resolve(this);
-    this.#damageEvents.push(...projectileHits);
+    this.#updateMovingEntities(groundMovables, deltaTimeSeconds);
+    this.#resolveInteractions(groundMovables, deltaTimeSeconds);
+    this.#updateWorldSystems(deltaTimeSeconds);
+    this.eventReporter.report(this.character, this.bossFight.getSnapshot());
+  }
+
+  #updateMovingEntities(movableObjects, deltaTimeSeconds) {
+    this.#updateEntityGroups([WORLD_ENTITY_GROUPS.PLATFORMS], deltaTimeSeconds);
+    this.#platformMotionSystem.carryGroundMovables(movableObjects);
+    this.#updateEntityGroups(NON_PLATFORM_UPDATE_ORDER, deltaTimeSeconds);
+  }
+
+  #resolveInteractions(movableObjects, deltaTimeSeconds) {
+    this.#damageEvents.push(...this.#projectileSystem.resolve(this));
     this.#resolveEnemyCombat(deltaTimeSeconds);
-    this.#collisionManager.resetGroundStates(groundMovables);
-    this.#resolvePlatformLandings(groundMovables, deltaTimeSeconds);
+    this.#collisionManager.resetGroundStates(movableObjects);
+    this.#resolvePlatformLandings(movableObjects, deltaTimeSeconds);
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
+  }
+
+  #updateWorldSystems(deltaTimeSeconds) {
     this.waveManager.update(this);
     this.bossFight.update(this);
     this.#fallTracker.update(this.character);
     this.camera.update(this.character, deltaTimeSeconds);
-    this.eventReporter.report(this.character, this.bossFight.getSnapshot());
   }
 
   /** @returns {number} Die seit dem höchsten Punkt verlorene Höhe. */
@@ -234,33 +237,7 @@ export class World {
   /** Zeichnet alle Entitäten in fester Ebenenreihenfolge. */
   draw() {
     if (!this.isInitialized) return;
-    this.#backgroundRenderer.draw(this.context, this.camera);
-    this.context.save();
-    this.context.translate(-this.camera.x, -this.camera.y);
-    try {
-      this.#drawEntities();
-      this.#collisionDebugRenderer.draw(this.context, this.#entityGroups);
-    } finally {
-      this.context.restore();
-    }
-  }
-  #drawEntities() {
-    this.#processEntities(DRAW_ORDER, (entity) => {
-      if (typeof entity.draw === "function" && this.#isVisible(entity)) {
-        entity.draw(this.context, this);
-      }
-    });
-  }
-
-  #isVisible(entity) {
-    const left = this.camera.x - DRAW_CULLING_PADDING;
-    const top = this.camera.y - DRAW_CULLING_PADDING;
-    const right = this.camera.x + this.config.canvas.width + DRAW_CULLING_PADDING;
-    const bottom = this.camera.y + this.config.canvas.height + DRAW_CULLING_PADDING;
-    return entity.x + entity.width >= left &&
-      entity.x <= right &&
-      entity.y + entity.height >= top &&
-      entity.y <= bottom;
+    this.#renderer.draw(this.#entityGroups, this.camera, this);
   }
 
   /** Entfernt alle aktiven und vorgemerkten Entitäten. */
@@ -322,6 +299,14 @@ export class World {
     const enemies = this.#entityGroups.get(WORLD_ENTITY_GROUPS.ENEMIES);
     const groundEnemies = enemies.filter((enemy) => enemy.isAffectedByGravity);
     return [...characters, ...groundEnemies];
+  }
+
+  #updateEntityGroups(groupOrder, deltaTimeSeconds) {
+    this.#processEntities(groupOrder, (entity) => {
+      if (typeof entity.update === "function") {
+        entity.update(deltaTimeSeconds, this);
+      }
+    });
   }
 
   #resolveEnemyCombat(deltaTimeSeconds) {

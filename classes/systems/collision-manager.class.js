@@ -112,7 +112,10 @@ export class CollisionManager {
     const platformBounds = this.#getCollisionBounds(platform);
     const bottomOffset = movableBounds.y + movableBounds.height - movableObject.y;
     movableObject.y = platformBounds.y - bottomOffset;
-    movableObject.setOnGround(true);
+    movableObject.setOnGround(true, platform);
+    if (typeof platform.onLanded === "function") {
+      platform.onLanded(movableObject);
+    }
   }
 
   #getCollisionBounds(object) {

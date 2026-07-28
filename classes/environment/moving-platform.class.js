@@ -21,7 +21,9 @@ export class MovingPlatform extends Platform {
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
+    this.setFrameDisplacement(0, 0);
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
+    const previousX = this.x;
     this.x += this.direction * this.speedPixelsPerSecond * deltaTimeSeconds;
     if (this.x >= this.maximumX) {
       this.x = this.maximumX;
@@ -30,6 +32,7 @@ export class MovingPlatform extends Platform {
       this.x = this.minimumX;
       this.direction = 1;
     }
+    this.setFrameDisplacement(this.x - previousX, 0);
   }
 
   #validateMovement(movement) {

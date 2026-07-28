@@ -68,7 +68,10 @@
         "horizontalPositions": [160, 384, 608, 832, 960, 736, 512, 288, 128, 352, 576, 800, 928, 704, 480, 256],
         "catchEvery": 8,
         "narrowEvery": 5,
-        "movingEvery": 0
+        "movingEvery": 0,
+        "fallingEvery": 11,
+        "fallWarningSeconds": 0.9,
+        "fallSpeed": 360
       }
     },
     {
@@ -86,7 +89,10 @@
         "narrowEvery": 4,
         "movingEvery": 9,
         "movingDistance": 64,
-        "movingSpeed": 55
+        "movingSpeed": 55,
+        "fallingEvery": 11,
+        "fallWarningSeconds": 0.85,
+        "fallSpeed": 390
       }
     },
     {
@@ -104,7 +110,10 @@
         "narrowEvery": 3,
         "movingEvery": 7,
         "movingDistance": 80,
-        "movingSpeed": 65
+        "movingSpeed": 65,
+        "fallingEvery": 10,
+        "fallWarningSeconds": 0.8,
+        "fallSpeed": 420
       }
     },
     {
@@ -122,7 +131,10 @@
         "narrowEvery": 4,
         "movingEvery": 7,
         "movingDistance": 96,
-        "movingSpeed": 70
+        "movingSpeed": 70,
+        "fallingEvery": 9,
+        "fallWarningSeconds": 0.75,
+        "fallSpeed": 450
       }
     },
     {
@@ -140,7 +152,10 @@
         "narrowEvery": 3,
         "movingEvery": 6,
         "movingDistance": 112,
-        "movingSpeed": 80
+        "movingSpeed": 80,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.7,
+        "fallSpeed": 480
       }
     },
     {
@@ -158,7 +173,10 @@
         "narrowEvery": 3,
         "movingEvery": 5,
         "movingDistance": 128,
-        "movingSpeed": 90
+        "movingSpeed": 90,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.65,
+        "fallSpeed": 510
       }
     },
     {
@@ -176,7 +194,10 @@
         "narrowEvery": 3,
         "movingEvery": 5,
         "movingDistance": 128,
-        "movingSpeed": 90
+        "movingSpeed": 90,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.65,
+        "fallSpeed": 510
       }
     },
     {
@@ -194,7 +215,10 @@
         "narrowEvery": 3,
         "movingEvery": 4,
         "movingDistance": 144,
-        "movingSpeed": 100
+        "movingSpeed": 100,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.6,
+        "fallSpeed": 540
       }
     },
     {
@@ -212,7 +236,10 @@
         "narrowEvery": 2,
         "movingEvery": 4,
         "movingDistance": 160,
-        "movingSpeed": 110
+        "movingSpeed": 110,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.55,
+        "fallSpeed": 570
       }
     },
     {
@@ -230,7 +257,10 @@
         "narrowEvery": 2,
         "movingEvery": 4,
         "movingDistance": 160,
-        "movingSpeed": 110
+        "movingSpeed": 110,
+        "fallingEvery": 7,
+        "fallWarningSeconds": 0.55,
+        "fallSpeed": 570
       }
     },
     {
@@ -248,7 +278,10 @@
         "narrowEvery": 2,
         "movingEvery": 3,
         "movingDistance": 176,
-        "movingSpeed": 120
+        "movingSpeed": 120,
+        "fallingEvery": 5,
+        "fallWarningSeconds": 0.5,
+        "fallSpeed": 600
       }
     },
     {
@@ -266,7 +299,10 @@
         "narrowEvery": 2,
         "movingEvery": 3,
         "movingDistance": 192,
-        "movingSpeed": 130
+        "movingSpeed": 130,
+        "fallingEvery": 5,
+        "fallWarningSeconds": 0.45,
+        "fallSpeed": 640
       }
     }
   ],
@@ -281,6 +317,9 @@
       "tileFrames": [0, 3]
     },
     "moving": {
+      "tileFrames": [0, 2, 3]
+    },
+    "falling": {
       "tileFrames": [0, 2, 3]
     },
     "catch": {

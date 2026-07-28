@@ -15,12 +15,43 @@ export class Platform extends DrawableObject {
     this.id = platformData.id;
     this.x = platformData.x;
     this.y = platformData.y;
+    this.frameDisplacementX = 0;
+    this.frameDisplacementY = 0;
     this.tileSize = tilesetConfig.frameWidth * tilesetConfig.renderScale;
     this.visualOffsetY = tilesetConfig.surfaceOffset * tilesetConfig.renderScale;
     this.tileFrames = Object.freeze([...platformData.tileFrames]);
     this.width = this.tileFrames.length * this.tileSize;
     this.height = this.tileSize;
     this.loadSprite(tilesetConfig);
+  }
+
+  /**
+   * Speichert die echte Bewegung dieser Plattform im aktuellen Bild.
+   * @param {number} x
+   * @param {number} y
+   */
+  setFrameDisplacement(x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      throw new TypeError("Die Plattformbewegung ist ungueltig.");
+    }
+    this.frameDisplacementX = x;
+    this.frameDisplacementY = y;
+  }
+
+  /** @returns {Readonly<{x:number,y:number}>} */
+  getFrameDisplacement() {
+    return Object.freeze({
+      x: this.frameDisplacementX,
+      y: this.frameDisplacementY,
+    });
+  }
+
+  /**
+   * Reagiert optional darauf, dass ein bewegliches Objekt gelandet ist.
+   * @returns {boolean}
+   */
+  onLanded() {
+    return false;
   }
 
   /**

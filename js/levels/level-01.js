@@ -1,6 +1,7 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
 import { MovingPlatform } from "../../classes/environment/moving-platform.class.js";
+import { FallingPlatform } from "../../classes/environment/falling-platform.class.js";
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
@@ -91,8 +92,14 @@ function createPlatform(platformData) {
   if (!tilesetConfig) {
     throw new RangeError(`Unbekanntes Plattform-Tileset: ${resolvedData.tileset}`);
   }
-  const PlatformClass = resolvedData.movement ? MovingPlatform : Platform;
+  const PlatformClass = getPlatformClass(resolvedData);
   return new PlatformClass(resolvedData, tilesetConfig);
+}
+
+function getPlatformClass(platformData) {
+  if (platformData.movement) return MovingPlatform;
+  if (platformData.fall) return FallingPlatform;
+  return Platform;
 }
 
 function createSection(sectionData) {

@@ -11,6 +11,7 @@ export class MovableObject extends DrawableObject {
     this.accelerationX = 0;
     this.accelerationY = 0;
     this.isOnGround = false;
+    this.groundPlatform = null;
     this.isAffectedByGravity = true;
   }
 
@@ -31,9 +32,11 @@ export class MovableObject extends DrawableObject {
   /**
    * Ändert den Bodenstatus und stoppt eine laufende Fallbewegung.
    * @param {boolean} isOnGround
+   * @param {object|null} [platform=null]
    */
-  setOnGround(isOnGround) {
+  setOnGround(isOnGround, platform = null) {
     this.isOnGround = Boolean(isOnGround);
+    this.groundPlatform = this.isOnGround ? platform : null;
     if (this.isOnGround) this.velocityY = 0;
   }
 
