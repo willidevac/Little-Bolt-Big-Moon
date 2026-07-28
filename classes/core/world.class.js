@@ -6,6 +6,7 @@ import { EnemyCombatSystem } from "../systems/enemy-combat-system.class.js";
 import { WaveManager } from "../systems/wave-manager.class.js";
 import { BossFightManager } from "../systems/boss-fight-manager.class.js";
 import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
+import { BackgroundRenderer } from "../systems/background-renderer.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
@@ -24,7 +25,6 @@ const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
   width: 512,
   height: 32,
 });
-
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
 const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
@@ -42,6 +42,7 @@ const DRAW_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PROJECTILES,
   WORLD_ENTITY_GROUPS.CHARACTERS,
 ]);
+const DRAW_CULLING_PADDING = 128;
 
 /**
  * Verwaltet aktive Spielobjekte und ihren sicheren Frame-Lebenszyklus.
@@ -58,6 +59,7 @@ export class World {
   #collisionDebugRenderer;
   #projectileSystem;
   #enemyCombatSystem;
+  #backgroundRenderer;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -101,6 +103,7 @@ export class World {
     this.bossFight = new BossFightManager(level?.enemies);
     this.character = null;
     this.camera = new Camera(config);
+    this.#backgroundRenderer = new BackgroundRenderer(level?.sections, config.canvas);
   }
 
   /** @returns {boolean} Ob die Welt neu aktiviert wurde. */
@@ -231,6 +234,7 @@ export class World {
   /** Zeichnet alle Entitäten in fester Ebenenreihenfolge. */
   draw() {
     if (!this.isInitialized) return;
+    this.#backgroundRenderer.draw(this.context, this.camera);
     this.context.save();
     this.context.translate(-this.camera.x, -this.camera.y);
     try {
@@ -242,8 +246,21 @@ export class World {
   }
   #drawEntities() {
     this.#processEntities(DRAW_ORDER, (entity) => {
-      if (typeof entity.draw === "function") entity.draw(this.context, this);
+      if (typeof entity.draw === "function" && this.#isVisible(entity)) {
+        entity.draw(this.context, this);
+      }
     });
+  }
+
+  #isVisible(entity) {
+    const left = this.camera.x - DRAW_CULLING_PADDING;
+    const top = this.camera.y - DRAW_CULLING_PADDING;
+    const right = this.camera.x + this.config.canvas.width + DRAW_CULLING_PADDING;
+    const bottom = this.camera.y + this.config.canvas.height + DRAW_CULLING_PADDING;
+    return entity.x + entity.width >= left &&
+      entity.x <= right &&
+      entity.y + entity.height >= top &&
+      entity.y <= bottom;
   }
 
   /** Entfernt alle aktiven und vorgemerkten Entitäten. */

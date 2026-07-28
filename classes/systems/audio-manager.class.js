@@ -23,6 +23,8 @@ export class AudioManager {
     this.isInitialized = false;
     this.isUnlocked = false;
     this.isMuted = false;
+    this.musicVolume = 1;
+    this.effectsVolume = 1;
     this.currentMusicId = null;
   }
 
@@ -112,6 +114,30 @@ export class AudioManager {
     this.#stopEffects();
   }
 
+  /**
+   * Ändert die Musiklautstärke als Wert zwischen null und eins.
+   * @param {number} volume
+   */
+  setMusicVolume(volume) {
+    this.musicVolume = this.#toVolume(volume);
+    this.#musicTracks.forEach((audio, id) => {
+      audio.volume = this.config.music[id].volume * this.musicVolume;
+    });
+  }
+
+  /**
+   * Ändert alle Effektlautstärken als Wert zwischen null und eins.
+   * @param {number} volume
+   */
+  setEffectsVolume(volume) {
+    this.effectsVolume = this.#toVolume(volume);
+    this.#effectPools.forEach((pool) => {
+      pool.voices.forEach((audio) => {
+        audio.volume = pool.definition.volume * this.effectsVolume;
+      });
+    });
+  }
+
   /** Stoppt alle aktiven Stimmen und leert den Musikzustand. */
   destroy() {
     this.#getAllAudio().forEach((audio) => {
@@ -129,11 +155,19 @@ export class AudioManager {
     return Object.freeze({ definition, voices: Object.freeze(voices) });
   }
 
+  #toVolume(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError("Die Lautstärke muss eine Zahl sein.");
+    }
+    return Math.min(1, Math.max(0, value));
+  }
+
   #createTrack(definition, loops) {
     const audio = this.createAudio(definition.source);
     audio.preload = "auto";
     audio.loop = loops;
-    audio.volume = definition.volume;
+    const volumeSetting = loops ? this.musicVolume : this.effectsVolume;
+    audio.volume = definition.volume * volumeSetting;
     audio.muted = this.isMuted;
     audio.load?.();
     return audio;

@@ -1,23 +1,34 @@
 # Audio
 
-Das Produktionsset wurde für `Little Bolt, Big Moon` vollständig
-prozedural erstellt. Es enthält keine externen Aufnahmen, Samples oder
-heruntergeladenen Soundbibliotheken.
+Das Produktionsset von `Little Bolt, Big Moon` verwendet ausschließlich
+kostenlose CC0-Dateien. Die Quellen dürfen privat, in Lernprojekten und
+kommerziell verwendet sowie verändert werden.
 
 ## Klangrichtung
 
-- weich, freundlich und leicht mechanisch
-- keine aggressiven Rechteck- oder Sägezahnklänge
-- kurze, deutlich begrenzte Gameplay-Rückmeldungen
-- ruhige Aufstiegsmusik und etwas angespanntere Bossmusik
+- ruhige, hoffnungsvolle Aufstiegsmusik ohne hörbare Schleifenpause
+- etwas angespanntere, aber zurückhaltende Bossmusik
+- kurze digitale und metallische Gameplay-Rückmeldungen
+- niedrigere Lautstärken, damit Musik und Effekte nicht nerven
 
 ## Struktur
 
-- `sfx/`: einmalige Geräusche für Byte, Waffen, Funde, Gegner und Zustände
-- `music/`: wiederholbare Musik für Aufstieg und Bosskampf
+- `sfx/`: ausgewählte Geräusche aus drei Kenney-CC0-Paketen
+- `music/`: zwei CC0-Musikstücke von OpenGameArt
+- `licenses/`: mitgelieferte Lizenz- und Quellennachweise
 
-Die Produktionsdateien sind mono kodierte PCM-WAV-Dateien. Effekte verwenden
-44.100 Hz, die bewusst zurückhaltenden Musikschleifen 22.050 Hz.
+## Musikquellen
+
+| Verwendung | Datei | Original | Urheber |
+| --- | --- | --- | --- |
+| Aufstieg | `climb-hopeful.ogg` | `levelmusicloop-tigrun.ogg` | qubodup |
+| Bosskampf | `boss-urgent.mp3` | `urgent_0.mp3` | SRG774 |
+
+## Effektquellen
+
+Die Effekte stammen aus den Kenney-Paketen `Sci-fi Sounds`, `Digital Audio`
+und `UI Audio`. Die konkreten Originaldateien und ihre Spielzuordnung sind in
+`licenses/Kenney-CC0.txt` festgehalten.
 
 ## Technische Wiedergabe
 

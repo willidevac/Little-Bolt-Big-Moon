@@ -179,6 +179,9 @@
             <button class="menu-button" type="button" data-ui-action="controls">
               Steuerung
             </button>
+            <button class="menu-button" type="button" data-ui-action="settings">
+              Einstellungen
+            </button>
             <button class="menu-button" type="button" data-ui-action="imprint">
               Impressum
             </button>
@@ -209,6 +212,9 @@
             </button>
             <button class="menu-button" type="button" data-ui-action="controls">
               Steuerung
+            </button>
+            <button class="menu-button" type="button" data-ui-action="settings">
+              Einstellungen
             </button>
             <button class="menu-button" type="button" data-ui-action="home">
               Zum Hauptmenü
@@ -323,6 +329,78 @@
               <dd><kbd>Escape</kbd></dd>
             </div>
           </dl>
+        </div>
+      </section>
+
+      <section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+        data-game-dialog="settings"
+        hidden
+      >
+        <div class="screen-panel screen-panel--settings">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Einstellungen schließen"
+            data-ui-action="close-dialog"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow">Dein Klang</p>
+          <h2
+            id="settings-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+          >
+            Einstellungen
+          </h2>
+          <p class="screen-panel__copy">
+            Stelle Musik und Spielgeräusche getrennt so ein, wie sie für dich
+            angenehm sind.
+          </p>
+
+          <div class="audio-settings">
+            <div class="audio-setting">
+              <div class="audio-setting__heading">
+                <label for="music-volume">Musik</label>
+                <output for="music-volume" data-volume-output="music">75 %</output>
+              </div>
+              <input
+                id="music-volume"
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value="75"
+                data-volume-control="music"
+              >
+            </div>
+
+            <div class="audio-setting">
+              <div class="audio-setting__heading">
+                <label for="effects-volume">Effekte</label>
+                <output for="effects-volume" data-volume-output="effects">85 %</output>
+              </div>
+              <input
+                id="effects-volume"
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value="85"
+                data-volume-control="effects"
+              >
+            </div>
+          </div>
+
+          <p class="screen-panel__hint">
+            Der Tonknopf oben schaltet weiterhin alles gemeinsam an oder aus.
+          </p>
         </div>
       </section>
 

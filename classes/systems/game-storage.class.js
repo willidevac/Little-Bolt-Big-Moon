@@ -4,6 +4,8 @@ const DEFAULT_RECORDS = Object.freeze({
   maximumHeight: 0,
   bestTimeSeconds: null,
   isMuted: false,
+  musicVolume: 75,
+  effectsVolume: 85,
 });
 
 /**
@@ -72,6 +74,19 @@ export class GameStorage {
   }
 
   /**
+   * Speichert eine Lautstärke zwischen 0 und 100 Prozent.
+   * @param {"music"|"effects"} group
+   * @param {number} value
+   * @returns {Readonly<object>}
+   */
+  setVolume(group, value) {
+    const property = this.#getVolumeProperty(group);
+    this.data = { ...this.data, [property]: this.#toPercentage(value) };
+    this.#persist();
+    return this.getSnapshot();
+  }
+
+  /**
    * Gibt eine unveränderliche Kopie des aktuellen Datensatzes zurück.
    * @returns {Readonly<object>}
    */
@@ -95,6 +110,14 @@ export class GameStorage {
       maximumHeight: this.#toInteger(source.maximumHeight),
       bestTimeSeconds: this.#toOptionalTime(source.bestTimeSeconds),
       isMuted: typeof source.isMuted === "boolean" ? source.isMuted : false,
+      musicVolume: this.#toPercentage(
+        source.musicVolume,
+        DEFAULT_RECORDS.musicVolume,
+      ),
+      effectsVolume: this.#toPercentage(
+        source.effectsVolume,
+        DEFAULT_RECORDS.effectsVolume,
+      ),
     };
   }
 
@@ -114,6 +137,17 @@ export class GameStorage {
 
   #toOptionalTime(value) {
     return Number.isFinite(value) && value >= 0 ? Math.floor(value) : null;
+  }
+
+  #toPercentage(value, fallback = 0) {
+    if (!Number.isFinite(value)) return fallback;
+    return Math.min(100, Math.max(0, Math.round(value)));
+  }
+
+  #getVolumeProperty(group) {
+    if (group === "music") return "musicVolume";
+    if (group === "effects") return "effectsVolume";
+    throw new RangeError(`Unbekannte Lautstärkegruppe: ${group}`);
   }
 
   #validateConfig(config) {

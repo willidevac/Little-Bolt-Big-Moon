@@ -1,0 +1,54 @@
+
+
+	Sci-Fi Sounds (1.0)
+
+	Created/distributed by Kenney (www.kenney.nl)
+	Creation date: 11-10-2020
+
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	This content is free to use in personal, educational and commercial projects.
+
+	Support us by crediting Kenney or www.kenney.nl (this is not mandatory)
+
+			------------------------------
+
+	Files selected for Little Bolt, Big Moon:
+
+	Sci-fi Sounds:
+	impactMetal_000.ogg -> byte-land.ogg
+	impactMetal_002.ogg -> wrench-swing.ogg
+	laserSmall_002.ogg -> bolt-shot.ogg
+	impactMetal_003.ogg -> enemy-hit.ogg
+	explosionCrunch_000.ogg -> enemy-death.ogg
+	laserLarge_002.ogg -> boss-attack.ogg
+	forceField_003.ogg -> boss-phase.ogg
+	lowFrequency_explosion_000.ogg -> boss-death.ogg
+
+	Digital Audio:
+	phaseJump2.ogg -> byte-jump.ogg
+	lowDown.ogg -> byte-hurt.ogg
+	zapThreeToneDown.ogg -> game-lose.ogg
+	powerUp3.ogg -> pickup-energy.ogg
+	threeTone1.ogg -> wave-complete.ogg
+	zapThreeToneUp.ogg -> game-win.ogg
+
+	UI Audio:
+	switch17.ogg -> pickup-gear.ogg
+	switch21.ogg -> pickup-ammo.ogg
+
+	Pack sources:
+	https://kenney.nl/assets/sci-fi-sounds
+	https://kenney.nl/assets/digital-audio
+	https://kenney.nl/assets/ui-audio
+
+			------------------------------
+
+	Donate:   http://support.kenney.nl
+	Patreon:  http://patreon.com/kenney/
+
+	Follow on Twitter for updates:
+	http://twitter.com/KenneyNL

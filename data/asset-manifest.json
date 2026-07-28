@@ -620,6 +620,81 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "scrapyard-background-panorama-v2",
+      "priority": "P0",
+      "category": "backgrounds",
+      "file": "img/backgrounds/scrapyard-panorama-v2.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "continuousPanorama": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-background-panorama-v2",
+      "priority": "P0",
+      "category": "backgrounds",
+      "file": "img/backgrounds/factory-panorama-v2.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "continuousPanorama": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-background-panorama-v2",
+      "priority": "P0",
+      "category": "backgrounds",
+      "file": "img/backgrounds/launch-tower-panorama-v2.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "continuousPanorama": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-background-panorama-v2",
+      "priority": "P0",
+      "category": "backgrounds",
+      "file": "img/backgrounds/space-station-panorama-v2.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "continuousPanorama": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-background-panorama-v2",
+      "priority": "P0",
+      "category": "backgrounds",
+      "file": "img/backgrounds/moon-panorama-v2.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "continuousPanorama": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "hud-icons",
       "priority": "P0",
       "category": "ui",

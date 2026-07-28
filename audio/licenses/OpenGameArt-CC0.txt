@@ -1,0 +1,17 @@
+Little Bolt, Big Moon – OpenGameArt music sources
+
+License for both files: Creative Commons Zero 1.0 Universal (CC0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+climb-hopeful.ogg
+Original: levelmusicloop-tigrun.ogg
+Author: qubodup
+Source: https://opengameart.org/content/two-simple-game-music-loops
+
+boss-urgent.mp3
+Original: urgent_0.mp3
+Author: SRG774
+Source: https://opengameart.org/content/dark-sci-fi-audio-pack
+
+Downloaded on 2026-07-28. Attribution is not required by CC0, but the
+authors and source pages are documented here voluntarily.

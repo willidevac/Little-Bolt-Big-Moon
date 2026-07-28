@@ -1,109 +1,297 @@
 {
   "id": "scrapyard-to-moon",
   "width": 1280,
-  "height": 8000,
+  "height": 150000,
   "playerStart": {
     "x": 128,
-    "y": 7760
+    "y": 149760
   },
   "sections": [
-    { "id": "scrapyard", "name": "Schrottplatz", "topY": 6400, "bottomY": 8000 },
-    { "id": "factory", "name": "Fabrik", "topY": 4800, "bottomY": 6400 },
-    { "id": "launch-tower", "name": "Startturm", "topY": 3200, "bottomY": 4800 },
-    { "id": "space-station", "name": "Raumstation", "topY": 1600, "bottomY": 3200 },
-    { "id": "moon", "name": "Mond", "topY": 0, "bottomY": 1600 }
+    {
+      "id": "scrapyard-machine-graveyard",
+      "name": "Schrottplatz – Maschinenfriedhof",
+      "backgroundId": "scrapyard",
+      "tileset": "scrapyard",
+      "topY": 140000,
+      "bottomY": 150000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [100, 104, 108, 104],
+        "horizontalPositions": [160, 352, 544, 736, 928, 704, 480, 256, 128, 320, 512, 704, 896, 608, 320],
+        "catchEvery": 7,
+        "narrowEvery": 0,
+        "movingEvery": 0
+      }
+    },
+    {
+      "id": "scrapyard-pressworks",
+      "name": "Schrottplatz – Presswerk",
+      "backgroundId": "scrapyard",
+      "tileset": "scrapyard",
+      "topY": 130000,
+      "bottomY": 140000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [104, 108, 112, 108],
+        "horizontalPositions": [160, 352, 544, 736, 928, 704, 480, 256, 128, 320, 512, 704, 896, 608, 320],
+        "catchEvery": 8,
+        "narrowEvery": 9,
+        "movingEvery": 0
+      }
+    },
+    {
+      "id": "scrapyard-signal-tower",
+      "name": "Schrottplatz – Funkturm",
+      "backgroundId": "scrapyard",
+      "tileset": "scrapyard",
+      "topY": 120000,
+      "bottomY": 130000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [108, 112, 116, 112],
+        "horizontalPositions": [128, 352, 576, 800, 960, 736, 512, 288, 128, 384, 640, 896, 672, 448, 224],
+        "catchEvery": 9,
+        "narrowEvery": 6,
+        "movingEvery": 0
+      }
+    },
+    {
+      "id": "factory-assembly",
+      "name": "Fabrik – Montagehallen",
+      "backgroundId": "factory",
+      "tileset": "factory",
+      "topY": 110000,
+      "bottomY": 120000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [108, 112, 116, 112],
+        "horizontalPositions": [160, 384, 608, 832, 960, 736, 512, 288, 128, 352, 576, 800, 928, 704, 480, 256],
+        "catchEvery": 8,
+        "narrowEvery": 5,
+        "movingEvery": 0
+      }
+    },
+    {
+      "id": "factory-smelter",
+      "name": "Fabrik – Schmelzwerk",
+      "backgroundId": "factory",
+      "tileset": "factory",
+      "topY": 100000,
+      "bottomY": 110000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [112, 116, 120, 116],
+        "horizontalPositions": [928, 704, 480, 256, 128, 352, 576, 800, 960, 736, 512, 288, 544, 800],
+        "catchEvery": 9,
+        "narrowEvery": 4,
+        "movingEvery": 9,
+        "movingDistance": 64,
+        "movingSpeed": 55
+      }
+    },
+    {
+      "id": "factory-energy-core",
+      "name": "Fabrik – Energiekern",
+      "backgroundId": "factory",
+      "tileset": "factory",
+      "topY": 90000,
+      "bottomY": 100000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [112, 118, 122, 118],
+        "horizontalPositions": [160, 416, 672, 928, 672, 416, 160, 384, 640, 896, 640, 384],
+        "catchEvery": 9,
+        "narrowEvery": 3,
+        "movingEvery": 7,
+        "movingDistance": 80,
+        "movingSpeed": 65
+      }
+    },
+    {
+      "id": "launch-tower-supply-shafts",
+      "name": "Startturm – Versorgungsschächte",
+      "backgroundId": "launch-tower",
+      "tileset": "launch-tower",
+      "topY": 80000,
+      "bottomY": 90000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [112, 116, 120, 116],
+        "horizontalPositions": [128, 384, 640, 896, 704, 448, 192, 448, 704, 960, 704, 448, 192],
+        "catchEvery": 9,
+        "narrowEvery": 4,
+        "movingEvery": 7,
+        "movingDistance": 96,
+        "movingSpeed": 70
+      }
+    },
+    {
+      "id": "launch-tower-outer-hull",
+      "name": "Startturm – Außenhülle",
+      "backgroundId": "launch-tower",
+      "tileset": "launch-tower",
+      "topY": 70000,
+      "bottomY": 80000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [116, 120, 124, 120],
+        "horizontalPositions": [928, 672, 416, 160, 416, 672, 928, 704, 480, 256, 128, 384, 640, 896],
+        "catchEvery": 10,
+        "narrowEvery": 3,
+        "movingEvery": 6,
+        "movingDistance": 112,
+        "movingSpeed": 80
+      }
+    },
+    {
+      "id": "launch-tower-launch-platform",
+      "name": "Startturm – Startrampe",
+      "backgroundId": "launch-tower",
+      "tileset": "launch-tower",
+      "topY": 60000,
+      "bottomY": 70000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [116, 122, 126, 122],
+        "horizontalPositions": [128, 384, 640, 896, 640, 384, 128, 352, 576, 800, 960, 704, 448, 192],
+        "catchEvery": 10,
+        "narrowEvery": 3,
+        "movingEvery": 5,
+        "movingDistance": 128,
+        "movingSpeed": 90
+      }
+    },
+    {
+      "id": "space-station-cargo-ring",
+      "name": "Raumstation – Frachtring",
+      "backgroundId": "space-station",
+      "tileset": "space-station",
+      "topY": 50000,
+      "bottomY": 60000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [116, 120, 124, 120],
+        "horizontalPositions": [928, 672, 416, 160, 384, 640, 896, 640, 384, 128, 384, 640, 896],
+        "catchEvery": 10,
+        "narrowEvery": 3,
+        "movingEvery": 5,
+        "movingDistance": 128,
+        "movingSpeed": 90
+      }
+    },
+    {
+      "id": "space-station-research",
+      "name": "Raumstation – Forschungstrakt",
+      "backgroundId": "space-station",
+      "tileset": "space-station",
+      "topY": 40000,
+      "bottomY": 50000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [120, 124, 128, 124],
+        "horizontalPositions": [160, 416, 672, 928, 672, 416, 160, 384, 640, 896, 640, 384],
+        "catchEvery": 11,
+        "narrowEvery": 3,
+        "movingEvery": 4,
+        "movingDistance": 144,
+        "movingSpeed": 100
+      }
+    },
+    {
+      "id": "space-station-command",
+      "name": "Raumstation – Kommandozentrum",
+      "backgroundId": "space-station",
+      "tileset": "space-station",
+      "topY": 30000,
+      "bottomY": 40000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [120, 124, 128, 126],
+        "horizontalPositions": [928, 672, 416, 160, 416, 672, 928, 704, 480, 256, 128, 384, 640, 896],
+        "catchEvery": 11,
+        "narrowEvery": 2,
+        "movingEvery": 4,
+        "movingDistance": 160,
+        "movingSpeed": 110
+      }
+    },
+    {
+      "id": "moon-crater-field",
+      "name": "Mond – Kraterfeld",
+      "backgroundId": "moon",
+      "tileset": "moon",
+      "topY": 20000,
+      "bottomY": 30000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [120, 124, 128, 124],
+        "horizontalPositions": [160, 416, 672, 928, 672, 416, 160, 416, 672, 928, 672, 416],
+        "catchEvery": 12,
+        "narrowEvery": 2,
+        "movingEvery": 4,
+        "movingDistance": 160,
+        "movingSpeed": 110
+      }
+    },
+    {
+      "id": "moon-ruins",
+      "name": "Mond – Ruinen",
+      "backgroundId": "moon",
+      "tileset": "moon",
+      "topY": 10000,
+      "bottomY": 20000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [122, 126, 128, 126],
+        "horizontalPositions": [928, 672, 416, 160, 416, 672, 928, 704, 448, 192, 448, 704],
+        "catchEvery": 12,
+        "narrowEvery": 2,
+        "movingEvery": 3,
+        "movingDistance": 176,
+        "movingSpeed": 120
+      }
+    },
+    {
+      "id": "moon-warden-fortress",
+      "name": "Mond – Wächterfestung",
+      "backgroundId": "moon",
+      "tileset": "moon",
+      "topY": 0,
+      "bottomY": 10000,
+      "route": {
+        "floorX": 64,
+        "verticalGaps": [124, 128, 128, 126],
+        "horizontalPositions": [160, 416, 672, 928, 672, 416, 160, 384, 640, 896, 640, 384],
+        "catchEvery": 14,
+        "narrowEvery": 2,
+        "movingEvery": 3,
+        "movingDistance": 192,
+        "movingSpeed": 130
+      }
+    }
   ],
   "platformTypes": {
     "floor": {
-      "tileset": "scrapyard",
       "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
     },
     "path": {
-      "tileset": "scrapyard",
+      "tileFrames": [0, 2, 3]
+    },
+    "narrow": {
+      "tileFrames": [0, 3]
+    },
+    "moving": {
       "tileFrames": [0, 2, 3]
     },
     "catch": {
-      "tileset": "scrapyard",
       "tileFrames": [0, 2, 2, 2, 2, 2, 2, 3]
     }
   },
-  "platforms": [
-    { "id": "scrapyard-floor", "x": 64, "y": 7840, "type": "floor" },
-    { "id": "scrapyard-path-01", "x": 160, "y": 7728, "type": "path" },
-    { "id": "scrapyard-path-02", "x": 384, "y": 7616, "type": "path" },
-    { "id": "scrapyard-path-03", "x": 608, "y": 7504, "type": "path" },
-    { "id": "scrapyard-path-04", "x": 832, "y": 7392, "type": "path" },
-    { "id": "scrapyard-path-05", "x": 960, "y": 7280, "type": "path" },
-    { "id": "scrapyard-path-06", "x": 736, "y": 7168, "type": "path" },
-    { "id": "scrapyard-catch-07", "x": 384, "y": 7056, "type": "catch" },
-    { "id": "scrapyard-path-08", "x": 928, "y": 6944, "type": "path" },
-    { "id": "scrapyard-path-09", "x": 704, "y": 6832, "type": "path" },
-    { "id": "scrapyard-path-10", "x": 480, "y": 6720, "type": "path" },
-    { "id": "scrapyard-path-11", "x": 256, "y": 6608, "type": "path" },
-    { "id": "scrapyard-path-12", "x": 128, "y": 6496, "type": "path" },
-    { "id": "factory-path-01", "x": 352, "y": 6384, "type": "path" },
-    { "id": "factory-catch-02", "x": 384, "y": 6272, "type": "catch" },
-    { "id": "factory-path-03", "x": 160, "y": 6160, "type": "path" },
-    { "id": "factory-path-04", "x": 384, "y": 6048, "type": "path" },
-    { "id": "factory-path-05", "x": 608, "y": 5936, "type": "path" },
-    { "id": "factory-path-06", "x": 832, "y": 5824, "type": "path" },
-    { "id": "factory-path-07", "x": 960, "y": 5712, "type": "path" },
-    { "id": "factory-path-08", "x": 736, "y": 5600, "type": "path" },
-    { "id": "factory-catch-09", "x": 384, "y": 5488, "type": "catch" },
-    { "id": "factory-path-10", "x": 928, "y": 5376, "type": "path" },
-    { "id": "factory-path-11", "x": 704, "y": 5264, "type": "path" },
-    { "id": "factory-path-12", "x": 480, "y": 5152, "type": "path" },
-    { "id": "factory-path-13", "x": 256, "y": 5040, "type": "path" },
-    { "id": "factory-path-14", "x": 128, "y": 4928, "type": "path" },
-    { "id": "factory-path-15", "x": 352, "y": 4816, "type": "path" },
-    { "id": "launch-tower-catch-01", "x": 384, "y": 4704, "type": "catch" },
-    { "id": "launch-tower-path-02", "x": 160, "y": 4592, "type": "path" },
-    { "id": "launch-tower-path-03", "x": 384, "y": 4480, "type": "path" },
-    { "id": "launch-tower-path-04", "x": 608, "y": 4368, "type": "path" },
-    { "id": "launch-tower-path-05", "x": 832, "y": 4256, "type": "path" },
-    { "id": "launch-tower-path-06", "x": 960, "y": 4144, "type": "path" },
-    { "id": "launch-tower-path-07", "x": 736, "y": 4032, "type": "path" },
-    { "id": "launch-tower-catch-08", "x": 384, "y": 3920, "type": "catch" },
-    { "id": "launch-tower-path-09", "x": 928, "y": 3808, "type": "path" },
-    { "id": "launch-tower-path-10", "x": 704, "y": 3696, "type": "path" },
-    { "id": "launch-tower-path-11", "x": 480, "y": 3584, "type": "path" },
-    { "id": "launch-tower-path-12", "x": 256, "y": 3472, "type": "path" },
-    { "id": "launch-tower-path-13", "x": 128, "y": 3360, "type": "path" },
-    { "id": "launch-tower-path-14", "x": 352, "y": 3248, "type": "path" },
-    { "id": "space-station-catch-01", "x": 384, "y": 3136, "type": "catch" },
-    { "id": "space-station-path-02", "x": 160, "y": 3024, "type": "path" },
-    { "id": "space-station-path-03", "x": 384, "y": 2912, "type": "path" },
-    { "id": "space-station-path-04", "x": 608, "y": 2800, "type": "path" },
-    { "id": "space-station-path-05", "x": 832, "y": 2688, "type": "path" },
-    { "id": "space-station-path-06", "x": 960, "y": 2576, "type": "path" },
-    { "id": "space-station-path-07", "x": 736, "y": 2464, "type": "path" },
-    { "id": "space-station-catch-08", "x": 384, "y": 2352, "type": "catch" },
-    { "id": "space-station-path-09", "x": 928, "y": 2240, "type": "path" },
-    { "id": "space-station-path-10", "x": 704, "y": 2128, "type": "path" },
-    { "id": "space-station-path-11", "x": 480, "y": 2016, "type": "path" },
-    { "id": "space-station-path-12", "x": 256, "y": 1904, "type": "path" },
-    { "id": "space-station-path-13", "x": 128, "y": 1792, "type": "path" },
-    { "id": "space-station-path-14", "x": 352, "y": 1680, "type": "path" },
-    { "id": "moon-catch-01", "x": 384, "y": 1568, "type": "catch" },
-    { "id": "moon-path-02", "x": 160, "y": 1456, "type": "path" },
-    { "id": "moon-path-03", "x": 384, "y": 1344, "type": "path" },
-    { "id": "moon-path-04", "x": 608, "y": 1232, "type": "path" },
-    { "id": "moon-path-05", "x": 832, "y": 1120, "type": "path" },
-    { "id": "moon-path-06", "x": 960, "y": 1008, "type": "path" },
-    { "id": "moon-path-07", "x": 736, "y": 896, "type": "path" },
-    { "id": "moon-catch-08", "x": 384, "y": 784, "type": "catch" },
-    { "id": "moon-path-09", "x": 928, "y": 672, "type": "path" },
-    { "id": "moon-path-10", "x": 704, "y": 560, "type": "path" },
-    { "id": "moon-path-11", "x": 480, "y": 448, "type": "path" },
-    { "id": "moon-path-12", "x": 256, "y": 336, "type": "path" },
-    { "id": "moon-path-13", "x": 128, "y": 224, "type": "path" },
-    { "id": "moon-summit-14", "x": 384, "y": 112, "type": "catch" }
-  ],
   "combatZones": [
     {
       "id": "scrapyard-arena-01",
       "x": 640,
-      "y": 7264,
+      "y": 147264,
       "width": 576,
       "height": 576,
       "enemyIds": [
@@ -117,7 +305,7 @@
       "id": "scrapyard-crawler-01",
       "type": "scrapCrawler",
       "x": 992,
-      "y": 7776,
+      "y": 149776,
       "patrolMinX": 896,
       "patrolMaxX": 1216,
       "startDirection": -1
@@ -126,7 +314,7 @@
       "id": "scrapyard-drone-01",
       "type": "droneGuard",
       "x": 840,
-      "y": 7328,
+      "y": 147328,
       "patrolMinX": 768,
       "patrolMaxX": 1056
     },
@@ -134,7 +322,7 @@
       "id": "factory-crawler-01",
       "type": "scrapCrawler",
       "x": 608,
-      "y": 6208,
+      "y": 118208,
       "patrolMinX": 512,
       "patrolMaxX": 896
     },
@@ -142,7 +330,7 @@
       "id": "space-station-drone-01",
       "type": "droneGuard",
       "x": 384,
-      "y": 2288,
+      "y": 57288,
       "patrolMinX": 320,
       "patrolMaxX": 704,
       "startDirection": -1
@@ -158,23 +346,23 @@
     }
   ],
   "hazards": [
-    { "id": "scrapyard-electric-01", "damage": 20, "x": 672, "y": 7776 }
+    { "id": "scrapyard-electric-01", "damage": 20, "x": 672, "y": 149776 }
   ],
   "collectables": [
-    { "id": "scrapyard-gear-01", "type": "gear", "amount": 1, "x": 288, "y": 7776 },
-    { "id": "scrapyard-ammo-01", "type": "ammo", "amount": 4, "x": 480, "y": 7776 },
-    { "id": "scrapyard-energy-01", "type": "energy", "amount": 20, "x": 864, "y": 7776 },
-    { "id": "factory-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 6208 },
-    { "id": "factory-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 6096 },
-    { "id": "factory-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 5984 },
-    { "id": "launch-tower-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 4640 },
-    { "id": "launch-tower-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 4528 },
-    { "id": "launch-tower-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 4416 },
-    { "id": "space-station-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 3072 },
-    { "id": "space-station-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 2960 },
-    { "id": "space-station-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 2848 },
-    { "id": "moon-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 1504 },
-    { "id": "moon-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 1392 },
-    { "id": "moon-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 1280 }
+    { "id": "scrapyard-gear-01", "type": "gear", "amount": 1, "x": 288, "y": 149776 },
+    { "id": "scrapyard-ammo-01", "type": "ammo", "amount": 4, "x": 480, "y": 149776 },
+    { "id": "scrapyard-energy-01", "type": "energy", "amount": 20, "x": 864, "y": 149776 },
+    { "id": "factory-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 118900 },
+    { "id": "factory-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 117500 },
+    { "id": "factory-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 116100 },
+    { "id": "launch-tower-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 88900 },
+    { "id": "launch-tower-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 87500 },
+    { "id": "launch-tower-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 86100 },
+    { "id": "space-station-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 58900 },
+    { "id": "space-station-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 57500 },
+    { "id": "space-station-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 56100 },
+    { "id": "moon-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 8900 },
+    { "id": "moon-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 7500 },
+    { "id": "moon-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 6100 }
   ]
 }

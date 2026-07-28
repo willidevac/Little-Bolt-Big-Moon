@@ -7,7 +7,7 @@ const CANVAS_CONFIG = Object.freeze({
 
 const WORLD_CONFIG = Object.freeze({
   width: 1280,
-  height: 8000,
+  height: 150000,
   deathZoneOffsetPixels: 128,
 });
 
@@ -196,26 +196,26 @@ const createEffect = (
 
 const AUDIO_CONFIG = Object.freeze({
   music: Object.freeze({
-    climb: createMusic("climb-loop.wav", 0.24),
-    boss: createMusic("boss-loop.wav", 0.28),
+    climb: createMusic("climb-hopeful.ogg", 0.16),
+    boss: createMusic("boss-urgent.mp3", 0.2),
   }),
   effects: Object.freeze({
-    jump: createEffect("byte-jump.wav", 0.58, 2, 100),
-    land: createEffect("byte-land.wav", 0.5, 2, 120),
-    wrench: createEffect("wrench-swing.wav", 0.58, 2, 180),
-    bolt: createEffect("bolt-shot.wav", 0.55, 3, 100),
-    hurt: createEffect("byte-hurt.wav", 0.6, 1, 700),
-    lose: createEffect("game-lose.wav", 0.58, 1, 1_000),
-    pickupGear: createEffect("pickup-gear.wav", 0.5, 2, 100),
-    pickupEnergy: createEffect("pickup-energy.wav", 0.5, 2, 100),
-    pickupAmmo: createEffect("pickup-ammo.wav", 0.5, 2, 100),
-    enemyHit: createEffect("enemy-hit.wav", 0.5, 3, 80),
-    enemyDeath: createEffect("enemy-death.wav", 0.55, 2, 120),
-    bossAttack: createEffect("boss-attack.wav", 0.58, 2, 180),
-    bossPhase: createEffect("boss-phase.wav", 0.58, 1, 500),
-    bossDeath: createEffect("boss-death.wav", 0.62, 1, 1_000),
-    waveComplete: createEffect("wave-complete.wav", 0.52, 1, 500),
-    win: createEffect("game-win.wav", 0.58, 1, 1_000),
+    jump: createEffect("byte-jump.ogg", 0.34, 2, 100),
+    land: createEffect("byte-land.ogg", 0.28, 2, 120),
+    wrench: createEffect("wrench-swing.ogg", 0.32, 2, 180),
+    bolt: createEffect("bolt-shot.ogg", 0.3, 3, 100),
+    hurt: createEffect("byte-hurt.ogg", 0.35, 1, 700),
+    lose: createEffect("game-lose.ogg", 0.3, 1, 1_000),
+    pickupGear: createEffect("pickup-gear.ogg", 0.3, 2, 100),
+    pickupEnergy: createEffect("pickup-energy.ogg", 0.28, 2, 100),
+    pickupAmmo: createEffect("pickup-ammo.ogg", 0.28, 2, 100),
+    enemyHit: createEffect("enemy-hit.ogg", 0.28, 3, 80),
+    enemyDeath: createEffect("enemy-death.ogg", 0.32, 2, 120),
+    bossAttack: createEffect("boss-attack.ogg", 0.34, 2, 180),
+    bossPhase: createEffect("boss-phase.ogg", 0.32, 1, 500),
+    bossDeath: createEffect("boss-death.ogg", 0.38, 1, 1_000),
+    waveComplete: createEffect("wave-complete.ogg", 0.28, 1, 500),
+    win: createEffect("game-win.ogg", 0.3, 1, 1_000),
   }),
 });
 

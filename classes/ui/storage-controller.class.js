@@ -6,6 +6,8 @@ const SELECTORS = Object.freeze({
   score: "[data-record-score]",
   height: "[data-record-height]",
   time: "[data-record-time]",
+  volumeControls: "[data-volume-control]",
+  volumeOutputs: "[data-volume-output]",
 });
 
 /**
@@ -27,6 +29,7 @@ export class StorageController {
     this.#assignElements();
     this.unsubscribe = null;
     this.boundMuteClick = this.handleMuteClick.bind(this);
+    this.boundVolumeInput = this.handleVolumeInput.bind(this);
   }
 
   #assignElements() {
@@ -34,6 +37,8 @@ export class StorageController {
     this.scoreElement = this.#getRequiredElement(SELECTORS.score);
     this.heightElement = this.#getRequiredElement(SELECTORS.height);
     this.timeElement = this.#getRequiredElement(SELECTORS.time);
+    this.volumeControls = [...this.root.querySelectorAll(SELECTORS.volumeControls)];
+    this.volumeOutputs = [...this.root.querySelectorAll(SELECTORS.volumeOutputs)];
   }
 
   /**
@@ -43,11 +48,14 @@ export class StorageController {
   initialize() {
     if (this.unsubscribe) return this;
     this.muteButton.addEventListener("click", this.boundMuteClick);
+    this.volumeControls.forEach((control) => {
+      control.addEventListener("input", this.boundVolumeInput);
+    });
     this.unsubscribe = this.game.onStateChange((state) => {
       this.handleStateChange(state);
     });
     const records = this.storage.getSnapshot();
-    this.#applyMute(records);
+    this.#applyAudioSettings(records);
     this.render(records);
     return this;
   }
@@ -57,6 +65,9 @@ export class StorageController {
    */
   destroy() {
     this.muteButton.removeEventListener("click", this.boundMuteClick);
+    this.volumeControls.forEach((control) => {
+      control.removeEventListener("input", this.boundVolumeInput);
+    });
     this.unsubscribe?.();
     this.unsubscribe = null;
   }
@@ -67,7 +78,22 @@ export class StorageController {
   handleMuteClick() {
     const current = this.storage.getSnapshot();
     const records = this.storage.setMuted(!current.isMuted);
-    this.#applyMute(records);
+    this.#applyAudioSettings(records);
+    this.render(records);
+  }
+
+  /**
+   * Übernimmt einen Lautstärkeregler sofort und speichert ihn.
+   * @param {Event} event
+   */
+  handleVolumeInput(event) {
+    const control = event.target;
+    if (!(control instanceof HTMLInputElement)) return;
+    const records = this.storage.setVolume(
+      control.dataset.volumeControl,
+      Number(control.value),
+    );
+    this.#applyAudioSettings(records);
     this.render(records);
   }
 
@@ -96,6 +122,8 @@ export class StorageController {
       "aria-label",
       records.isMuted ? "Ton einschalten" : "Ton stummschalten",
     );
+    this.#renderVolume("music", records.musicVolume);
+    this.#renderVolume("effects", records.effectsVolume);
   }
 
   #getRequiredElement(selector) {
@@ -104,12 +132,28 @@ export class StorageController {
     throw new Error(`Speicheranzeige nicht gefunden: ${selector}`);
   }
 
-  #applyMute(records) {
+  #applyAudioSettings(records) {
+    this.audio.setMusicVolume(records.musicVolume / 100);
+    this.audio.setEffectsVolume(records.effectsVolume / 100);
     this.audio.setMuted(records.isMuted);
   }
 
   #validateAudio(audio) {
-    if (typeof audio?.setMuted === "function") return;
+    const isValid = typeof audio?.setMuted === "function" &&
+      typeof audio?.setMusicVolume === "function" &&
+      typeof audio?.setEffectsVolume === "function";
+    if (isValid) return;
     throw new TypeError("Der Speichersteuerung fehlt die Audiosteuerung.");
+  }
+
+  #renderVolume(group, value) {
+    const control = this.volumeControls.find((element) => {
+      return element.dataset.volumeControl === group;
+    });
+    const output = this.volumeOutputs.find((element) => {
+      return element.dataset.volumeOutput === group;
+    });
+    if (control instanceof HTMLInputElement) control.value = String(value);
+    if (output instanceof HTMLOutputElement) output.textContent = `${value} %`;
   }
 }

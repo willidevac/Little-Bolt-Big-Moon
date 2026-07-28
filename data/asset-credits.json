@@ -26,11 +26,22 @@
       "notes": "Copy OFL.txt into img/fonts/ when the font files are downloaded."
     },
     {
-      "id": "project-original-audio",
-      "label": "Original procedural project audio",
-      "origin": "Deterministic JavaScript synthesis created for Little Bolt, Big Moon",
-      "evidence": "audio/README.md",
-      "notes": "No external recordings, samples or third-party sound libraries are included."
+      "id": "opengameart-cc0-audio",
+      "label": "OpenGameArt music under CC0 1.0",
+      "origin": "qubodup and SRG774 via OpenGameArt",
+      "source": "https://opengameart.org/",
+      "terms": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "evidence": "audio/licenses/OpenGameArt-CC0.txt",
+      "notes": "Attribution is not required, but authors and source pages are documented voluntarily."
+    },
+    {
+      "id": "kenney-cc0-audio",
+      "label": "Kenney audio under CC0 1.0",
+      "origin": "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
+      "source": "https://kenney.nl/assets",
+      "terms": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "evidence": "audio/licenses/Kenney-CC0.txt",
+      "notes": "Free for personal, educational and commercial projects; attribution is not required."
     }
   ],
   "assets": [
@@ -535,6 +546,206 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "scrapyard-background-far-runtime-v1",
+      "file": "img/backgrounds/scrapyard-far.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
+      "created": "2026-07-28",
+      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-background-mid-runtime-v1",
+      "file": "img/backgrounds/scrapyard-mid.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
+      "created": "2026-07-28",
+      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-background-near-runtime-v1",
+      "file": "img/backgrounds/scrapyard-near.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
+      "created": "2026-07-28",
+      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-background-far-runtime-v1",
+      "file": "img/backgrounds/factory-far.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
+      "created": "2026-07-28",
+      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-background-mid-runtime-v1",
+      "file": "img/backgrounds/factory-mid.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
+      "created": "2026-07-28",
+      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-background-near-runtime-v1",
+      "file": "img/backgrounds/factory-near.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
+      "created": "2026-07-28",
+      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-background-far-runtime-v1",
+      "file": "img/backgrounds/launch-tower-far.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
+      "created": "2026-07-28",
+      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-background-mid-runtime-v1",
+      "file": "img/backgrounds/launch-tower-mid.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
+      "created": "2026-07-28",
+      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-background-near-runtime-v1",
+      "file": "img/backgrounds/launch-tower-near.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
+      "created": "2026-07-28",
+      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-background-far-runtime-v1",
+      "file": "img/backgrounds/space-station-far.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
+      "created": "2026-07-28",
+      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-background-mid-runtime-v1",
+      "file": "img/backgrounds/space-station-mid.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
+      "created": "2026-07-28",
+      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-background-near-runtime-v1",
+      "file": "img/backgrounds/space-station-near.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
+      "created": "2026-07-28",
+      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-background-far-runtime-v1",
+      "file": "img/backgrounds/moon-far.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
+      "created": "2026-07-28",
+      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-background-mid-runtime-v1",
+      "file": "img/backgrounds/moon-mid.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
+      "created": "2026-07-28",
+      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-background-near-runtime-v1",
+      "file": "img/backgrounds/moon-near.png",
+      "role": "unused-background-layer-draft",
+      "status": "present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
+      "created": "2026-07-28",
+      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-background-panorama-v2",
+      "file": "img/backgrounds/scrapyard-panorama-v2.png",
+      "role": "runtime-background-panorama",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
+      "created": "2026-07-28",
+      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from machine graveyard through pressworks to signal tower; rendered once without tiling.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-background-panorama-v2",
+      "file": "img/backgrounds/factory-panorama-v2.png",
+      "role": "runtime-background-panorama",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
+      "created": "2026-07-28",
+      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from assembly hall through smelter to energy core; rendered once without tiling.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-background-panorama-v2",
+      "file": "img/backgrounds/launch-tower-panorama-v2.png",
+      "role": "runtime-background-panorama",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
+      "created": "2026-07-28",
+      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from supply shafts through outer hull to launch platform; rendered once without tiling.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-background-panorama-v2",
+      "file": "img/backgrounds/space-station-panorama-v2.png",
+      "role": "runtime-background-panorama",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
+      "created": "2026-07-28",
+      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from cargo ring through research sector to command center; rendered once without tiling.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-background-panorama-v2",
+      "file": "img/backgrounds/moon-panorama-v2.png",
+      "role": "runtime-background-panorama",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
+      "created": "2026-07-28",
+      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from crater field through ancient robot ruins to Moon Warden fortress; rendered once without tiling.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "p0-production-art-plan",
       "file": "data/asset-manifest.json",
       "role": "planned-production-assets",
@@ -575,14 +786,24 @@
       "licenseId": "openai-generated-output"
     },
     {
-      "id": "little-bolt-audio-pack-v1",
-      "file": "audio/",
-      "role": "runtime-music-and-gameplay-sound-effects",
+      "id": "little-bolt-cc0-music-v1",
+      "file": "audio/music/",
+      "role": "runtime-background-and-boss-music",
       "status": "present",
-      "origin": "Original deterministic JavaScript synthesis for this project",
-      "created": "2026-07-27",
-      "modifications": "Selected soft sound directions were expanded into gameplay effects and two loopable music tracks.",
-      "licenseId": "project-original-audio"
+      "origin": "Two Simple Game Music Loops by qubodup and Dark Sci-Fi Audio Pack by SRG774 via OpenGameArt",
+      "created": "2026-07-28",
+      "modifications": "Files were renamed for their runtime roles and configured at reduced playback volume.",
+      "licenseId": "opengameart-cc0-audio"
+    },
+    {
+      "id": "little-bolt-cc0-effects-v1",
+      "file": "audio/sfx/",
+      "role": "runtime-gameplay-sound-effects",
+      "status": "present",
+      "origin": "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
+      "created": "2026-07-28",
+      "modifications": "Sixteen source effects were selected, renamed for gameplay roles and configured at reduced playback volume.",
+      "licenseId": "kenney-cc0-audio"
     }
   ]
 }

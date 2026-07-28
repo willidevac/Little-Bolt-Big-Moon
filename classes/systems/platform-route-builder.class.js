@@ -1,0 +1,237 @@
+const FLOOR_OFFSET_Y = 160;
+const SECTION_EDGE_OFFSET_Y = 64;
+const MINIMUM_PLATFORM_GAP_Y = 80;
+const MINIMUM_EDGE_GAP_Y = 64;
+const MAXIMUM_PLATFORM_GAP_Y = 128;
+const MAXIMUM_HORIZONTAL_GAP = 128;
+const SIDE_PADDING = 64;
+const PLATFORM_WIDTHS = Object.freeze({
+  floor: 1152,
+  path: 192,
+  narrow: 128,
+  moving: 192,
+  catch: 512,
+});
+
+/**
+ * Baut aus kleinen Gebietsrezepten eine feste, vollständig erreichbare Route.
+ */
+export class PlatformRouteBuilder {
+  /**
+   * @param {number} worldWidth
+   */
+  constructor(worldWidth) {
+    if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
+      throw new TypeError("Die Weltbreite für die Plattformroute ist ungültig.");
+    }
+    this.worldWidth = worldWidth;
+  }
+
+  /**
+   * @param {ReadonlyArray<object>} sections
+   * @returns {ReadonlyArray<Readonly<object>>}
+   */
+  build(sections) {
+    if (!Array.isArray(sections) || sections.length === 0) {
+      throw new TypeError("Die Plattformroute benötigt mindestens ein Gebiet.");
+    }
+    return Object.freeze(
+      sections.flatMap((section, sectionIndex) => {
+        return this.#buildSection(
+          section,
+          sectionIndex,
+          sections[sectionIndex + 1],
+        );
+      }),
+    );
+  }
+
+  #buildSection(section, sectionIndex, nextSection) {
+    this.#validateSection(section);
+    const platforms = [];
+    let y = this.#getSectionStartY(section, sectionIndex);
+    let routeIndex = 0;
+    if (sectionIndex === 0) {
+      platforms.push(
+        this.#createPlatform(section, routeIndex, y, { isFloor: true }),
+      );
+    }
+    const edgeY = section.topY + SECTION_EDGE_OFFSET_Y;
+    while (y - edgeY > MAXIMUM_PLATFORM_GAP_Y) {
+      const remainingHeight = y - edgeY;
+      const gap = this.#getNextGap(section, routeIndex, remainingHeight);
+      routeIndex += 1;
+      y -= gap;
+      platforms.push(this.#createPlatform(section, routeIndex, y, {
+        previousPlatform: platforms.at(-1),
+      }));
+    }
+    platforms.push(this.#createBoundaryPlatform(
+      section,
+      routeIndex + 1,
+      edgeY,
+      platforms.at(-1),
+      nextSection,
+    ));
+    return platforms;
+  }
+
+  #createBoundaryPlatform(section, routeIndex, y, previousPlatform, nextSection) {
+    const previousCenterX = this.#getPlatformCenterX(previousPlatform);
+    const nextCenterX = nextSection
+      ? nextSection.route.horizontalPositions[0] + PLATFORM_WIDTHS.path / 2
+      : previousCenterX;
+    const bridgeCenterX = (previousCenterX + nextCenterX) / 2;
+    const bridgeX = this.#clamp(
+      Math.round(bridgeCenterX - PLATFORM_WIDTHS.catch / 2),
+      SIDE_PADDING,
+      this.worldWidth - SIDE_PADDING - PLATFORM_WIDTHS.catch,
+    );
+    return this.#createPlatform(
+      section,
+      routeIndex,
+      y,
+      {
+        isEdge: true,
+        forcedX: bridgeX,
+        previousPlatform,
+      },
+    );
+  }
+
+  #createPlatform(section, routeIndex, y, options = {}) {
+    const {
+      isFloor = false,
+      isEdge = false,
+      forcedX,
+      previousPlatform,
+    } = options;
+    const route = section.route;
+    const isCatch = isEdge || routeIndex % route.catchEvery === 0;
+    const type = this.#getPlatformType(route, routeIndex, isFloor, isCatch);
+    const plannedX = forcedX ?? (isFloor
+      ? route.floorX
+      : this.#getCycledValue(
+        route.horizontalPositions,
+        Math.max(0, routeIndex - 1),
+      ));
+    const x = this.#getReachableX(plannedX, type, previousPlatform);
+    const platform = {
+      id: `${section.id}-${type}-${String(routeIndex).padStart(3, "0")}`,
+      x,
+      y,
+      type,
+      tileset: section.tileset,
+    };
+    if (type === "moving") platform.movement = this.#createMovement(route, x);
+    return Object.freeze(platform);
+  }
+
+  #getPlatformType(route, routeIndex, isFloor, isCatch) {
+    if (isFloor) return "floor";
+    if (isCatch) return "catch";
+    if (route.movingEvery > 0 && routeIndex % route.movingEvery === 0) {
+      return "moving";
+    }
+    if (route.narrowEvery > 0 && routeIndex % route.narrowEvery === 0) {
+      return "narrow";
+    }
+    return "path";
+  }
+
+  #createMovement(route, x) {
+    return Object.freeze({
+      minimumX: Math.max(SIDE_PADDING, x - route.movingDistance),
+      maximumX: Math.min(
+        this.worldWidth - SIDE_PADDING - PLATFORM_WIDTHS.moving,
+        x + route.movingDistance,
+      ),
+      speedPixelsPerSecond: route.movingSpeed,
+    });
+  }
+
+  #getSectionStartY(section, sectionIndex) {
+    if (sectionIndex === 0) return section.bottomY - FLOOR_OFFSET_Y;
+    return section.bottomY + SECTION_EDGE_OFFSET_Y;
+  }
+
+  #getCycledValue(values, index) {
+    return values[index % values.length];
+  }
+
+  #getPlatformCenterX(platform) {
+    return platform.x + PLATFORM_WIDTHS[platform.type] / 2;
+  }
+
+  #getReachableX(plannedX, type, previousPlatform) {
+    if (!previousPlatform) return plannedX;
+    const minimumX = previousPlatform.x -
+      PLATFORM_WIDTHS[type] -
+      MAXIMUM_HORIZONTAL_GAP;
+    const maximumX = previousPlatform.x +
+      PLATFORM_WIDTHS[previousPlatform.type] +
+      MAXIMUM_HORIZONTAL_GAP;
+    return this.#clamp(plannedX, minimumX, maximumX);
+  }
+
+  #clamp(value, minimum, maximum) {
+    return Math.min(Math.max(value, minimum), maximum);
+  }
+
+  #getNextGap(section, routeIndex, remainingHeight) {
+    const plannedGap = this.#getCycledValue(
+      section.route.verticalGaps,
+      routeIndex,
+    );
+    if (remainingHeight - plannedGap >= MINIMUM_EDGE_GAP_Y) {
+      return plannedGap;
+    }
+    return Math.floor(remainingHeight / 2);
+  }
+
+  #validateSection(section) {
+    const hasBounds = Number.isFinite(section?.topY) &&
+      Number.isFinite(section?.bottomY) &&
+      section.bottomY > section.topY;
+    const route = section?.route;
+    const positionsAreValid = Array.isArray(route?.horizontalPositions) &&
+      route.horizontalPositions.length > 0 &&
+      route.horizontalPositions.every((x) => {
+        return Number.isFinite(x) && x >= 0 && x < this.worldWidth;
+      });
+    const gapsAreValid = Array.isArray(route?.verticalGaps) &&
+      route.verticalGaps.length > 0 &&
+      route.verticalGaps.every((gap) => {
+        return Number.isFinite(gap) &&
+          gap >= MINIMUM_PLATFORM_GAP_Y &&
+          gap <= MAXIMUM_PLATFORM_GAP_Y;
+      });
+    const catchEveryIsValid = Number.isInteger(route?.catchEvery) &&
+      route.catchEvery > 0;
+    const challengeRulesAreValid = this.#hasValidChallengeRules(route);
+    if (
+      typeof section?.id === "string" &&
+      typeof section?.tileset === "string" &&
+      hasBounds &&
+      positionsAreValid &&
+      gapsAreValid &&
+      catchEveryIsValid &&
+      challengeRulesAreValid &&
+      Number.isFinite(route?.floorX)
+    ) {
+      return;
+    }
+    throw new TypeError(`Das Sprungrezept für ${section?.id ?? "ein Gebiet"} ist ungültig.`);
+  }
+
+  #hasValidChallengeRules(route) {
+    const frequenciesAreValid = [route?.narrowEvery, route?.movingEvery]
+      .every((value) => Number.isInteger(value) && value >= 0);
+    if (!frequenciesAreValid) return false;
+    if (route.movingEvery === 0) return true;
+    return Number.isFinite(route.movingDistance) &&
+      route.movingDistance > 0 &&
+      Number.isFinite(route.movingSpeed) &&
+      route.movingSpeed > 0;
+  }
+}

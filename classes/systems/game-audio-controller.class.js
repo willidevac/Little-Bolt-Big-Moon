@@ -102,6 +102,16 @@ export class GameAudioController {
     }
   }
 
+  /** @param {number} volume */
+  setMusicVolume(volume) {
+    this.audio.setMusicVolume(volume);
+  }
+
+  /** @param {number} volume */
+  setEffectsVolume(volume) {
+    this.audio.setEffectsVolume(volume);
+  }
+
   #handleDetailedEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.PLAYER_ATTACK) {
       return this.#playMappedEffect(ATTACK_EFFECTS, event.detail.weaponId);
@@ -150,7 +160,9 @@ export class GameAudioController {
     const hasGame = typeof game?.onStateChange === "function" &&
       typeof game?.onGameplayEvent === "function";
     const hasAudio = typeof audio?.playEffect === "function" &&
-      typeof audio?.playMusic === "function";
+      typeof audio?.playMusic === "function" &&
+      typeof audio?.setMusicVolume === "function" &&
+      typeof audio?.setEffectsVolume === "function";
     const hasEvents = typeof eventTarget?.addEventListener === "function";
     if (hasGame && hasAudio && hasEvents) return;
     throw new TypeError("Der Spielaudio-Steuerung fehlen Abhängigkeiten.");

@@ -1,11 +1,13 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
+import { MovingPlatform } from "../../classes/environment/moving-platform.class.js";
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
 import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js";
+import { PlatformRouteBuilder } from "../../classes/systems/platform-route-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
 const ENEMY_CLASSES = Object.freeze({
@@ -13,16 +15,25 @@ const ENEMY_CLASSES = Object.freeze({
   droneGuard: DroneGuard,
   moonWarden: MoonWarden,
 });
-const TILESET_CONFIGS = Object.freeze({
-  scrapyard: Object.freeze({
-    source: getAssetPath("tilesets", "scrapyard-tiles.png"),
-    frameWidth: 32,
-    frameHeight: 32,
-    frameCount: 32,
-    renderScale: 2,
-    surfaceOffset: 12,
-  }),
-});
+const TILESET_NAMES = Object.freeze([
+  "scrapyard",
+  "factory",
+  "launch-tower",
+  "space-station",
+  "moon",
+]);
+const TILESET_CONFIGS = Object.freeze(
+  Object.fromEntries(TILESET_NAMES.map((tilesetName) => {
+    return [tilesetName, Object.freeze({
+      source: getAssetPath("tilesets", `${tilesetName}-tiles.png`),
+      frameWidth: 32,
+      frameHeight: 32,
+      frameCount: 32,
+      renderScale: 2,
+      surfaceOffset: 12,
+    })];
+  })),
+);
 
 /**
  * Erzeugt eine neue, unabhängige Instanz des ersten Levelabschnitts.
@@ -31,13 +42,15 @@ const TILESET_CONFIGS = Object.freeze({
  */
 export function createLevelOne(enemyConfig) {
   validateLevelData(levelData);
+  const routeBuilder = new PlatformRouteBuilder(levelData.width);
+  const platformData = routeBuilder.build(levelData.sections);
   return Object.freeze({
     id: levelData.id,
     width: levelData.width,
     height: levelData.height,
     playerStart: Object.freeze({ ...levelData.playerStart }),
     sections: Object.freeze(levelData.sections.map(createSection)),
-    platforms: Object.freeze(levelData.platforms.map(createPlatform)),
+    platforms: Object.freeze(platformData.map(createPlatform)),
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
@@ -78,11 +91,23 @@ function createPlatform(platformData) {
   if (!tilesetConfig) {
     throw new RangeError(`Unbekanntes Plattform-Tileset: ${resolvedData.tileset}`);
   }
-  return new Platform(resolvedData, tilesetConfig);
+  const PlatformClass = resolvedData.movement ? MovingPlatform : Platform;
+  return new PlatformClass(resolvedData, tilesetConfig);
 }
 
 function createSection(sectionData) {
-  return Object.freeze({ ...sectionData });
+  const backgroundLayers = [Object.freeze({
+    source: getAssetPath(
+      "backgrounds",
+      `${sectionData.backgroundId}-panorama-v2.png`,
+    ),
+    frameWidth: 1024,
+    frameHeight: 1536,
+  })];
+  return Object.freeze({
+    ...sectionData,
+    backgroundLayers: Object.freeze(backgroundLayers),
+  });
 }
 
 function validateLevelData(data) {
@@ -90,11 +115,11 @@ function validateLevelData(data) {
   const hasStart = Number.isFinite(data?.playerStart?.x) &&
     Number.isFinite(data?.playerStart?.y);
   const hasCollections = Array.isArray(data?.sections) &&
-    Array.isArray(data?.platforms) &&
     Array.isArray(data?.collectables) &&
     Array.isArray(data?.hazards) &&
     Array.isArray(data?.combatZones) &&
     Array.isArray(data?.enemies) &&
+    data.sections.every((section) => section?.route) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
   if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {

@@ -32,7 +32,7 @@ const END_SCREEN_CONTENT = Object.freeze({
   }),
 });
 
-const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled])';
 
 /**
  * Liefert ein benötigtes DOM-Element oder bricht verständlich ab.
@@ -209,6 +209,7 @@ export class ScreenController {
     return Object.freeze({
       start: () => this.game.reset(),
       controls: () => this.openDialog("controls"),
+      settings: () => this.openDialog("settings"),
       imprint: () => this.openDialog("imprint"),
       "close-dialog": () => this.closeDialog(),
       pause: () => this.game.togglePause(),
