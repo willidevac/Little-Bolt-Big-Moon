@@ -1,6 +1,7 @@
 import { MovableObject } from "../base/movable-object.class.js";
 import { AnimationController } from "../systems/animation-controller.class.js";
 import { CharacterAttackState } from "../systems/character-attack-state.class.js";
+import { PrecisionJumpController } from "../systems/precision-jump-controller.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
 import { clamp } from "../../js/utils/math.js";
 
@@ -60,10 +61,8 @@ export class Character extends MovableObject {
     this.width = BYTE_SPRITE_CONFIG.frameWidth * BYTE_RENDER_SCALE;
     this.height = BYTE_SPRITE_CONFIG.frameHeight * BYTE_RENDER_SCALE;
     this.setCollisionBox(BYTE_HURTBOX);
-    this.coyoteTimeRemaining = 0;
-    this.jumpBufferRemaining = 0;
-    this.jumpControlBonusSeconds = 0;
-    this.wasJumpPressed = false;
+    this.jumpController = new PrecisionJumpController();
+    this.jumpChargePercent = 0;
     this.state = CHARACTER_STATES.IDLE;
     this.inactivitySeconds = 0;
     this.facingDirection = 1;
@@ -112,14 +111,13 @@ export class Character extends MovableObject {
     this.attackState.update(deltaTimeSeconds);
     this.#updateHitTimers(deltaTimeSeconds);
     const config = world.config.character;
-    const jumpStarted = this.#consumeJumpPress(input);
     this.#updateInactivity(deltaTimeSeconds, input, config);
-    if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, jumpStarted, config);
+    if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, config);
+    this.#updateJumpCharge(config);
     super.update(deltaTimeSeconds, world);
     this.#keepInsideWorld(world.config.world.width);
     this.#changeState(this.#resolveState(config));
     this.#updateAnimation(deltaTimeSeconds);
-    this.wasJumpPressed = input.jump;
   }
 
   /**
@@ -131,8 +129,7 @@ export class Character extends MovableObject {
     this.attackState.clear();
     this.isHurt = true;
     this.inactivitySeconds = 0;
-    this.coyoteTimeRemaining = 0;
-    this.jumpBufferRemaining = 0;
+    this.jumpController.reset();
     this.velocityX = 0;
     this.#changeState(CHARACTER_STATES.HURT);
     return true;
@@ -207,7 +204,7 @@ export class Character extends MovableObject {
     if (!Number.isFinite(amountSeconds) || amountSeconds <= 0) {
       throw new TypeError("Die zusätzliche Sprungkontrolle ist ungültig.");
     }
-    this.jumpControlBonusSeconds += amountSeconds;
+    this.jumpController.increaseControl(amountSeconds);
   }
 
   /**
@@ -237,11 +234,29 @@ export class Character extends MovableObject {
     return true;
   }
 
-  #handleControls(deltaTimeSeconds, input, jumpStarted, config) {
-    this.#updateJumpTimers(deltaTimeSeconds, jumpStarted, config);
-    this.#applyHorizontalMovement(deltaTimeSeconds, input, config);
-    this.#tryBufferedJump(config);
-    this.#shortenReleasedJump(input, jumpStarted, config);
+  #handleControls(deltaTimeSeconds, input, config) {
+    if (this.isOnGround) this.#updateFacingDirection(input);
+    const launch = this.jumpController.update(
+      deltaTimeSeconds, input, this.isOnGround, config,
+    );
+    if (launch) return this.#launch(launch);
+    if (this.jumpController.isCharging) return this.#stopGroundMovement();
+    if (this.isOnGround) this.#applyHorizontalMovement(deltaTimeSeconds, input, config);
+  }
+
+  #launch(launch) {
+    this.velocityX = launch.velocityX;
+    this.velocityY = launch.velocityY;
+    this.setOnGround(false);
+  }
+
+  #stopGroundMovement() {
+    this.velocityX = 0;
+  }
+
+  #updateFacingDirection(input) {
+    const direction = Number(input.right) - Number(input.left);
+    if (direction !== 0) this.facingDirection = direction;
   }
 
   #applyHorizontalMovement(deltaTimeSeconds, input, config) {
@@ -285,34 +300,9 @@ export class Character extends MovableObject {
     return hasInput || isMoving || this.isHurt;
   }
 
-  #updateJumpTimers(deltaTimeSeconds, jumpStarted, config) {
-    this.coyoteTimeRemaining = this.isOnGround
-      ? config.coyoteTimeSeconds + this.jumpControlBonusSeconds
-      : Math.max(0, this.coyoteTimeRemaining - deltaTimeSeconds);
-    this.jumpBufferRemaining = jumpStarted
-      ? config.jumpBufferSeconds + this.jumpControlBonusSeconds
-      : Math.max(0, this.jumpBufferRemaining - deltaTimeSeconds);
-  }
-
-  #consumeJumpPress(input) {
-    if (typeof input.consumePress === "function") return input.consumePress("jump");
-    return input.jump && !this.wasJumpPressed;
-  }
-
-  #tryBufferedJump(config) {
-    if (this.coyoteTimeRemaining <= 0 || this.jumpBufferRemaining <= 0) return;
-    this.velocityY = -config.jumpSpeedPixelsPerSecond;
-    this.setOnGround(false);
-    this.coyoteTimeRemaining = 0;
-    this.jumpBufferRemaining = 0;
-  }
-
-  #shortenReleasedJump(input, jumpStarted, config) {
-    const wasReleased = this.wasJumpPressed && !input.jump;
-    const wasQuickTap = jumpStarted && !input.jump;
-    if (!wasReleased && !wasQuickTap) return;
-    const releaseSpeed = config.jumpReleaseSpeedPixelsPerSecond;
-    if (this.velocityY < -releaseSpeed) this.velocityY = -releaseSpeed;
+  #updateJumpCharge(config) {
+    const ratio = this.jumpController.getChargeRatio(config);
+    this.jumpChargePercent = Math.round(ratio * 100);
   }
 
   #keepInsideWorld(worldWidth) {
@@ -326,6 +316,7 @@ export class Character extends MovableObject {
     if (this.isDead) return CHARACTER_STATES.DEAD;
     if (this.isHurt) return CHARACTER_STATES.HURT;
     if (this.attackState.isActive) return this.attackState.animationState;
+    if (this.jumpController.isCharging) return CHARACTER_STATES.JUMP;
     if (this.velocityY < -threshold) return CHARACTER_STATES.JUMP;
     if (!this.isOnGround || this.velocityY > threshold) return CHARACTER_STATES.FALL;
     if (Math.abs(this.velocityX) > threshold) return CHARACTER_STATES.RUN;
@@ -388,6 +379,7 @@ export class Character extends MovableObject {
   }
 
   #stopMovement() {
+    this.jumpController.reset();
     this.velocityX = 0;
     this.velocityY = 0;
     this.accelerationX = 0;

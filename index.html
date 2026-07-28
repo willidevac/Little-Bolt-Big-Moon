@@ -132,6 +132,26 @@
         ></output>
 
         <div
+          class="hud-panel hud-jump-charge"
+          data-hud-jump-charge
+          hidden
+        >
+          <span class="hud-label">Sprungkraft</span>
+          <div
+            class="hud-jump-charge__bar"
+            role="progressbar"
+            aria-label="Geladene Sprungkraft"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            data-hud-jump-charge-bar
+          >
+            <span class="hud-jump-charge__fill"></span>
+          </div>
+          <output class="hud-number" data-hud-jump-charge-value>0%</output>
+        </div>
+
+        <div
           class="hud-panel hud-boss"
           aria-label="Bossstatus"
           aria-live="polite"
@@ -333,7 +353,9 @@
             </div>
             <div class="controls-list__row">
               <dt>Springen</dt>
-              <dd><kbd>W</kbd>, <kbd>↑</kbd> oder Leertaste</dd>
+              <dd>
+                <kbd>W</kbd>, <kbd>↑</kbd> oder Leertaste halten und loslassen
+              </dd>
             </div>
             <div class="controls-list__row">
               <dt>Angreifen</dt>

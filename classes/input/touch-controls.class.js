@@ -3,7 +3,12 @@ import { GAME_STATES } from "../core/game-state-machine.class.js";
 const BUTTONS = Object.freeze([
   Object.freeze({ action: "left", label: "Nach links laufen", symbol: "◀", group: "move" }),
   Object.freeze({ action: "right", label: "Nach rechts laufen", symbol: "▶", group: "move" }),
-  Object.freeze({ action: "jump", label: "Springen", symbol: "↑", group: "action" }),
+  Object.freeze({
+    action: "jump",
+    label: "Sprung laden und beim Loslassen springen",
+    symbol: "↑",
+    group: "action",
+  }),
   Object.freeze({ action: "attack", label: "Angreifen", symbol: "F", group: "action" }),
   Object.freeze({ action: "weaponSwitch", label: "Waffe wechseln", symbol: "Q", group: "action" }),
 ]);

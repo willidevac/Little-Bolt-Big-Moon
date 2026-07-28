@@ -11,6 +11,9 @@ const VALUE_SELECTORS = Object.freeze({
   score: '[data-hud-value="score"]',
   weapon: '[data-hud-value="weapon"]',
   pickupFeedback: "[data-hud-pickup-feedback]",
+  jumpCharge: "[data-hud-jump-charge]",
+  jumpChargeBar: "[data-hud-jump-charge-bar]",
+  jumpChargeValue: "[data-hud-jump-charge-value]",
   energyBar: "[data-hud-energy-bar]",
   boss: "[data-hud-boss]",
   bossName: "[data-hud-boss-name]",
@@ -100,6 +103,22 @@ export class StatusBar {
     if (event.type === GAMEPLAY_EVENTS.PICKUP) {
       this.pickupFeedback.show(event.detail);
     }
+    if (event.type === GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE) {
+      this.renderJumpCharge(event.detail);
+    }
+  }
+
+  /**
+   * Zeigt die gehaltene Sprungtaste als verständlichen Ladebalken.
+   * @param {Readonly<{percent:number, isCharging:boolean}>} charge
+   */
+  renderJumpCharge(charge) {
+    const percent = Math.max(0, Math.min(100, charge.percent));
+    this.elements.jumpCharge.hidden = !charge.isCharging;
+    this.elements.jumpChargeBar.style.setProperty("--jump-charge-percent", `${percent}%`);
+    this.elements.jumpChargeBar.setAttribute("aria-valuenow", String(percent));
+    this.elements.jumpChargeBar.setAttribute("aria-valuetext", `${percent} Prozent`);
+    this.setText(this.elements.jumpChargeValue, `${percent}%`);
   }
 
   /**

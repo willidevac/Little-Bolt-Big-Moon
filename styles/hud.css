@@ -135,6 +135,35 @@
   animation: pickup-feedback 2.4s ease-out both;
 }
 
+.hud-jump-charge {
+  display: grid;
+  grid-column: 3;
+  grid-row: 3;
+  width: clamp(8.5rem, 17vw, 13rem);
+  gap: 0.3rem;
+  align-self: end;
+  justify-self: end;
+}
+
+.hud-jump-charge[hidden] {
+  display: none;
+}
+
+.hud-jump-charge__bar {
+  --jump-charge-percent: 0%;
+  height: clamp(0.55rem, 1.2vw, 0.85rem);
+  padding: 2px;
+  border: 1px solid #8aa0aa;
+  background: #02070d;
+}
+
+.hud-jump-charge__fill {
+  display: block;
+  width: var(--jump-charge-percent);
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-orange));
+}
+
 @keyframes pickup-feedback {
   0% {
     opacity: 0;

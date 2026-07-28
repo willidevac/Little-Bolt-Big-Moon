@@ -24,6 +24,8 @@ export class WorldEventReporter {
     this.before = Object.freeze({
       isOnGround: Boolean(character?.isOnGround),
       velocityY: character?.velocityY ?? 0,
+      jumpChargePercent: character?.jumpChargePercent ?? 0,
+      isJumpCharging: Boolean(character?.jumpController?.isCharging),
       bossActive: boss.isActive,
       bossPhase: boss.phase,
     });
@@ -66,6 +68,16 @@ export class WorldEventReporter {
     const landed = !this.before.isOnGround && character.isOnGround;
     if (jumped) this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP);
     if (landed) this.events.emit(GAMEPLAY_EVENTS.PLAYER_LAND);
+    this.#reportJumpCharge(character);
+  }
+
+  #reportJumpCharge(character) {
+    const percent = character.jumpChargePercent;
+    const isCharging = character.jumpController.isCharging;
+    const unchanged = percent === this.before.jumpChargePercent &&
+      isCharging === this.before.isJumpCharging;
+    if (unchanged) return;
+    this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE, { percent, isCharging });
   }
 
   #reportBoss(boss) {

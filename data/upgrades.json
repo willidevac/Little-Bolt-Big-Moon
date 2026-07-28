@@ -41,7 +41,7 @@
     {
       "id": "jumpControl",
       "name": "Feinere Düsen",
-      "description": "Sprünge können 0,025 Sekunden länger gerettet oder vorgemerkt werden.",
+      "description": "Die volle Sprungladung dauert 0,025 Sekunden länger und lässt sich feiner dosieren.",
       "value": 0.025,
       "maxLevel": 5,
       "iconFrame": 4
