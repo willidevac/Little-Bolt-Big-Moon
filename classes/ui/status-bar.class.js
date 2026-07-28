@@ -162,7 +162,7 @@ export class StatusBar {
   }
 
   /**
-   * Zeigt den Mondwächter erst nach dem kontrollierten Kampfstart.
+   * Zeigt den gerade aktiven Biome-Boss mit Namen und exakten Leben.
    * @param {Readonly<object>|null} boss
    */
   renderBoss(boss) {
@@ -174,6 +174,7 @@ export class StatusBar {
     this.setText(this.elements.bossHealth, `${boss.health} / ${boss.maximumHealth}`);
     this.setText(this.elements.bossPhase, boss.phase);
     this.elements.bossBar.style.setProperty("--boss-health-percent", `${percentage}%`);
+    this.elements.bossBar.setAttribute("aria-label", `Lebensenergie von ${boss.name}`);
     this.elements.bossBar.setAttribute("aria-valuenow", String(boss.health));
     this.elements.bossBar.setAttribute("aria-valuemax", String(boss.maximumHealth));
     this.elements.bossBar.setAttribute("aria-valuetext", `${boss.health} von ${boss.maximumHealth}`);

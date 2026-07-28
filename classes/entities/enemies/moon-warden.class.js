@@ -97,6 +97,8 @@ export class MoonWarden extends Enemy {
     this.#validateBossConfig(config);
     this.bossConfig = config;
     this.isBoss = true;
+    this.bossName = enemyData.bossName ?? "Mondwächter";
+    this.isFinalBoss = enemyData.isFinalBoss ?? true;
     this.isActive = false;
     this.phase = 1;
     this.#attackEvents = [];
@@ -151,21 +153,7 @@ export class MoonWarden extends Enemy {
     return events;
   }
 
-  /**
-   * Liefert die Bosswerte für die spätere Lebensanzeige.
-   * @returns {Readonly<object>}
-   */
-  getBossSnapshot() {
-    return Object.freeze({
-      id: this.id,
-      health: this.health,
-      maximumHealth: this.maximumHealth,
-      phase: this.phase,
-      isActive: this.isActive,
-      isDead: this.isDead,
-    });
-  }
-
+  /** Aktiviert den Mondwächter erst in erreichbarer Nähe. */
   #tryActivate(target) {
     if (this.isActive || !target) return;
     const targetCenter = this.#getCenter(target);
@@ -175,7 +163,7 @@ export class MoonWarden extends Enemy {
       targetCenter.y - bossCenter.y,
     );
     if (distance <= this.bossConfig.activationDistancePixels) {
-      this.isActive = true;
+      this.activateBoss();
     }
   }
 

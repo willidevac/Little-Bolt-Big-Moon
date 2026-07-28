@@ -65,6 +65,7 @@ export class ScrapCrawler extends Enemy {
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
+    this.activateBoss();
     if (!this.updateEnemyState(deltaTimeSeconds, "walk")) return;
     this.velocityX = this.direction * this.speedPixelsPerSecond;
     super.update(deltaTimeSeconds, world);

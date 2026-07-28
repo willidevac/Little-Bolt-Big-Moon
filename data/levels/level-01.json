@@ -2254,6 +2254,46 @@
         "scrapyard-crawler-01",
         "scrapyard-drone-01"
       ]
+    },
+    {
+      "id": "scrapyard-biome-boss",
+      "x": 0,
+      "y": 119764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": ["scrapyard-breaker-01"]
+    },
+    {
+      "id": "factory-biome-boss",
+      "x": 0,
+      "y": 89764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": ["pressworks-colossus-01"]
+    },
+    {
+      "id": "launch-tower-biome-boss",
+      "x": 0,
+      "y": 59764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": ["launch-sentinel-01"]
+    },
+    {
+      "id": "space-station-biome-boss",
+      "x": 0,
+      "y": 29764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": ["orbit-warden-01"]
+    },
+    {
+      "id": "moon-final-boss",
+      "x": 0,
+      "y": 492,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": ["moon-warden-01"]
     }
   ],
   "enemies": [
@@ -2283,6 +2323,60 @@
       "patrolMaxX": 896
     },
     {
+      "id": "scrapyard-breaker-01",
+      "type": "scrapCrawler",
+      "bossName": "Schrottbrecher",
+      "isBoss": true,
+      "isFinalBoss": false,
+      "x": 384,
+      "y": 120000,
+      "patrolMinX": 96,
+      "patrolMaxX": 608,
+      "startDirection": -1,
+      "combat": {
+        "speedPixelsPerSecond": 75,
+        "maximumHealth": 110,
+        "contactDamage": 18,
+        "attackCooldownSeconds": 1.2
+      }
+    },
+    {
+      "id": "pressworks-colossus-01",
+      "type": "scrapCrawler",
+      "bossName": "Presswerk-Koloss",
+      "isBoss": true,
+      "isFinalBoss": false,
+      "x": 352,
+      "y": 90000,
+      "patrolMinX": 64,
+      "patrolMaxX": 576,
+      "startDirection": -1,
+      "combat": {
+        "speedPixelsPerSecond": 90,
+        "maximumHealth": 150,
+        "contactDamage": 20,
+        "attackCooldownSeconds": 1
+      }
+    },
+    {
+      "id": "launch-sentinel-01",
+      "type": "droneGuard",
+      "bossName": "Startturm-Sentinel",
+      "isBoss": true,
+      "isFinalBoss": false,
+      "x": 960,
+      "y": 60000,
+      "patrolMinX": 704,
+      "patrolMaxX": 1216,
+      "startDirection": -1,
+      "combat": {
+        "speedPixelsPerSecond": 100,
+        "maximumHealth": 160,
+        "contactDamage": 20,
+        "attackCooldownSeconds": 1.2
+      }
+    },
+    {
       "id": "space-station-drone-01",
       "type": "droneGuard",
       "x": 384,
@@ -2292,9 +2386,30 @@
       "startDirection": -1
     },
     {
+      "id": "orbit-warden-01",
+      "type": "droneGuard",
+      "bossName": "Orbit-Hüter",
+      "isBoss": true,
+      "isFinalBoss": false,
+      "x": 640,
+      "y": 30000,
+      "patrolMinX": 352,
+      "patrolMaxX": 864,
+      "startDirection": -1,
+      "combat": {
+        "speedPixelsPerSecond": 112,
+        "maximumHealth": 200,
+        "contactDamage": 22,
+        "attackCooldownSeconds": 1
+      }
+    },
+    {
       "id": "moon-warden-01",
       "type": "moonWarden",
-      "x": 544,
+      "bossName": "Mondwächter",
+      "isBoss": true,
+      "isFinalBoss": true,
+      "x": 640,
       "y": 600,
       "patrolMinX": 384,
       "patrolMaxX": 896,
@@ -2309,17 +2424,22 @@
     { "id": "scrapyard-ammo-01", "type": "ammo", "amount": 4, "x": 480, "y": 149776 },
     { "id": "scrapyard-energy-01", "type": "energy", "amount": 20, "x": 864, "y": 149776 },
     { "id": "scrapyard-bolt-thrower-01", "type": "weapon", "weaponId": "boltThrower", "amount": 6, "x": 224, "y": 149776 },
+    { "id": "scrapyard-boss-ammo", "type": "ammo", "amount": 12, "x": 128, "y": 120000 },
     { "id": "factory-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 118900 },
     { "id": "factory-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 117500 },
     { "id": "factory-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 116100 },
+    { "id": "pressworks-boss-ammo", "type": "ammo", "amount": 12, "x": 96, "y": 90000 },
     { "id": "launch-tower-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 88900 },
     { "id": "launch-tower-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 87500 },
     { "id": "launch-tower-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 86100 },
+    { "id": "launch-tower-boss-ammo", "type": "ammo", "amount": 12, "x": 736, "y": 60000 },
     { "id": "space-station-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 58900 },
     { "id": "space-station-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 57500 },
     { "id": "space-station-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 56100 },
+    { "id": "space-station-boss-ammo", "type": "ammo", "amount": 12, "x": 384, "y": 30000 },
     { "id": "moon-gear-01", "type": "gear", "amount": 1, "x": 416, "y": 8900 },
     { "id": "moon-energy-01", "type": "energy", "amount": 20, "x": 192, "y": 7500 },
-    { "id": "moon-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 6100 }
+    { "id": "moon-ammo-01", "type": "ammo", "amount": 4, "x": 416, "y": 6100 },
+    { "id": "moon-boss-ammo", "type": "ammo", "amount": 12, "x": 416, "y": 728 }
   ]
 }

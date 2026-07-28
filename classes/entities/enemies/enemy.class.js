@@ -107,6 +107,33 @@ export class Enemy extends MovableObject {
   }
 
   /**
+   * Aktiviert einen Zwischenboss genau einmal nach seinem Zonenspawn.
+   * @returns {boolean}
+   */
+  activateBoss() {
+    if (!this.isBoss || this.isActive) return false;
+    this.isActive = true;
+    return true;
+  }
+
+  /**
+   * Liefert die gemeinsamen Werte aller Zwischen- und Endbosse.
+   * @returns {Readonly<object>}
+   */
+  getBossSnapshot() {
+    return Object.freeze({
+      id: this.id,
+      name: this.bossName,
+      health: this.health,
+      maximumHealth: this.maximumHealth,
+      phase: this.phase,
+      isActive: this.isActive,
+      isDead: this.isDead,
+      isFinalBoss: this.isFinalBoss,
+    });
+  }
+
+  /**
    * Startet einen vorhandenen Angriffsclip mit gemeinsamem Cooldown.
    * @param {string} animationState
    * @returns {boolean}
@@ -184,8 +211,17 @@ export class Enemy extends MovableObject {
     this.direction = data.startDirection ?? 1;
     this.facingDirection = this.direction;
     this.team = "enemy";
+    this.#setBossData(data);
     this.isDead = false;
     this.animationState = null;
+  }
+
+  #setBossData(data) {
+    this.isBoss = Boolean(data.isBoss);
+    this.bossName = data.bossName ?? "";
+    this.isFinalBoss = Boolean(data.isFinalBoss);
+    this.isActive = false;
+    this.phase = 1;
   }
 
   #setCombatData(config, animations, defaultAttackState) {
@@ -327,7 +363,16 @@ export class Enemy extends MovableObject {
       data?.x + this.width <= data?.patrolMaxX;
     const direction = data?.startDirection ?? 1;
     const validDirection = Math.abs(direction) === 1;
-    if (hasText && hasNumbers && hasPatrol && fitsPatrol && validDirection) return;
+    const validBoss = this.#hasValidBossProfile(data);
+    if (hasText && hasNumbers && hasPatrol && fitsPatrol &&
+      validDirection && validBoss) return;
     throw new TypeError("Die Gegnerdaten sind ungültig.");
+  }
+
+  #hasValidBossProfile(data) {
+    if (!data?.isBoss) return !data?.isFinalBoss && !data?.bossName;
+    return typeof data.bossName === "string" &&
+      data.bossName.length > 0 &&
+      typeof data.isFinalBoss === "boolean";
   }
 }

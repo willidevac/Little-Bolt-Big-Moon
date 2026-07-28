@@ -1,21 +1,23 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
-const BOSS_NAME = "Mondwächter";
 const EMPTY_BOSS_SNAPSHOT = Object.freeze({
-  name: BOSS_NAME,
+  name: "Zwischenboss",
   health: 0,
   maximumHealth: 1,
   phase: 1,
   isActive: false,
   isDead: false,
+  isFinalBoss: false,
   isVisible: false,
 });
 
 /**
- * Beobachtet genau einen Endboss und meldet den Sieg nach dessen Todesanimation.
+ * Beobachtet alle Biome-Bosse und meldet nur nach dem Endboss den Spielsieg.
  */
 export class BossFightManager {
-  #boss;
+  #bosses;
+  #finalBoss;
+  #activeBoss;
   #isVictoryQueued;
   #wasVictoryDelivered;
 
@@ -24,32 +26,31 @@ export class BossFightManager {
    */
   constructor(enemies = []) {
     this.#validateEnemies(enemies);
-    this.#boss = enemies.find((enemy) => enemy.isBoss) ?? null;
+    this.#bosses = enemies.filter((enemy) => enemy.isBoss);
+    this.#finalBoss = this.#bosses.find((boss) => boss.isFinalBoss) ?? null;
+    this.#activeBoss = null;
     this.#isVictoryQueued = false;
     this.#wasVictoryDelivered = false;
   }
 
   /**
-   * Erkennt den vollständig entfernten Boss höchstens einmal.
+   * Wählt den gerade nahen Boss und erkennt den entfernten Endboss.
    * @param {import("../core/world.class.js").World} world
    */
   update(world) {
-    if (!this.#boss || this.#isVictoryQueued || this.#wasVictoryDelivered) return;
-    const snapshot = this.#boss.getBossSnapshot();
-    if (!snapshot.isDead) return;
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
-    this.#isVictoryQueued = !enemies.includes(this.#boss);
+    this.#activeBoss = this.#findNearestActiveBoss(enemies, world.character);
+    this.#queueFinalVictory(enemies);
   }
 
   /**
-   * Liefert alle Werte für die Bossanzeige.
+   * Liefert alle Werte für die gemeinsame Bossanzeige.
    * @returns {Readonly<object>}
    */
   getSnapshot() {
-    if (!this.#boss) return EMPTY_BOSS_SNAPSHOT;
-    const snapshot = this.#boss.getBossSnapshot();
+    if (!this.#activeBoss) return EMPTY_BOSS_SNAPSHOT;
+    const snapshot = this.#activeBoss.getBossSnapshot();
     return Object.freeze({
-      name: BOSS_NAME,
       ...snapshot,
       isVisible: snapshot.isActive && !this.#wasVictoryDelivered,
     });
@@ -66,6 +67,34 @@ export class BossFightManager {
     return true;
   }
 
+  #findNearestActiveBoss(enemies, target) {
+    const activeBosses = this.#bosses.filter((boss) => {
+      return boss.isActive && enemies.includes(boss);
+    });
+    return activeBosses.reduce((nearest, boss) => {
+      if (!nearest) return boss;
+      return this.#getDistanceSquared(boss, target) <
+        this.#getDistanceSquared(nearest, target) ? boss : nearest;
+    }, null);
+  }
+
+  #getDistanceSquared(entity, target) {
+    if (!target) return 0;
+    const entityX = entity.x + entity.width / 2;
+    const entityY = entity.y + entity.height / 2;
+    const targetX = target.x + target.width / 2;
+    const targetY = target.y + target.height / 2;
+    return (entityX - targetX) ** 2 + (entityY - targetY) ** 2;
+  }
+
+  #queueFinalVictory(enemies) {
+    if (!this.#finalBoss || this.#isVictoryQueued || this.#wasVictoryDelivered) {
+      return;
+    }
+    const wasRemoved = !enemies.includes(this.#finalBoss);
+    if (this.#finalBoss.isDead && wasRemoved) this.#isVictoryQueued = true;
+  }
+
   #validateEnemies(enemies) {
     if (!Array.isArray(enemies)) {
       throw new TypeError("Die Bossgegner müssen als Liste vorliegen.");
@@ -74,7 +103,10 @@ export class BossFightManager {
     const haveSnapshots = bosses.every((boss) => {
       return typeof boss.getBossSnapshot === "function";
     });
-    if (bosses.length <= 1 && haveSnapshots) return;
-    throw new RangeError("Ein Level darf höchstens einen gültigen Endboss besitzen.");
+    const uniqueIds = new Set(bosses.map((boss) => boss.id));
+    const finalCount = bosses.filter((boss) => boss.isFinalBoss).length;
+    if (haveSnapshots && uniqueIds.size === bosses.length &&
+      (bosses.length === 0 || finalCount === 1)) return;
+    throw new RangeError("Bossprofile oder Endboss-Zuordnung sind ungültig.");
   }
 }

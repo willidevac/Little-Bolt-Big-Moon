@@ -76,6 +76,7 @@ export class DroneGuard extends Enemy {
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
+    this.activateBoss();
     if (!this.updateEnemyState(deltaTimeSeconds, "move")) return;
     this.velocityX = this.direction * this.speedPixelsPerSecond;
     super.update(deltaTimeSeconds, world);

@@ -67,11 +67,21 @@ function createCombatZone(zoneData) {
 
 function createEnemy(enemyData, enemyConfig) {
   const EnemyClass = ENEMY_CLASSES[enemyData.type];
-  const config = enemyConfig?.[enemyData.type];
+  const config = createEnemyConfig(enemyData, enemyConfig);
   if (!EnemyClass || !config) {
     throw new RangeError(`Unbekannter Gegnertyp: ${enemyData.type}`);
   }
   return new EnemyClass(enemyData, config);
+}
+
+function createEnemyConfig(enemyData, enemyConfig) {
+  const baseConfig = enemyConfig?.[enemyData.type];
+  if (!baseConfig) return null;
+  const overrides = enemyData.combat ?? {};
+  if (!overrides || typeof overrides !== "object" || Array.isArray(overrides)) {
+    throw new TypeError(`Ungültige Kampfwerte: ${enemyData.id}`);
+  }
+  return Object.freeze({ ...baseConfig, ...overrides });
 }
 
 function createCollectable(collectableData) {

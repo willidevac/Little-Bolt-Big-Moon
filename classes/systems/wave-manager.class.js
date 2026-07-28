@@ -43,16 +43,12 @@ export class WaveManager {
   }
 
   /**
-   * Aktualisiert genau eine Begegnung oder löst die nächste Gegnergruppe aus.
+   * Schließt aktive Begegnungen und löst die nächste erreichte Zone aus.
    * @param {import("../core/world.class.js").World} world
    */
   update(world) {
     if (!this.#isInitialized) return;
-    const activeZone = this.#getActiveZone();
-    if (activeZone) {
-      if (this.#hasEnded(activeZone, world)) this.#complete(activeZone, world);
-      return;
-    }
+    this.#completeFinishedZones(world);
     const waitingZone = this.#zones.find((zone) => zone.canTrigger(world.character));
     if (waitingZone) this.#activate(waitingZone, world);
   }
@@ -101,9 +97,12 @@ export class WaveManager {
     world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, { id: zone.id });
   }
 
-  #getActiveZone() {
-    return this.#zones.find((zone) => {
-      return zone.state === COMBAT_ZONE_STATES.ACTIVE;
+  #completeFinishedZones(world) {
+    this.#zones.filter((zone) => {
+      return zone.state === COMBAT_ZONE_STATES.ACTIVE &&
+        this.#hasEnded(zone, world);
+    }).forEach((zone) => {
+      this.#complete(zone, world);
     });
   }
 
