@@ -91,6 +91,17 @@ export class GameAudioController {
     return this.#handleDetailedEvent(event);
   }
 
+  /**
+   * Übernimmt die globale Einstellung und setzt Musik nur im Spiel fort.
+   * @param {boolean} isMuted
+   */
+  setMuted(isMuted) {
+    this.audio.setMuted(isMuted);
+    if (!isMuted && this.game.state === GAME_STATES.PLAYING) {
+      this.#playGameplayMusic();
+    }
+  }
+
   #handleDetailedEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.PLAYER_ATTACK) {
       return this.#playMappedEffect(ATTACK_EFFECTS, event.detail.weaponId);

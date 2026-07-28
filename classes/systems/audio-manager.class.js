@@ -107,8 +107,9 @@ export class AudioManager {
   setMuted(isMuted) {
     this.isMuted = Boolean(isMuted);
     this.#getAllAudio().forEach((audio) => { audio.muted = this.isMuted; });
-    if (this.isMuted) this.pauseMusic();
-    else this.resumeMusic();
+    if (!this.isMuted) return;
+    this.pauseMusic();
+    this.#stopEffects();
   }
 
   /** Stoppt alle aktiven Stimmen und leert den Musikzustand. */
@@ -182,6 +183,15 @@ export class AudioManager {
   #getAllAudio() {
     const effects = [...this.#effectPools.values()].flatMap((pool) => pool.voices);
     return [...this.#musicTracks.values(), ...effects];
+  }
+
+  #stopEffects() {
+    this.#effectPools.forEach((pool) => {
+      pool.voices.forEach((audio) => {
+        audio.pause();
+        this.#rewind(audio);
+      });
+    });
   }
 
   #validateConfig(config) {

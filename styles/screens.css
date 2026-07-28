@@ -129,6 +129,7 @@
 
 .sound-button {
   position: absolute;
+  z-index: 25;
   top: clamp(0.75rem, 2vw, 1.5rem);
   right: clamp(0.75rem, 2vw, 1.5rem);
   min-height: 2.5rem;

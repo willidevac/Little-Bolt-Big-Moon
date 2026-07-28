@@ -76,6 +76,7 @@
   grid-row: 1;
   gap: 0.5rem;
   justify-self: end;
+  margin-right: clamp(4.8rem, 8vw, 6.4rem);
 }
 
 .hud-score {
@@ -213,6 +214,10 @@
   .hud-resources,
   .hud-score-group {
     gap: 0.25rem;
+  }
+
+  .hud-score-group {
+    margin-right: 0;
   }
 
   .hud-boss {

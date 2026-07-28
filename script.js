@@ -49,9 +49,9 @@ export function getGame() {
 }
 
 const game = initializeGame();
-initializeAudio(game);
+const audio = initializeAudio(game);
 initializeScreens(game);
 initializeHud(game);
-initializeStorage(game);
+initializeStorage(game, audio);
 initializeTouchControls(game);
 globalThis.littleBoltGame = game;

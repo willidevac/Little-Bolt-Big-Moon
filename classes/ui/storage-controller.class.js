@@ -15,18 +15,25 @@ export class StorageController {
   /**
    * @param {import("../core/game.class.js").Game} game
    * @param {import("../systems/game-storage.class.js").GameStorage} storage
-   * @param {HTMLElement} root
-   */
-  constructor(game, storage, root) {
+   * @param {import("../systems/game-audio-controller.class.js").GameAudioController} audio
+  * @param {HTMLElement} root
+  */
+  constructor(game, storage, audio, root) {
+    this.#validateAudio(audio);
     this.game = game;
     this.storage = storage;
+    this.audio = audio;
     this.root = root;
+    this.#assignElements();
+    this.unsubscribe = null;
+    this.boundMuteClick = this.handleMuteClick.bind(this);
+  }
+
+  #assignElements() {
     this.muteButton = this.#getRequiredElement(SELECTORS.mute);
     this.scoreElement = this.#getRequiredElement(SELECTORS.score);
     this.heightElement = this.#getRequiredElement(SELECTORS.height);
     this.timeElement = this.#getRequiredElement(SELECTORS.time);
-    this.unsubscribe = null;
-    this.boundMuteClick = this.handleMuteClick.bind(this);
   }
 
   /**
@@ -39,7 +46,9 @@ export class StorageController {
     this.unsubscribe = this.game.onStateChange((state) => {
       this.handleStateChange(state);
     });
-    this.render(this.storage.getSnapshot());
+    const records = this.storage.getSnapshot();
+    this.#applyMute(records);
+    this.render(records);
     return this;
   }
 
@@ -57,7 +66,9 @@ export class StorageController {
    */
   handleMuteClick() {
     const current = this.storage.getSnapshot();
-    this.render(this.storage.setMuted(!current.isMuted));
+    const records = this.storage.setMuted(!current.isMuted);
+    this.#applyMute(records);
+    this.render(records);
   }
 
   /**
@@ -91,5 +102,14 @@ export class StorageController {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
     throw new Error(`Speicheranzeige nicht gefunden: ${selector}`);
+  }
+
+  #applyMute(records) {
+    this.audio.setMuted(records.isMuted);
+  }
+
+  #validateAudio(audio) {
+    if (typeof audio?.setMuted === "function") return;
+    throw new TypeError("Der Speichersteuerung fehlt die Audiosteuerung.");
   }
 }

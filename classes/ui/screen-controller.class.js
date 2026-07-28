@@ -15,6 +15,7 @@ const SELECTORS = Object.freeze({
   dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
   resume: '[data-ui-action="resume"]',
+  mute: '[data-ui-action="mute"]',
   dialogFocus: "[data-dialog-focus]",
 });
 
@@ -74,6 +75,7 @@ export class ScreenController {
     this.upgradeOptions = getRequiredElement(this.root, SELECTORS.upgradeOptions);
     this.startButton = getRequiredElement(this.root, SELECTORS.start);
     this.resumeButton = getRequiredElement(this.root, SELECTORS.resume);
+    this.muteButton = getRequiredElement(this.root, SELECTORS.mute);
     this.#assignEndElements();
   }
 
@@ -277,6 +279,7 @@ export class ScreenController {
     this.pauseScreen.inert = isInert;
     this.upgradeScreen.inert = isInert;
     this.endScreen.inert = isInert;
+    this.muteButton.inert = isInert;
   }
 
   #renderEndScreen(state, content) {
