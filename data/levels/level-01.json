@@ -667,7 +667,129 @@
         "movingSpeed": 55,
         "fallingEvery": 11,
         "fallWarningSeconds": 0.85,
-        "fallSpeed": 390
+        "fallSpeed": 390,
+        "rooms": [
+          {
+            "id": "schmelzwerk-einlass",
+            "steps": [
+              { "x": 224, "gapY": 148, "type": "path" },
+              { "x": 448, "gapY": 156, "type": "narrow" },
+              { "x": 672, "gapY": 164, "type": "path" },
+              { "x": 896, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 180, "type": "path" }
+            ]
+          },
+          {
+            "id": "glutpendel",
+            "steps": [
+              { "x": 448, "gapY": 156, "type": "moving" },
+              { "x": 224, "gapY": 164, "type": "path" },
+              { "x": 480, "gapY": 172, "type": "falling" },
+              { "x": 736, "gapY": 180, "type": "narrow" },
+              { "x": 960, "gapY": 148, "type": "path" }
+            ]
+          },
+          {
+            "id": "schlackezickzack",
+            "steps": [
+              { "x": 704, "gapY": 164, "type": "moving" },
+              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 192, "gapY": 180, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 672, "gapY": 156, "type": "moving" }
+            ]
+          },
+          {
+            "id": "ofenwende",
+            "steps": [
+              { "x": 896, "gapY": 172, "type": "path" },
+              { "x": 640, "gapY": 180, "type": "falling" },
+              { "x": 384, "gapY": 148, "type": "moving" },
+              { "x": 160, "gapY": 156, "type": "narrow" },
+              { "x": 416, "gapY": 164, "type": "path" }
+            ]
+          },
+          {
+            "id": "hitzebogen",
+            "steps": [
+              { "x": 672, "gapY": 180, "type": "moving" },
+              { "x": 928, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 156, "type": "falling" },
+              { "x": 448, "gapY": 164, "type": "moving" },
+              { "x": 192, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "giessrinne",
+            "steps": [
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 640, "gapY": 164, "type": "moving" },
+              { "x": 864, "gapY": 180, "type": "narrow" },
+              { "x": 608, "gapY": 156, "type": "falling" },
+              { "x": 352, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "kuehlbruch",
+            "steps": [
+              { "x": 128, "gapY": 156, "type": "moving" },
+              { "x": 352, "gapY": 172, "type": "narrow" },
+              { "x": 576, "gapY": 148, "type": "falling" },
+              { "x": 832, "gapY": 180, "type": "path" },
+              { "x": 608, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "ofenrachen",
+            "steps": [
+              { "x": 864, "gapY": 164, "type": "falling" },
+              { "x": 640, "gapY": 180, "type": "moving" },
+              { "x": 384, "gapY": 156, "type": "narrow" },
+              { "x": 160, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "path" }
+            ]
+          },
+          {
+            "id": "schlackekreuz",
+            "steps": [
+              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 928, "gapY": 156, "type": "falling" },
+              { "x": 704, "gapY": 180, "type": "narrow" },
+              { "x": 448, "gapY": 148, "type": "moving" },
+              { "x": 192, "gapY": 164, "type": "path" }
+            ]
+          },
+          {
+            "id": "gluttakt",
+            "steps": [
+              { "x": 416, "gapY": 180, "type": "falling" },
+              { "x": 640, "gapY": 148, "type": "moving" },
+              { "x": 864, "gapY": 164, "type": "narrow" },
+              { "x": 608, "gapY": 172, "type": "falling" },
+              { "x": 352, "gapY": 156, "type": "moving" }
+            ]
+          },
+          {
+            "id": "hochofenkranz",
+            "steps": [
+              { "x": 128, "gapY": 148, "type": "narrow" },
+              { "x": 352, "gapY": 180, "type": "falling" },
+              { "x": 576, "gapY": 172, "type": "moving" },
+              { "x": 832, "gapY": 164, "type": "narrow" },
+              { "x": 608, "gapY": 156, "type": "falling" }
+            ]
+          },
+          {
+            "id": "tor-zum-energiekern",
+            "steps": [
+              { "x": 864, "gapY": 156, "type": "moving" },
+              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 384, "gapY": 148, "type": "moving" },
+              { "x": 160, "gapY": 180, "type": "narrow" },
+              { "x": 416, "gapY": 164, "type": "falling" }
+            ]
+          }
+        ]
       }
     },
     {
