@@ -1096,7 +1096,129 @@
         "movingSpeed": 80,
         "fallingEvery": 7,
         "fallWarningSeconds": 0.7,
-        "fallSpeed": 480
+        "fallSpeed": 480,
+        "rooms": [
+          {
+            "id": "aussenluftschleuse",
+            "steps": [
+              { "x": 704, "gapY": 152, "type": "path" },
+              { "x": 448, "gapY": 160, "type": "moving" },
+              { "x": 192, "gapY": 164, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" },
+              { "x": 672, "gapY": 176, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "linke-verstrebung",
+            "steps": [
+              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 164, "type": "moving" },
+              { "x": 448, "gapY": 168, "type": "narrow" },
+              { "x": 224, "gapY": 176, "type": "falling" },
+              { "x": 480, "gapY": 152, "type": "moving" }
+            ]
+          },
+          {
+            "id": "antennenrippen",
+            "steps": [
+              { "x": 736, "gapY": 164, "type": "moving" },
+              { "x": 960, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "moving" },
+              { "x": 448, "gapY": 152, "type": "narrow" },
+              { "x": 192, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "fensterkreuz",
+            "steps": [
+              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 672, "gapY": 176, "type": "moving" },
+              { "x": 928, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 448, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "offene-servicearme",
+            "steps": [
+              { "x": 192, "gapY": 176, "type": "moving" },
+              { "x": 416, "gapY": 152, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
+              { "x": 928, "gapY": 164, "type": "narrow" },
+              { "x": 704, "gapY": 168, "type": "falling" }
+            ]
+          },
+          {
+            "id": "solargelenk",
+            "steps": [
+              { "x": 448, "gapY": 152, "type": "path" },
+              { "x": 192, "gapY": 164, "type": "moving" },
+              { "x": 416, "gapY": 176, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "narrow" },
+              { "x": 928, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "kranschienen",
+            "steps": [
+              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 448, "gapY": 168, "type": "moving" },
+              { "x": 192, "gapY": 152, "type": "falling" },
+              { "x": 416, "gapY": 176, "type": "narrow" },
+              { "x": 672, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "aussenluecke",
+            "steps": [
+              { "x": 928, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 152, "type": "falling" },
+              { "x": 448, "gapY": 164, "type": "moving" },
+              { "x": 224, "gapY": 176, "type": "narrow" },
+              { "x": 480, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "signalhalter",
+            "steps": [
+              { "x": 736, "gapY": 176, "type": "falling" },
+              { "x": 960, "gapY": 160, "type": "moving" },
+              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 448, "gapY": 152, "type": "falling" },
+              { "x": 192, "gapY": 164, "type": "moving" }
+            ]
+          },
+          {
+            "id": "vereiste-platten",
+            "steps": [
+              { "x": 416, "gapY": 152, "type": "moving" },
+              { "x": 672, "gapY": 176, "type": "falling" },
+              { "x": 928, "gapY": 164, "type": "moving" },
+              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 448, "gapY": 160, "type": "falling" }
+            ]
+          },
+          {
+            "id": "windseite",
+            "steps": [
+              { "x": 192, "gapY": 164, "type": "falling" },
+              { "x": 416, "gapY": 152, "type": "moving" },
+              { "x": 672, "gapY": 176, "type": "narrow" },
+              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "moving" }
+            ]
+          },
+          {
+            "id": "aufstieg-zur-startrampe",
+            "steps": [
+              { "x": 480, "gapY": 168, "type": "falling" },
+              { "x": 224, "gapY": 164, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 704, "gapY": 176, "type": "moving" },
+              { "x": 960, "gapY": 152, "type": "path" }
+            ]
+          }
+        ]
       }
     },
     {
