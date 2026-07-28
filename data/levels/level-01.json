@@ -500,9 +500,153 @@
         "catchEvery": 8,
         "narrowEvery": 5,
         "movingEvery": 0,
+        "movingDistance": 80,
+        "movingSpeed": 55,
         "fallingEvery": 11,
         "fallWarningSeconds": 0.9,
-        "fallSpeed": 360
+        "fallSpeed": 360,
+        "rooms": [
+          {
+            "id": "fabrikschleuse",
+            "steps": [
+              { "x": 256, "gapY": 96, "type": "path" },
+              { "x": 480, "gapY": 112, "type": "path" },
+              { "x": 704, "gapY": 120, "type": "narrow" },
+              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 704, "gapY": 144, "type": "path" }
+            ]
+          },
+          {
+            "id": "zahnradlager",
+            "steps": [
+              { "x": 480, "gapY": 112, "type": "path" },
+              { "x": 256, "gapY": 128, "type": "falling" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 124, "type": "path" },
+              { "x": 640, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "krabblerhalle",
+            "steps": [
+              { "x": 640, "gapY": 124, "type": "path" },
+              { "x": 416, "gapY": 128, "type": "moving" },
+              { "x": 320, "gapY": 128, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 800, "gapY": 180, "type": "path" }
+            ]
+          },
+          {
+            "id": "energiegang",
+            "steps": [
+              { "x": 800, "gapY": 128, "type": "path" },
+              { "x": 576, "gapY": 128, "type": "falling" },
+              { "x": 320, "gapY": 136, "type": "moving" },
+              { "x": 160, "gapY": 136, "type": "path" },
+              { "x": 416, "gapY": 176, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "foerderkreuz",
+            "steps": [
+              { "x": 672, "gapY": 124, "type": "moving" },
+              { "x": 928, "gapY": 136, "type": "path" },
+              { "x": 704, "gapY": 140, "type": "falling" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 192, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "munitionsband",
+            "steps": [
+              { "x": 416, "gapY": 128, "type": "moving" },
+              { "x": 640, "gapY": 128, "type": "falling" },
+              { "x": 416, "gapY": 132, "type": "narrow" },
+              { "x": 384, "gapY": 136, "type": "path" },
+              { "x": 160, "gapY": 176, "type": "path" }
+            ]
+          },
+          {
+            "id": "sicherheitssteg",
+            "steps": [
+              { "x": 384, "gapY": 120, "type": "path" },
+              { "x": 608, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 140, "type": "path" },
+              { "x": 576, "gapY": 144, "type": "narrow" },
+              { "x": 384, "gapY": 160, "type": "catch" }
+            ]
+          },
+          {
+            "id": "getriebemix",
+            "steps": [
+              { "x": 832, "gapY": 128, "type": "moving" },
+              { "x": 608, "gapY": 136, "type": "falling" },
+              { "x": 352, "gapY": 144, "type": "moving" },
+              { "x": 128, "gapY": 152, "type": "narrow" },
+              { "x": 384, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "heisser-wechsel",
+            "steps": [
+              { "x": 640, "gapY": 124, "type": "falling" },
+              { "x": 896, "gapY": 136, "type": "moving" },
+              { "x": 672, "gapY": 140, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 160, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "taktkammer",
+            "steps": [
+              { "x": 384, "gapY": 128, "type": "moving" },
+              { "x": 640, "gapY": 136, "type": "falling" },
+              { "x": 864, "gapY": 144, "type": "moving" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 172, "type": "narrow" }
+            ]
+          },
+          {
+            "id": "montagezangen",
+            "steps": [
+              { "x": 128, "gapY": 124, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "falling" },
+              { "x": 576, "gapY": 140, "type": "moving" },
+              { "x": 832, "gapY": 148, "type": "narrow" },
+              { "x": 608, "gapY": 152, "type": "path" }
+            ]
+          },
+          {
+            "id": "gegenfoerderung",
+            "steps": [
+              { "x": 864, "gapY": 128, "type": "moving" },
+              { "x": 640, "gapY": 136, "type": "falling" },
+              { "x": 384, "gapY": 144, "type": "moving" },
+              { "x": 160, "gapY": 152, "type": "narrow" },
+              { "x": 416, "gapY": 172, "type": "path" }
+            ]
+          },
+          {
+            "id": "montagespitze",
+            "steps": [
+              { "x": 672, "gapY": 128, "type": "falling" },
+              { "x": 928, "gapY": 136, "type": "moving" },
+              { "x": 704, "gapY": 144, "type": "narrow" },
+              { "x": 448, "gapY": 152, "type": "falling" },
+              { "x": 192, "gapY": 160, "type": "path" }
+            ]
+          },
+          {
+            "id": "tor-zum-schmelzwerk",
+            "steps": [
+              { "x": 416, "gapY": 136, "type": "moving" },
+              { "x": 640, "gapY": 144, "type": "falling" },
+              { "x": 864, "gapY": 148, "type": "moving" },
+              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 168, "type": "falling" }
+            ]
+          }
+        ]
       }
     },
     {
