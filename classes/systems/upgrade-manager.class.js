@@ -5,6 +5,7 @@ const REQUIRED_UPGRADE_IDS = Object.freeze([
   "knockbackResistance",
   "jumpControl",
 ]);
+const REQUIRED_RARITY_IDS = Object.freeze(["common", "rare", "epic"]);
 
 /**
  * Wählt Laufverbesserungen aus und wendet genau eine gültige Auswahl an.
@@ -13,8 +14,9 @@ export class UpgradeManager {
   #definitions;
   #effects;
   #levels;
-  #selection;
   #random;
+  #rarities;
+  #selection;
 
   /**
    * @param {Readonly<object>} data
@@ -25,14 +27,19 @@ export class UpgradeManager {
     this.#validateDependencies(data, effects, random);
     this.selectionSize = data.selectionSize;
     this.iconSheet = Object.freeze({ ...data.iconSheet });
-    this.#definitions = new Map(
-      data.upgrades.map((upgrade) => [upgrade.id, Object.freeze({ ...upgrade })]),
-    );
+    this.#rarities = this.#createMap(data.rarities);
+    this.#definitions = this.#createMap(data.upgrades);
     this.#effects = Object.freeze({ ...effects });
     this.#random = random;
     this.#levels = new Map();
     this.#selection = Object.freeze([]);
     this.reset();
+  }
+
+  #createMap(entries) {
+    return new Map(
+      entries.map((entry) => [entry.id, Object.freeze({ ...entry })]),
+    );
   }
 
   /**
@@ -45,8 +52,7 @@ export class UpgradeManager {
       return this.#levels.get(upgrade.id) < upgrade.maxLevel;
     });
     this.#selection = Object.freeze(
-      this.#shuffle(available)
-        .slice(0, this.selectionSize)
+      this.#drawWeighted(available)
         .map((upgrade) => this.#createSnapshot(upgrade)),
     );
     return this.#selection;
@@ -90,6 +96,8 @@ export class UpgradeManager {
       id: upgrade.id,
       name: upgrade.name,
       description: upgrade.description,
+      value: upgrade.value,
+      rarity: upgrade.rarity,
       iconFrame: upgrade.iconFrame,
       currentLevel: this.#levels.get(upgrade.id),
       nextLevel: this.#levels.get(upgrade.id) + 1,
@@ -98,14 +106,29 @@ export class UpgradeManager {
     });
   }
 
-  #shuffle(upgrades) {
-    const shuffled = [...upgrades];
-    for (let index = shuffled.length - 1; index > 0; index -= 1) {
-      const targetIndex = Math.floor(this.#getRandomValue() * (index + 1));
-      [shuffled[index], shuffled[targetIndex]] =
-        [shuffled[targetIndex], shuffled[index]];
+  #drawWeighted(upgrades) {
+    const pool = [...upgrades];
+    const selection = [];
+    while (pool.length > 0 && selection.length < this.selectionSize) {
+      const index = this.#getWeightedIndex(pool);
+      selection.push(pool.splice(index, 1)[0]);
     }
-    return shuffled;
+    return selection;
+  }
+
+  #getWeightedIndex(upgrades) {
+    const weights = upgrades.map((upgrade) => this.#getWeight(upgrade));
+    const target = this.#getRandomValue() * weights.reduce((sum, value) => sum + value, 0);
+    let upperBoundary = 0;
+    for (let index = 0; index < weights.length; index += 1) {
+      upperBoundary += weights[index];
+      if (target < upperBoundary) return index;
+    }
+    return weights.length - 1;
+  }
+
+  #getWeight(upgrade) {
+    return this.#rarities.get(upgrade.rarity).weight;
   }
 
   #validateDependencies(data, effects, random) {
@@ -118,13 +141,19 @@ export class UpgradeManager {
     const ids = Array.isArray(upgrades) ? upgrades.map((upgrade) => upgrade.id) : [];
     const hasRequiredIds = REQUIRED_UPGRADE_IDS.every((id) => ids.includes(id));
     const hasUniqueIds = new Set(ids).size === ids.length;
-    return Number.isInteger(data?.selectionSize) &&
-      data.selectionSize > 0 &&
+    return this.#hasValidSelectionSize(data?.selectionSize, ids.length) &&
       hasRequiredIds &&
       ids.length === REQUIRED_UPGRADE_IDS.length &&
       hasUniqueIds &&
+      this.#hasValidRarities(data.rarities) &&
       this.#hasValidDefinitions(upgrades) &&
       this.#hasValidIconSheet(data.iconSheet);
+  }
+
+  #hasValidSelectionSize(selectionSize, upgradeCount) {
+    return Number.isInteger(selectionSize) &&
+      selectionSize > 0 &&
+      selectionSize <= upgradeCount;
   }
 
   #hasValidEffects(effects, random) {
@@ -149,8 +178,17 @@ export class UpgradeManager {
         Number.isInteger(upgrade.maxLevel) && upgrade.maxLevel > 0 &&
         Number.isInteger(upgrade.iconFrame) && upgrade.iconFrame >= 0 &&
         upgrade.iconFrame < REQUIRED_UPGRADE_IDS.length;
-      return hasText && hasNumbers;
+      return hasText && hasNumbers && REQUIRED_RARITY_IDS.includes(upgrade.rarity);
     });
+  }
+
+  #hasValidRarities(rarities) {
+    if (!Array.isArray(rarities)) return false;
+    const ids = rarities.map((rarity) => rarity.id);
+    const hasRequiredIds = REQUIRED_RARITY_IDS.every((id) => ids.includes(id));
+    return hasRequiredIds && ids.length === REQUIRED_RARITY_IDS.length &&
+      new Set(ids).size === ids.length &&
+      rarities.every((rarity) => Number.isFinite(rarity.weight) && rarity.weight > 0);
   }
 
   #hasValidIconSheet(iconSheet) {

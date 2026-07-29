@@ -1,6 +1,7 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
+import { UpgradeOptionView } from "./upgrade-option-view.class.js";
 
 const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
@@ -64,6 +65,7 @@ export class ScreenController {
   }
 
   #assignRequiredElements() {
+    this.upgradeOptionView = new UpgradeOptionView(this.root.ownerDocument);
     this.homeScreen = getRequiredElement(this.root, SELECTORS.home);
     this.pauseScreen = getRequiredElement(this.root, SELECTORS.paused);
     this.upgradeScreen = getRequiredElement(this.root, SELECTORS.upgrading);
@@ -308,67 +310,9 @@ export class ScreenController {
   #renderUpgradeOptions() {
     this.upgradeOptions.replaceChildren(
       ...this.game.getUpgradeOptions().map((upgrade) => {
-        return this.#createUpgradeButton(upgrade);
+        return this.upgradeOptionView.create(upgrade);
       }),
     );
-  }
-
-  /**
-   * Erstellt eine vollständig beschriftete Verbesserungsschaltfläche.
-   * @param {Readonly<object>} upgrade
-   * @returns {HTMLButtonElement}
-   */
-  #createUpgradeButton(upgrade) {
-    const button = this.root.ownerDocument.createElement("button");
-    button.type = "button";
-    button.className = "upgrade-card";
-    button.dataset.uiAction = "upgrade";
-    button.dataset.upgradeId = upgrade.id;
-    button.setAttribute("aria-label", this.#getUpgradeLabel(upgrade));
-    this.#appendUpgradeContent(button, upgrade);
-    return button;
-  }
-
-  #appendUpgradeContent(button, upgrade) {
-    const name = translate(`upgrade.${upgrade.id}.name`);
-    const description = translate(`upgrade.${upgrade.id}.description`);
-    button.append(
-      this.#createUpgradeIcon(upgrade),
-      this.#createTextElement("strong", "upgrade-card__name", name),
-      this.#createTextElement("span", "upgrade-card__level", this.#getLevelText(upgrade)),
-      this.#createTextElement("span", "upgrade-card__description", description),
-    );
-  }
-
-  #createUpgradeIcon(upgrade) {
-    const document = this.root.ownerDocument;
-    const icon = document.createElement("span");
-    const source = new URL(upgrade.iconSheet.source, document.baseURI).href;
-    icon.className = "upgrade-card__icon";
-    icon.setAttribute("aria-hidden", "true");
-    icon.style.setProperty("--upgrade-icon", `url("${source}")`);
-    icon.style.setProperty("--upgrade-frame", upgrade.iconFrame);
-    return icon;
-  }
-
-  #createTextElement(tagName, className, text) {
-    const element = this.root.ownerDocument.createElement(tagName);
-    element.className = className;
-    element.textContent = text;
-    return element;
-  }
-
-  #getLevelText(upgrade) {
-    return translate("upgrade.level", {
-      level: upgrade.nextLevel,
-      maximum: upgrade.maxLevel,
-    });
-  }
-
-  #getUpgradeLabel(upgrade) {
-    const name = translate(`upgrade.${upgrade.id}.name`);
-    const description = translate(`upgrade.${upgrade.id}.description`);
-    return `${name}. ${this.#getLevelText(upgrade)}. ${description}`;
   }
 
   /**

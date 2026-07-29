@@ -13,6 +13,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "links-dialoge", file: "tests/qa-ui-contract.mjs" }),
   Object.freeze({ id: "waffenlauf", file: "tests/qa-weapon-run.mjs" }),
   Object.freeze({ id: "lichtbogenkanone", file: "tests/qa-arc-cannon.mjs" }),
+  Object.freeze({ id: "upgrade-seltenheiten", file: "tests/qa-upgrade-rarities.mjs" }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),

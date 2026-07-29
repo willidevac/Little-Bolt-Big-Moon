@@ -5,6 +5,20 @@
     "frameWidth": 32,
     "frameHeight": 32
   },
+  "rarities": [
+    {
+      "id": "common",
+      "weight": 6
+    },
+    {
+      "id": "rare",
+      "weight": 3
+    },
+    {
+      "id": "epic",
+      "weight": 1
+    }
+  ],
   "upgrades": [
     {
       "id": "maximumEnergy",
@@ -12,7 +26,8 @@
       "description": "Byte erhält 20 maximale Energie und wird um 20 Energie repariert.",
       "value": 20,
       "maxLevel": 5,
-      "iconFrame": 0
+      "iconFrame": 0,
+      "rarity": "common"
     },
     {
       "id": "wrenchDamage",
@@ -20,7 +35,8 @@
       "description": "Der Reparaturschlüssel verursacht 5 zusätzlichen Schaden.",
       "value": 5,
       "maxLevel": 5,
-      "iconFrame": 1
+      "iconFrame": 1,
+      "rarity": "common"
     },
     {
       "id": "ammoCapacity",
@@ -28,7 +44,8 @@
       "description": "Byte erhält 4 Bolzenplätze und einen Platz für Lichtbogen-Ladungen. Beide werden sofort gefüllt.",
       "value": 4,
       "maxLevel": 5,
-      "iconFrame": 2
+      "iconFrame": 2,
+      "rarity": "rare"
     },
     {
       "id": "knockbackResistance",
@@ -36,7 +53,8 @@
       "description": "Gegnerische Treffer stoßen Byte 15 Prozent weniger weit zurück.",
       "value": 0.15,
       "maxLevel": 4,
-      "iconFrame": 3
+      "iconFrame": 3,
+      "rarity": "rare"
     },
     {
       "id": "jumpControl",
@@ -44,7 +62,8 @@
       "description": "Die volle Sprungladung dauert 0,025 Sekunden länger und lässt sich feiner dosieren.",
       "value": 0.025,
       "maxLevel": 5,
-      "iconFrame": 4
+      "iconFrame": 4,
+      "rarity": "epic"
     }
   ]
 }
