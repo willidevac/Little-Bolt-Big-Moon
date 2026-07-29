@@ -4,6 +4,7 @@ import { DrawableObject } from "./drawable-object.class.js";
  * Grundlage für Objekte mit Geschwindigkeit und Bewegung.
  */
 export class MovableObject extends DrawableObject {
+  /** Erstellt ein ruhendes Objekt mit aktivierter Schwerkraft. */
   constructor() {
     super();
     this.velocityX = 0;

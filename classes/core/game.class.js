@@ -7,11 +7,8 @@ import {
 } from "./gameplay-event-hub.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
-import { CombatSystem } from "../systems/combat-system.class.js";
-import { WeaponSystem } from "../systems/weapon-system.class.js";
-import { RunUpgradeFlow } from "../systems/run-upgrade-flow.class.js";
 import { createLevelOne } from "../../js/levels/level-01.js";
-import upgradeData from "../../data/upgrades.json" with { type: "json" };
+import { createGameCombatSystems } from "../../js/factories/game-combat-systems.js";
 
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
@@ -29,10 +26,15 @@ export class Game {
     this.canvas = this.gameCanvas.element;
     this.context = this.gameCanvas.context;
     this.config = config;
-    this.isInitialized = false;
-    this.isRunning = false;
-    this.animationFrameId = null;
-    this.previousTimestamp = null;
+    this.#initializeRuntime(inputTarget);
+    Object.assign(this, createGameCombatSystems(config, this));
+  }
+
+  #initializeRuntime(inputTarget) {
+    Object.assign(this, {
+      isInitialized: false, isRunning: false,
+      animationFrameId: null, previousTimestamp: null,
+    });
     this.boundGameLoop = this.gameLoop.bind(this);
     this.#stateMachine = new GameStateMachine();
     this.#stateListeners = new Set();
@@ -40,17 +42,8 @@ export class Game {
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
-    this.combatSystem = new CombatSystem(config.combat);
-    this.weaponSystem = new WeaponSystem(
-      config.weapons, this.keyboard, this.runStats, this.gameplayEvents,
-    );
-    this.upgradeFlow = new RunUpgradeFlow(upgradeData, {
-      runStats: this.runStats,
-      weaponSystem: this.weaponSystem,
-      combatSystem: this.combatSystem,
-      getCharacter: () => this.world.character,
-    });
   }
+
   /** @returns {boolean} Ob das Spiel gerade pausiert ist. */
   get isPaused() { return this.#stateMachine.is(GAME_STATES.PAUSED); }
 

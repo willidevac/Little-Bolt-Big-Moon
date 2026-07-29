@@ -60,28 +60,32 @@ export class World {
    * @param {Readonly<object>|null} [level=null]
    * @param {GameplayEventHub} [gameplayEvents]
    */
-  constructor(
-    context,
-    config,
-    input = null,
-    level = null,
-    gameplayEvents = new GameplayEventHub(),
-  ) {
-    this.context = context;
-    this.config = config;
-    this.input = input;
-    this.level = level;
-    this.gameplayEvents = gameplayEvents;
+  constructor(context, config, input = null, level = null,
+    gameplayEvents = new GameplayEventHub()) {
+    Object.assign(this, { context, config, input, level, gameplayEvents });
     this.eventReporter = new WorldEventReporter(gameplayEvents);
     this.isInitialized = false;
+    this.#initializeCollections();
+    this.#initializeSimulation(config);
+    this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
+    this.bossFight = new BossFightManager(level?.enemies);
+    this.character = null;
+    this.camera = new Camera(config);
+    this.#renderer = new WorldRenderer(context, config, level?.sections);
+  }
+
+  #initializeCollections() {
     this.#entityGroups = this.#createGroupMap(Array);
     this.#pendingAdditions = this.#createGroupMap(Set);
     this.#pendingRemovals = this.#createGroupMap(Set);
     this.#isProcessing = false;
-    this.#collisionManager = new CollisionManager(config.physics);
-    this.#fallTracker = new FallTracker(config.world);
     this.#collectedPickups = [];
     this.#damageEvents = [];
+  }
+
+  #initializeSimulation(config) {
+    this.#collisionManager = new CollisionManager(config.physics);
+    this.#fallTracker = new FallTracker(config.world);
     this.#projectileSystem = new ProjectileSystem(
       config.projectiles,
       this.#collisionManager,
@@ -91,11 +95,6 @@ export class World {
       this.#collisionManager,
     );
     this.#platformMotionSystem = new PlatformMotionSystem();
-    this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
-    this.bossFight = new BossFightManager(level?.enemies);
-    this.character = null;
-    this.camera = new Camera(config);
-    this.#renderer = new WorldRenderer(context, config, level?.sections);
   }
 
   /** @returns {boolean} Ob die Welt neu aktiviert wurde. */

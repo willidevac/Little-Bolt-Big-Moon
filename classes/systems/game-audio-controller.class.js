@@ -123,10 +123,9 @@ export class GameAudioController {
     if (event.type === GAMEPLAY_EVENTS.ENEMY_DEFEATED) {
       return this.#playEnemyDefeat(event.detail);
     }
-    if (event.type === GAMEPLAY_EVENTS.BOSS_ACTIVATED) {
-      return this.#activateBossAudio();
-    }
-    return false;
+    return event.type === GAMEPLAY_EVENTS.BOSS_ACTIVATED
+      ? this.#activateBossAudio()
+      : false;
   }
 
   /** Entfernt alle Verbindungen und stoppt die vorbereiteten Tracks. */

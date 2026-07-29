@@ -217,7 +217,24 @@ export class RunStats {
    * @param {number} startY
    */
   validateConfig(config, startY) {
-    const values = [
+    if (this.#hasValidStartNumbers(config, startY)) {
+      this.validateEnergy(config);
+      this.validateAmmo(config);
+      return;
+    }
+    throw new TypeError("Die HUD-Startwerte sind unvollständig oder ungültig.");
+  }
+
+  #hasValidStartNumbers(config, startY) {
+    const values = this.#getStartValues(config, startY);
+    const hasValidNumbers = values.every((value) => {
+      return Number.isFinite(value) && value >= 0;
+    });
+    return hasValidNumbers && config.heightPixelsPerMeter > 0;
+  }
+
+  #getStartValues(config, startY) {
+    return [
       config?.maximumEnergy,
       config?.maximumAmmo,
       config?.startingEnergy,
@@ -227,15 +244,6 @@ export class RunStats {
       config?.heightPixelsPerMeter,
       startY,
     ];
-    const hasValidNumbers = values.every((value) => {
-      return Number.isFinite(value) && value >= 0;
-    });
-    if (hasValidNumbers && config.heightPixelsPerMeter > 0) {
-      this.validateEnergy(config);
-      this.validateAmmo(config);
-      return;
-    }
-    throw new TypeError("Die HUD-Startwerte sind unvollständig oder ungültig.");
   }
 
   /**

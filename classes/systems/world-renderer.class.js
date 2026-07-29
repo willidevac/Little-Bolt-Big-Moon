@@ -14,6 +14,11 @@ const CULLING_PADDING = 128;
 
 /** Zeichnet den sichtbaren Ausschnitt der Spielwelt. */
 export class WorldRenderer {
+  /**
+   * @param {CanvasRenderingContext2D} context
+   * @param {Readonly<object>} config
+   * @param {ReadonlyArray<object>} sections
+   */
   constructor(context, config, sections) {
     this.context = context;
     this.viewport = config.canvas;

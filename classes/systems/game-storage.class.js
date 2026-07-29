@@ -52,14 +52,18 @@ export class GameStorage {
     const victoryTime = isVictory
       ? this.#toOptionalTime(run?.elapsedSeconds)
       : null;
-    this.data = {
+    this.data = this.#createRunRecord(score, height, victoryTime);
+    this.#persist();
+    return this.getSnapshot();
+  }
+
+  #createRunRecord(score, height, victoryTime) {
+    return {
       ...this.data,
       bestScore: Math.max(this.data.bestScore, score),
       maximumHeight: Math.max(this.data.maximumHeight, height),
       bestTimeSeconds: this.#getBestTime(victoryTime),
     };
-    this.#persist();
-    return this.getSnapshot();
   }
 
   /**
@@ -110,13 +114,17 @@ export class GameStorage {
       maximumHeight: this.#toInteger(source.maximumHeight),
       bestTimeSeconds: this.#toOptionalTime(source.bestTimeSeconds),
       isMuted: typeof source.isMuted === "boolean" ? source.isMuted : false,
+      ...this.#sanitizeVolumes(source),
+    };
+  }
+
+  #sanitizeVolumes(source) {
+    return {
       musicVolume: this.#toPercentage(
-        source.musicVolume,
-        DEFAULT_RECORDS.musicVolume,
+        source.musicVolume, DEFAULT_RECORDS.musicVolume,
       ),
       effectsVolume: this.#toPercentage(
-        source.effectsVolume,
-        DEFAULT_RECORDS.effectsVolume,
+        source.effectsVolume, DEFAULT_RECORDS.effectsVolume,
       ),
     };
   }

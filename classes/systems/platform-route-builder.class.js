@@ -1,20 +1,14 @@
-const FLOOR_OFFSET_Y = 160;
-const SECTION_EDGE_OFFSET_Y = 64;
-const MINIMUM_PLATFORM_GAP_Y = 80;
-const MINIMUM_EDGE_GAP_Y = 64;
-const MAXIMUM_PLATFORM_GAP_Y = 128;
-const MAXIMUM_AUTHORED_GAP_Y = 180;
-const MAXIMUM_HORIZONTAL_GAP = 128;
-const MAXIMUM_AUTHORED_HORIZONTAL_GAP = 192;
-const SIDE_PADDING = 64;
-const PLATFORM_WIDTHS = Object.freeze({
-  floor: 1152,
-  path: 192,
-  narrow: 128,
-  moving: 192,
-  falling: 192,
-  catch: 512,
-});
+import { PlatformRouteValidator } from "./platform-route-validator.class.js";
+import {
+  FLOOR_OFFSET_Y,
+  SECTION_EDGE_OFFSET_Y,
+  MINIMUM_EDGE_GAP_Y,
+  MAXIMUM_PLATFORM_GAP_Y,
+  MAXIMUM_HORIZONTAL_GAP,
+  MAXIMUM_AUTHORED_HORIZONTAL_GAP,
+  SIDE_PADDING,
+  PLATFORM_WIDTHS,
+} from "../../js/config/platform-route-rules.js";
 
 /**
  * Baut aus kleinen Gebietsrezepten eine feste, vollständig erreichbare Route.
@@ -28,6 +22,7 @@ export class PlatformRouteBuilder {
       throw new TypeError("Die Weltbreite für die Plattformroute ist ungültig.");
     }
     this.worldWidth = worldWidth;
+    this.validator = new PlatformRouteValidator(worldWidth);
   }
 
   /**
@@ -50,7 +45,7 @@ export class PlatformRouteBuilder {
   }
 
   #buildSection(section, sectionIndex, nextSection) {
-    this.#validateSection(section);
+    this.validator.validate(section);
     if (section.route.rooms) {
       return this.#buildAuthoredSection(section, sectionIndex, nextSection);
     }
@@ -58,32 +53,35 @@ export class PlatformRouteBuilder {
   }
 
   #buildGeneratedSection(section, sectionIndex, nextSection) {
-    const platforms = [];
-    let y = this.#getSectionStartY(section, sectionIndex);
-    let routeIndex = 0;
-    if (sectionIndex === 0) {
-      platforms.push(
-        this.#createPlatform(section, routeIndex, y, { isFloor: true }),
-      );
-    }
+    const state = {
+      y: this.#getSectionStartY(section, sectionIndex),
+      routeIndex: 0,
+    };
+    const platforms = this.#createInitialPlatforms(section, sectionIndex, state);
+    this.#appendGeneratedPlatforms(platforms, section, state);
     const edgeY = section.topY + SECTION_EDGE_OFFSET_Y;
-    while (y - edgeY > MAXIMUM_PLATFORM_GAP_Y) {
-      const remainingHeight = y - edgeY;
-      const gap = this.#getNextGap(section, routeIndex, remainingHeight);
-      routeIndex += 1;
-      y -= gap;
-      platforms.push(this.#createPlatform(section, routeIndex, y, {
+    platforms.push(this.#createBoundaryPlatform(
+      section, state.routeIndex + 1, edgeY, platforms.at(-1), nextSection,
+    ));
+    return platforms;
+  }
+
+  #createInitialPlatforms(section, sectionIndex, state) {
+    if (sectionIndex !== 0) return [];
+    return [this.#createPlatform(section, 0, state.y, { isFloor: true })];
+  }
+
+  #appendGeneratedPlatforms(platforms, section, state) {
+    const edgeY = section.topY + SECTION_EDGE_OFFSET_Y;
+    while (state.y - edgeY > MAXIMUM_PLATFORM_GAP_Y) {
+      const remainingHeight = state.y - edgeY;
+      const gap = this.#getNextGap(section, state.routeIndex, remainingHeight);
+      state.routeIndex += 1;
+      state.y -= gap;
+      platforms.push(this.#createPlatform(section, state.routeIndex, state.y, {
         previousPlatform: platforms.at(-1),
       }));
     }
-    platforms.push(this.#createBoundaryPlatform(
-      section,
-      routeIndex + 1,
-      edgeY,
-      platforms.at(-1),
-      nextSection,
-    ));
-    return platforms;
   }
 
   #buildAuthoredSection(section, sectionIndex, nextSection) {
@@ -133,7 +131,7 @@ export class PlatformRouteBuilder {
     const platform = this.#getAuthoredPlatformData(
       section, room, roomIndex, step, stepIndex, y,
     );
-    this.#addAuthoredBehavior(platform, section.route);
+    this.#addPlatformBehavior(platform, section.route);
     return Object.freeze(platform);
   }
 
@@ -147,7 +145,7 @@ export class PlatformRouteBuilder {
     };
   }
 
-  #addAuthoredBehavior(platform, route) {
+  #addPlatformBehavior(platform, route) {
     if (platform.type === "falling") {
       platform.fall = this.#createFall(route);
     }
@@ -172,6 +170,15 @@ export class PlatformRouteBuilder {
   }
 
   #createBoundaryPlatform(section, routeIndex, y, previousPlatform, nextSection) {
+    const bridgeX = this.#getBoundaryX(previousPlatform, nextSection);
+    return this.#createPlatform(section, routeIndex, y, {
+      isEdge: true,
+      forcedX: bridgeX,
+      previousPlatform,
+    });
+  }
+
+  #getBoundaryX(previousPlatform, nextSection) {
     const previousCenterX = this.#getPlatformCenterX(previousPlatform);
     const nextCenterX = nextSection
       ? nextSection.route.horizontalPositions[0] + PLATFORM_WIDTHS.path / 2
@@ -182,61 +189,58 @@ export class PlatformRouteBuilder {
       SIDE_PADDING,
       this.worldWidth - SIDE_PADDING - PLATFORM_WIDTHS.catch,
     );
-    return this.#createPlatform(
-      section,
-      routeIndex,
-      y,
-      {
-        isEdge: true,
-        forcedX: bridgeX,
-        previousPlatform,
-      },
-    );
+    return bridgeX;
   }
 
   #createPlatform(section, routeIndex, y, options = {}) {
-    const {
-      isFloor = false,
-      isEdge = false,
-      forcedX,
-      previousPlatform,
-    } = options;
     const route = section.route;
-    const isCatch = isEdge || routeIndex % route.catchEvery === 0;
-    const type = this.#getPlatformType(route, routeIndex, isFloor, isCatch);
-    const plannedX = forcedX ?? (isFloor
-      ? route.floorX
-      : this.#getCycledValue(
-        route.horizontalPositions,
-        Math.max(0, routeIndex - 1),
-      ));
-    const x = this.#getReachableX(plannedX, type, previousPlatform);
-    const platform = {
+    const flags = this.#getPlatformFlags(route, routeIndex, options);
+    const type = this.#getPlatformType(route, routeIndex, flags);
+    const plannedX = this.#getPlannedX(route, routeIndex, type, options);
+    const x = this.#getReachableX(plannedX, type, options.previousPlatform);
+    const platform = this.#createPlatformData(section, routeIndex, type, x, y);
+    this.#addPlatformBehavior(platform, route);
+    return Object.freeze(platform);
+  }
+
+  #getPlatformFlags(route, routeIndex, options) {
+    return {
+      isFloor: options.isFloor ?? false,
+      isCatch: (options.isEdge ?? false) ||
+        routeIndex % route.catchEvery === 0,
+    };
+  }
+
+  #getPlannedX(route, routeIndex, type, options) {
+    if (Number.isFinite(options.forcedX)) return options.forcedX;
+    if (type === "floor") return route.floorX;
+    return this.#getCycledValue(
+      route.horizontalPositions,
+      Math.max(0, routeIndex - 1),
+    );
+  }
+
+  #createPlatformData(section, routeIndex, type, x, y) {
+    return {
       id: `${section.id}-${type}-${String(routeIndex).padStart(3, "0")}`,
       x,
       y,
       type,
       tileset: section.tileset,
     };
-    if (type === "moving") platform.movement = this.#createMovement(route, x);
-    if (type === "falling") platform.fall = this.#createFall(route);
-    return Object.freeze(platform);
   }
 
-  #getPlatformType(route, routeIndex, isFloor, isCatch) {
-    if (isFloor) return "floor";
-    if (isCatch) return "catch";
-    if (route.movingEvery > 0 && routeIndex % route.movingEvery === 0) {
-      return "moving";
-    }
-    if (route.narrowEvery > 0 && routeIndex % route.narrowEvery === 0) {
-      return "narrow";
-    }
-    const fallingEvery = route.fallingEvery ?? 0;
-    if (fallingEvery > 0 && routeIndex % fallingEvery === 0) {
-      return "falling";
-    }
+  #getPlatformType(route, routeIndex, flags) {
+    if (flags.isFloor) return "floor";
+    if (flags.isCatch) return "catch";
+    if (this.#matchesFrequency(route.movingEvery, routeIndex)) return "moving";
+    if (this.#matchesFrequency(route.narrowEvery, routeIndex)) return "narrow";
+    if (this.#matchesFrequency(route.fallingEvery ?? 0, routeIndex)) return "falling";
     return "path";
+  }
+
+  #matchesFrequency(frequency, routeIndex) {
+    return frequency > 0 && routeIndex % frequency === 0;
   }
 
   #createMovement(route, x) {
@@ -296,102 +300,4 @@ export class PlatformRouteBuilder {
     return Math.floor(remainingHeight / 2);
   }
 
-  #validateSection(section) {
-    const hasBounds = Number.isFinite(section?.topY) &&
-      Number.isFinite(section?.bottomY) &&
-      section.bottomY > section.topY;
-    const route = section?.route;
-    const positionsAreValid = Array.isArray(route?.horizontalPositions) &&
-      route.horizontalPositions.length > 0 &&
-      route.horizontalPositions.every((x) => {
-        return Number.isFinite(x) && x >= 0 && x < this.worldWidth;
-      });
-    const gapsAreValid = Array.isArray(route?.verticalGaps) &&
-      route.verticalGaps.length > 0 &&
-      route.verticalGaps.every((gap) => {
-        return Number.isFinite(gap) &&
-          gap >= MINIMUM_PLATFORM_GAP_Y &&
-          gap <= MAXIMUM_PLATFORM_GAP_Y;
-      });
-    const catchEveryIsValid = Number.isInteger(route?.catchEvery) &&
-      route.catchEvery > 0;
-    const challengeRulesAreValid = this.#hasValidChallengeRules(route);
-    const roomsAreValid = this.#hasValidRooms(route?.rooms);
-    if (
-      typeof section?.id === "string" &&
-      typeof section?.tileset === "string" &&
-      hasBounds &&
-      positionsAreValid &&
-      gapsAreValid &&
-      catchEveryIsValid &&
-      challengeRulesAreValid &&
-      roomsAreValid &&
-      Number.isFinite(route?.floorX)
-    ) {
-      return;
-    }
-    throw new TypeError(`Das Sprungrezept für ${section?.id ?? "ein Gebiet"} ist ungültig.`);
-  }
-
-  #hasValidRooms(rooms) {
-    if (rooms === undefined) return true;
-    return Array.isArray(rooms) && rooms.length > 0 &&
-      rooms.every((room) => this.#hasValidRoom(room));
-  }
-
-  #hasValidRoom(room) {
-    return typeof room?.id === "string" &&
-      Array.isArray(room?.steps) &&
-      room.steps.length > 0 &&
-      room.steps.every((step) => this.#hasValidAuthoredStep(step));
-  }
-
-  #hasValidAuthoredStep(step) {
-    const typeIsValid = Object.hasOwn(PLATFORM_WIDTHS, step?.type);
-    const xIsValid = Number.isFinite(step?.x) &&
-      step.x >= SIDE_PADDING &&
-      step.x + PLATFORM_WIDTHS[step.type] <= this.worldWidth - SIDE_PADDING;
-    const gapIsValid = Number.isFinite(step?.gapY) &&
-      step.gapY >= MINIMUM_EDGE_GAP_Y &&
-      step.gapY <= MAXIMUM_AUTHORED_GAP_Y;
-    return typeIsValid && xIsValid && gapIsValid;
-  }
-
-  #hasValidChallengeRules(route) {
-    const frequenciesAreValid = [
-      route?.narrowEvery,
-      route?.movingEvery,
-      route?.fallingEvery ?? 0,
-    ]
-      .every((value) => Number.isInteger(value) && value >= 0);
-    if (!frequenciesAreValid) return false;
-    return this.#hasValidMovingRules(route) &&
-      this.#hasValidFallingRules(route);
-  }
-
-  #hasValidMovingRules(route) {
-    const needsMovement = route.movingEvery > 0 ||
-      this.#hasAuthoredType(route, "moving");
-    if (!needsMovement) return true;
-    return Number.isFinite(route.movingDistance) &&
-      route.movingDistance > 0 &&
-      Number.isFinite(route.movingSpeed) &&
-      route.movingSpeed > 0;
-  }
-
-  #hasValidFallingRules(route) {
-    const needsFalling = (route.fallingEvery ?? 0) > 0 ||
-      this.#hasAuthoredType(route, "falling");
-    if (!needsFalling) return true;
-    return Number.isFinite(route.fallWarningSeconds) &&
-      route.fallWarningSeconds > 0 &&
-      Number.isFinite(route.fallSpeed) &&
-      route.fallSpeed > 0;
-  }
-
-  #hasAuthoredType(route, type) {
-    return route.rooms?.some((room) => {
-      return room.steps.some((step) => step.type === type);
-    }) ?? false;
-  }
 }

@@ -26,40 +26,46 @@ export class BackgroundLayer extends DrawableObject {
    * @param {Readonly<{width:number, height:number}>} viewport
    */
   drawForZone(context, bounds, camera, viewport) {
-    if (this.imageState !== "ready") {
-      this.drawCurrentFrame(
-        context,
-        0,
-        0,
-        viewport.width,
-        viewport.height,
-      );
-      return;
-    }
-    const sourceWidth = this.spriteConfig.frameWidth;
-    const sourceHeight = this.spriteConfig.frameHeight;
-    const sourceCropHeight = sourceWidth * (viewport.height / viewport.width);
-    const maximumSourceY = sourceHeight - sourceCropHeight;
-    const scrollableWorldHeight = bounds.bottomY - bounds.topY - viewport.height;
-    const localCameraY = this.#clamp(
-      camera.y - bounds.topY,
-      0,
-      scrollableWorldHeight,
-    );
-    const progress = scrollableWorldHeight > 0
-      ? localCameraY / scrollableWorldHeight
-      : 0;
+    if (this.imageState !== "ready") return this.#drawFallback(context, viewport);
+    const source = this.#getSourceFrame(bounds, camera, viewport);
+    this.#drawSource(context, source, viewport);
+  }
+
+  #drawSource(context, source, viewport) {
     context.drawImage(
       this.image,
       0,
-      maximumSourceY * progress,
-      sourceWidth,
-      sourceCropHeight,
+      source.y,
+      source.width,
+      source.height,
       0,
       0,
       viewport.width,
       viewport.height,
     );
+  }
+
+  #drawFallback(context, viewport) {
+    this.drawCurrentFrame(context, 0, 0, viewport.width, viewport.height);
+  }
+
+  #getSourceFrame(bounds, camera, viewport) {
+    const sourceWidth = this.spriteConfig.frameWidth;
+    const sourceHeight = this.spriteConfig.frameHeight;
+    const sourceCropHeight = sourceWidth * (viewport.height / viewport.width);
+    const maximumSourceY = sourceHeight - sourceCropHeight;
+    const progress = this.#getScrollProgress(bounds, camera, viewport.height);
+    return { width: sourceWidth, height: sourceCropHeight, y: maximumSourceY * progress };
+  }
+
+  #getScrollProgress(bounds, camera, viewportHeight) {
+    const scrollableWorldHeight = bounds.bottomY - bounds.topY - viewportHeight;
+    const localCameraY = this.#clamp(
+      camera.y - bounds.topY,
+      0,
+      scrollableWorldHeight,
+    );
+    return scrollableWorldHeight > 0 ? localCameraY / scrollableWorldHeight : 0;
   }
 
   #clamp(value, minimum, maximum) {

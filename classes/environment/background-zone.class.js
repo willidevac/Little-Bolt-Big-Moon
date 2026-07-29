@@ -26,6 +26,12 @@ export class BackgroundZone {
    * @param {Readonly<{width:number, height:number}>} viewport
    */
   draw(context, camera, viewport) {
+    const visible = this.#getVisibleBounds(camera, viewport);
+    if (visible.bottom <= visible.top) return;
+    this.#drawLayers(context, camera, viewport, visible);
+  }
+
+  #getVisibleBounds(camera, viewport) {
     const visibleTop = Math.max(
       0,
       this.topY - camera.y - SEAM_OVERLAP_PIXELS,
@@ -34,10 +40,13 @@ export class BackgroundZone {
       viewport.height,
       this.bottomY - camera.y + SEAM_OVERLAP_PIXELS,
     );
-    if (visibleBottom <= visibleTop) return;
+    return { top: visibleTop, bottom: visibleBottom };
+  }
+
+  #drawLayers(context, camera, viewport, visible) {
     context.save();
     context.beginPath();
-    context.rect(0, visibleTop, viewport.width, visibleBottom - visibleTop);
+    context.rect(0, visible.top, viewport.width, visible.bottom - visible.top);
     context.clip();
     this.layers.forEach((layer) => {
       layer.drawForZone(context, this, camera, viewport);

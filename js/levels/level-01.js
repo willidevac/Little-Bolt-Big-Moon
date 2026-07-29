@@ -45,6 +45,10 @@ export function createLevelOne(enemyConfig) {
   validateLevelData(levelData);
   const routeBuilder = new PlatformRouteBuilder(levelData.width);
   const platformData = routeBuilder.build(levelData.sections);
+  return createLevelData(enemyConfig, platformData);
+}
+
+function createLevelData(enemyConfig, platformData) {
   return Object.freeze({
     id: levelData.id,
     width: levelData.width,
@@ -55,10 +59,12 @@ export function createLevelOne(enemyConfig) {
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
-    enemies: Object.freeze(levelData.enemies.map((enemy) => {
-      return createEnemy(enemy, enemyConfig);
-    })),
+    enemies: Object.freeze(createEnemies(enemyConfig)),
   });
+}
+
+function createEnemies(enemyConfig) {
+  return levelData.enemies.map((enemy) => createEnemy(enemy, enemyConfig));
 }
 
 function createCombatZone(zoneData) {
@@ -131,6 +137,12 @@ function validateLevelData(data) {
   const hasSize = Number.isFinite(data?.width) && Number.isFinite(data?.height);
   const hasStart = Number.isFinite(data?.playerStart?.x) &&
     Number.isFinite(data?.playerStart?.y);
+  if (typeof data?.id === "string" && hasSize && hasStart &&
+    hasValidCollections(data)) return;
+  throw new TypeError("Die Leveldaten sind unvollständig oder ungültig.");
+}
+
+function hasValidCollections(data) {
   const hasCollections = Array.isArray(data?.sections) &&
     Array.isArray(data?.collectables) &&
     Array.isArray(data?.hazards) &&
@@ -139,8 +151,5 @@ function validateLevelData(data) {
     data.sections.every((section) => section?.route) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
-  if (typeof data?.id === "string" && hasSize && hasStart && hasCollections) {
-    return;
-  }
-  throw new TypeError("Die Leveldaten sind unvollständig oder ungültig.");
+  return hasCollections;
 }

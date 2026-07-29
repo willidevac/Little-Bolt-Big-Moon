@@ -77,8 +77,10 @@ function createContext() {
     clip: ignoreDrawCommand,
     fillRect: ignoreDrawCommand,
     strokeRect: ignoreDrawCommand,
-    drawImage(...parameters) {
-      this.images.push(parameters);
-    },
+    drawImage: recordImage,
   };
+}
+
+function recordImage(...parameters) {
+  this.images.push(parameters);
 }

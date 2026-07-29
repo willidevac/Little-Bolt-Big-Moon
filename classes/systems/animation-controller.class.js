@@ -4,6 +4,9 @@ const FRAME_TIME_EPSILON_SECONDS = 1e-9;
  * Wählt Spriteframes anhand eines Zustands und vergangener Spielzeit aus.
  */
 export class AnimationController {
+  /**
+   * @param {Readonly<Record<string, Readonly<object>>>} clips
+   */
   constructor(clips) {
     if (!this.#areValidClips(clips)) {
       throw new TypeError("Die Animationsclips sind ungültig.");

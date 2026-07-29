@@ -116,18 +116,25 @@ export class MoonWarden extends Enemy {
     const target = world.character;
     this.#tryActivate(target);
     this.#updatePhase();
-    const movementState = Math.abs(this.velocityX) > 0 ? "move" : "idle";
-    const canAct = this.updateEnemyState(deltaTimeSeconds, movementState);
-    this.#updatePendingAttack(deltaTimeSeconds, target);
-    if (!canAct || !this.isActive) return;
-    if (this.attackCooldownSecondsRemaining === 0) {
-      this.#beginNextAttack();
-      return;
-    }
+    if (!this.#canAct(deltaTimeSeconds, target)) return;
+    if (this.#tryBeginAttack()) return;
     this.#moveToward(target);
     super.update(deltaTimeSeconds, world);
     this.stayInsidePatrol();
     this.updateAnimation(deltaTimeSeconds);
+  }
+
+  #tryBeginAttack() {
+    if (this.attackCooldownSecondsRemaining !== 0) return false;
+    this.#beginNextAttack();
+    return true;
+  }
+
+  #canAct(deltaTimeSeconds, target) {
+    const movementState = Math.abs(this.velocityX) > 0 ? "move" : "idle";
+    const canAct = this.updateEnemyState(deltaTimeSeconds, movementState);
+    this.#updatePendingAttack(deltaTimeSeconds, target);
+    return canAct && this.isActive;
   }
 
   /**
@@ -213,19 +220,18 @@ export class MoonWarden extends Enemy {
       targetCenter.x - origin.x,
     );
     RANGED_SPREAD_RADIANS[this.phase].forEach((spread) => {
-      const angle = baseAngle + spread;
-      const directionX = Math.cos(angle);
-      const directionY = Math.sin(angle);
-      this.#attackEvents.push(
-        this.#createEvent(
-          "moonBolt",
-          directionX,
-          directionY,
-          origin.x,
-          origin.y,
-        ),
-      );
+      this.#releaseMoonBolt(origin, baseAngle + spread);
     });
+  }
+
+  #releaseMoonBolt(origin, angle) {
+    this.#attackEvents.push(this.#createEvent(
+      "moonBolt",
+      Math.cos(angle),
+      Math.sin(angle),
+      origin.x,
+      origin.y,
+    ));
   }
 
   #createEvent(kind, directionX, directionY, originX, originY) {

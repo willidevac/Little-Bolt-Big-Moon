@@ -50,18 +50,22 @@ export class CollectableObject extends DrawableObject {
   constructor(collectableData) {
     super();
     this.#validateData(collectableData);
-    this.id = collectableData.id;
-    this.type = collectableData.type;
-    this.amount = collectableData.amount;
-    this.weaponId = collectableData.weaponId ?? null;
-    this.x = collectableData.x;
-    this.y = collectableData.y;
+    this.#applyData(collectableData);
     this.width = COLLECTABLE_SPRITE_CONFIG.frameWidth * COLLECTABLE_RENDER_SCALE;
     this.height = COLLECTABLE_SPRITE_CONFIG.frameHeight * COLLECTABLE_RENDER_SCALE;
     this.setCollisionBox(COLLECTABLE_COLLISION_BOX);
     this.animationController = new AnimationController(ANIMATION_CLIPS);
     this.loadSprite(COLLECTABLE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState(this.type));
+  }
+
+  #applyData(collectableData) {
+    this.id = collectableData.id;
+    this.type = collectableData.type;
+    this.amount = collectableData.amount;
+    this.weaponId = collectableData.weaponId ?? null;
+    this.x = collectableData.x;
+    this.y = collectableData.y;
   }
 
   /**

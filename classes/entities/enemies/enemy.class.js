@@ -27,6 +27,10 @@ export class Enemy extends MovableObject {
       visualConfig.initialAttackState ?? "attack",
     );
     this.setCollisionBox(visualConfig.collisionBox);
+    this.#initializeAnimation(visualConfig);
+  }
+
+  #initializeAnimation(visualConfig) {
     this.animationController = new AnimationController(visualConfig.animations);
     this.loadSprite(visualConfig.sprite);
     this.setAnimationState(visualConfig.initialState);
@@ -354,6 +358,11 @@ export class Enemy extends MovableObject {
   }
 
   #validateEnemyData(data) {
+    if (this.#hasValidEnemyData(data)) return;
+    throw new TypeError("Die Gegnerdaten sind ungültig.");
+  }
+
+  #hasValidEnemyData(data) {
     const textValues = [data?.id, data?.type];
     const numberValues = [data?.x, data?.y, data?.patrolMinX, data?.patrolMaxX];
     const hasText = textValues.every((value) => typeof value === "string" && value);
@@ -364,9 +373,8 @@ export class Enemy extends MovableObject {
     const direction = data?.startDirection ?? 1;
     const validDirection = Math.abs(direction) === 1;
     const validBoss = this.#hasValidBossProfile(data);
-    if (hasText && hasNumbers && hasPatrol && fitsPatrol &&
-      validDirection && validBoss) return;
-    throw new TypeError("Die Gegnerdaten sind ungültig.");
+    return hasText && hasNumbers && hasPatrol && fitsPatrol &&
+      validDirection && validBoss;
   }
 
   #hasValidBossProfile(data) {

@@ -4,6 +4,7 @@ import { CharacterAttackState } from "../systems/character-attack-state.class.js
 import { PrecisionJumpController } from "../systems/precision-jump-controller.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
 import { clamp } from "../../js/utils/math.js";
+import { resolveCharacterState } from "../../js/utils/character-state.js";
 
 const BYTE_SPRITE_CONFIG = Object.freeze({
   source: getAssetPath("characters", "byte.png"),
@@ -19,7 +20,6 @@ const BYTE_HURTBOX = Object.freeze({
   height: 58,
 });
 const BYTE_STOMP_BOX = Object.freeze({ offsetX: 16, offsetY: 50, width: 32, height: 14 });
-const STATE_TIME_EPSILON_SECONDS = 1e-9;
 const NEUTRAL_INPUT = Object.freeze({ left: false, right: false, jump: false });
 const ACTIVITY_ACTIONS = Object.freeze(
   ["left", "right", "jump", "attack", "weaponSwitch"],
@@ -56,12 +56,19 @@ const BYTE_ANIMATION_CLIPS = Object.freeze({
  * Spielbarer Hauptcharakter Byte.
  */
 export class Character extends MovableObject {
+  /** Erstellt Byte in seinem neutralen Startzustand. */
   constructor() {
     super();
     this.width = BYTE_SPRITE_CONFIG.frameWidth * BYTE_RENDER_SCALE;
     this.height = BYTE_SPRITE_CONFIG.frameHeight * BYTE_RENDER_SCALE;
     this.setCollisionBox(BYTE_HURTBOX);
-    this.jumpController = new PrecisionJumpController();
+    this.#initializeState();
+    this.#initializeControllers();
+    this.loadSprite(BYTE_SPRITE_CONFIG);
+    this.setFrameIndex(this.animationController.setState(this.state));
+  }
+
+  #initializeState() {
     this.jumpChargePercent = 0;
     this.state = CHARACTER_STATES.IDLE;
     this.inactivitySeconds = 0;
@@ -70,10 +77,12 @@ export class Character extends MovableObject {
     this.isDead = false;
     this.hurtSecondsRemaining = 0;
     this.invulnerabilitySecondsRemaining = 0;
+  }
+
+  #initializeControllers() {
+    this.jumpController = new PrecisionJumpController();
     this.attackState = new CharacterAttackState();
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
-    this.loadSprite(BYTE_SPRITE_CONFIG);
-    this.setFrameIndex(this.animationController.setState(this.state));
   }
 
   /**
@@ -108,16 +117,20 @@ export class Character extends MovableObject {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
     const input = world.input ?? NEUTRAL_INPUT;
     if (this.isDead) return this.#maintainDeadState(deltaTimeSeconds);
-    this.attackState.update(deltaTimeSeconds);
-    this.#updateHitTimers(deltaTimeSeconds);
+    this.#updateStateTimers(deltaTimeSeconds);
     const config = world.config.character;
     this.#updateInactivity(deltaTimeSeconds, input, config);
     if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, config);
     this.#updateJumpCharge(config);
     super.update(deltaTimeSeconds, world);
     this.#keepInsideWorld(world.config.world.width);
-    this.#changeState(this.#resolveState(config));
+    this.#changeState(resolveCharacterState(this, config, CHARACTER_STATES));
     this.#updateAnimation(deltaTimeSeconds);
+  }
+
+  #updateStateTimers(deltaTimeSeconds) {
+    this.attackState.update(deltaTimeSeconds);
+    this.#updateHitTimers(deltaTimeSeconds);
   }
 
   /**
@@ -309,24 +322,6 @@ export class Character extends MovableObject {
     const previousX = this.x;
     this.x = clamp(this.x, 0, worldWidth - this.width);
     if (this.x !== previousX) this.velocityX = 0;
-  }
-
-  #resolveState(config) {
-    const threshold = config.movementStateThresholdPixelsPerSecond;
-    if (this.isDead) return CHARACTER_STATES.DEAD;
-    if (this.isHurt) return CHARACTER_STATES.HURT;
-    if (this.attackState.isActive) return this.attackState.animationState;
-    if (this.jumpController.isCharging) return CHARACTER_STATES.JUMP;
-    if (this.velocityY < -threshold) return CHARACTER_STATES.JUMP;
-    if (!this.isOnGround || this.velocityY > threshold) return CHARACTER_STATES.FALL;
-    if (Math.abs(this.velocityX) > threshold) return CHARACTER_STATES.RUN;
-    if (
-      this.inactivitySeconds + STATE_TIME_EPSILON_SECONDS >=
-      config.sleepAfterInactivitySeconds
-    ) {
-      return CHARACTER_STATES.SLEEP;
-    }
-    return CHARACTER_STATES.IDLE;
   }
 
   #changeState(nextState) {

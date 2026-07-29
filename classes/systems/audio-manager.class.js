@@ -1,6 +1,9 @@
 /**
  * Lädt Musik und feste Effektpools und begrenzt deren Wiedergabe.
  */
+const createBrowserAudio = (source) => new Audio(source);
+const getCurrentTime = () => globalThis.performance?.now() ?? Date.now();
+
 export class AudioManager {
   #effectPools = new Map();
   #musicTracks = new Map();
@@ -11,11 +14,7 @@ export class AudioManager {
    * @param {(source:string) => HTMLAudioElement} [createAudio]
    * @param {() => number} [now]
    */
-  constructor(
-    config,
-    createAudio = (source) => new Audio(source),
-    now = () => globalThis.performance?.now() ?? Date.now(),
-  ) {
+  constructor(config, createAudio = createBrowserAudio, now = getCurrentTime) {
     this.#validateConfig(config);
     this.config = config;
     this.createAudio = createAudio;

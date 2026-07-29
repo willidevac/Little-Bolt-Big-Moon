@@ -7,6 +7,7 @@ const FEEDBACK_DURATION_MILLISECONDS = 2400;
 
 /** Zeigt einen Fund kurz und barrierefrei über der Spielwelt an. */
 export class PickupFeedback {
+  /** @param {HTMLElement} element */
   constructor(element) {
     if (!element?.classList) {
       throw new TypeError("Die Pickup-Anzeige fehlt.");

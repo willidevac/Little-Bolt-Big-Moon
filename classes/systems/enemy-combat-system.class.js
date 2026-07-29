@@ -42,17 +42,21 @@ export class EnemyCombatSystem {
       this.#removeDefeated(world);
       return null;
     }
+    const hit = this.#resolveCharacterContact(world, deltaTimeSeconds);
+    this.#removeDefeated(world);
+    return hit;
+  }
+
+  #resolveCharacterContact(world, deltaTimeSeconds) {
     const enemies = this.#getLivingEnemies(world);
     const stompTarget = this.#findStompTarget(
       world.character,
       enemies,
       deltaTimeSeconds,
     );
-    const hit = stompTarget
+    return stompTarget
       ? this.#resolveStomp(world.character, stompTarget, world)
       : this.#resolveContact(world.character, enemies);
-    this.#removeDefeated(world);
-    return hit;
   }
 
   /**

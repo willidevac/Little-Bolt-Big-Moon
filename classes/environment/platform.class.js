@@ -12,6 +12,11 @@ export class Platform extends DrawableObject {
     super();
     if (platformData === undefined && tilesetConfig === undefined) return;
     this.#validatePlatformData(platformData, tilesetConfig);
+    this.#applyPlatformData(platformData, tilesetConfig);
+    this.loadSprite(tilesetConfig);
+  }
+
+  #applyPlatformData(platformData, tilesetConfig) {
     this.id = platformData.id;
     this.x = platformData.x;
     this.y = platformData.y;
@@ -22,7 +27,6 @@ export class Platform extends DrawableObject {
     this.tileFrames = Object.freeze([...platformData.tileFrames]);
     this.width = this.tileFrames.length * this.tileSize;
     this.height = this.tileSize;
-    this.loadSprite(tilesetConfig);
   }
 
   /**

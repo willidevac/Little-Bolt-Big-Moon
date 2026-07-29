@@ -96,7 +96,11 @@ export class Weapon {
   #createAttack(character) {
     const direction = Math.sign(character.facingDirection) || 1;
     const origin = this.#createOrigin(character, direction);
-    return Object.freeze({
+    return Object.freeze(this.#createAttackDetails(origin, direction));
+  }
+
+  #createAttackDetails(origin, direction) {
+    return {
       weaponId: this.id,
       type: this.type,
       damage: this.damage,
@@ -106,7 +110,7 @@ export class Weapon {
       hitbox: this.#createHitbox(origin, direction),
       animationState: this.animationState,
       animationDurationSeconds: this.animationDurationSeconds,
-    });
+    };
   }
 
   #createOrigin(character, direction) {

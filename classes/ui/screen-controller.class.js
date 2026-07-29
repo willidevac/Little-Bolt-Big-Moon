@@ -316,13 +316,17 @@ export class ScreenController {
     button.dataset.uiAction = "upgrade";
     button.dataset.upgradeId = upgrade.id;
     button.setAttribute("aria-label", this.#getUpgradeLabel(upgrade));
+    this.#appendUpgradeContent(button, upgrade);
+    return button;
+  }
+
+  #appendUpgradeContent(button, upgrade) {
     button.append(
       this.#createUpgradeIcon(upgrade),
       this.#createTextElement("strong", "upgrade-card__name", upgrade.name),
       this.#createTextElement("span", "upgrade-card__level", this.#getLevelText(upgrade)),
       this.#createTextElement("span", "upgrade-card__description", upgrade.description),
     );
-    return button;
   }
 
   #createUpgradeIcon(upgrade) {

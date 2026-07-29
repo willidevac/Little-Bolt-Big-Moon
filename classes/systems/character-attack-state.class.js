@@ -2,6 +2,7 @@
  * Speichert ausschließlich Bytes kurze Angriffsanimation.
  */
 export class CharacterAttackState {
+  /** Erstellt einen inaktiven Angriffsstatus. */
   constructor() {
     this.animationState = null;
     this.secondsRemaining = 0;

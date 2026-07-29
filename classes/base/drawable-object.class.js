@@ -8,6 +8,7 @@ const PLACEHOLDER_COLORS = Object.freeze({
  * Gemeinsame Grundlage für alle im Canvas gezeichneten Objekte.
  */
 export class DrawableObject {
+  /** Erstellt ein noch unsichtbares, neutrales Zeichenobjekt. */
   constructor() {
     this.x = 0;
     this.y = 0;

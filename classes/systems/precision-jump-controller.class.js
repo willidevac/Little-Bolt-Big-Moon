@@ -4,6 +4,7 @@ import { clamp } from "../../js/utils/math.js";
  * Lädt einen Sprung am Boden und liefert beim Loslassen seinen festen Impuls.
  */
 export class PrecisionJumpController {
+  /** Erstellt eine leere Sprungladung ohne Richtungswunsch. */
   constructor() {
     this.controlBonusSeconds = 0;
     this.reset();

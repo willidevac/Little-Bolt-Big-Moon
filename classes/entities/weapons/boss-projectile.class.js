@@ -50,13 +50,17 @@ export class BossProjectile extends Projectile {
     if (!visualConfig || !runtimeConfig) {
       throw new RangeError(`Unbekanntes Bossprojektil: ${attackEvent?.kind}`);
     }
-    super({
-      team: "enemy",
-      source: attackEvent.source,
-      damage: attackEvent.damage,
-      origin: attackEvent.origin,
-      direction: attackEvent.direction,
-    }, runtimeConfig, visualConfig);
+    super(createProjectileData(attackEvent), runtimeConfig, visualConfig);
     this.kind = attackEvent.kind;
   }
+}
+
+function createProjectileData(attackEvent) {
+  return {
+    team: "enemy",
+    source: attackEvent.source,
+    damage: attackEvent.damage,
+    origin: attackEvent.origin,
+    direction: attackEvent.direction,
+  };
 }
