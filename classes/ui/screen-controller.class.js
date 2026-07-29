@@ -119,6 +119,7 @@ export class ScreenController {
    */
   handleClick(event) {
     if (!(event.target instanceof Element)) return;
+    if (event.target.matches(SELECTORS.dialogs)) return this.closeDialog();
     const button = event.target.closest("button[data-ui-action]");
     if (!button || !this.root.contains(button)) return;
     this.actions[button.dataset.uiAction]?.(button);

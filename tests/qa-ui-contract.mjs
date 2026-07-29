@@ -86,6 +86,7 @@ function assertActionBindings(actionNames) {
   screenActions.forEach((action) => {
     assert.ok(hasActionKey(screenSource, action), `Aktion fehlt: ${action}`);
   });
+  assert.match(screenSource, /event\.target\.matches\(SELECTORS\.dialogs\)/);
   assert.match(storageSource, /boundMuteClick/);
   assert.match(storageSource, /addEventListener\("click", this\.boundMuteClick\)/);
 }
