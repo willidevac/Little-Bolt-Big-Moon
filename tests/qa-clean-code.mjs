@@ -70,6 +70,7 @@ function auditProductionFile(file, source, functions, isProductionFile) {
   return [
     ...auditDebugCode(file, source),
     ...auditNames(file, functions),
+    ...auditExportedClasses(file, source),
     ...auditJsDoc(file, source, functions),
   ];
 }
@@ -91,6 +92,15 @@ function auditNames(file, functions) {
 function isCamelCaseName(name) {
   if (name === "constructor") return true;
   return /^#?[a-z][A-Za-z0-9]*$/.test(name);
+}
+
+function auditExportedClasses(file, source) {
+  const pattern = /\bexport\s+class\s+([A-Za-z_$][\w$]*)/g;
+  return [...source.matchAll(pattern)].flatMap((match) => {
+    if (hasLeadingJsDoc(source, match.index)) return [];
+    const line = getLineNumber(source, match.index);
+    return [`${file}:${line} ${match[1]} hat kein Klassen-JSDoc`];
+  });
 }
 
 function auditJsDoc(file, source, functions) {

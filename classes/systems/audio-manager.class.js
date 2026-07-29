@@ -1,9 +1,9 @@
-/**
- * Lädt Musik und feste Effektpools und begrenzt deren Wiedergabe.
- */
 const createBrowserAudio = (source) => new Audio(source);
 const getCurrentTime = () => globalThis.performance?.now() ?? Date.now();
 
+/**
+ * Lädt Musik und feste Effektpools und begrenzt deren Wiedergabe.
+ */
 export class AudioManager {
   #effectPools = new Map();
   #musicTracks = new Map();
