@@ -1,7 +1,7 @@
 import { BackgroundZone } from "../environment/background-zone.class.js";
 
 /**
- * Verbindet die drei Kapitel eines Hauptgebiets zu einem langen Panorama.
+ * Zeichnet für jeden Levelabschnitt einen eigenen Hintergrund.
  */
 export class BackgroundRenderer {
   /**
@@ -12,7 +12,7 @@ export class BackgroundRenderer {
     this.#validateViewport(viewport);
     this.viewport = Object.freeze({ ...viewport });
     this.zones = Object.freeze(
-      this.#mergeBiomeSections(sections).map((zone) => {
+      this.#createSectionZones(sections).map((zone) => {
         return new BackgroundZone(zone);
       }),
     );
@@ -28,30 +28,27 @@ export class BackgroundRenderer {
     });
   }
 
-  #mergeBiomeSections(sections) {
+  #createSectionZones(sections) {
     if (!Array.isArray(sections) || sections.length === 0) {
       throw new TypeError("Die Hintergrundabschnitte fehlen.");
     }
-    const biomes = new Map();
-    sections.forEach((section) => {
-      const backgroundId = section?.backgroundId;
-      if (typeof backgroundId !== "string" || backgroundId.length === 0) {
-        throw new TypeError("Ein Levelabschnitt benötigt eine Hintergrund-ID.");
-      }
-      const existing = biomes.get(backgroundId);
-      if (!existing) {
-        biomes.set(backgroundId, {
-          id: backgroundId,
-          topY: section.topY,
-          bottomY: section.bottomY,
-          backgroundLayers: section.backgroundLayers,
-        });
-        return;
-      }
-      existing.topY = Math.min(existing.topY, section.topY);
-      existing.bottomY = Math.max(existing.bottomY, section.bottomY);
+    return sections.map((section) => {
+      this.#validateSection(section);
+      return {
+        id: section.id,
+        topY: section.topY,
+        bottomY: section.bottomY,
+        backgroundLayers: section.backgroundLayers,
+      };
     });
-    return [...biomes.values()];
+  }
+
+  #validateSection(section) {
+    const hasId = typeof section?.id === "string" && section.id.length > 0;
+    const hasLayers = Array.isArray(section?.backgroundLayers) &&
+      section.backgroundLayers.length > 0;
+    if (hasId && hasLayers) return;
+    throw new TypeError("Ein Levelabschnitt benötigt einen Hintergrund.");
   }
 
   #validateViewport(viewport) {

@@ -1,7 +1,9 @@
 # Asset-Herkunft und Lizenzierung
 
-Das Konzeptbild wurde mit OpenAI-Bildgenerierung erstellt. Es dient als
-Referenz und wird nicht unverändert als Spritesheet eingesetzt.
+Konzeptbilder und ausgewählte fertige Hintergründe wurden mit
+OpenAI-Bildgenerierung erstellt. Konzepte dienen als Referenz und werden nicht
+unverändert als Spritesheet eingesetzt. Direkt verwendete Hintergründe sind in
+`data/asset-credits.json` ausdrücklich als generierter Output gekennzeichnet.
 
 Die Produktionssprites werden anhand des Konzepts pixelgenau neu gestaltet,
 vereinheitlicht und manuell animiert. Dadurch dokumentieren wir einen
@@ -33,8 +35,8 @@ Rechtsberatung.
 
 | Lizenz-ID | Quelle | Verwendung |
 | --- | --- | --- |
-| `openai-generated-output` | OpenAI EU Terms | vorhandenes Konzept und Cover |
-| `openai-assisted-project-art` | OpenAI EU Terms plus dokumentierte manuelle Pixel-Art-Überarbeitung | neue Sprites, Tiles, Hintergründe und UI-Grafiken |
+| `openai-generated-output` | OpenAI EU Terms | Konzepte, Cover und direkt verwendete Raumhintergründe |
+| `openai-assisted-project-art` | OpenAI EU Terms plus dokumentierte manuelle Pixel-Art-Überarbeitung | neue Sprites, Tiles und UI-Grafiken |
 | `silkscreen-ofl-1.1` | offizielles Google-Fonts-Verzeichnis mit `OFL.txt` | lokale UI-Schrift Silkscreen Regular/Bold |
 
 Silkscreen wird ausschließlich aus

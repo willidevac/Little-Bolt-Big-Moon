@@ -116,7 +116,7 @@ function createSection(sectionData) {
   const backgroundLayers = [Object.freeze({
     source: getAssetPath(
       "backgrounds",
-      `${sectionData.backgroundId}-panorama-v2.png`,
+      `${sectionData.id}-background-v1.png`,
     ),
     frameWidth: 1024,
     frameHeight: 1536,
