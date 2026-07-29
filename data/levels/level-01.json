@@ -2256,6 +2256,107 @@
       ]
     },
     {
+      "id": "scrapyard-elite-01",
+      "x": 0,
+      "y": 134764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "scrapyard-elite-crawler-01",
+        "scrapyard-drone-02"
+      ]
+    },
+    {
+      "id": "factory-assembly-wave",
+      "x": 0,
+      "y": 114764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "factory-crawler-01",
+        "factory-drone-01"
+      ]
+    },
+    {
+      "id": "factory-smelter-elite",
+      "x": 0,
+      "y": 104764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "factory-elite-crawler-01",
+        "factory-drone-02"
+      ]
+    },
+    {
+      "id": "launch-tower-supply-wave",
+      "x": 0,
+      "y": 84764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "launch-drone-01",
+        "launch-drone-02"
+      ]
+    },
+    {
+      "id": "launch-tower-hull-elite",
+      "x": 0,
+      "y": 74764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "launch-elite-drone-01",
+        "launch-drone-03"
+      ]
+    },
+    {
+      "id": "space-station-cargo-wave",
+      "x": 0,
+      "y": 54764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "space-station-drone-01",
+        "space-station-drone-02"
+      ]
+    },
+    {
+      "id": "space-station-research-elite",
+      "x": 0,
+      "y": 44764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "space-station-elite-drone-01",
+        "space-station-drone-03",
+        "space-station-drone-04"
+      ]
+    },
+    {
+      "id": "moon-crater-wave",
+      "x": 0,
+      "y": 24764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "moon-drone-01",
+        "moon-drone-02"
+      ]
+    },
+    {
+      "id": "moon-ruins-elite",
+      "x": 0,
+      "y": 14764,
+      "width": 1280,
+      "height": 600,
+      "enemyIds": [
+        "moon-elite-drone-01",
+        "moon-drone-03",
+        "moon-drone-04"
+      ]
+    },
+    {
       "id": "scrapyard-biome-boss",
       "x": 0,
       "y": 119764,
@@ -2317,10 +2418,198 @@
     {
       "id": "factory-crawler-01",
       "type": "scrapCrawler",
-      "x": 608,
-      "y": 118208,
-      "patrolMinX": 512,
-      "patrolMaxX": 896
+      "x": 416,
+      "y": 114492,
+      "patrolMinX": 384,
+      "patrolMaxX": 576
+    },
+    {
+      "id": "scrapyard-elite-crawler-01",
+      "type": "scrapCrawler",
+      "isElite": true,
+      "x": 512,
+      "y": 135180,
+      "patrolMinX": 384,
+      "patrolMaxX": 896,
+      "startDirection": -1,
+      "combat": {
+        "speedPixelsPerSecond": 75,
+        "maximumHealth": 85,
+        "contactDamage": 20,
+        "attackCooldownSeconds": 0.9
+      }
+    },
+    {
+      "id": "scrapyard-drone-02",
+      "type": "droneGuard",
+      "x": 840,
+      "y": 134920,
+      "patrolMinX": 640,
+      "patrolMaxX": 1120,
+      "startDirection": -1
+    },
+    {
+      "id": "factory-drone-01",
+      "type": "droneGuard",
+      "x": 864,
+      "y": 114920,
+      "patrolMinX": 672,
+      "patrolMaxX": 1184,
+      "startDirection": -1
+    },
+    {
+      "id": "factory-elite-crawler-01",
+      "type": "scrapCrawler",
+      "isElite": true,
+      "x": 384,
+      "y": 105080,
+      "patrolMinX": 352,
+      "patrolMaxX": 544,
+      "combat": {
+        "speedPixelsPerSecond": 85,
+        "maximumHealth": 95,
+        "contactDamage": 22,
+        "attackCooldownSeconds": 0.85
+      }
+    },
+    {
+      "id": "factory-drone-02",
+      "type": "droneGuard",
+      "x": 160,
+      "y": 104920,
+      "patrolMinX": 96,
+      "patrolMaxX": 544
+    },
+    {
+      "id": "launch-drone-01",
+      "type": "droneGuard",
+      "x": 320,
+      "y": 84920,
+      "patrolMinX": 96,
+      "patrolMaxX": 576
+    },
+    {
+      "id": "launch-drone-02",
+      "type": "droneGuard",
+      "x": 864,
+      "y": 84920,
+      "patrolMinX": 704,
+      "patrolMaxX": 1184,
+      "startDirection": -1
+    },
+    {
+      "id": "launch-elite-drone-01",
+      "type": "droneGuard",
+      "isElite": true,
+      "x": 320,
+      "y": 74920,
+      "patrolMinX": 96,
+      "patrolMaxX": 608,
+      "combat": {
+        "speedPixelsPerSecond": 110,
+        "maximumHealth": 70,
+        "contactDamage": 24,
+        "attackCooldownSeconds": 1.1
+      }
+    },
+    {
+      "id": "launch-drone-03",
+      "type": "droneGuard",
+      "x": 896,
+      "y": 74920,
+      "patrolMinX": 672,
+      "patrolMaxX": 1184,
+      "startDirection": -1
+    },
+    {
+      "id": "space-station-drone-02",
+      "type": "droneGuard",
+      "x": 896,
+      "y": 54920,
+      "patrolMinX": 672,
+      "patrolMaxX": 1184,
+      "startDirection": -1
+    },
+    {
+      "id": "space-station-elite-drone-01",
+      "type": "droneGuard",
+      "isElite": true,
+      "x": 320,
+      "y": 44920,
+      "patrolMinX": 96,
+      "patrolMaxX": 608,
+      "combat": {
+        "speedPixelsPerSecond": 125,
+        "maximumHealth": 90,
+        "contactDamage": 26,
+        "attackCooldownSeconds": 0.95
+      }
+    },
+    {
+      "id": "space-station-drone-03",
+      "type": "droneGuard",
+      "x": 736,
+      "y": 44920,
+      "patrolMinX": 544,
+      "patrolMaxX": 992
+    },
+    {
+      "id": "space-station-drone-04",
+      "type": "droneGuard",
+      "x": 1056,
+      "y": 44920,
+      "patrolMinX": 896,
+      "patrolMaxX": 1216,
+      "startDirection": -1
+    },
+    {
+      "id": "moon-drone-01",
+      "type": "droneGuard",
+      "x": 320,
+      "y": 24920,
+      "patrolMinX": 96,
+      "patrolMaxX": 608
+    },
+    {
+      "id": "moon-drone-02",
+      "type": "droneGuard",
+      "x": 896,
+      "y": 24920,
+      "patrolMinX": 672,
+      "patrolMaxX": 1184,
+      "startDirection": -1
+    },
+    {
+      "id": "moon-elite-drone-01",
+      "type": "droneGuard",
+      "isElite": true,
+      "x": 320,
+      "y": 14920,
+      "patrolMinX": 96,
+      "patrolMaxX": 608,
+      "combat": {
+        "speedPixelsPerSecond": 140,
+        "maximumHealth": 110,
+        "contactDamage": 28,
+        "attackCooldownSeconds": 0.85
+      }
+    },
+    {
+      "id": "moon-drone-03",
+      "type": "droneGuard",
+      "x": 736,
+      "y": 14920,
+      "patrolMinX": 544,
+      "patrolMaxX": 992
+    },
+    {
+      "id": "moon-drone-04",
+      "type": "droneGuard",
+      "x": 1056,
+      "y": 14920,
+      "patrolMinX": 896,
+      "patrolMaxX": 1216,
+      "startDirection": -1
     },
     {
       "id": "scrapyard-breaker-01",
@@ -2380,7 +2669,7 @@
       "id": "space-station-drone-01",
       "type": "droneGuard",
       "x": 384,
-      "y": 57288,
+      "y": 54920,
       "patrolMinX": 320,
       "patrolMaxX": 704,
       "startDirection": -1

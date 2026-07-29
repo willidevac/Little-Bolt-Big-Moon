@@ -13,6 +13,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "links-dialoge", file: "tests/qa-ui-contract.mjs" }),
   Object.freeze({ id: "waffenlauf", file: "tests/qa-weapon-run.mjs" }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
+  Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
 ]);
 
 const results = CHECKS.map(runCheck);

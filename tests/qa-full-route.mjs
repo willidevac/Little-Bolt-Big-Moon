@@ -324,11 +324,14 @@ const factoryAnchors = [
     .filter(({ id }) => id.startsWith("factory-"))
     .map(({ id, x, y }) => ({ id, x, y, width: 64 })),
   ...levelData.enemies
-    .filter(({ id }) => id.startsWith("factory-"))
+    .filter(({ id, type }) => {
+      return id.startsWith("factory-") && type === "scrapCrawler";
+    })
     .map(({ id, x, y }) => ({ id, x, y, width: 96 })),
 ];
+const factoryPlatforms = route.filter(({ y }) => y >= 90000 && y < 120000);
 factoryAnchors.forEach((anchor) => {
-  const support = fourthSectionPlatforms.find((platform) => {
+  const support = factoryPlatforms.find((platform) => {
     const overlaps = anchor.x < platform.x + platformWidths[platform.type] &&
       anchor.x + anchor.width > platform.x;
     return platform.y === anchor.y + 64 && overlaps;

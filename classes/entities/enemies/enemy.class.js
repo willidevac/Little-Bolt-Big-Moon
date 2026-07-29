@@ -41,12 +41,25 @@ export class Enemy extends MovableObject {
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
+    context.save();
+    this.#applyEliteGlow(context);
+    this.#drawFacingDirection(context);
+    context.restore();
+  }
+
+  #drawFacingDirection(context) {
     if (this.facingDirection >= 0) return super.draw(context);
     context.save();
     context.translate(this.x + this.width, this.y);
     context.scale(-1, 1);
     this.drawCurrentFrame(context, 0, 0, this.width, this.height);
     context.restore();
+  }
+
+  #applyEliteGlow(context) {
+    if (!this.isElite) return;
+    context.shadowColor = "#ff9b32";
+    context.shadowBlur = 14;
   }
 
   /**
@@ -221,6 +234,7 @@ export class Enemy extends MovableObject {
   }
 
   #setBossData(data) {
+    this.isElite = Boolean(data.isElite);
     this.isBoss = Boolean(data.isBoss);
     this.bossName = data.bossName ?? "";
     this.isFinalBoss = Boolean(data.isFinalBoss);
