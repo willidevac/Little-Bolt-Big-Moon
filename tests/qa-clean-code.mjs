@@ -71,6 +71,7 @@ function auditProductionFile(file, source, functions, isProductionFile) {
     ...auditDebugCode(file, source),
     ...auditNames(file, functions),
     ...auditExportedClasses(file, source),
+    ...auditFunctionSpacing(file, source, functions),
     ...auditJsDoc(file, source, functions),
   ];
 }
@@ -101,6 +102,35 @@ function auditExportedClasses(file, source) {
     const line = getLineNumber(source, match.index);
     return [`${file}:${line} ${match[1]} hat kein Klassen-JSDoc`];
   });
+}
+
+function auditFunctionSpacing(file, source, functions) {
+  const classRanges = findClassRanges(maskNonCode(source));
+  return classRanges.flatMap((range) => {
+    const methods = functions.filter((entry) => {
+      return entry.kind === "method"
+        && entry.bodyIndex > range.bodyIndex
+        && entry.bodyIndex < range.endIndex;
+    });
+    return auditSpacingGroup(file, source, methods);
+  });
+}
+
+function auditSpacingGroup(file, source, functions) {
+  return functions.slice(1).flatMap((entry, index) => {
+    const previous = functions[index];
+    const anchor = getDocumentationStart(source, entry.startIndex);
+    const breaks = source.slice(previous.endIndex + 1, anchor).match(/\n/g)?.length ?? 0;
+    if (breaks === 2 || breaks === 3) return [];
+    return [`${file}:${entry.startLine} benötigt 1–2 Leerzeilen Abstand`];
+  });
+}
+
+function getDocumentationStart(source, startIndex) {
+  if (!hasLeadingJsDoc(source, startIndex)) return startIndex;
+  const lineStart = source.lastIndexOf("\n", startIndex) + 1;
+  const before = source.slice(0, lineStart).trimEnd();
+  return before.lastIndexOf("/**");
 }
 
 function auditJsDoc(file, source, functions) {
@@ -157,6 +187,7 @@ function createFunction(code, startIndex, bodyIndex, kind, name = "anonymous") {
     kind,
     startIndex,
     bodyIndex,
+    endIndex,
     startLine: getLineNumber(code, startIndex),
     endLine: getLineNumber(code, endIndex),
   };

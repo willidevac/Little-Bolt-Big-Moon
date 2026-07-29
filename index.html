@@ -226,6 +226,64 @@
         </div>
       </section>
 
+      <nav
+        class="touch-controls"
+        aria-label="Touch-Steuerung"
+        data-touch-controls
+        hidden
+      >
+        <div class="touch-controls__group touch-controls__group--move">
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach links laufen"
+            aria-pressed="false"
+            data-input-action="left"
+          >
+            ◀
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach rechts laufen"
+            aria-pressed="false"
+            data-input-action="right"
+          >
+            ▶
+          </button>
+        </div>
+
+        <div class="touch-controls__group touch-controls__group--action">
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Sprung laden und beim Loslassen springen"
+            aria-pressed="false"
+            data-input-action="jump"
+          >
+            ↑
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Angreifen"
+            aria-pressed="false"
+            data-input-action="attack"
+          >
+            F
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Waffe wechseln"
+            aria-pressed="false"
+            data-input-action="weaponSwitch"
+          >
+            Q
+          </button>
+        </div>
+      </nav>
+
       <section
         class="game-screen start-screen"
         aria-labelledby="game-title"

@@ -44,6 +44,7 @@ export class RunStats {
     this.#bossSignature = "";
     this.#notifyChange();
   }
+
   /**
    * Registriert eine Anzeige und liefert ihre Abmeldefunktion.
    * @param {(snapshot: Readonly<object>) => void} listener
@@ -80,6 +81,7 @@ export class RunStats {
   updateTime(deltaTimeSeconds) {
     this.#score.updateTime(deltaTimeSeconds);
   }
+
   /**
    * Rechnet neue Funde gesammelt auf die passenden Laufwerte.
    * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
@@ -96,6 +98,7 @@ export class RunStats {
     if (changed) this.#notifyChange();
     return changed;
   }
+
   /**
    * Bewertet jeden besiegten Gegner anhand seiner eindeutigen ID genau einmal.
    * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
@@ -106,6 +109,7 @@ export class RunStats {
     if (changed) this.#notifyChange();
     return changed;
   }
+
   /**
    * Bewertet jede abgeschlossene Kampfphase genau einmal.
    * @param {ReadonlyArray<string>} phaseIds
@@ -116,6 +120,7 @@ export class RunStats {
     if (changed) this.#notifyChange();
     return changed;
   }
+
   /**
    * Ergänzt am Laufende Restenergie und bei Sieg den Zeitbonus genau einmal.
    * @param {boolean} isVictory
@@ -127,6 +132,7 @@ export class RunStats {
     this.#notifyChange();
     return true;
   }
+
   /**
    * Zieht Trefferenergie ab und liefert den verbleibenden Wert.
    * @param {number} amount
@@ -142,6 +148,7 @@ export class RunStats {
     this.#notifyChange();
     return this.energy;
   }
+
   /**
    * Verbraucht Bolzen nur, wenn die angeforderte Menge vorhanden ist.
    * @param {number} amount
@@ -157,6 +164,7 @@ export class RunStats {
     this.#notifyChange();
     return true;
   }
+
   /**
    * Vergrößert Bytes Batterie und repariert den neu gewonnenen Bereich.
    * @param {number} amount
@@ -167,6 +175,7 @@ export class RunStats {
     this.energy = clamp(this.energy + amount, 0, this.maximumEnergy);
     this.#notifyChange();
   }
+
   /**
    * Vergrößert das Magazin und füllt die neuen Plätze sofort.
    * @param {number} amount

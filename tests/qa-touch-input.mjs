@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 import { Keyboard } from "../classes/input/keyboard.class.js";
 
 class FakeClassList {
@@ -36,7 +37,13 @@ class FakeElement {
     const descendants = this.children.flatMap((child) => {
       return [child, ...child.querySelectorAll(selector)];
     });
+    if (selector === TOUCH_SELECTOR) return descendants.filter(hasTouchData);
+    if (selector === BUTTON_SELECTOR) return descendants.filter(isInputButton);
     return selector === "button" ? descendants.filter(isButton) : [];
+  }
+
+  querySelector(selector) {
+    return this.querySelectorAll(selector)[0] ?? null;
   }
 
   addEventListener(type, listener) {
@@ -73,10 +80,14 @@ globalThis.HTMLElement = FakeElement;
 const { TouchControls } = await import(
   "../classes/input/touch-controls.class.js"
 );
+const TOUCH_SELECTOR = "[data-touch-controls]";
+const BUTTON_SELECTOR = "button[data-input-action]";
 const document = {
   createElement: (tagName) => new FakeElement(tagName, document),
 };
 const root = new FakeElement("main", document);
+const touchElement = createTouchElement(document);
+root.append(touchElement);
 const keyboard = new Keyboard(new EventTarget());
 let stateListener = null;
 const game = {
@@ -111,10 +122,39 @@ assert.equal(blocksDefault(controls, root), false);
 controls.destroy();
 
 assertKeyboardPath(keyboard);
+await assertStaticTouchMarkup();
 console.log("QA-002: Tastatur und mehrere Touchfinger funktionieren.");
 
 function isButton(element) {
   return element.tagName === "BUTTON";
+}
+
+function isInputButton(element) {
+  return isButton(element) && Boolean(element.dataset.inputAction);
+}
+
+function hasTouchData(element) {
+  return Object.hasOwn(element.dataset, "touchControls");
+}
+
+function createTouchElement(ownerDocument) {
+  const controls = new FakeElement("nav", ownerDocument);
+  controls.dataset.touchControls = "";
+  ["left", "right", "jump", "attack", "weaponSwitch"].forEach((action) => {
+    const button = new FakeElement("button", ownerDocument);
+    button.dataset.inputAction = action;
+    controls.append(button);
+  });
+  return controls;
+}
+
+async function assertStaticTouchMarkup() {
+  const html = await fs.readFile("index.html", "utf8");
+  const source = await fs.readFile("classes/input/touch-controls.class.js", "utf8");
+  const actions = [...html.matchAll(/data-input-action="([^"]+)"/g)];
+  assert.equal(actions.length, 5);
+  assert.match(html, /<nav[\s\S]*?data-touch-controls[\s\S]*?<\/nav>/);
+  assert.doesNotMatch(source, /createElement/);
 }
 
 function createPointer(target, pointerId, pointerType = "touch", button = 0) {

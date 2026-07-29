@@ -5,7 +5,7 @@
 > Ein kleiner aussortierter Roboter. Ein riesiger Turm. Ein Freund, der auf
 > dem Mond wartet.
 
-**Little Bolt, Big Moon** wird ein schwieriges vertikales
+**Little Bolt, Big Moon** ist ein schwieriges vertikales
 2D-Präzisionsspiel für HTML5 Canvas. Byte klettert vom Schrottplatz durch
 eine verlassene Fabrik, über den Wolken und durch eine alte Raumstation bis
 zum Mond. Ein falscher Sprung oder ein gegnerischer Treffer kann ihn mehrere
@@ -17,7 +17,7 @@ Der Spieler bewegt Byte innerhalb einer hohen, zusammenhängenden Welt nach
 oben. Statt klassisch nach rechts zu laufen, stehen präzise Sprünge, der
 Umgang mit großer Fallhöhe und offene Gegnerphasen im Mittelpunkt.
 
-Der geplante Spielablauf:
+Der Spielablauf:
 
 1. Plattformen erklimmen und riskante Sprünge meistern
 2. Zahnräder, Energiezellen und neue Waffen finden
@@ -38,16 +38,17 @@ Produktionsanlagen, das geteilte Mondabzeichen und Lumas blaues Signal
 erzählen während des Aufstiegs, was zwischen den beiden Robotern passiert
 ist.
 
-## Geplante Features
+## Features
 
-- vertikale Welt mit ungefähr 8.000 Pixeln Höhe
+- zusammenhängende vertikale Welt mit 150.000 Pixeln Höhe
+- fünf Biome mit insgesamt 15 unterschiedlich gebauten Abschnitten
 - Kamera, die Byte beim Aufstieg und Fallen begleitet
-- präzise Sprungphysik mit Coyote Time und Jump Buffer
+- aufladbarer Präzisionssprung ohne nachträgliche Luftsteuerung
 - statische, bewegliche und fallende Plattformen
-- zwei normale Gegnertypen und ein Endboss
+- zwei normale Gegnertypen, Zwischenbosse und ein Endboss
 - Rückstoß durch Gegner und Projektile
-- Nahkampfwaffe und zwei auffindbare Fernkampfwaffen
-- zufällige Upgrade-Auswahl nach Gegnerphasen
+- Schraubenschlüssel und auffindbarer Bolzenwerfer
+- wählbare Verbesserungen nach bestandenen Gegnerphasen
 - lokale Highscore- und Höhenauswertung
 - Desktop- und Touchsteuerung im Querformat
 - Start-, Gewinn- und Game-over-Bildschirm
@@ -85,9 +86,19 @@ kleiner Einstiegspunkt und enthält keine Gameplaylogik.
 
 ## Projektstatus
 
-Das Projekt befindet sich aktuell in der Design- und Assetphase. Das
-visuelle Konzept, die Projektstruktur und das Gamecover stehen bereits.
-Sound wird bewusst erst nach der visuellen Assetphase bearbeitet.
+Das Spiel ist vom Startbildschirm bis zum Ende spielbar. Der aktuelle Stand
+ist ein Release-Kandidat: Gameplay, Gegner, Upgrades, Audio, responsive
+Steuerung und Abschlusssequenz sind umgesetzt. Vor der Veröffentlichung
+werden die Pflicht-Checkliste und das Balancing vollständig geprüft.
+
+## Extras über die Pflichtanforderungen
+
+- 150.000 Pixel hohe Präzisionswelt statt eines kurzen Einzellevels
+- 15 Abschnitte mit eigenen Sprungmustern und biomeabhängiger Schwierigkeit
+- Zwischenboss-Sperren mit Statusanzeige zwischen den großen Gebieten
+- auffindbare Waffe, Waffenwechsel und dauerhafte Verbesserungen im Lauf
+- wortlose Umweltgeschichte vom Schrottplatz bis zum Mond
+- lokal gespeicherte Rekorde sowie getrennte Musik- und Effektlautstärke
 
 ## Dokumentation
 
@@ -99,6 +110,7 @@ Sound wird bewusst erst nach der visuellen Assetphase bearbeitet.
 
 ## Asset-Hinweis
 
-Das visuelle Konzept und das Gamecover wurden mit OpenAI-Bildgenerierung
-erstellt und für dieses Projekt dokumentiert. Die späteren Produktionssprites
-werden anhand des Konzepts pixelgenau neu gestaltet und manuell animiert.
+Das visuelle Konzept, das Gamecover und die Produktionsgrafiken wurden mit
+OpenAI-Bildgenerierung erstellt, für das Spiel aufbereitet und im Projekt
+dokumentiert. Herkunft und Nutzung aller eingebundenen Assets stehen in der
+Lizenzdokumentation und in den Assetnachweisen.

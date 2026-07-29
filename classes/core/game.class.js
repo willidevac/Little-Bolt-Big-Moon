@@ -191,6 +191,7 @@ export class Game {
    * @returns {boolean}
    */
   win() { return this.#finishGame(GAME_STATES.WON); }
+
   /**
    * Friert die Welt nach einer Niederlage ein.
    * @returns {boolean}
@@ -345,6 +346,7 @@ export class Game {
   #notifyStateChange() {
     this.#stateListeners.forEach((listener) => listener(this.state));
   }
+
   /**
    * Überträgt Weltposition und neue Funde in die Laufwerte.
    */
@@ -360,6 +362,7 @@ export class Game {
   #handleStateInput() {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
+
   #openWaveUpgrade() {
     if (!this.#isPlaying() || !this.upgradeFlow.openFrom(this.world)) return;
     this.keyboard.reset();
@@ -372,6 +375,7 @@ export class Game {
   #isPlaying() {
     return this.#stateMachine.is(GAME_STATES.PLAYING);
   }
+
   /**
    * Setzt einen Endzustand nur aus dem laufenden Spiel.
    * @param {string} endState
@@ -384,6 +388,7 @@ export class Game {
     this.gameCanvas.setLoopState("paused");
     return this.#setGameState(endState);
   }
+
   #handleDeathZone() {
     if (this.world.character?.die()) {
       this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);

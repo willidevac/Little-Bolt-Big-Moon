@@ -16,6 +16,10 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),
   Object.freeze({ id: "storysequenzen", file: "tests/qa-story-sequences.mjs" }),
+  Object.freeze({
+    id: "weiterbildungs-checkliste",
+    file: "tests/qa-course-checklist.mjs",
+  }),
 ]);
 
 const results = CHECKS.map(runCheck);

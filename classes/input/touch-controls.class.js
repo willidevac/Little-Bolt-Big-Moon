@@ -1,16 +1,12 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 
-const BUTTONS = Object.freeze([
-  Object.freeze({ action: "left", label: "Nach links laufen", symbol: "◀", group: "move" }),
-  Object.freeze({ action: "right", label: "Nach rechts laufen", symbol: "▶", group: "move" }),
-  Object.freeze({
-    action: "jump",
-    label: "Sprung laden und beim Loslassen springen",
-    symbol: "↑",
-    group: "action",
-  }),
-  Object.freeze({ action: "attack", label: "Angreifen", symbol: "F", group: "action" }),
-  Object.freeze({ action: "weaponSwitch", label: "Waffe wechseln", symbol: "Q", group: "action" }),
+const TOUCH_CONTROLS_SELECTOR = "[data-touch-controls]";
+const REQUIRED_ACTIONS = Object.freeze([
+  "left",
+  "right",
+  "jump",
+  "attack",
+  "weaponSwitch",
 ]);
 
 const POINTER_END_EVENTS = Object.freeze([
@@ -20,7 +16,7 @@ const POINTER_END_EVENTS = Object.freeze([
 ]);
 
 /**
- * Erstellt mobile Steuerbuttons und verwaltet mehrere Finger gleichzeitig.
+ * Verbindet statische mobile Steuerbuttons mit mehreren Fingern gleichzeitig.
  */
 export class TouchControls {
   #activePointers;
@@ -35,13 +31,13 @@ export class TouchControls {
     this.input = game.keyboard;
     this.root = root;
     this.#activePointers = new Map();
-    this.element = this.#createElement(root.ownerDocument);
-    this.buttons = [...this.element.querySelectorAll("button")];
+    this.element = this.#getElement(root);
+    this.buttons = [...this.element.querySelectorAll("button[data-input-action]")];
+    this.#validateButtons();
     this.unsubscribe = null;
     this.boundPointerDown = this.handlePointerDown.bind(this);
     this.boundPointerEnd = this.handlePointerEnd.bind(this);
     this.boundBlockDefault = this.blockControlDefault.bind(this);
-    root.append(this.element);
   }
 
   /**
@@ -160,37 +156,18 @@ export class TouchControls {
     return `pointer:${pointerId}`;
   }
 
-  #createElement(document) {
-    const controls = document.createElement("nav");
-    controls.className = "touch-controls";
-    controls.dataset.touchControls = "";
-    controls.setAttribute("aria-label", "Touch-Steuerung");
-    controls.hidden = true;
-    controls.append(
-      this.#createGroup(document, "move"),
-      this.#createGroup(document, "action"),
-    );
-    return controls;
+  #getElement(root) {
+    const element = root.querySelector(TOUCH_CONTROLS_SELECTOR);
+    if (element instanceof HTMLElement) return element;
+    throw new Error("Statische Touch-Steuerung wurde nicht gefunden.");
   }
 
-  #createGroup(document, groupName) {
-    const group = document.createElement("div");
-    group.className = `touch-controls__group touch-controls__group--${groupName}`;
-    BUTTONS.filter(({ group: name }) => name === groupName).forEach((definition) => {
-      group.append(this.#createButton(document, definition));
-    });
-    return group;
-  }
-
-  #createButton(document, definition) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "touch-control";
-    button.dataset.inputAction = definition.action;
-    button.setAttribute("aria-label", definition.label);
-    button.setAttribute("aria-pressed", "false");
-    button.textContent = definition.symbol;
-    return button;
+  #validateButtons() {
+    const actions = this.buttons.map((button) => button.dataset.inputAction);
+    const uniqueActions = new Set(actions);
+    const isComplete = REQUIRED_ACTIONS.every((action) => uniqueActions.has(action));
+    if (actions.length === REQUIRED_ACTIONS.length && isComplete) return;
+    throw new Error("Touch-Steuerung ist unvollständig oder doppelt.");
   }
 
   #validateDependencies(game, root) {

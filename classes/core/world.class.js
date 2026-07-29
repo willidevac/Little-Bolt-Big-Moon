@@ -11,10 +11,7 @@ import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
-import {
-  GameplayEventHub,
-  GAMEPLAY_EVENTS,
-} from "./gameplay-event-hub.class.js";
+import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 
@@ -256,6 +253,7 @@ export class World {
     this.camera.reset();
     this.isInitialized = false;
   }
+
   #createGroupMap(CollectionType) {
     return new Map(ENTITY_GROUP_NAMES.map((name) => [name, new CollectionType()]));
   }
@@ -286,6 +284,7 @@ export class World {
     Object.assign(platform, FALLBACK_PLATFORM_BOUNDS);
     this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
+
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
     const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
     this.#collisionManager.resolvePlatformLandings(
