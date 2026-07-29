@@ -286,6 +286,13 @@ Verbindliche Merkmale:
 | Masterdatei | `img/concepts/approvals/story-props-master-v1.png` |
 | Produktionsraster | je nach Objekt 64 × 64, 64 × 96 oder 96 × 64 px |
 
+Eingesetzte Runtime-Dateien:
+
+- `img/sprites/props/empty-luma-cradle.png`
+- `img/sprites/props/factory-duo-poster.png`
+- `img/sprites/props/luma-cargo-crate.png`
+- `img/sprites/props/blue-signal-beacon.png`
+
 Verbindliche Merkmale:
 
 - Die Transporthalterung besteht aus zwei sichtbar verbundenen Plätzen. Bytes

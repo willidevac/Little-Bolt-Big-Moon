@@ -28,6 +28,7 @@ const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
 const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
+  WORLD_ENTITY_GROUPS.DECORATIONS,
   WORLD_ENTITY_GROUPS.CHARACTERS,
   WORLD_ENTITY_GROUPS.ENEMIES,
   WORLD_ENTITY_GROUPS.PROJECTILES,
@@ -101,6 +102,7 @@ export class World {
   initialize() {
     if (this.isInitialized) return false;
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
+    this.#addLevelEntities(WORLD_ENTITY_GROUPS.DECORATIONS, "storyProps");
     this.waveManager.initialize(this);
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.COLLECTABLES, "collectables");
     this.#addLevelEntities(WORLD_ENTITY_GROUPS.HAZARDS, "hazards");

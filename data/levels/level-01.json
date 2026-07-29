@@ -2705,6 +2705,44 @@
       "startDirection": -1
     }
   ],
+  "storyProps": [
+    {
+      "id": "story-empty-luma-cradle",
+      "type": "emptyLumaCradle",
+      "x": 64,
+      "y": 149712
+    },
+    {
+      "id": "story-factory-duo-poster",
+      "type": "factoryDuoPoster",
+      "x": 1088,
+      "y": 117372
+    },
+    {
+      "id": "story-luma-cargo-crate",
+      "type": "lumaCargoCrate",
+      "x": 672,
+      "y": 88296
+    },
+    {
+      "id": "story-luma-badge-half",
+      "type": "lumaBadgeHalf",
+      "x": 64,
+      "y": 44920
+    },
+    {
+      "id": "story-blue-signal-beacon",
+      "type": "blueSignalBeacon",
+      "x": 1088,
+      "y": 34800
+    },
+    {
+      "id": "story-powered-off-luma",
+      "type": "poweredOffLuma",
+      "x": 816,
+      "y": 728
+    }
+  ],
   "hazards": [
     { "id": "scrapyard-electric-01", "damage": 20, "x": 672, "y": 149776 }
   ],

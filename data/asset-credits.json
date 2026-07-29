@@ -186,6 +186,46 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "empty-luma-cradle-runtime",
+      "file": "img/sprites/props/empty-luma-cradle.png",
+      "role": "runtime-wordless-story-cradle",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved story-props master as reference",
+      "created": "2026-07-29",
+      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 96x64 runtime frame.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "factory-duo-poster-runtime",
+      "file": "img/sprites/props/factory-duo-poster.png",
+      "role": "runtime-wordless-story-poster",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved story-props master as reference",
+      "created": "2026-07-29",
+      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 64x96 runtime frame.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "luma-cargo-crate-runtime",
+      "file": "img/sprites/props/luma-cargo-crate.png",
+      "role": "runtime-wordless-story-cargo-crate",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved story-props master as reference",
+      "created": "2026-07-29",
+      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 64x64 runtime frame.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "blue-signal-beacon-runtime",
+      "file": "img/sprites/props/blue-signal-beacon.png",
+      "role": "runtime-wordless-story-signal",
+      "status": "present",
+      "origin": "OpenAI image generation using the approved story-props master as reference",
+      "created": "2026-07-29",
+      "modifications": "Chroma key removed, four equal frames isolated and resized with JavaScript/Node processing to a 256x96 runtime sheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "gameplay-vfx-master-v1",
       "file": "img/concepts/approvals/gameplay-vfx-master-v1.png",
       "role": "approved-gameplay-vfx-design-reference",

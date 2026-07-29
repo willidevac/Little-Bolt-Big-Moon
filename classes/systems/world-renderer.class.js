@@ -3,6 +3,7 @@ import { CollisionDebugRenderer } from "./collision-debug-renderer.class.js";
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 const DRAW_ORDER = Object.freeze([
+  WORLD_ENTITY_GROUPS.DECORATIONS,
   WORLD_ENTITY_GROUPS.PLATFORMS,
   WORLD_ENTITY_GROUPS.HAZARDS,
   WORLD_ENTITY_GROUPS.COLLECTABLES,

@@ -5,11 +5,13 @@ import { FallingPlatform } from "../../classes/environment/falling-platform.clas
 import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
+import { StoryProp } from "../../classes/environment/story-prop.class.js";
 import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
 import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js";
 import { PlatformRouteBuilder } from "../../classes/systems/platform-route-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
+import { STORY_PROP_CONFIGS } from "../config/story-prop-config.js";
 
 const ENEMY_CLASSES = Object.freeze({
   scrapCrawler: ScrapCrawler,
@@ -55,12 +57,19 @@ function createLevelData(enemyConfig, platformData) {
     height: levelData.height,
     playerStart: Object.freeze({ ...levelData.playerStart }),
     sections: Object.freeze(levelData.sections.map(createSection)),
+    ...createLevelEntities(enemyConfig, platformData),
+  });
+}
+
+function createLevelEntities(enemyConfig, platformData) {
+  return {
     platforms: Object.freeze(platformData.map(createPlatform)),
     collectables: Object.freeze(levelData.collectables.map(createCollectable)),
+    storyProps: Object.freeze(levelData.storyProps.map(createStoryProp)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
     enemies: Object.freeze(createEnemies(enemyConfig)),
-  });
+  };
 }
 
 function createEnemies(enemyConfig) {
@@ -92,6 +101,12 @@ function createEnemyConfig(enemyData, enemyConfig) {
 
 function createCollectable(collectableData) {
   return new CollectableObject(collectableData);
+}
+
+function createStoryProp(propData) {
+  const config = STORY_PROP_CONFIGS[propData.type];
+  if (config) return new StoryProp(propData, config);
+  throw new RangeError(`Unbekanntes Storyobjekt: ${propData.type}`);
 }
 
 function createHazard(hazardData) {
@@ -145,6 +160,7 @@ function validateLevelData(data) {
 function hasValidCollections(data) {
   const hasCollections = Array.isArray(data?.sections) &&
     Array.isArray(data?.collectables) &&
+    Array.isArray(data?.storyProps) &&
     Array.isArray(data?.hazards) &&
     Array.isArray(data?.combatZones) &&
     Array.isArray(data?.enemies) &&
