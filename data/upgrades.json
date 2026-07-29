@@ -25,7 +25,7 @@
     {
       "id": "ammoCapacity",
       "name": "Größeres Magazin",
-      "description": "Byte kann 4 weitere Bolzen tragen und erhält sofort 4 Bolzen.",
+      "description": "Byte erhält 4 Bolzenplätze und einen Platz für Lichtbogen-Ladungen. Beide werden sofort gefüllt.",
       "value": 4,
       "maxLevel": 5,
       "iconFrame": 2

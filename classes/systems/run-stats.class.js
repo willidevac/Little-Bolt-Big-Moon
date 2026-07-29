@@ -5,7 +5,14 @@ const STAT_BY_PICKUP_TYPE = Object.freeze({
   gear: "gears",
   energy: "energy",
   ammo: "ammo",
+  arcCharge: "arcCharges",
 });
+const CAPACITY_BY_STAT = Object.freeze({
+  energy: "maximumEnergy",
+  ammo: "maximumAmmo",
+  arcCharges: "maximumArcCharges",
+});
+const SPENDABLE_PICKUP_TYPES = Object.freeze(["ammo", "arcCharge"]);
 const NON_STAT_PICKUP_TYPES = Object.freeze(["weapon"]);
 /**
  * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
@@ -32,15 +39,15 @@ export class RunStats {
    */
   reset(startY = this.startY) {
     this.#validateStartY(startY);
-    this.startY = startY;
-    this.maximumEnergy = this.config.maximumEnergy;
-    this.maximumAmmo = this.config.maximumAmmo;
-    this.energy = this.config.startingEnergy;
-    this.ammo = this.config.startingAmmo;
-    this.gears = this.config.startingGears;
-    this.heightMeters = 0;
+    Object.assign(this, {
+      startY, maximumEnergy: this.config.maximumEnergy,
+      maximumAmmo: this.config.maximumAmmo,
+      maximumArcCharges: this.config.maximumArcCharges,
+      energy: this.config.startingEnergy, ammo: this.config.startingAmmo,
+      arcCharges: this.config.startingArcCharges, gears: this.config.startingGears,
+      heightMeters: 0, boss: null,
+    });
     this.#score.reset();
-    this.boss = null;
     this.#bossSignature = "";
     this.#notifyChange();
   }
@@ -155,14 +162,25 @@ export class RunStats {
    * @returns {boolean}
    */
   spendAmmo(amount) {
-    if (!Number.isInteger(amount) || amount < 0) {
-      throw new TypeError("Der Munitionsverbrauch muss eine ganze Zahl sein.");
-    }
-    if (amount > this.ammo) return false;
+    return this.spendResource("ammo", amount);
+  }
+
+  /** Verbraucht genau die Munitionsart der aktiven Waffe. */
+  spendResource(type, amount) {
+    const statName = STAT_BY_PICKUP_TYPE[type];
+    this.#validateResourceSpend(type, amount);
+    if (amount > this[statName]) return false;
     if (amount === 0) return true;
-    this.ammo -= amount;
+    this[statName] -= amount;
     this.#notifyChange();
     return true;
+  }
+
+  /** Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff. */
+  getResourceAmount(type) {
+    const statName = STAT_BY_PICKUP_TYPE[type];
+    if (SPENDABLE_PICKUP_TYPES.includes(type)) return this[statName];
+    throw new RangeError(`Unbekannte Munitionsart: ${type}`);
   }
 
   /**
@@ -184,6 +202,21 @@ export class RunStats {
     this.#validateUpgradeAmount(amount);
     this.maximumAmmo += amount;
     this.ammo = clamp(this.ammo + amount, 0, this.maximumAmmo);
+    this.#notifyChange();
+  }
+
+  /**
+   * Vergrößert den Ladungsspeicher und füllt den neuen Platz sofort.
+   * @param {number} amount
+   */
+  increaseArcChargeCapacity(amount) {
+    this.#validateUpgradeAmount(amount);
+    this.maximumArcCharges += amount;
+    this.arcCharges = clamp(
+      this.arcCharges + amount,
+      0,
+      this.maximumArcCharges,
+    );
     this.#notifyChange();
   }
 
@@ -212,6 +245,7 @@ export class RunStats {
       maximumEnergy: this.maximumEnergy,
       ammo: this.ammo,
       maximumAmmo: this.maximumAmmo,
+      arcCharges: this.arcCharges,
       gears: this.gears,
       heightMeters: this.heightMeters,
       score: this.#score.value,
@@ -246,8 +280,10 @@ export class RunStats {
     return [
       config?.maximumEnergy,
       config?.maximumAmmo,
+      config?.maximumArcCharges,
       config?.startingEnergy,
       config?.startingAmmo,
+      config?.startingArcCharges,
       config?.startingGears,
       config?.startingScore,
       config?.heightPixelsPerMeter,
@@ -270,11 +306,16 @@ export class RunStats {
    * @param {Readonly<object>} config
    */
   validateAmmo(config) {
-    const hasIntegers = Number.isInteger(config.startingAmmo) &&
-      Number.isInteger(config.maximumAmmo);
-    if (hasIntegers && config.maximumAmmo > 0 &&
-      config.startingAmmo <= config.maximumAmmo) return;
-    throw new RangeError("Die Startmunition liegt außerhalb der Magazingrenze.");
+    this.#validateResourceRange(
+      config.startingAmmo,
+      config.maximumAmmo,
+      "Die Startmunition liegt außerhalb der Magazingrenze.",
+    );
+    this.#validateResourceRange(
+      config.startingArcCharges,
+      config.maximumArcCharges,
+      "Die Startladung liegt außerhalb des Ladungsspeichers.",
+    );
   }
 
   #validateStartY(startY) {
@@ -295,13 +336,23 @@ export class RunStats {
   }
 
   #getPickupValue(statName, amount) {
-    if (statName === "energy") {
-      return clamp(this.energy + amount, 0, this.maximumEnergy);
-    }
-    if (statName === "ammo") {
-      return clamp(this.ammo + amount, 0, this.maximumAmmo);
+    const capacityName = CAPACITY_BY_STAT[statName];
+    if (capacityName) {
+      return clamp(this[statName] + amount, 0, this[capacityName]);
     }
     return this[statName] + amount;
+  }
+
+  #validateResourceSpend(type, amount) {
+    const hasType = SPENDABLE_PICKUP_TYPES.includes(type);
+    if (hasType && Number.isInteger(amount) && amount >= 0) return;
+    throw new TypeError("Der Munitionsverbrauch ist ungültig.");
+  }
+
+  #validateResourceRange(starting, maximum, message) {
+    const hasIntegers = Number.isInteger(starting) && Number.isInteger(maximum);
+    if (hasIntegers && maximum > 0 && starting <= maximum) return;
+    throw new RangeError(message);
   }
 
   #validateUpgradeAmount(amount) {

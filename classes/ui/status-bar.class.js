@@ -16,6 +16,7 @@ const BOSS_KEYS = Object.freeze({
 const VALUE_SELECTORS = Object.freeze({
   energy: '[data-hud-value="energy"]',
   ammo: '[data-hud-value="ammo"]',
+  arcCharges: '[data-hud-value="arcCharges"]',
   gears: '[data-hud-value="gears"]',
   heightMeters: '[data-hud-value="height"]',
   score: '[data-hud-value="score"]',
@@ -133,6 +134,7 @@ export class StatusBar {
   render(data) {
     this.renderEnergy(data.energy, data.maximumEnergy);
     this.setText(this.elements.ammo, data.ammo);
+    this.setText(this.elements.arcCharges, data.arcCharges);
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);
     this.setText(this.elements.score, formatScore(data.score));

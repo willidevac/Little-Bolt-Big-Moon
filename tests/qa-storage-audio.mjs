@@ -269,6 +269,7 @@ const controller = new GameAudioController(
 fakeTarget.dispatch("pointerdown");
 fakeGame.setState(GAME_STATES.PLAYING);
 fakeGame.emit(GAMEPLAY_EVENTS.PLAYER_ATTACK, { weaponId: "repairWrench" });
+fakeGame.emit(GAMEPLAY_EVENTS.PLAYER_ATTACK, { weaponId: "arcCannon" });
 fakeGame.emit(GAMEPLAY_EVENTS.PICKUP, { type: "energy" });
 fakeGame.emit(GAMEPLAY_EVENTS.BOSS_ACTIVATED);
 controller.setMuted(true);
@@ -283,6 +284,7 @@ assert.deepEqual(fakeAudio.commands, [
   "unlock",
   "music:climb",
   "effect:wrench",
+  "effect:arc",
   "effect:pickupEnergy",
   "effect:bossPhase",
   "music:boss",
@@ -299,7 +301,6 @@ assert.deepEqual(fakeAudio.commands, [
 controller.destroy();
 assert.equal(fakeGame.stateListeners.size, 0);
 assert.equal(fakeGame.gameplayListeners.size, 0);
-
 const muteButton = new FakeDomElement();
 const scoreElement = new FakeDomElement();
 const heightElement = new FakeDomElement();
@@ -362,7 +363,6 @@ assert.equal(muteButton.textContent, "Ton: an");
 assert.equal(gameStorage.setVolume("effects", 150).effectsVolume, 100);
 assert.equal(gameStorage.setVolume("music", -20).musicVolume, 0);
 assert.throws(() => gameStorage.setVolume("unknown", 50), RangeError);
-
 function createCharacterState(isOnGround, velocityY) {
   return {
     isOnGround,
@@ -376,7 +376,7 @@ const audioDefinitions = [
   ...Object.values(GAME_CONFIG.audio.music),
   ...Object.values(GAME_CONFIG.audio.effects),
 ];
-assert.equal(audioDefinitions.length, 18);
+assert.equal(audioDefinitions.length, 19);
 assert.ok(audioDefinitions.every((definition) => definition.volume <= 0.38));
 audioDefinitions.forEach((definition) => {
   const relativePath = definition.source.replace(/^\.\//, "");

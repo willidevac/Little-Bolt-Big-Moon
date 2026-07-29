@@ -14,11 +14,13 @@ const SIMPLE_EFFECTS = Object.freeze({
 const ATTACK_EFFECTS = Object.freeze({
   repairWrench: "wrench",
   boltThrower: "bolt",
+  arcCannon: "arc",
 });
 const PICKUP_EFFECTS = Object.freeze({
   gear: "pickupGear",
   energy: "pickupEnergy",
   ammo: "pickupAmmo",
+  arcCharge: "pickupEnergy",
   weapon: "pickupAmmo",
 });
 

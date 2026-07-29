@@ -60,7 +60,7 @@ export class RunUpgradeFlow {
       wrenchDamage: (value) => {
         systems.weaponSystem.increaseDamage("repairWrench", value);
       },
-      ammoCapacity: (value) => systems.runStats.increaseAmmoCapacity(value),
+      ammoCapacity: (value) => this.#increaseAmmoCapacity(value),
       knockbackResistance: (value) => {
         systems.combatSystem.increaseKnockbackResistance(value);
       },
@@ -68,10 +68,16 @@ export class RunUpgradeFlow {
     });
   }
 
+  #increaseAmmoCapacity(value) {
+    this.#dependencies.runStats.increaseAmmoCapacity(value);
+    this.#dependencies.runStats.increaseArcChargeCapacity(1);
+  }
+
   #validateDependencies(dependencies) {
     const methods = [
       dependencies?.runStats?.increaseMaximumEnergy,
       dependencies?.runStats?.increaseAmmoCapacity,
+      dependencies?.runStats?.increaseArcChargeCapacity,
       dependencies?.runStats?.applyCombatPhases,
       dependencies?.weaponSystem?.increaseDamage,
       dependencies?.combatSystem?.increaseKnockbackResistance,

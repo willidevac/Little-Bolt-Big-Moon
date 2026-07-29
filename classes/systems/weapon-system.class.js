@@ -54,8 +54,9 @@ export class WeaponSystem {
    */
   attack(character) {
     const weapon = this.#getAvailableWeapons()[this.currentWeaponIndex];
-    if (!character?.canAttack || !weapon.canAttack(this.runStats.ammo)) return null;
-    if (!this.runStats.spendAmmo(weapon.ammoCost)) return null;
+    const availableAmmo = this.runStats.getResourceAmount(weapon.ammoType);
+    if (!character?.canAttack || !weapon.canAttack(availableAmmo)) return null;
+    if (!this.runStats.spendResource(weapon.ammoType, weapon.ammoCost)) return null;
     const attack = weapon.attack(character);
     character.startAttack(attack.animationState, attack.animationDurationSeconds);
     return attack;
@@ -85,7 +86,10 @@ export class WeaponSystem {
     this.#validateStarterAmmo(starterAmmo);
     if (this.unlockedWeaponIds.has(weaponId)) return false;
     this.unlockedWeaponIds.add(weaponId);
-    this.runStats.applyPickups([{ type: "ammo", amount: starterAmmo }]);
+    this.runStats.applyPickups([{
+      type: weapon.ammoType,
+      amount: starterAmmo,
+    }]);
     const availableWeapons = this.#getAvailableWeapons();
     this.currentWeaponIndex = availableWeapons.indexOf(weapon);
     this.#emitWeaponChange(weapon);
@@ -135,7 +139,8 @@ export class WeaponSystem {
 
   #validateDependencies(config, input, runStats, gameplayEvents) {
     const hasInput = typeof input?.consumePress === "function";
-    const hasStats = typeof runStats?.spendAmmo === "function";
+    const hasStats = typeof runStats?.spendResource === "function" &&
+      typeof runStats?.getResourceAmount === "function";
     const hasEvents = typeof gameplayEvents?.on === "function" &&
       typeof gameplayEvents?.emit === "function";
     if (this.#hasValidWeaponOrder(config) && hasInput && hasStats && hasEvents) {

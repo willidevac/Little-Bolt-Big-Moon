@@ -29,17 +29,26 @@ export class BoltProjectile extends Projectile {
    * @param {Readonly<object>} config
    */
   constructor(attack, config) {
-    if (attack?.type !== "projectile" || !Number.isFinite(attack.direction)) {
-      throw new TypeError("Der Spielerangriff ist kein gültiges Projektil.");
-    }
-    super({
-      team: "player",
-      source: attack.weaponId,
-      damage: attack.damage,
-      origin: attack.origin,
-      direction: { x: attack.direction, y: 0 },
-    }, config, BOLT_VISUAL_CONFIG);
+    validateBoltAttack(attack);
+    super(createProjectileData(attack), config, BOLT_VISUAL_CONFIG);
     this.weaponId = attack.weaponId;
     this.direction = Math.sign(attack.direction);
   }
+}
+
+function createProjectileData(attack) {
+  return {
+    team: "player",
+    source: attack.weaponId,
+    damage: attack.damage,
+    origin: attack.origin,
+    direction: { x: attack.direction, y: 0 },
+  };
+}
+
+function validateBoltAttack(attack) {
+  const isBolt = attack?.type === "projectile" &&
+    attack.projectileKind === "bolt";
+  if (isBolt && Number.isFinite(attack.direction)) return;
+  throw new TypeError("Der Spielerangriff ist kein gültiges Projektil.");
 }

@@ -1,4 +1,6 @@
 const WEAPON_TYPES = Object.freeze(["melee", "projectile"]);
+const AMMO_TYPES = Object.freeze(["ammo", "arcCharge"]);
+const PROJECTILE_KINDS = Object.freeze(["bolt", "arc"]);
 const COOLDOWN_EPSILON_SECONDS = 1e-9;
 
 /**
@@ -90,6 +92,7 @@ export class Weapon {
       level: this.level,
       damage: this.damage,
       ammoCost: this.ammoCost,
+      ammoType: this.ammoType,
     });
   }
 
@@ -105,6 +108,7 @@ export class Weapon {
       type: this.type,
       damage: this.damage,
       ammoCost: this.ammoCost,
+      projectileKind: this.projectileKind ?? null,
       direction,
       origin,
       hitbox: this.#createHitbox(origin, direction),
@@ -140,8 +144,15 @@ export class Weapon {
       this.#hasValidText(config) &&
       this.#hasValidNumbers(config) &&
       hasAmmo &&
-      WEAPON_TYPES.includes(config.type)
+      WEAPON_TYPES.includes(config.type) &&
+      AMMO_TYPES.includes(config.ammoType) &&
+      this.#hasValidProjectileKind(config)
     );
+  }
+
+  #hasValidProjectileKind(config) {
+    if (config.type === "melee") return true;
+    return PROJECTILE_KINDS.includes(config.projectileKind);
   }
 
   #hasValidText(config) {

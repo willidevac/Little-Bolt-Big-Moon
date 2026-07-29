@@ -976,6 +976,36 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "arc-cannon-runtime-v1",
+      "file": "img/sprites/weapons/arc-cannon.png",
+      "role": "runtime-arc-cannon-pickup",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
+      "created": "2026-07-29",
+      "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "arc-projectile-runtime-v1",
+      "file": "img/sprites/weapons/arc-projectile.png",
+      "role": "runtime-arc-projectile-animation",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
+      "created": "2026-07-29",
+      "modifications": "Four generated discharge stages were isolated, centered and assembled into a transparent sprite sheet.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "arc-charge-runtime-v1",
+      "file": "img/sprites/items/arc-charge.png",
+      "role": "runtime-arc-charge-pickup",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
+      "created": "2026-07-29",
+      "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "little-bolt-cc0-music-v1",
       "file": "audio/music/",
       "role": "runtime-background-and-boss-music",

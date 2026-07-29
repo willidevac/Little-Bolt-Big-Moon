@@ -787,6 +787,51 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "arc-cannon",
+      "priority": "P1",
+      "category": "weapons",
+      "file": "img/sprites/weapons/arc-cannon.png",
+      "frameWidth": 96,
+      "frameHeight": 64,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "pickup": 1
+      },
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "arc-projectile",
+      "priority": "P1",
+      "category": "weapons",
+      "file": "img/sprites/weapons/arc-projectile.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "columns": 4,
+      "rows": 1,
+      "totalFrames": 4,
+      "states": {
+        "flight": 4
+      },
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "arc-charge",
+      "priority": "P1",
+      "category": "items",
+      "file": "img/sprites/items/arc-charge.png",
+      "frameWidth": 32,
+      "frameHeight": 48,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "pickup": 1
+      },
+      "licenseId": "openai-generated-output"
+    },
+    {
       "id": "game-cover",
       "priority": "P0",
       "category": "cover",
