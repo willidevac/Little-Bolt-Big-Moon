@@ -1024,6 +1024,46 @@
       "created": "2026-07-28",
       "modifications": "Sixteen source effects were selected, renamed for gameplay roles and configured at reduced playback volume.",
       "licenseId": "kenney-cc0-audio"
+    },
+    {
+      "id": "clean-hd-gameplay-preview-v1",
+      "file": "img/concepts/clean-hd-preview/clean-hd-gameplay-v1.png",
+      "role": "clean-hd-pixel-gameplay-design-reference",
+      "status": "approved-design-reference",
+      "origin": "OpenAI built-in image generation using the approved Byte, Scrap Crawler, scrapyard and HUD references",
+      "created": "2026-07-29",
+      "modifications": "A second targeted generation pass removed most micro-texture and strengthened gameplay-layer separation.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "clean-hd-scrapyard-background-preview-v1",
+      "file": "img/concepts/clean-hd-preview/clean-hd-scrapyard-background-v1.png",
+      "role": "clean-hd-pixel-background-design-reference",
+      "status": "approved-design-reference",
+      "origin": "OpenAI built-in image generation using the approved scrapyard and clean-HD-pixel references",
+      "created": "2026-07-29",
+      "modifications": "Generated without platforms, characters, enemies or HUD elements for later independent runtime composition.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "clean-hd-byte-core-poses-preview-v1",
+      "file": "img/concepts/clean-hd-preview/byte-core-poses-v1.png",
+      "role": "clean-hd-pixel-character-design-reference",
+      "status": "approved-design-reference",
+      "origin": "OpenAI built-in image generation using the approved Byte animation and clean-HD-pixel references",
+      "created": "2026-07-29",
+      "modifications": "Magenta chroma key removed locally; contains four transparent core-pose design samples, not runtime frames.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "clean-hd-scrapyard-gameplay-kit-preview-v1",
+      "file": "img/concepts/clean-hd-preview/scrapyard-gameplay-kit-v1.png",
+      "role": "clean-hd-pixel-enemy-and-platform-design-reference",
+      "status": "approved-design-reference",
+      "origin": "OpenAI built-in image generation using the approved Scrap Crawler, tileset and clean-HD-pixel references",
+      "created": "2026-07-29",
+      "modifications": "Magenta chroma key removed locally; contains one enemy and two transparent platform samples, not runtime frames.",
+      "licenseId": "openai-generated-output"
     }
   ]
 }

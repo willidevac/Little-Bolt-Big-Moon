@@ -716,6 +716,28 @@ Verbindliche Merkmale:
 - Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
   geprüft.
 
+## Clean-HD-Pixel-Stilrichtung
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben als neue Gestaltungsrichtung |
+| Datum | 29.07.2026 |
+| Vorschauseite | `art-preview.html` |
+| Spielszenenreferenz | `img/concepts/clean-hd-preview/clean-hd-gameplay-v1.png` |
+| Figurenprobe | `img/concepts/clean-hd-preview/byte-core-poses-v1.png` |
+| Gameplay-Kit | `img/concepts/clean-hd-preview/scrapyard-gameplay-kit-v1.png` |
+| Hintergrundprobe | `img/concepts/clean-hd-preview/clean-hd-scrapyard-background-v1.png` |
+
+Verbindliche Merkmale:
+
+- Große ruhige Farbflächen ersetzen zufällige Kratzer und Mikropaneele.
+- Sichere Plattformen besitzen eine helle, durchgehende Oberkante.
+- Figuren, Gegner und Gefahren haben den höchsten Kontrast der Szene.
+- Entfernte Landschaften verlieren Kontrast und Farbsättigung.
+- Die Beleuchtung kommt bei allen Objekten von links oben.
+- Die Stilprobe ersetzt noch keine Runtime-Datei. Vollständige Animationen
+  werden erst danach in ihren vorhandenen Frame-Reihenfolgen neu produziert.
+
 ## Startturm-Runtime-Tileset
 
 | Feld | Freigabe |
