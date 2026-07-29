@@ -15,6 +15,8 @@
         width="1280"
         height="720"
         aria-label="Spielfläche von Little Bolt, Big Moon"
+        data-i18n="canvas.fallback"
+        data-i18n-aria-label="canvas.label"
         data-game-canvas
       >
         Dein Browser unterstützt das Canvas-Element leider nicht.
@@ -25,6 +27,7 @@
         role="dialog"
         aria-modal="true"
         aria-label="Wortlose Geschichte"
+        data-i18n-aria-label="story.label"
         data-story-sequence
         hidden
       >
@@ -59,6 +62,7 @@
         <button
           class="story-sequence__skip"
           type="button"
+          data-i18n="story.skip"
           data-story-sequence-skip
         >
           Überspringen
@@ -70,6 +74,8 @@
         type="button"
         aria-label="Ton stummschalten"
         aria-pressed="false"
+        data-i18n="audio.active"
+        data-i18n-aria-label="audio.disable"
         data-ui-action="mute"
       >
         Ton: an
@@ -78,17 +84,19 @@
       <section
         class="game-hud"
         aria-label="Spielstatus"
+        data-i18n-aria-label="hud.label"
         data-game-hud
         hidden
       >
         <div class="hud-panel hud-energy">
           <span class="hud-symbol" aria-hidden="true">⚡</span>
           <div class="hud-energy__body">
-            <span class="hud-label">Energie</span>
+            <span class="hud-label" data-i18n="hud.energy">Energie</span>
             <div
               class="hud-energy__bar"
               role="progressbar"
               aria-label="Energie"
+              data-i18n-aria-label="hud.energy"
               aria-valuemin="0"
               aria-valuemax="100"
               aria-valuenow="100"
@@ -97,15 +105,23 @@
               <span class="hud-energy__fill"></span>
             </div>
           </div>
-          <output class="hud-number" aria-label="Energiepunkte">
+          <output
+            class="hud-number"
+            aria-label="Energiepunkte"
+            data-i18n-aria-label="hud.energyPoints"
+          >
             <span data-hud-value="energy">100</span>
           </output>
         </div>
 
         <div class="hud-panel hud-height">
           <span class="hud-symbol" aria-hidden="true">↑</span>
-          <span class="hud-label">Höhe</span>
-          <output class="hud-number" aria-label="Höhe in Metern">
+          <span class="hud-label" data-i18n="hud.height">Höhe</span>
+          <output
+            class="hud-number"
+            aria-label="Höhe in Metern"
+            data-i18n-aria-label="hud.heightMeters"
+          >
             <span data-hud-value="height">0</span> m
           </output>
         </div>
@@ -113,10 +129,11 @@
         <div class="hud-score-group">
           <div class="hud-panel hud-score">
             <span class="hud-symbol" aria-hidden="true">⚙</span>
-            <span class="hud-label">Punkte</span>
+            <span class="hud-label" data-i18n="hud.score">Punkte</span>
             <output
               class="hud-number"
               aria-label="Punkte"
+              data-i18n-aria-label="hud.score"
               data-hud-value="score"
             >
               000000
@@ -126,19 +143,25 @@
             class="hud-pause-button"
             type="button"
             aria-label="Spiel pausieren"
+            data-i18n-aria-label="hud.pause"
             data-ui-action="pause"
           >
             Ⅱ
           </button>
         </div>
 
-        <div class="hud-resources" aria-label="Ressourcen">
+        <div
+          class="hud-resources"
+          aria-label="Ressourcen"
+          data-i18n-aria-label="hud.resources"
+        >
           <div class="hud-panel hud-resource">
             <span class="hud-symbol" aria-hidden="true">✦</span>
-            <span class="hud-label">Munition</span>
+            <span class="hud-label" data-i18n="hud.ammo">Munition</span>
             <output
               class="hud-number"
               aria-label="Munition"
+              data-i18n-aria-label="hud.ammo"
               data-hud-value="ammo"
             >
               0
@@ -146,10 +169,11 @@
           </div>
           <div class="hud-panel hud-resource">
             <span class="hud-symbol" aria-hidden="true">⚙</span>
-            <span class="hud-label">Zahnräder</span>
+            <span class="hud-label" data-i18n="hud.gears">Zahnräder</span>
             <output
               class="hud-number"
               aria-label="Zahnräder"
+              data-i18n-aria-label="hud.gears"
               data-hud-value="gears"
             >
               0
@@ -157,10 +181,11 @@
           </div>
           <div class="hud-panel hud-resource">
             <span class="hud-symbol" aria-hidden="true">◆</span>
-            <span class="hud-label">Waffe</span>
+            <span class="hud-label" data-i18n="hud.weapon">Waffe</span>
             <output
               class="hud-number"
               aria-label="Ausgewählte Waffe"
+              data-i18n-aria-label="hud.selectedWeapon"
               data-hud-value="weapon"
             >
               –
@@ -181,11 +206,12 @@
           data-hud-jump-charge
           hidden
         >
-          <span class="hud-label">Sprungkraft</span>
+          <span class="hud-label" data-i18n="hud.jumpPower">Sprungkraft</span>
           <div
             class="hud-jump-charge__bar"
             role="progressbar"
             aria-label="Geladene Sprungkraft"
+            data-i18n-aria-label="hud.chargedJump"
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow="0"
@@ -199,6 +225,7 @@
         <div
           class="hud-panel hud-boss"
           aria-label="Bossstatus"
+          data-i18n-aria-label="hud.bossStatus"
           aria-live="polite"
           data-hud-boss
           hidden
@@ -206,7 +233,8 @@
           <div class="hud-boss__heading">
             <strong data-hud-boss-name>Mondwächter</strong>
             <span>
-              Phase <output data-hud-boss-phase>1</output>
+              <span data-i18n="hud.phase">Phase</span>
+              <output data-hud-boss-phase>1</output>
             </span>
           </div>
           <div
@@ -229,6 +257,7 @@
       <nav
         class="touch-controls"
         aria-label="Touch-Steuerung"
+        data-i18n-aria-label="touch.label"
         data-touch-controls
         hidden
       >
@@ -237,6 +266,7 @@
             class="touch-control"
             type="button"
             aria-label="Nach links laufen"
+            data-i18n-aria-label="touch.left"
             aria-pressed="false"
             data-input-action="left"
           >
@@ -246,6 +276,7 @@
             class="touch-control"
             type="button"
             aria-label="Nach rechts laufen"
+            data-i18n-aria-label="touch.right"
             aria-pressed="false"
             data-input-action="right"
           >
@@ -258,6 +289,7 @@
             class="touch-control"
             type="button"
             aria-label="Sprung laden und beim Loslassen springen"
+            data-i18n-aria-label="touch.jump"
             aria-pressed="false"
             data-input-action="jump"
           >
@@ -267,6 +299,7 @@
             class="touch-control"
             type="button"
             aria-label="Angreifen"
+            data-i18n-aria-label="touch.attack"
             aria-pressed="false"
             data-input-action="attack"
           >
@@ -276,6 +309,7 @@
             class="touch-control"
             type="button"
             aria-label="Waffe wechseln"
+            data-i18n-aria-label="touch.switchWeapon"
             aria-pressed="false"
             data-input-action="weaponSwitch"
           >
@@ -298,38 +332,75 @@
         >
 
         <div class="start-screen__menu">
-          <p class="start-screen__eyebrow">Vertikales Pixel-Abenteuer</p>
+          <p class="start-screen__eyebrow" data-i18n="home.eyebrow">
+            Vertikales Pixel-Abenteuer
+          </p>
           <h1 id="game-title" class="visually-hidden">Little Bolt, Big Moon</h1>
-          <p class="start-screen__story">
+          <p class="start-screen__story" data-i18n="home.story">
             Ein kleiner Roboter. Ein großer Weg nach oben.
           </p>
 
-          <dl class="record-summary" aria-label="Deine lokalen Rekorde">
-            <div class="record-summary__item"><dt>Bestpunkte</dt><dd data-record-score>000000</dd></div>
-            <div class="record-summary__item"><dt>Höchste Höhe</dt><dd data-record-height>0 m</dd></div>
-            <div class="record-summary__item"><dt>Bestzeit</dt><dd data-record-time>–</dd></div>
+          <dl
+            class="record-summary"
+            aria-label="Deine lokalen Rekorde"
+            data-i18n-aria-label="home.records"
+          >
+            <div class="record-summary__item">
+              <dt data-i18n="home.bestScore">Bestpunkte</dt>
+              <dd data-record-score>000000</dd>
+            </div>
+            <div class="record-summary__item">
+              <dt data-i18n="home.maximumHeight">Höchste Höhe</dt>
+              <dd data-record-height>0 m</dd>
+            </div>
+            <div class="record-summary__item">
+              <dt data-i18n="home.bestTime">Bestzeit</dt>
+              <dd data-record-time>–</dd>
+            </div>
           </dl>
 
-          <nav class="start-menu" aria-label="Hauptmenü">
+          <nav
+            class="start-menu"
+            aria-label="Hauptmenü"
+            data-i18n-aria-label="home.menu"
+          >
             <button
               class="menu-button menu-button--primary"
               type="button"
+              data-i18n="home.start"
               data-ui-action="start"
             >
               Spiel starten
             </button>
-            <button class="menu-button" type="button" data-ui-action="controls">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.controls"
+              data-ui-action="controls"
+            >
               Steuerung
             </button>
-            <button class="menu-button" type="button" data-ui-action="settings">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.settings"
+              data-ui-action="settings"
+            >
               Einstellungen
             </button>
-            <button class="menu-button" type="button" data-ui-action="imprint">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.imprint"
+              data-ui-action="imprint"
+            >
               Impressum
             </button>
           </nav>
 
-          <p class="start-screen__hint">Hilf Byte vom Schrottplatz bis zum Mond.</p>
+          <p class="start-screen__hint" data-i18n="home.hint">
+            Hilf Byte vom Schrottplatz bis zum Mond.
+          </p>
         </div>
 
       </section>
@@ -341,29 +412,55 @@
         hidden
       >
         <div class="screen-panel screen-panel--pause">
-          <p class="screen-panel__eyebrow">Byte wartet auf dich</p>
-          <h2 id="pause-title" class="screen-panel__title">Pause</h2>
+          <p class="screen-panel__eyebrow" data-i18n="pause.eyebrow">
+            Byte wartet auf dich
+          </p>
+          <h2 id="pause-title" class="screen-panel__title" data-i18n="pause.title">
+            Pause
+          </h2>
 
-          <nav class="start-menu" aria-label="Pausenmenü">
+          <nav
+            class="start-menu"
+            aria-label="Pausenmenü"
+            data-i18n-aria-label="pause.menu"
+          >
             <button
               class="menu-button menu-button--primary"
               type="button"
+              data-i18n="pause.resume"
               data-ui-action="resume"
             >
               Weiterspielen
             </button>
-            <button class="menu-button" type="button" data-ui-action="controls">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.controls"
+              data-ui-action="controls"
+            >
               Steuerung
             </button>
-            <button class="menu-button" type="button" data-ui-action="settings">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.settings"
+              data-ui-action="settings"
+            >
               Einstellungen
             </button>
-            <button class="menu-button" type="button" data-ui-action="home">
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="pause.home"
+              data-ui-action="home"
+            >
               Zum Hauptmenü
             </button>
           </nav>
 
-          <p class="screen-panel__hint">Mit Escape geht es ebenfalls weiter.</p>
+          <p class="screen-panel__hint" data-i18n="pause.hint">
+            Mit Escape geht es ebenfalls weiter.
+          </p>
         </div>
       </section>
 
@@ -374,24 +471,28 @@
         hidden
       >
         <div class="screen-panel screen-panel--upgrade">
-          <p class="screen-panel__eyebrow">Arena geschafft</p>
+          <p class="screen-panel__eyebrow" data-i18n="upgrade.eyebrow">
+            Arena geschafft
+          </p>
           <h2
             id="upgrade-title"
             class="screen-panel__title"
             tabindex="-1"
+            data-i18n="upgrade.title"
           >
             Wähle eine Verbesserung
           </h2>
-          <p class="screen-panel__copy">
+          <p class="screen-panel__copy" data-i18n="upgrade.copy">
             Ein Fundstück darf Byte auf seinem Weg zum Mond stärker machen.
           </p>
           <div
             class="upgrade-options"
             role="group"
             aria-label="Verfügbare Verbesserungen"
+            data-i18n-aria-label="upgrade.group"
             data-upgrade-options
           ></div>
-          <p class="screen-panel__hint">
+          <p class="screen-panel__hint" data-i18n="upgrade.hint">
             Die Auswahl gilt für diesen Lauf und kann nicht übersprungen werden.
           </p>
         </div>
@@ -407,13 +508,41 @@
           <p class="screen-panel__eyebrow" data-end-eyebrow></p>
           <h2 id="end-title" class="screen-panel__title" tabindex="-1" data-end-title></h2>
           <p class="screen-panel__copy" data-end-copy></p>
-          <dl class="end-result" aria-label="Laufergebnis">
-            <div class="end-result__item"><dt>Beste Höhe</dt><dd data-end-height>0 m</dd></div>
-            <div class="end-result__item"><dt>Punkte</dt><dd data-end-score>000000</dd></div>
+          <dl
+            class="end-result"
+            aria-label="Laufergebnis"
+            data-i18n-aria-label="end.result"
+          >
+            <div class="end-result__item">
+              <dt data-i18n="end.bestHeight">Beste Höhe</dt>
+              <dd data-end-height>0 m</dd>
+            </div>
+            <div class="end-result__item">
+              <dt data-i18n="hud.score">Punkte</dt>
+              <dd data-end-score>000000</dd>
+            </div>
           </dl>
-          <nav class="start-menu" aria-label="Lauf beenden">
-            <button class="menu-button menu-button--primary" type="button" data-ui-action="restart">Nochmal versuchen</button>
-            <button class="menu-button" type="button" data-ui-action="home">Zum Hauptmenü</button>
+          <nav
+            class="start-menu"
+            aria-label="Lauf beenden"
+            data-i18n-aria-label="end.menu"
+          >
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-i18n="end.retry"
+              data-ui-action="restart"
+            >
+              Nochmal versuchen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="end.home"
+              data-ui-action="home"
+            >
+              Zum Hauptmenü
+            </button>
           </nav>
         </div>
       </section>
@@ -430,46 +559,56 @@
             class="close-button"
             type="button"
             aria-label="Steuerung schließen"
+            data-i18n-aria-label="controls.close"
             data-ui-action="close-dialog"
           >
             ×
           </button>
 
-          <p class="screen-panel__eyebrow">Deine Aufgabe</p>
+          <p class="screen-panel__eyebrow" data-i18n="controls.eyebrow">
+            Deine Aufgabe
+          </p>
           <h2
             id="controls-title"
             class="screen-panel__title"
             tabindex="-1"
             data-dialog-focus
+            data-i18n="controls.title"
           >
             Hilfe &amp; Steuerung
           </h2>
-          <p class="screen-panel__copy">
+          <p class="screen-panel__copy" data-i18n="controls.copy">
             Klettere mit Byte vom Schrottplatz bis zum Mond. Ein Sturz kostet
             dich Höhe, aber nicht sofort den ganzen Lauf.
           </p>
 
           <dl class="controls-list">
             <div class="controls-list__row">
-              <dt>Laufen</dt>
-              <dd><kbd>A</kbd> <kbd>D</kbd> oder Pfeiltasten</dd>
-            </div>
-            <div class="controls-list__row">
-              <dt>Springen</dt>
+              <dt data-i18n="controls.run">Laufen</dt>
               <dd>
-                <kbd>W</kbd>, <kbd>↑</kbd> oder Leertaste halten und loslassen
+                <kbd>A</kbd> <kbd>D</kbd>
+                <span data-i18n="controls.runKeys">oder Pfeiltasten</span>
               </dd>
             </div>
             <div class="controls-list__row">
-              <dt>Angreifen</dt>
+              <dt data-i18n="controls.jump">Springen</dt>
+              <dd>
+                <kbd>W</kbd>, <kbd>↑</kbd>
+                <span data-i18n="controls.jumpKeys">
+                  oder Leertaste halten und loslassen
+                </span>
+              </dd>
+            </div>
+            <div class="controls-list__row">
+              <dt data-i18n="controls.attack">Angreifen</dt>
               <dd><kbd>F</kbd> oder <kbd>J</kbd></dd>
             </div>
             <div class="controls-list__row">
-              <dt>Waffe wechseln</dt>
+              <dt data-i18n="controls.switchWeapon">Waffe wechseln</dt>
               <dd><kbd>Q</kbd></dd>
             </div>
             <div class="controls-list__row">
-              <dt>Pause</dt>
+              <dt data-i18n="controls.pause">Pause</dt>
               <dd><kbd>Escape</kbd></dd>
             </div>
           </dl>
@@ -489,29 +628,33 @@
             class="close-button"
             type="button"
             aria-label="Einstellungen schließen"
+            data-i18n-aria-label="settings.close"
             data-ui-action="close-dialog"
           >
             ×
           </button>
 
-          <p class="screen-panel__eyebrow">Dein Klang</p>
+          <p class="screen-panel__eyebrow" data-i18n="settings.eyebrow">
+            Deine Einstellungen
+          </p>
           <h2
             id="settings-title"
             class="screen-panel__title"
             tabindex="-1"
             data-dialog-focus
+            data-i18n="settings.title"
           >
             Einstellungen
           </h2>
-          <p class="screen-panel__copy">
-            Stelle Musik und Spielgeräusche getrennt so ein, wie sie für dich
-            angenehm sind.
+          <p class="screen-panel__copy" data-i18n="settings.copy">
+            Passe Sprache, Musik und Spielgeräusche so an, wie es für dich
+            angenehm ist.
           </p>
 
           <div class="audio-settings">
             <div class="audio-setting">
               <div class="audio-setting__heading">
-                <label for="music-volume">Musik</label>
+                <label for="music-volume" data-i18n="settings.music">Musik</label>
                 <output for="music-volume" data-volume-output="music">75 %</output>
               </div>
               <input
@@ -527,7 +670,9 @@
 
             <div class="audio-setting">
               <div class="audio-setting__heading">
-                <label for="effects-volume">Effekte</label>
+                <label for="effects-volume" data-i18n="settings.effects">
+                  Effekte
+                </label>
                 <output for="effects-volume" data-volume-output="effects">85 %</output>
               </div>
               <input
@@ -540,9 +685,17 @@
                 data-volume-control="effects"
               >
             </div>
+
+            <div class="audio-setting language-setting">
+              <label for="language" data-i18n="settings.language">Sprache</label>
+              <select id="language" data-language-control>
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+              </select>
+            </div>
           </div>
 
-          <p class="screen-panel__hint">
+          <p class="screen-panel__hint" data-i18n="settings.hint">
             Der Tonknopf oben schaltet weiterhin alles gemeinsam an oder aus.
           </p>
         </div>
@@ -561,44 +714,54 @@
             class="close-button"
             type="button"
             aria-label="Impressum schließen"
+            data-i18n-aria-label="imprint.close"
             data-ui-action="close-dialog"
           >
             ×
           </button>
 
-          <p class="screen-panel__eyebrow">Projektangaben</p>
+          <p class="screen-panel__eyebrow" data-i18n="imprint.eyebrow">
+            Projektangaben
+          </p>
           <h2
             id="imprint-title"
             class="screen-panel__title"
             tabindex="-1"
             data-dialog-focus
+            data-i18n="imprint.title"
           >
             Impressum
           </h2>
 
           <section class="legal-section" aria-labelledby="responsible-title">
-            <h3 id="responsible-title">Projektverantwortlich</h3>
+            <h3 id="responsible-title" data-i18n="imprint.responsible">
+              Projektverantwortlich
+            </h3>
             <p>
               <strong>Willi Kasberg</strong><br>
-              Idee und Umsetzung des nicht kommerziellen Weiterbildungsprojekts
+              <span data-i18n="imprint.projectCopy">
+                Idee und Umsetzung des nicht kommerziellen Weiterbildungsprojekts
+              </span>
             </p>
           </section>
 
           <section class="legal-section" aria-labelledby="academy-title">
-            <h3 id="academy-title">Weiterbildungsträger und Kontakt</h3>
+            <h3 id="academy-title" data-i18n="imprint.academy">
+              Weiterbildungsträger und Kontakt
+            </h3>
             <address>
               <strong>Developer Akademie GmbH</strong><br>
               Tassiloplatz 25<br>
               81541 München<br>
-              Deutschland<br>
-              E-Mail:
+              <span data-i18n="imprint.country">Deutschland</span><br>
+              <span data-i18n="imprint.email">E-Mail:</span>
               <a href="mailto:info@developerakademie.com">
                 info@developerakademie.com
               </a>
             </address>
           </section>
 
-          <p class="legal-note">
+          <p class="legal-note" data-i18n="imprint.note">
             Die Developer Akademie GmbH wird als Weiterbildungsträger
             aufgeführt. Die Projektverantwortung für das Spiel liegt bei
             Willi Kasberg.
@@ -610,8 +773,12 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            Offizielles Impressum der Developer Akademie
-            <span class="visually-hidden">– öffnet einen neuen Tab</span>
+            <span data-i18n="imprint.official">
+              Offizielles Impressum der Developer Akademie
+            </span>
+            <span class="visually-hidden" data-i18n="imprint.newTab">
+              – öffnet einen neuen Tab
+            </span>
           </a>
         </div>
       </section>
@@ -619,8 +786,10 @@
     <aside class="portrait-notice" aria-labelledby="portrait-title" aria-live="polite">
       <span class="portrait-notice__device" aria-hidden="true"></span>
       <div>
-        <h1 id="portrait-title">Bitte Gerät drehen</h1>
-        <p>Das Spiel funktioniert im Querformat.</p>
+        <h1 id="portrait-title" data-i18n="portrait.title">
+          Bitte Gerät drehen
+        </h1>
+        <p data-i18n="portrait.copy">Das Spiel funktioniert im Querformat.</p>
       </div>
     </aside>
     <script type="module" src="./script.js"></script>

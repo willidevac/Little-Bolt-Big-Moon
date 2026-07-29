@@ -1,5 +1,6 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { formatScore, formatTime } from "../../js/utils/format.js";
+import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 const SELECTORS = Object.freeze({
   mute: '[data-ui-action="mute"]',
@@ -28,6 +29,7 @@ export class StorageController {
     this.root = root;
     this.#assignElements();
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
     this.boundMuteClick = this.handleMuteClick.bind(this);
     this.boundVolumeInput = this.handleVolumeInput.bind(this);
   }
@@ -47,17 +49,28 @@ export class StorageController {
    */
   initialize() {
     if (this.unsubscribe) return this;
-    this.muteButton.addEventListener("click", this.boundMuteClick);
-    this.volumeControls.forEach((control) => {
-      control.addEventListener("input", this.boundVolumeInput);
-    });
-    this.unsubscribe = this.game.onStateChange((state) => {
-      this.handleStateChange(state);
-    });
+    this.#bindControls();
+    this.#bindObservers();
     const records = this.storage.getSnapshot();
     this.#applyAudioSettings(records);
     this.render(records);
     return this;
+  }
+
+  #bindControls() {
+    this.muteButton.addEventListener("click", this.boundMuteClick);
+    this.volumeControls.forEach((control) => {
+      control.addEventListener("input", this.boundVolumeInput);
+    });
+  }
+
+  #bindObservers() {
+    this.unsubscribe = this.game.onStateChange((state) => {
+      this.handleStateChange(state);
+    });
+    this.unsubscribeLanguage = onLanguageChange(() => {
+      this.render(this.storage.getSnapshot());
+    });
   }
 
   /**
@@ -69,7 +82,9 @@ export class StorageController {
       control.removeEventListener("input", this.boundVolumeInput);
     });
     this.unsubscribe?.();
+    this.unsubscribeLanguage?.();
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
   }
 
   /**
@@ -116,14 +131,20 @@ export class StorageController {
     this.scoreElement.textContent = formatScore(records.bestScore);
     this.heightElement.textContent = `${records.maximumHeight} m`;
     this.timeElement.textContent = formatTime(records.bestTimeSeconds);
-    this.muteButton.textContent = records.isMuted ? "Ton: aus" : "Ton: an";
-    this.muteButton.setAttribute("aria-pressed", String(records.isMuted));
-    this.muteButton.setAttribute(
-      "aria-label",
-      records.isMuted ? "Ton einschalten" : "Ton stummschalten",
-    );
+    this.#renderMute(records.isMuted);
     this.#renderVolume("music", records.musicVolume);
     this.#renderVolume("effects", records.effectsVolume);
+  }
+
+  #renderMute(isMuted) {
+    this.muteButton.textContent = translate(
+      isMuted ? "audio.muted" : "audio.active",
+    );
+    this.muteButton.setAttribute("aria-pressed", String(isMuted));
+    this.muteButton.setAttribute(
+      "aria-label",
+      translate(isMuted ? "audio.enable" : "audio.disable"),
+    );
   }
 
   #getRequiredElement(selector) {

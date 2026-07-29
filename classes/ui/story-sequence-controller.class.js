@@ -1,12 +1,9 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
+import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 const SEQUENCES = Object.freeze({
   INTRO: "intro",
   OUTRO: "outro",
-});
-const SEQUENCE_TEXT = Object.freeze({
-  [SEQUENCES.INTRO]: "Byte entdeckt Lumas leeren Platz und ein Signal zum Mond.",
-  [SEQUENCES.OUTRO]: "Byte erweckt Luma. Ihre Abzeichen bilden gemeinsam einen Mond.",
 });
 const DEFAULT_DURATION_MILLISECONDS = 2800;
 const REDUCED_DURATION_MILLISECONDS = 700;
@@ -29,6 +26,7 @@ export class StorySequenceController {
     this.activeSequence = null;
     this.timerId = null;
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
     this.boundSkip = this.skip.bind(this);
     this.boundKeydown = this.handleKeydown.bind(this);
   }
@@ -42,6 +40,7 @@ export class StorySequenceController {
     this.skipButton.addEventListener("click", this.boundSkip);
     this.root.addEventListener("keydown", this.boundKeydown);
     this.unsubscribe = this.game.onStateChange((state) => this.handleState(state));
+    this.unsubscribeLanguage = onLanguageChange(() => this.#renderText());
     return this;
   }
 
@@ -51,7 +50,9 @@ export class StorySequenceController {
     this.skipButton.removeEventListener("click", this.boundSkip);
     this.root.removeEventListener("keydown", this.boundKeydown);
     this.unsubscribe?.();
+    this.unsubscribeLanguage?.();
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
   }
 
   /**
@@ -104,8 +105,7 @@ export class StorySequenceController {
 
   #show(sequence) {
     this.view.dataset.sequence = sequence;
-    this.view.setAttribute("aria-label", SEQUENCE_TEXT[sequence]);
-    this.status.textContent = SEQUENCE_TEXT[sequence];
+    this.#renderText();
     this.view.hidden = false;
     this.root.classList.add("is-story-sequence-active");
     this.skipButton.focus();
@@ -126,6 +126,13 @@ export class StorySequenceController {
     this.view.removeAttribute("data-sequence");
     this.root.classList.remove("is-story-sequence-active");
     this.status.textContent = "";
+  }
+
+  #renderText() {
+    if (!this.activeSequence) return;
+    const text = translate(`story.${this.activeSequence.name}`);
+    this.view.setAttribute("aria-label", text);
+    this.status.textContent = text;
   }
 
   #getDuration() {

@@ -20,6 +20,10 @@ const CHECKS = Object.freeze([
     id: "weiterbildungs-checkliste",
     file: "tests/qa-course-checklist.mjs",
   }),
+  Object.freeze({
+    id: "lokalisierung",
+    file: "tests/qa-localization.mjs",
+  }),
 ]);
 
 const results = CHECKS.map(runCheck);

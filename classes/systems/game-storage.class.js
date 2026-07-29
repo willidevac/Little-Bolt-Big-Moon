@@ -1,3 +1,5 @@
+import { LOCALIZATION_CONFIG } from "../../js/config/localization-config.js";
+
 const DEFAULT_RECORDS = Object.freeze({
   version: 1,
   bestScore: 0,
@@ -6,6 +8,7 @@ const DEFAULT_RECORDS = Object.freeze({
   isMuted: false,
   musicVolume: 75,
   effectsVolume: 85,
+  language: LOCALIZATION_CONFIG.defaultLanguage,
 });
 
 /**
@@ -91,6 +94,20 @@ export class GameStorage {
   }
 
   /**
+   * Speichert eine unterstützte Oberflächensprache.
+   * @param {string} language
+   * @returns {Readonly<object>}
+   */
+  setLanguage(language) {
+    const selected = LOCALIZATION_CONFIG.languages.includes(language)
+      ? language
+      : LOCALIZATION_CONFIG.defaultLanguage;
+    this.data = { ...this.data, language: selected };
+    this.#persist();
+    return this.getSnapshot();
+  }
+
+  /**
    * Gibt eine unveränderliche Kopie des aktuellen Datensatzes zurück.
    * @returns {Readonly<object>}
    */
@@ -114,6 +131,7 @@ export class GameStorage {
       maximumHeight: this.#toInteger(source.maximumHeight),
       bestTimeSeconds: this.#toOptionalTime(source.bestTimeSeconds),
       isMuted: typeof source.isMuted === "boolean" ? source.isMuted : false,
+      language: this.#sanitizeLanguage(source.language),
       ...this.#sanitizeVolumes(source),
     };
   }
@@ -156,6 +174,12 @@ export class GameStorage {
     if (group === "music") return "musicVolume";
     if (group === "effects") return "effectsVolume";
     throw new RangeError(`Unbekannte Lautstärkegruppe: ${group}`);
+  }
+
+  #sanitizeLanguage(language) {
+    return LOCALIZATION_CONFIG.languages.includes(language)
+      ? language
+      : LOCALIZATION_CONFIG.defaultLanguage;
   }
 
   #validateConfig(config) {

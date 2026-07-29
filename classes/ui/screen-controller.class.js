@@ -1,5 +1,6 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { formatScore } from "../../js/utils/format.js";
+import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
@@ -20,16 +21,8 @@ const SELECTORS = Object.freeze({
 });
 
 const END_SCREEN_CONTENT = Object.freeze({
-  [GAME_STATES.WON]: Object.freeze({
-    eyebrow: "Aufstieg geschafft",
-    title: "Mond erreicht!",
-    copy: "Byte hat den Mondwächter besiegt und seinen großen Traum erreicht.",
-  }),
-  [GAME_STATES.LOST]: Object.freeze({
-    eyebrow: "Der Aufstieg endet hier",
-    title: "Byte braucht eine Pause",
-    copy: "Der Weg war dieses Mal zu gefährlich. Beim nächsten Versuch geht es höher.",
-  }),
+  [GAME_STATES.WON]: "end.won",
+  [GAME_STATES.LOST]: "end.lost",
 });
 
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled])';
@@ -64,6 +57,7 @@ export class ScreenController {
     this.activeDialog = null;
     this.previousFocus = null;
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
     this.boundClick = this.handleClick.bind(this);
     this.boundDialogKeydown = this.handleDialogKeydown.bind(this);
     this.actions = this.createActions();
@@ -98,6 +92,9 @@ export class ScreenController {
     this.root.addEventListener("click", this.boundClick);
     this.root.addEventListener("keydown", this.boundDialogKeydown);
     this.unsubscribe = this.game.onStateChange((state) => this.render(state));
+    this.unsubscribeLanguage = onLanguageChange(() => {
+      this.render(this.game.state, false);
+    });
     this.render(this.game.state, false);
     return this;
   }
@@ -110,7 +107,9 @@ export class ScreenController {
     this.root.removeEventListener("click", this.boundClick);
     this.root.removeEventListener("keydown", this.boundDialogKeydown);
     this.unsubscribe?.();
+    this.unsubscribeLanguage?.();
     this.unsubscribe = null;
+    this.unsubscribeLanguage = null;
   }
 
   /**
@@ -293,12 +292,12 @@ export class ScreenController {
     this.muteButton.inert = isInert;
   }
 
-  #renderEndScreen(state, content) {
+  #renderEndScreen(state, contentKey) {
     const stats = this.game.getHudSnapshot();
     this.endScreen.dataset.endState = state;
-    this.endEyebrow.textContent = content.eyebrow;
-    this.endTitle.textContent = content.title;
-    this.endCopy.textContent = content.copy;
+    this.endEyebrow.textContent = translate(`${contentKey}.eyebrow`);
+    this.endTitle.textContent = translate(`${contentKey}.title`);
+    this.endCopy.textContent = translate(`${contentKey}.copy`);
     this.endHeight.textContent = `${stats.heightMeters} m`;
     this.endScore.textContent = formatScore(stats.score);
   }
@@ -331,11 +330,13 @@ export class ScreenController {
   }
 
   #appendUpgradeContent(button, upgrade) {
+    const name = translate(`upgrade.${upgrade.id}.name`);
+    const description = translate(`upgrade.${upgrade.id}.description`);
     button.append(
       this.#createUpgradeIcon(upgrade),
-      this.#createTextElement("strong", "upgrade-card__name", upgrade.name),
+      this.#createTextElement("strong", "upgrade-card__name", name),
       this.#createTextElement("span", "upgrade-card__level", this.#getLevelText(upgrade)),
-      this.#createTextElement("span", "upgrade-card__description", upgrade.description),
+      this.#createTextElement("span", "upgrade-card__description", description),
     );
   }
 
@@ -358,11 +359,16 @@ export class ScreenController {
   }
 
   #getLevelText(upgrade) {
-    return `Stufe ${upgrade.nextLevel} von ${upgrade.maxLevel}`;
+    return translate("upgrade.level", {
+      level: upgrade.nextLevel,
+      maximum: upgrade.maxLevel,
+    });
   }
 
   #getUpgradeLabel(upgrade) {
-    return `${upgrade.name}. ${this.#getLevelText(upgrade)}. ${upgrade.description}`;
+    const name = translate(`upgrade.${upgrade.id}.name`);
+    const description = translate(`upgrade.${upgrade.id}.description`);
+    return `${name}. ${this.#getLevelText(upgrade)}. ${description}`;
   }
 
   /**

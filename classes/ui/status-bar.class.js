@@ -2,6 +2,16 @@ import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 import { PickupFeedback } from "./pickup-feedback.class.js";
 import { formatScore } from "../../js/utils/format.js";
+import { onLanguageChange, translate } from "../../js/i18n/localization.js";
+
+const BOSS_KEYS = Object.freeze({
+  Zwischenboss: "boss.default",
+  Schrottbrecher: "boss.scrapCrusher",
+  "Presswerk-Koloss": "boss.pressworksColossus",
+  "Startturm-Sentinel": "boss.launchTowerSentinel",
+  "Orbit-Hüter": "boss.orbitGuardian",
+  Mondwächter: "boss.moonWarden",
+});
 
 const VALUE_SELECTORS = Object.freeze({
   energy: '[data-hud-value="energy"]',
@@ -34,6 +44,35 @@ function getRequiredElement(root, selector) {
   throw new Error(`HUD-Element nicht gefunden: ${selector}`);
 }
 
+function renderBossValues(statusBar, boss, bossName) {
+  statusBar.setText(statusBar.elements.bossName, bossName);
+  statusBar.setText(
+    statusBar.elements.bossHealth,
+    `${boss.health} / ${boss.maximumHealth}`,
+  );
+  statusBar.setText(statusBar.elements.bossPhase, boss.phase);
+}
+
+function renderBossBar(statusBar, boss, bossName) {
+  const bar = statusBar.elements.bossBar;
+  const percentage = Math.round((boss.health / boss.maximumHealth) * 100);
+  bar.style.setProperty("--boss-health-percent", `${percentage}%`);
+  bar.setAttribute("aria-label", translate("hud.bossHealth", { name: bossName }));
+  bar.setAttribute("aria-valuenow", String(boss.health));
+  bar.setAttribute("aria-valuemax", String(boss.maximumHealth));
+  bar.setAttribute("aria-valuetext", translate(
+    "value.of", { value: boss.health, maximum: boss.maximumHealth },
+  ));
+}
+
+function renderWeaponValue(statusBar, weapon) {
+  statusBar.currentWeapon = weapon;
+  statusBar.setText(
+    statusBar.elements.weapon,
+    translate(`weapon.${weapon.id}`),
+  );
+}
+
 /**
  * Überträgt Laufwerte in das barrierefreie HTML-HUD.
  */
@@ -49,6 +88,8 @@ export class StatusBar {
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
     this.unsubscribeGameplay = null;
+    this.unsubscribeLanguage = null;
+    this.currentWeapon = null;
     this.pickupFeedback = new PickupFeedback(this.elements.pickupFeedback);
   }
 
@@ -63,8 +104,9 @@ export class StatusBar {
     this.unsubscribeGameplay = this.game.onGameplayEvent((event) => {
       this.handleGameplayEvent(event);
     });
+    this.unsubscribeLanguage = onLanguageChange(() => this.renderLanguage());
     this.render(this.game.getHudSnapshot());
-    this.setText(this.elements.weapon, this.game.weaponSystem.getCurrentWeapon().name);
+    this.renderWeapon(this.game.weaponSystem.getCurrentWeapon());
     this.renderState(this.game.state);
     return this;
   }
@@ -76,10 +118,12 @@ export class StatusBar {
     this.unsubscribeHud?.();
     this.unsubscribeState?.();
     this.unsubscribeGameplay?.();
+    this.unsubscribeLanguage?.();
     this.pickupFeedback.destroy();
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
     this.unsubscribeGameplay = null;
+    this.unsubscribeLanguage = null;
   }
 
   /**
@@ -98,7 +142,7 @@ export class StatusBar {
   /** Verbindet Gameplay-Ereignisse mit Waffen- und Fundanzeige. */
   handleGameplayEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
-      this.setText(this.elements.weapon, event.detail.name);
+      renderWeaponValue(this, event.detail);
     }
     if (event.type === GAMEPLAY_EVENTS.PICKUP) {
       this.pickupFeedback.show(event.detail);
@@ -117,7 +161,10 @@ export class StatusBar {
     this.elements.jumpCharge.hidden = !charge.isCharging;
     this.elements.jumpChargeBar.style.setProperty("--jump-charge-percent", `${percent}%`);
     this.elements.jumpChargeBar.setAttribute("aria-valuenow", String(percent));
-    this.elements.jumpChargeBar.setAttribute("aria-valuetext", `${percent} Prozent`);
+    this.elements.jumpChargeBar.setAttribute(
+      "aria-valuetext",
+      translate("value.percent", { value: percent }),
+    );
     this.setText(this.elements.jumpChargeValue, `${percent}%`);
   }
 
@@ -158,7 +205,10 @@ export class StatusBar {
     this.elements.energyBar.style.setProperty("--energy-percent", `${percentage}%`);
     this.elements.energyBar.setAttribute("aria-valuenow", String(energy));
     this.elements.energyBar.setAttribute("aria-valuemax", String(maximumEnergy));
-    this.elements.energyBar.setAttribute("aria-valuetext", `${energy} von ${maximumEnergy}`);
+    this.elements.energyBar.setAttribute(
+      "aria-valuetext",
+      translate("value.of", { value: energy, maximum: maximumEnergy }),
+    );
   }
 
   /**
@@ -169,15 +219,20 @@ export class StatusBar {
     const isVisible = Boolean(boss?.isVisible);
     this.elements.boss.hidden = !isVisible;
     if (!isVisible) return;
-    const percentage = Math.round((boss.health / boss.maximumHealth) * 100);
-    this.setText(this.elements.bossName, boss.name);
-    this.setText(this.elements.bossHealth, `${boss.health} / ${boss.maximumHealth}`);
-    this.setText(this.elements.bossPhase, boss.phase);
-    this.elements.bossBar.style.setProperty("--boss-health-percent", `${percentage}%`);
-    this.elements.bossBar.setAttribute("aria-label", `Lebensenergie von ${boss.name}`);
-    this.elements.bossBar.setAttribute("aria-valuenow", String(boss.health));
-    this.elements.bossBar.setAttribute("aria-valuemax", String(boss.maximumHealth));
-    this.elements.bossBar.setAttribute("aria-valuetext", `${boss.health} von ${boss.maximumHealth}`);
+    const bossName = translate(BOSS_KEYS[boss.name] ?? "boss.default");
+    renderBossValues(this, boss, bossName);
+    renderBossBar(this, boss, bossName);
+  }
+
+  /** Übersetzt unveränderliche HUD-Werte nach einem Sprachwechsel neu. */
+  renderLanguage() {
+    this.render(this.game.getHudSnapshot());
+    if (this.currentWeapon) this.renderWeapon(this.currentWeapon);
+  }
+
+  /** Zeigt die aktive Waffe über ihre stabile ID an. */
+  renderWeapon(weapon) {
+    renderWeaponValue(this, weapon);
   }
 
   /**

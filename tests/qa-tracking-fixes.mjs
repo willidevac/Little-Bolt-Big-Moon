@@ -40,7 +40,7 @@ console.log(
 async function assertWeaponHud() {
   const html = await fs.readFile("index.html", "utf8");
   assert.match(html, /aria-label="Ausgewählte Waffe"/);
-  assert.match(html, /<dt>Waffe wechseln<\/dt>[\s\S]*?<kbd>Q<\/kbd>/);
+  assert.match(html, /<dt[^>]*>Waffe wechseln<\/dt>[\s\S]*?<kbd>Q<\/kbd>/);
   assertWeaponChangeRendering();
 }
 
@@ -53,7 +53,7 @@ function assertWeaponChangeRendering() {
   };
   StatusBar.prototype.handleGameplayEvent.call(hud, {
     type: GAMEPLAY_EVENTS.WEAPON_CHANGED,
-    detail: { name: "Bolzenwerfer" },
+    detail: { id: "boltThrower", name: "Bolzenwerfer" },
   });
   assert.equal(weapon.textContent, "Bolzenwerfer");
 }

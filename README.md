@@ -51,6 +51,7 @@ ist.
 - wählbare Verbesserungen nach bestandenen Gegnerphasen
 - lokale Highscore- und Höhenauswertung
 - Desktop- und Touchsteuerung im Querformat
+- gespeicherte Deutsch-/Englisch-Umschaltung in den Einstellungen
 - Start-, Gewinn- und Game-over-Bildschirm
 - wortlose Anfangs- und Endsequenz
 

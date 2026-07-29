@@ -1,9 +1,7 @@
-const PICKUP_LABELS = Object.freeze({
-  gear: "Zahnrad",
-  energy: "Energie",
-  ammo: "Munition",
-});
+import { onLanguageChange, translate } from "../../js/i18n/localization.js";
+
 const FEEDBACK_DURATION_MILLISECONDS = 2400;
+const PICKUP_TYPES = Object.freeze(["gear", "energy", "ammo"]);
 
 /** Zeigt einen Fund kurz und barrierefrei über der Spielwelt an. */
 export class PickupFeedback {
@@ -15,6 +13,8 @@ export class PickupFeedback {
     this.element = element;
     this.timeoutId = null;
     this.activePriority = 0;
+    this.currentPickup = null;
+    this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
   /** Zeigt genau eine verständliche Meldung für einen neuen Fund. */
@@ -22,6 +22,7 @@ export class PickupFeedback {
     const priority = pickup?.type === "weapon" ? 2 : 1;
     if (priority < this.activePriority) return false;
     this.activePriority = priority;
+    this.currentPickup = pickup;
     this.element.textContent = this.#getMessage(pickup);
     this.element.classList.remove("is-visible");
     void this.element.offsetWidth;
@@ -36,6 +37,7 @@ export class PickupFeedback {
     clearTimeout(this.timeoutId);
     this.timeoutId = null;
     this.activePriority = 0;
+    this.currentPickup = null;
     this.element.classList.remove("is-visible");
     this.element.textContent = "";
   }
@@ -43,14 +45,21 @@ export class PickupFeedback {
   /** Stoppt eine noch wartende Meldung. */
   destroy() {
     this.clear();
+    this.unsubscribeLanguage();
   }
 
   #getMessage(pickup) {
-    if (pickup?.type === "weapon") return "Neue Waffe freigeschaltet!";
-    const label = PICKUP_LABELS[pickup?.type];
-    if (label && Number.isFinite(pickup?.amount)) {
-      return `${label} +${pickup.amount}`;
+    if (pickup?.type === "weapon") return translate("pickup.weapon");
+    const key = `pickup.${pickup?.type}`;
+    if (PICKUP_TYPES.includes(pickup?.type) && Number.isFinite(pickup?.amount)) {
+      return translate(key, { amount: pickup.amount });
     }
-    return "Fund eingesammelt";
+    return translate("pickup.default");
+  }
+
+  #renderCurrent() {
+    if (this.currentPickup) {
+      this.element.textContent = this.#getMessage(this.currentPickup);
+    }
   }
 }

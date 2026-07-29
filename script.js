@@ -2,7 +2,8 @@ import { Game } from "./classes/core/game.class.js";
 import { GAME_CONFIG } from "./js/config/game-config.js";
 import { initializeScreens } from "./js/ui/screens.js";
 import { initializeHud } from "./js/ui/hud.js";
-import { initializeStorage } from "./js/ui/storage.js";
+import { getGameStorage, initializeStorage } from "./js/ui/storage.js";
+import { initializeLocalization } from "./js/ui/localization.js";
 import { initializeTouchControls } from "./js/ui/touch-controls.js";
 import { initializeAudio } from "./js/ui/audio.js";
 
@@ -48,10 +49,12 @@ export function getGame() {
   return gameInstance;
 }
 
+const storage = getGameStorage();
+initializeLocalization(storage);
 const game = initializeGame();
 const audio = initializeAudio(game);
 initializeScreens(game);
 initializeHud(game);
-initializeStorage(game, audio);
+initializeStorage(game, audio, document.body, storage);
 initializeTouchControls(game);
 globalThis.littleBoltGame = game;

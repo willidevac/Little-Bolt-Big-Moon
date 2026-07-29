@@ -35,7 +35,25 @@
   cursor: pointer;
 }
 
-.audio-setting input:focus-visible {
+.language-setting {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-cream);
+  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  text-transform: uppercase;
+}
+
+.language-setting select {
+  width: 100%;
+  padding: 0.55rem;
+  border: 2px solid var(--color-cyan);
+  color: var(--color-cream);
+  background: var(--color-navy);
+  cursor: pointer;
+}
+
+.audio-setting input:focus-visible,
+.language-setting select:focus-visible {
   outline: 3px solid var(--color-orange);
   outline-offset: 4px;
 }
@@ -54,6 +72,10 @@
 
   .audio-setting {
     padding: 0.45rem;
+  }
+
+  .language-setting {
+    grid-column: 1 / -1;
   }
 
   .audio-setting input {
