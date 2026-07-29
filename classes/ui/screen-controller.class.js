@@ -53,10 +53,12 @@ export class ScreenController {
   /**
    * @param {import("../core/game.class.js").Game} game
    * @param {HTMLElement} root
+   * @param {import("./story-sequence-controller.class.js").StorySequenceController|null} storySequences
    */
-  constructor(game, root) {
+  constructor(game, root, storySequences = null) {
     this.game = game;
     this.root = root;
+    this.storySequences = storySequences;
     this.#assignRequiredElements();
     this.dialogs = [...root.querySelectorAll(SELECTORS.dialogs)];
     this.activeDialog = null;
@@ -207,7 +209,7 @@ export class ScreenController {
    */
   createActions() {
     return Object.freeze({
-      start: () => this.game.reset(),
+      start: () => this.startRun(),
       controls: () => this.openDialog("controls"),
       settings: () => this.openDialog("settings"),
       imprint: () => this.openDialog("imprint"),
@@ -218,6 +220,13 @@ export class ScreenController {
       restart: () => this.game.reset(),
       home: () => this.game.goHome(),
     });
+  }
+
+  /** Beginnt den Lauf nach der kurzen wortlosen Startsequenz. */
+  startRun() {
+    if (this.storySequences) return this.storySequences.playIntro();
+    this.game.reset();
+    return true;
   }
 
   /**

@@ -20,6 +20,51 @@
         Dein Browser unterstützt das Canvas-Element leider nicht.
       </canvas>
 
+      <section
+        class="story-sequence"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Wortlose Geschichte"
+        data-story-sequence
+        hidden
+      >
+        <div class="story-sequence__viewport" aria-hidden="true">
+          <div class="story-sequence__scene story-sequence__scene--intro">
+            <span class="story-sequence__signal"></span>
+            <img
+              class="story-sequence__cradle"
+              src="./img/sprites/props/empty-luma-cradle.png"
+              alt=""
+              width="96"
+              height="64"
+            >
+            <span class="story-sprite story-sprite--byte"></span>
+          </div>
+
+          <div class="story-sequence__scene story-sequence__scene--outro">
+            <span class="story-sequence__earth"></span>
+            <span class="story-sprite story-sprite--byte"></span>
+            <span class="story-sprite story-sprite--luma"></span>
+            <span class="story-sprite story-sprite--energy"></span>
+            <span class="story-sprite story-sprite--badge-left"></span>
+            <span class="story-sprite story-sprite--badge-right"></span>
+          </div>
+        </div>
+
+        <p
+          class="visually-hidden"
+          aria-live="polite"
+          data-story-sequence-status
+        ></p>
+        <button
+          class="story-sequence__skip"
+          type="button"
+          data-story-sequence-skip
+        >
+          Überspringen
+        </button>
+      </section>
+
       <button
         class="sound-button"
         type="button"

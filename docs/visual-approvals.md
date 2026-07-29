@@ -293,6 +293,18 @@ Eingesetzte Runtime-Dateien:
 - `img/sprites/props/luma-cargo-crate.png`
 - `img/sprites/props/blue-signal-beacon.png`
 
+Wortlose Sequenzen:
+
+- Die Startsequenz zeigt Byte, den leeren Platz in der Doppelhalterung und
+  anschließend ein aufsteigendes Cyansignal.
+- Die Endsequenz führt eine Energiezelle zu Luma, spielt ihre fünf
+  Wiederbelebungsframes ab und verbindet beide Abzeichenhälften vor der Erde.
+- Beide Sequenzen dauern höchstens 2,8 Sekunden, sind per Button, Escape,
+  Enter oder Leertaste überspringbar und verkürzen sich bei reduzierter
+  Bewegung.
+- Die Sequenzen verwenden ausschließlich vorhandene Runtime-Sprites und
+  besitzen keine Abhängigkeit vom Audiosystem.
+
 Verbindliche Merkmale:
 
 - Die Transporthalterung besteht aus zwei sichtbar verbundenen Plätzen. Bytes

@@ -1,0 +1,254 @@
+.story-sequence {
+  position: absolute;
+  z-index: 40;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 35%, rgb(45 132 144 / 24%), transparent 35%),
+    linear-gradient(180deg, #07131f, #02070d);
+  isolation: isolate;
+}
+
+.story-sequence[hidden] {
+  display: none;
+}
+
+.story-sequence__viewport,
+.story-sequence__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.story-sequence__scene {
+  overflow: hidden;
+}
+
+.story-sequence[data-sequence="intro"] .story-sequence__scene--outro,
+.story-sequence[data-sequence="outro"] .story-sequence__scene--intro {
+  display: none;
+}
+
+.story-sequence__scene--intro {
+  background:
+    linear-gradient(0deg, rgb(25 14 10 / 85%) 0 18%, transparent 42%),
+    radial-gradient(circle at 50% 80%, #3b2519, #07131f 62%);
+}
+
+.story-sequence__scene--outro {
+  background:
+    linear-gradient(0deg, #d8c69e 0 12%, transparent 13%),
+    radial-gradient(circle at 50% 70%, #4a5364, #07131f 58%);
+}
+
+.story-sequence__cradle {
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  width: clamp(9rem, 22vw, 18rem);
+  height: auto;
+  image-rendering: pixelated;
+  transform: translateX(-70%);
+  animation: cradle-search 2.8s ease-in-out both;
+}
+
+.story-sequence__signal {
+  position: absolute;
+  left: 63%;
+  bottom: 42%;
+  width: clamp(0.4rem, 1vw, 0.8rem);
+  height: 42%;
+  background: linear-gradient(0deg, #36e9e4, transparent);
+  box-shadow: 0 0 1.5rem #36e9e4;
+  transform-origin: bottom;
+  animation: signal-rise 2.8s ease-out both;
+}
+
+.story-sprite {
+  position: absolute;
+  display: block;
+  width: clamp(4rem, 10vw, 7rem);
+  aspect-ratio: 1;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.story-sprite--byte {
+  left: 29%;
+  bottom: 14%;
+  background-image: url("../img/sprites/characters/byte.png");
+  background-position: 0 0;
+  background-size: 800% 500%;
+}
+
+.story-sequence__scene--intro .story-sprite--byte {
+  animation: byte-notices-empty-seat 2.8s ease-in-out both;
+}
+
+.story-sequence__scene--outro .story-sprite--byte {
+  left: 35%;
+  animation: reunited-hover 2.8s ease-in-out both;
+}
+
+.story-sprite--luma {
+  left: 57%;
+  bottom: 14%;
+  background-image: url("../img/sprites/characters/luma.png");
+  background-position: 0 0;
+  background-size: 500% 200%;
+  animation: luma-revives 2.8s steps(1) both;
+}
+
+.story-sprite--energy,
+.story-sprite--badge-left,
+.story-sprite--badge-right {
+  background-image: url("../img/sprites/items/collectables.png");
+  background-size: 500% 300%;
+}
+
+.story-sprite--energy {
+  left: 47%;
+  bottom: 18%;
+  background-position: 25% 50%;
+  animation: energy-reaches-luma 2.8s ease-in-out both;
+}
+
+.story-sprite--badge-left,
+.story-sprite--badge-right {
+  top: 17%;
+  left: 50%;
+  width: clamp(3.5rem, 8vw, 6rem);
+}
+
+.story-sprite--badge-left {
+  background-position: 75% 100%;
+  animation: badge-left-connects 2.8s ease-in-out both;
+}
+
+.story-sprite--badge-right {
+  background-position: 100% 100%;
+  animation: badge-right-connects 2.8s ease-in-out both;
+}
+
+.story-sequence__earth {
+  position: absolute;
+  top: -18%;
+  left: 50%;
+  width: clamp(16rem, 38vw, 32rem);
+  aspect-ratio: 1;
+  border: clamp(0.35rem, 1vw, 0.8rem) solid #a8def0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 35%, #7acfc7 0 8%, transparent 9%),
+    radial-gradient(circle at 64% 58%, #6fbea9 0 13%, transparent 14%),
+    radial-gradient(circle at 42% 65%, #6eaf9b 0 9%, transparent 10%),
+    #386e9c;
+  box-shadow: 0 0 3rem rgb(110 211 231 / 55%);
+  transform: translateX(-50%);
+  animation: earth-glow 2.8s ease-in-out both;
+}
+
+.story-sequence__skip {
+  position: absolute;
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  min-height: 2.75rem;
+  padding: 0.55rem 0.9rem;
+  border: 2px solid var(--color-cream);
+  color: var(--color-cream);
+  background: rgb(7 19 31 / 88%);
+  text-transform: uppercase;
+}
+
+.story-sequence__skip:hover {
+  border-color: var(--color-cyan);
+  color: white;
+}
+
+.story-sequence__skip:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 4px;
+}
+
+@keyframes cradle-search {
+  0% { filter: brightness(0.45); transform: translateX(-70%) scale(0.94); }
+  35%, 82% { filter: brightness(1.12); transform: translateX(-70%) scale(1); }
+  100% { filter: brightness(0.75); transform: translateX(-70%) scale(0.98); }
+}
+
+@keyframes signal-rise {
+  0%, 38% { opacity: 0; transform: scaleY(0); }
+  58%, 88% { opacity: 0.9; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(1); }
+}
+
+@keyframes byte-notices-empty-seat {
+  0% { transform: translateX(-18%) rotate(-4deg); }
+  35%, 78% { transform: translateX(0) rotate(4deg); }
+  100% { transform: translateX(8%) rotate(0); }
+}
+
+@keyframes energy-reaches-luma {
+  0%, 18% { filter: brightness(0.6); transform: translate(-170%, 80%) scale(0.7); }
+  55% { filter: brightness(1.8); transform: translate(70%, -30%) scale(1.15); }
+  82%, 100% { opacity: 0; transform: translate(115%, 45%) scale(0.35); }
+}
+
+@keyframes luma-revives {
+  0%, 22% { background-position: 0 0; filter: brightness(0.55); }
+  36% { background-position: 0 100%; }
+  48% { background-position: 25% 100%; }
+  60% { background-position: 50% 100%; }
+  72% { background-position: 75% 100%; }
+  84%, 100% { background-position: 100% 100%; filter: brightness(1.2); }
+}
+
+@keyframes reunited-hover {
+  0%, 65% { transform: translateY(0); }
+  82% { transform: translateY(-8%); }
+  100% { transform: translateY(-3%); }
+}
+
+@keyframes badge-left-connects {
+  0%, 48% { opacity: 0; transform: translate(-260%, -30%) rotate(-22deg); }
+  78%, 100% { opacity: 1; transform: translate(-82%, 0) rotate(0); }
+}
+
+@keyframes badge-right-connects {
+  0%, 48% { opacity: 0; transform: translate(160%, -30%) rotate(22deg); }
+  78%, 100% { opacity: 1; transform: translate(-18%, 0) rotate(0); }
+}
+
+@keyframes earth-glow {
+  0% { filter: brightness(0.55); transform: translateX(-50%) scale(0.92); }
+  82%, 100% { filter: brightness(1.08); transform: translateX(-50%) scale(1); }
+}
+
+@media (max-width: 700px) and (orientation: landscape) {
+  .story-sequence__cradle {
+    bottom: 8%;
+    width: clamp(7rem, 25vw, 11rem);
+  }
+
+  .story-sprite {
+    bottom: 7%;
+    width: clamp(3rem, 11vw, 5rem);
+  }
+
+  .story-sprite--badge-left,
+  .story-sprite--badge-right {
+    top: 10%;
+  }
+
+  .story-sequence__skip {
+    min-height: 2rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-sequence * {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}
