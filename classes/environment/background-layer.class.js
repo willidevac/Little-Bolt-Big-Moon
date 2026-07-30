@@ -5,11 +5,12 @@ import { DrawableObject } from "../base/drawable-object.class.js";
  */
 export class BackgroundLayer extends DrawableObject {
   /**
-   * @param {{source:string, frameWidth:number, frameHeight:number}} config
+   * @param {{source:string, frameWidth:number, frameHeight:number, scrollRate?:number}} config
    */
   constructor(config) {
     super();
     this.#validateConfig(config);
+    this.scrollRate = config.scrollRate ?? 1;
     this.loadSprite({
       source: config.source,
       frameWidth: config.frameWidth,
@@ -54,8 +55,18 @@ export class BackgroundLayer extends DrawableObject {
     const sourceHeight = this.spriteConfig.frameHeight;
     const sourceCropHeight = sourceWidth * (viewport.height / viewport.width);
     const maximumSourceY = sourceHeight - sourceCropHeight;
-    const progress = this.#getScrollProgress(bounds, camera, viewport.height);
+    const worldProgress = this.#getScrollProgress(
+      bounds,
+      camera,
+      viewport.height,
+    );
+    const progress = this.#getLayerProgress(worldProgress);
     return { width: sourceWidth, height: sourceCropHeight, y: maximumSourceY * progress };
+  }
+
+  #getLayerProgress(worldProgress) {
+    const centeredProgress = worldProgress - 0.5;
+    return this.#clamp(0.5 + centeredProgress * this.scrollRate, 0, 1);
   }
 
   #getScrollProgress(bounds, camera, viewportHeight) {
@@ -77,7 +88,10 @@ export class BackgroundLayer extends DrawableObject {
       Number.isInteger(config?.frameHeight) &&
       config.frameWidth > 0 &&
       config.frameHeight > config.frameWidth;
-    if (typeof config?.source === "string" && hasValidSize) return;
+    const rate = config?.scrollRate ?? 1;
+    const hasValidRate = Number.isFinite(rate) && rate > 0 && rate <= 1;
+    if (typeof config?.source === "string" && hasValidSize &&
+      hasValidRate) return;
     throw new TypeError("Das Hintergrundpanorama ist ungültig.");
   }
 }

@@ -10,8 +10,8 @@ für Dateipfade, Raster, Zustände, Framezahlen und Lizenz-IDs ist
 - Sprites und Tiles werden als PNG mit transparentem Hintergrund exportiert.
 - Byte wird im Clean-HD-Raster nativ gezeichnet. Die übrigen bisherigen
   Figuren und Tiles werden im Spiel ganzzahlig auf das Zweifache skaliert.
-- Hintergründe entstehen nativ in `320 × 360 px` und werden auf
-  `1280 × 1440 px` skaliert.
+- Neue Clean-HD-Hintergründe entstehen als `1024 × 1536 px` große
+  Panoramen. Transparente Mittel- und Nahschichten liegen getrennt vor.
 - `imageSmoothingEnabled` bleibt für Pixel-Art deaktiviert.
 - Sprites erhalten rundherum zwei transparente Pixel Reserve.
 - Der sichtbare Körper darf den Framerand in keinem Animationszustand
@@ -60,17 +60,17 @@ Einzelplattformen und Dekoration bereit.
 
 | Zone | Höhenbereich | Tileset | Hintergrundebenen |
 | --- | ---: | --- | --- |
-| Schrottplatz | 0–1.599 | `img/tilesets/scrapyard-tiles-clean-hd.png` | `scrapyard-far.png`, `scrapyard-mid.png`, `scrapyard-near.png` |
+| Schrottplatz | 120.000–150.000 | `img/tilesets/scrapyard-tiles-clean-hd.png` | `scrapyard-far-clean-hd.png`, `scrapyard-mid-clean-hd.png`, `scrapyard-near-clean-hd.png` |
 | Fabrik | 1.600–3.199 | `img/tilesets/factory-tiles.png` | `factory-far.png`, `factory-mid.png`, `factory-near.png` |
 | Startturm/Wolken | 3.200–4.799 | `img/tilesets/launch-tower-tiles.png` | `launch-tower-far.png`, `launch-tower-mid.png`, `launch-tower-near.png` |
 | Raumstation | 4.800–6.399 | `img/tilesets/space-station-tiles.png` | `space-station-far.png`, `space-station-mid.png`, `space-station-near.png` |
 | Mond | 6.400–8.000 | `img/tilesets/moon-tiles.png` | `moon-far.png`, `moon-mid.png`, `moon-near.png` |
 
-Alle Hintergrunddateien liegen unter `img/backgrounds/` und besitzen nativ
-`320 × 360 px`. Jede Ebene muss oben und unten mit sich selbst oder der
-nächsten Zone überlappbar sein. Beim Zeichnen werden vier Weltpixel
-Überlappung eingeplant, damit auch bei Rundungsfehlern keine Lücke sichtbar
-wird.
+Alle Hintergrunddateien liegen unter `img/backgrounds/`. Das
+Schrottplatz-Set wird einmal über seinen zusammenhängenden 30.000-Pixel-Bereich
+geführt. Seine drei Scrollraten erzeugen Tiefe ohne wiederholte Raumbilder.
+An der nächsten Zone werden vier Weltpixel überlappt, damit auch bei
+Rundungsfehlern keine Lücke sichtbar wird.
 
 Das zusätzliche `img/tilesets/scrapyard-hazards-clean-hd.png` enthält
 16 Clean-HD-Frames für Stacheln, Elektrizität, Warnleuchten und Arenatore.

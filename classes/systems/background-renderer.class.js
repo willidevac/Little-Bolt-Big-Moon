@@ -1,7 +1,7 @@
 import { BackgroundZone } from "../environment/background-zone.class.js";
 
 /**
- * Zeichnet für jeden Levelabschnitt einen eigenen Hintergrund.
+ * Zeichnet einzelne Raum-Panoramen und gemeinsame Parallax-Zonen.
  */
 export class BackgroundRenderer {
   /**
@@ -29,18 +29,46 @@ export class BackgroundRenderer {
   }
 
   #createSectionZones(sections) {
+    this.#validateSections(sections);
+    const zones = new Map();
+    sections.forEach((section) => {
+      this.#validateSection(section);
+      const id = this.#getZoneId(section);
+      const current = zones.get(id);
+      zones.set(id, current
+        ? this.#mergeZone(current, section)
+        : this.#createZone(id, section));
+    });
+    return [...zones.values()];
+  }
+
+  #validateSections(sections) {
     if (!Array.isArray(sections) || sections.length === 0) {
       throw new TypeError("Die Hintergrundabschnitte fehlen.");
     }
-    return sections.map((section) => {
-      this.#validateSection(section);
-      return {
-        id: section.id,
-        topY: section.topY,
-        bottomY: section.bottomY,
-        backgroundLayers: section.backgroundLayers,
-      };
-    });
+  }
+
+  #getZoneId(section) {
+    return section.backgroundLayers.length > 1
+      ? section.backgroundId
+      : section.id;
+  }
+
+  #createZone(id, section) {
+    return {
+      id,
+      topY: section.topY,
+      bottomY: section.bottomY,
+      backgroundLayers: section.backgroundLayers,
+    };
+  }
+
+  #mergeZone(zone, section) {
+    return {
+      ...zone,
+      topY: Math.min(zone.topY, section.topY),
+      bottomY: Math.max(zone.bottomY, section.bottomY),
+    };
   }
 
   #validateSection(section) {

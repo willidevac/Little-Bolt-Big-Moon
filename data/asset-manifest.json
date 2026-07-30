@@ -398,14 +398,14 @@
       "id": "scrapyard-background-far",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-far.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/scrapyard-far-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousPanorama": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -413,14 +413,14 @@
       "id": "scrapyard-background-mid",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-mid.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/scrapyard-mid-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -428,14 +428,14 @@
       "id": "scrapyard-background-near",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-near.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/scrapyard-near-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },

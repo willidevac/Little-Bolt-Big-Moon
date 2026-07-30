@@ -1,6 +1,6 @@
 # Clean-HD-Pixel-Art-Direction
 
-Status: Stilrichtung freigegeben, Byte-Runtime integriert und in Prüfung
+Status: Stilrichtung freigegeben, Schrottplatz-Hintergrund in Prüfung
 
 ## Ziel
 
@@ -64,6 +64,10 @@ Zellen gepackt.
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,
   klarer Creme-Kontur und dunklem, kontrastreichem Innenraum.
+- Der gesamte 30.000-Pixel-Schrottplatz verwendet genau ein gemeinsames
+  Clean-HD-Set aus Fern-, Mittel- und Nahpanorama.
+- Die drei Ebenen bewegen sich mit getrennten Scrollraten. Sie wiederholen
+  sich innerhalb des Bioms nicht und enthalten keine Spielflächen.
 
 ## Reihenfolge nach der Freigabe
 

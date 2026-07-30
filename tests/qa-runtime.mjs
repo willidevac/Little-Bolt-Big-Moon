@@ -7,6 +7,7 @@ import { GAME_CONFIG } from "../js/config/game-config.js";
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs"]);
 const STYLE_EXTENSIONS = new Set([".css"]);
+const SCRAPYARD_LAYERS = Object.freeze(["far", "mid", "near"]);
 const levelData = JSON.parse(
   await fs.readFile(path.join(ROOT, "data", "levels", "level-01.json")),
 );
@@ -115,11 +116,21 @@ function addAudioAssets(assets) {
 
 function addLevelAssets(assets) {
   levelData.sections.forEach((section) => {
+    addSectionBackgrounds(assets, section);
+    assets.add(resolveAsset("tilesets", `${section.tileset}-tiles.png`));
+  });
+}
+
+function addSectionBackgrounds(assets, section) {
+  if (section.backgroundId !== "scrapyard") {
+    assets.add(resolveAsset("backgrounds", `${section.id}-background-v1.png`));
+    return;
+  }
+  SCRAPYARD_LAYERS.forEach((layer) => {
     assets.add(resolveAsset(
       "backgrounds",
-      `${section.id}-background-v1.png`,
+      `scrapyard-${layer}-clean-hd.png`,
     ));
-    assets.add(resolveAsset("tilesets", `${section.tileset}-tiles.png`));
   });
 }
 

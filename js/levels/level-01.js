@@ -28,6 +28,11 @@ const TILESET_NAMES = Object.freeze([
 const TILESET_CONFIGS = Object.freeze(
   Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),
 );
+const SCRAPYARD_BACKGROUND_LAYERS = Object.freeze([
+  Object.freeze({ name: "far", scrollRate: 0.72 }),
+  Object.freeze({ name: "mid", scrollRate: 0.86 }),
+  Object.freeze({ name: "near", scrollRate: 1 }),
+]);
 
 function createTilesetEntry(tilesetName) {
   const isCleanHd = tilesetName === "scrapyard";
@@ -138,18 +143,39 @@ function getPlatformClass(platformData) {
 }
 
 function createSection(sectionData) {
-  const backgroundLayers = [Object.freeze({
+  const backgroundLayers = sectionData.backgroundId === "scrapyard"
+    ? createScrapyardBackgroundLayers()
+    : createRoomBackgroundLayer(sectionData.id);
+  return Object.freeze({
+    ...sectionData,
+    backgroundLayers,
+  });
+}
+
+function createScrapyardBackgroundLayers() {
+  return Object.freeze(SCRAPYARD_BACKGROUND_LAYERS.map((layer) => {
+    return Object.freeze({
+      source: getAssetPath(
+        "backgrounds",
+        `scrapyard-${layer.name}-clean-hd.png`,
+      ),
+      frameWidth: 1024,
+      frameHeight: 1536,
+      scrollRate: layer.scrollRate,
+    });
+  }));
+}
+
+function createRoomBackgroundLayer(sectionId) {
+  return Object.freeze([Object.freeze({
     source: getAssetPath(
       "backgrounds",
-      `${sectionData.id}-background-v1.png`,
+      `${sectionId}-background-v1.png`,
     ),
     frameWidth: 1024,
     frameHeight: 1536,
-  })];
-  return Object.freeze({
-    ...sectionData,
-    backgroundLayers: Object.freeze(backgroundLayers),
-  });
+    scrollRate: 1,
+  })]);
 }
 
 function validateLevelData(data) {

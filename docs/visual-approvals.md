@@ -811,3 +811,28 @@ Verbindliche Merkmale:
   schwebende Metallfragmente.
 - Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
   geprüft.
+
+## Clean-HD-Schrottplatz-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmaster | `img/concepts/approvals/scrapyard-clean-hd-background-master-v1.png` |
+| Zusammengesetzte Vorschau | `img/concepts/approvals/scrapyard-clean-hd-background-composite-v1.png` |
+| Fernebene | `img/backgrounds/scrapyard-far-clean-hd.png` |
+| Mittelebene | `img/backgrounds/scrapyard-mid-clean-hd.png` |
+| Nahebene | `img/backgrounds/scrapyard-near-clean-hd.png` |
+| Runtime-Größe | jeweils 1024 × 1536 px |
+| Höhenbereich | 120.000–150.000 Weltpixel |
+
+Verbindliche Merkmale:
+
+- Ein einziges Drei-Ebenen-Set verbindet Maschinenfriedhof, Presswerk und
+  Funkturm. Es werden keine eigenen Raumbilder wiederholt.
+- Die Fernebene enthält die vollständige, ruhige Landschaft. Mittel- und
+  Nahebene besitzen transparente Zentren und werden darüber gezeichnet.
+- Scrollraten von 0,72, 0,86 und 1,0 erzeugen eine lesbare Tiefenbewegung.
+- Größere, ruhigere Formen ersetzen die bisherigen kleinteiligen Rostmuster.
+- Plattformen, Gegner, Figuren und HUD bleiben vollständig getrennte
+  Runtime-Objekte.
