@@ -352,10 +352,12 @@ Verbindliche Merkmale:
 
 | Feld | Freigabe |
 | --- | --- |
-| Status | freigegeben |
-| Datum | 23.07.2026 |
-| Richtung | kompakte industrielle Pixel-Oberfläche mit freier Spielfeldmitte |
+| Status | Clean-HD-HUD freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Richtung | kompakte, ruhige industrielle Pixel-Oberfläche mit freier Spielfeldmitte |
 | Masterdatei | `img/concepts/approvals/ui-hud-menus-master-v1.png` |
+| Clean-HD-Symbolmaster | `img/concepts/approvals/hud-icons-clean-hd-production-layout-v1.png` |
+| Runtime-Symbolblatt | `img/ui/hud-icons-clean-hd.png`, 8 × 48 × 48 px |
 | Zielauflösung | 1280 × 720 px |
 
 Verbindliche Merkmale:
@@ -375,6 +377,12 @@ Verbindliche Merkmale:
   `MENÜ` und `NOCHMAL`.
 - Die Oberfläche bleibt sowohl vor warmen unteren Zonen als auch vor dunklem
   Weltraum deutlich lesbar und hält die Spielfeldmitte frei.
+- Die acht Runtime-Symbole ersetzen plattformabhängige Unicode-Zeichen und
+  bleiben über `aria-hidden` rein dekorativ.
+- Energie, Munition, Zahnräder, Höhe, Punkte, Lichtbogenladung, Waffe und
+  Pause besitzen jeweils eine eigene, formbasierte Silhouette.
+- Rahmen werden responsiv mit CSS gezeichnet. Dadurch bleiben Ecken und
+  Kontrast zwischen 320 und 1440 Pixeln sauber, ohne ein Bild zu verzerren.
 
 ## Byte-Animationen
 

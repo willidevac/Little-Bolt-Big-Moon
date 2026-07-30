@@ -60,6 +60,10 @@ Zellen gepackt.
   Angriffs-, Treffer- und Ausschaltframes in nativen 96 × 64 Pixeln.
 - Der Crawler bleibt im Canvas 96 × 64 Pixel groß. Hitbox,
   Animationsreihenfolge und Gegnerverhalten wurden nicht verändert.
+- `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
+  die tatsächlich sichtbaren HUD-Werte und die Pause.
+- HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,
+  klarer Creme-Kontur und dunklem, kontrastreichem Innenraum.
 
 ## Reihenfolge nach der Freigabe
 

@@ -16,13 +16,20 @@
 
 .hud-panel,
 .hud-pause-button {
-  border: 2px solid var(--color-cream);
+  --hud-edge: #eadbb8;
+  border: 1px solid var(--hud-edge);
   color: var(--color-cream);
   background:
-    linear-gradient(180deg, rgb(29 48 59 / 96%), rgb(9 20 30 / 96%));
+    linear-gradient(
+      90deg,
+      rgb(199 102 54 / 90%) 0 0.45rem,
+      rgb(234 219 184 / 72%) 0.45rem 100%
+    ) top / 100% 2px no-repeat,
+    linear-gradient(180deg, rgb(25 42 52 / 97%), rgb(7 17 26 / 97%));
   box-shadow:
-    inset 0 0 0 2px rgb(2 7 13 / 70%),
-    0.2rem 0.2rem 0 var(--color-shadow);
+    inset 0 0 0 1px rgb(2 7 13 / 82%),
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0.16rem 0.16rem 0 var(--color-shadow);
 }
 
 .hud-panel {
@@ -246,10 +253,42 @@
 }
 
 .hud-symbol {
-  color: var(--color-cyan);
-  font-family: system-ui, sans-serif;
-  font-size: clamp(0.85rem, 1.7vw, 1.35rem);
-  line-height: 1;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: clamp(1rem, 2vw, 1.5rem);
+  height: clamp(1rem, 2vw, 1.5rem);
+  background-image: url("../img/ui/hud-icons-clean-hd.png");
+  background-repeat: no-repeat;
+  background-size: 800% 100%;
+  image-rendering: pixelated;
+}
+
+.hud-symbol[data-hud-icon="ammo"] {
+  background-position: 14.2857% 0;
+}
+
+.hud-symbol[data-hud-icon="gears"] {
+  background-position: 28.5714% 0;
+}
+
+.hud-symbol[data-hud-icon="height"] {
+  background-position: 42.8571% 0;
+}
+
+.hud-symbol[data-hud-icon="score"] {
+  background-position: 57.1429% 0;
+}
+
+.hud-symbol[data-hud-icon="arcCharge"] {
+  background-position: 71.4286% 0;
+}
+
+.hud-symbol[data-hud-icon="weapon"] {
+  background-position: 85.7143% 0;
+}
+
+.hud-symbol[data-hud-icon="pause"] {
+  background-position: 100% 0;
 }
 
 .hud-label {

@@ -92,7 +92,7 @@ dürfen aber nicht wie einsammelbare Gameplayobjekte blinken.
 
 | Asset | Datei | Raster/Größe | Frames |
 | --- | --- | ---: | ---: |
-| HUD-Symbole | `img/ui/hud-icons.png` | 24 × 24 | 8 |
+| HUD-Symbole | `img/ui/hud-icons-clean-hd.png` | 48 × 48 | 8 |
 | Neun-Segment-Panel | `img/ui/panel-tiles.png` | 16 × 16 | 9 |
 | Touchsteuerung | `img/ui/touch-controls.png` | 48 × 48 | 12 |
 | Menü-Symbole | `img/ui/menu-icons.png` | 24 × 24 | 6 |

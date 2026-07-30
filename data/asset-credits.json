@@ -1144,6 +1144,26 @@
       "created": "2026-07-29",
       "modifications": "Magenta chroma key removed locally; contains one enemy and two transparent platform samples, not runtime frames.",
       "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "hud-icons-clean-hd-layout-v1",
+      "file": "img/concepts/approvals/hud-icons-clean-hd-production-layout-v1.png",
+      "role": "clean-hd-hud-icons-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved HUD and Clean-HD gameplay references",
+      "created": "2026-07-30",
+      "modifications": "Eight responsive HUD meanings were arranged in one exact horizontal production layout.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "hud-icons-clean-hd-runtime-v1",
+      "file": "img/ui/hud-icons-clean-hd.png",
+      "role": "runtime-hud-clean-hd-icons",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD HUD icon layout",
+      "created": "2026-07-30",
+      "modifications": "Chroma-key removal, subject isolation and nearest-neighbor packing produced eight native 48x48 icons.",
+      "licenseId": "openai-assisted-project-art"
     }
   ]
 }
