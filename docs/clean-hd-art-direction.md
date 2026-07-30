@@ -72,6 +72,10 @@ Zellen gepackt.
   90.000. Warmes Ofenlicht entwickelt sich dabei zu kühlem Mondblau.
 - Seitlich montierte Produktionsarme und leere orange sowie cremefarbene
   Halterungen erzählen die gemeinsame Herkunft, ohne Laufkanten vorzutäuschen.
+- Der Startturm verwendet dieselbe Drei-Ebenen-Technik von Höhe 90.000 bis
+  60.000. Fabrikblau entwickelt sich über große Wolken zu Sternenblau.
+- Turmspitzen, Antennen und Randstreben bleiben vertikal. Story-Requisiten
+  werden weiterhin erst in der abschließenden Storyphase ergänzt.
 
 ## Reihenfolge nach der Freigabe
 

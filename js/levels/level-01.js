@@ -28,7 +28,11 @@ const TILESET_NAMES = Object.freeze([
 const TILESET_CONFIGS = Object.freeze(
   Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),
 );
-const CLEAN_HD_BACKGROUND_IDS = new Set(["scrapyard", "factory"]);
+const CLEAN_HD_BACKGROUND_IDS = new Set([
+  "scrapyard",
+  "factory",
+  "launch-tower",
+]);
 const CLEAN_HD_BACKGROUND_LAYERS = Object.freeze([
   Object.freeze({ name: "far", scrollRate: 0.72 }),
   Object.freeze({ name: "mid", scrollRate: 0.86 }),

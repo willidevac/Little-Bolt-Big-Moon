@@ -862,3 +862,30 @@ Verbindliche Merkmale:
   wie eine echte spielbare Plattform aussehen.
 - Plattformen, Gegner, Figuren, Story-Requisiten und HUD bleiben getrennte
   Runtime-Objekte.
+
+## Clean-HD-Startturm-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmaster | `img/concepts/approvals/launch-tower-clean-hd-background-master-v1.png` |
+| Zusammengesetzte Vorschau | `img/concepts/approvals/launch-tower-clean-hd-background-composite-v1.png` |
+| Fernebene | `img/backgrounds/launch-tower-far-clean-hd.png` |
+| Mittelebene | `img/backgrounds/launch-tower-mid-clean-hd.png` |
+| Nahebene | `img/backgrounds/launch-tower-near-clean-hd.png` |
+| Runtime-Größe | jeweils 1024 × 1536 px |
+| Höhenbereich | 60.000–90.000 Weltpixel |
+
+Verbindliche Merkmale:
+
+- Ein einziges Drei-Ebenen-Set verbindet Versorgungsschächte, Außenhülle und
+  Startplattform. Innerhalb des Bioms wird kein Raumbild wiederholt.
+- Die Fernebene wechselt von kühlem Fabrikblau über pfirsichfarbene und
+  violette Wolken zu tiefem Sternenblau.
+- Die entfernte Raumstation zeigt das nächste Ziel, ohne den Spielweg zu
+  erklären.
+- Mittel- und Nahschicht verwenden nur vertikale Turmspitzen, Leitungen,
+  Antennen und Randstreben ohne falsche Laufkanten.
+- Story-Requisiten, Plattformen, Gegner, Figuren und HUD bleiben getrennte
+  Runtime-Objekte.

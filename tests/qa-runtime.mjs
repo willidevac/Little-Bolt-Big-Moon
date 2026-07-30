@@ -7,7 +7,11 @@ import { GAME_CONFIG } from "../js/config/game-config.js";
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs"]);
 const STYLE_EXTENSIONS = new Set([".css"]);
-const CLEAN_HD_BACKGROUNDS = new Set(["scrapyard", "factory"]);
+const CLEAN_HD_BACKGROUNDS = new Set([
+  "scrapyard",
+  "factory",
+  "launch-tower",
+]);
 const CLEAN_HD_LAYERS = Object.freeze(["far", "mid", "near"]);
 const levelData = JSON.parse(
   await fs.readFile(path.join(ROOT, "data", "levels", "level-01.json")),

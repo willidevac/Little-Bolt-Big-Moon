@@ -488,14 +488,14 @@
       "id": "launch-tower-background-far",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-far.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/launch-tower-far-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousPanorama": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -503,14 +503,14 @@
       "id": "launch-tower-background-mid",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-mid.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/launch-tower-mid-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -518,14 +518,14 @@
       "id": "launch-tower-background-near",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-near.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/launch-tower-near-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
