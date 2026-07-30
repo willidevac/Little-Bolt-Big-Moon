@@ -533,14 +533,14 @@
       "id": "space-station-background-far",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/space-station-far.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/space-station-far-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousPanorama": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -548,14 +548,14 @@
       "id": "space-station-background-mid",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/space-station-mid.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/space-station-mid-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -563,14 +563,14 @@
       "id": "space-station-background-near",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/space-station-near.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/space-station-near-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },

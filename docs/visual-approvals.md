@@ -889,3 +889,29 @@ Verbindliche Merkmale:
   Antennen und Randstreben ohne falsche Laufkanten.
 - Story-Requisiten, Plattformen, Gegner, Figuren und HUD bleiben getrennte
   Runtime-Objekte.
+
+## Clean-HD-Raumstations-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmaster | `img/concepts/approvals/space-station-clean-hd-background-master-v1.png` |
+| Zusammengesetzte Vorschau | `img/concepts/approvals/space-station-clean-hd-background-composite-v1.png` |
+| Fernebene | `img/backgrounds/space-station-far-clean-hd.png` |
+| Mittelebene | `img/backgrounds/space-station-mid-clean-hd.png` |
+| Nahebene | `img/backgrounds/space-station-near-clean-hd.png` |
+| Runtime-Größe | jeweils 1024 × 1536 px |
+| Höhenbereich | 30.000–60.000 Weltpixel |
+
+Verbindliche Merkmale:
+
+- Ein einziges Drei-Ebenen-Set verbindet Frachtring, Forschungstrakt und
+  Kommandozentrum ohne wiederholte Raumbilder.
+- Die Fernebene erzählt die Reise von der Erde unten zum Mond oben.
+- Mittel- und Nahschicht bleiben an den Seiten und halten den breiten
+  Sprungkorridor sichtbar frei.
+- Stationsmodule, Ringsegmente und Hüllenrahmen verbinden niemals beide
+  Seiten und täuschen keine spielbaren Plattformen vor.
+- Story-Requisiten, Plattformen, Gegner, Figuren und HUD bleiben getrennte
+  Runtime-Objekte.

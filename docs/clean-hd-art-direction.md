@@ -76,6 +76,10 @@ Zellen gepackt.
   60.000. Fabrikblau entwickelt sich über große Wolken zu Sternenblau.
 - Turmspitzen, Antennen und Randstreben bleiben vertikal. Story-Requisiten
   werden weiterhin erst in der abschließenden Storyphase ergänzt.
+- Die Raumstation verwendet dieselbe Drei-Ebenen-Technik von Höhe 60.000 bis
+  30.000. Die Erde bleibt unten zurück, während der Mond oben näher rückt.
+- Stationsmodule und Hüllenrahmen bleiben an den Seiten. Der breite,
+  sternenklare Spielkorridor enthält keine vorgetäuschten Plattformen.
 
 ## Reihenfolge nach der Freigabe
 

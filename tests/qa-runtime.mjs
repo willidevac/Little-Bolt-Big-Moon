@@ -11,6 +11,7 @@ const CLEAN_HD_BACKGROUNDS = new Set([
   "scrapyard",
   "factory",
   "launch-tower",
+  "space-station",
 ]);
 const CLEAN_HD_LAYERS = Object.freeze(["far", "mid", "near"]);
 const levelData = JSON.parse(
