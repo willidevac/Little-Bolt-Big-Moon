@@ -20,6 +20,8 @@ const VALUE_SELECTORS = Object.freeze({
   gears: '[data-hud-value="gears"]',
   heightMeters: '[data-hud-value="height"]',
   score: '[data-hud-value="score"]',
+  combo: "[data-hud-combo]",
+  comboValue: "[data-hud-combo-value]",
   weapon: '[data-hud-value="weapon"]',
   pickupFeedback: "[data-hud-pickup-feedback]",
   jumpCharge: "[data-hud-jump-charge]",
@@ -138,7 +140,22 @@ export class StatusBar {
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);
     this.setText(this.elements.score, formatScore(data.score));
+    this.renderCombo(data.combo);
     this.renderBoss(data.boss);
+  }
+
+  /**
+   * Zeigt Anzahl und Multiplikator nur während einer aktiven Serie.
+   * @param {Readonly<object>} combo
+   */
+  renderCombo(combo) {
+    this.elements.combo.hidden = !combo.isActive;
+    if (!combo.isActive) return;
+    this.setText(this.elements.comboValue, `${combo.count} ×${combo.multiplier}`);
+    this.elements.comboValue.setAttribute(
+      "aria-label",
+      translate("hud.comboStatus", combo),
+    );
   }
 
   /** Verbindet Gameplay-Ereignisse mit Waffen- und Fundanzeige. */

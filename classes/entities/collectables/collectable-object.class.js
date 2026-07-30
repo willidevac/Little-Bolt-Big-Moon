@@ -125,7 +125,7 @@ export class CollectableObject extends DrawableObject {
    * @returns {Readonly<{type:string, amount:number}>}
    */
   getPickup() {
-    const pickup = { type: this.type, amount: this.amount };
+    const pickup = { id: this.id, type: this.type, amount: this.amount };
     if (this.weaponId) pickup.weaponId = this.weaponId;
     return Object.freeze(pickup);
   }

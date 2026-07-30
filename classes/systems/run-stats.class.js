@@ -84,9 +84,12 @@ export class RunStats {
   /**
    * Zählt nur tatsächliche Spielzeit und informiert das HUD nicht jeden Frame.
    * @param {number} deltaTimeSeconds
+   * @param {number} [heightLossPixels=0]
    */
-  updateTime(deltaTimeSeconds) {
-    this.#score.updateTime(deltaTimeSeconds);
+  updateTime(deltaTimeSeconds, heightLossPixels = 0) {
+    if (this.#score.updateTime(deltaTimeSeconds, heightLossPixels)) {
+      this.#notifyChange();
+    }
   }
 
   /**
@@ -98,7 +101,7 @@ export class RunStats {
     if (!Array.isArray(pickups)) {
       throw new TypeError("Funde müssen als Liste übergeben werden.");
     }
-    let changed = false;
+    let changed = this.#score.addPickups(pickups);
     pickups.forEach((pickup) => {
       if (this.#applyPickup(pickup)) changed = true;
     });
@@ -152,6 +155,7 @@ export class RunStats {
     const nextEnergy = clamp(this.energy - amount, 0, this.maximumEnergy);
     if (nextEnergy === this.energy) return this.energy;
     this.energy = nextEnergy;
+    this.#score.breakCombo();
     this.#notifyChange();
     return this.energy;
   }
@@ -248,7 +252,7 @@ export class RunStats {
       arcCharges: this.arcCharges,
       gears: this.gears,
       heightMeters: this.heightMeters,
-      score: this.#score.value,
+      score: this.#score.value, combo: this.#score.getComboSnapshot(),
       elapsedSeconds: Math.floor(this.#score.elapsedSeconds),
       boss: this.boss,
     });
@@ -331,7 +335,6 @@ export class RunStats {
     }
     const previousValue = this[statName];
     this[statName] = this.#getPickupValue(statName, pickup.amount);
-    if (pickup.type === "gear") this.#score.addGears(pickup.amount);
     return this[statName] !== previousValue;
   }
 

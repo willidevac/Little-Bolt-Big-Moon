@@ -51,11 +51,12 @@ world.update(0);
 
 const collected = world.takeCollectedPickups();
 assert.equal(collected.length, 1);
+assert.equal(collected[0].id, pickup.id);
 assert.equal(collected[0].weaponId, "boltThrower");
 assert.equal(weapons.getCurrentWeapon().id, "boltThrower");
 assert.equal(changedWeapons.at(-1), "boltThrower");
 assert.equal(stats.ammo, 6);
-assert.equal(stats.applyPickups(collected), false);
+assert.equal(stats.applyPickups(collected), true);
 assert.equal(
   world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES).includes(pickup),
   false,

@@ -171,10 +171,16 @@ const CAMERA_CONFIG = Object.freeze({
 const SCORE_CONFIG = Object.freeze({
   pointsPerHeightMeter: 10,
   pointsPerGear: 250,
+  pointsPerPickup: 100,
   pointsPerCombatPhase: 1500,
   pointsPerRemainingEnergy: 10,
   targetTimeSeconds: 600,
   pointsPerSavedSecond: 5,
+  combo: Object.freeze({
+    windowSeconds: 4,
+    maximumMultiplier: 5,
+    fallResetPixels: 480,
+  }),
   enemyPoints: Object.freeze({
     scrapCrawler: 750,
     droneGuard: 1000,

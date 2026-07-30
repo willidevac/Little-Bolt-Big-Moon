@@ -351,7 +351,7 @@ export class Game {
    * Überträgt Weltposition und neue Funde in die Laufwerte.
    */
   #updateRunStats(deltaTimeSeconds) {
-    this.runStats.updateTime(deltaTimeSeconds);
+    this.runStats.updateTime(deltaTimeSeconds, this.world.getHeightLossPixels());
     this.runStats.updateHeight(this.world.character?.y);
     this.runStats.applyPickups(this.world.takeCollectedPickups());
     this.runStats.applyEnemyDefeats(this.world.takeDefeatedEnemies());

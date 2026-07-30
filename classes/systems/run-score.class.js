@@ -1,9 +1,12 @@
+import { RunCombo } from "./run-combo.class.js";
+
 /**
  * Berechnet die Punktzahl eines Laufs unabhängig von HUD und Spielwelt.
  */
 export class RunScore {
-  #scoredEnemyIds;
   #scoredCombatPhaseIds;
+  #scoredEnemyIds;
+  #scoredPickupIds;
 
   /**
    * @param {number} startingScore
@@ -13,6 +16,7 @@ export class RunScore {
     this.#validateConfig(startingScore, config);
     this.startingScore = startingScore;
     this.config = config;
+    this.combo = new RunCombo(config.combo);
     this.reset();
   }
 
@@ -21,29 +25,29 @@ export class RunScore {
     this.value = this.startingScore;
     this.elapsedSeconds = 0;
     this.isFinalized = false;
+    this.combo.reset();
     this.#scoredEnemyIds = new Set();
+    this.#scoredPickupIds = new Set();
     this.#scoredCombatPhaseIds = new Set();
   }
 
   /**
    * Zählt nur aktive Laufzeit.
    * @param {number} deltaTimeSeconds
+   * @param {number} [heightLossPixels=0]
+   * @returns {boolean} Ob eine sichtbare Combo beendet wurde.
    */
-  updateTime(deltaTimeSeconds) {
+  updateTime(deltaTimeSeconds, heightLossPixels = 0) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds < 0) {
       throw new TypeError("Die Laufzeit muss eine positive Zahl sein.");
     }
     if (!this.isFinalized) this.elapsedSeconds += deltaTimeSeconds;
+    return this.combo.update(deltaTimeSeconds, heightLossPixels);
   }
 
   /** @param {number} meters */
   addHeightMeters(meters) {
     this.#addMeasuredPoints(meters, this.config.pointsPerHeightMeter);
-  }
-
-  /** @param {number} amount */
-  addGears(amount) {
-    this.#addMeasuredPoints(amount, this.config.pointsPerGear);
   }
 
   /**
@@ -55,6 +59,18 @@ export class RunScore {
     this.#validateEvents(enemies, "Gegner");
     return enemies.reduce((changed, enemy) => {
       return this.#addEnemy(enemy) || changed;
+    }, false);
+  }
+
+  /**
+   * Bewertet jedes echte Sammelobjekt anhand seiner ID genau einmal.
+   * @param {ReadonlyArray<Readonly<object>>} pickups
+   * @returns {boolean}
+   */
+  addPickups(pickups) {
+    this.#validateEvents(pickups, "Funde");
+    return pickups.reduce((changed, pickup) => {
+      return this.#addPickup(pickup) || changed;
     }, false);
   }
 
@@ -84,6 +100,16 @@ export class RunScore {
     return true;
   }
 
+  /** @returns {boolean} Ob eine laufende Combo beendet wurde. */
+  breakCombo() {
+    return this.combo.break();
+  }
+
+  /** @returns {Readonly<object>} Aktuelle Combo für das HUD. */
+  getComboSnapshot() {
+    return this.combo.getSnapshot();
+  }
+
   #addEnemy(enemy) {
     const points = this.config.enemyPoints[enemy?.type];
     const hasIdentity = typeof enemy?.id === "string" && enemy.id;
@@ -92,7 +118,19 @@ export class RunScore {
     }
     if (this.#scoredEnemyIds.has(enemy.id)) return false;
     this.#scoredEnemyIds.add(enemy.id);
-    this.#addPoints(points);
+    this.#addComboPoints(points);
+    return true;
+  }
+
+  #addPickup(pickup) {
+    if (!pickup?.id) return false;
+    this.#validatePickup(pickup);
+    if (this.#scoredPickupIds.has(pickup.id)) return false;
+    this.#scoredPickupIds.add(pickup.id);
+    const points = pickup.type === "gear"
+      ? pickup.amount * this.config.pointsPerGear
+      : this.config.pointsPerPickup;
+    this.#addComboPoints(points);
     return true;
   }
 
@@ -127,6 +165,18 @@ export class RunScore {
     this.value += Math.max(0, Math.floor(points));
   }
 
+  #addComboPoints(points) {
+    this.#addPoints(points * this.combo.recordActivity());
+  }
+
+  #validatePickup(pickup) {
+    const hasIdentity = typeof pickup.id === "string" && pickup.id.length > 0;
+    const hasType = typeof pickup.type === "string" && pickup.type.length > 0;
+    const hasAmount = Number.isFinite(pickup.amount) && pickup.amount > 0;
+    if (hasIdentity && hasType && hasAmount) return;
+    throw new TypeError("Der Fund ist für die Wertung ungültig.");
+  }
+
   #validateFinalResult(isVictory, remainingEnergy) {
     const hasResult = typeof isVictory === "boolean";
     const hasEnergy = Number.isFinite(remainingEnergy) && remainingEnergy >= 0;
@@ -140,13 +190,13 @@ export class RunScore {
   }
 
   #validateConfig(startingScore, config) {
-    const { enemyPoints, ...scalarValues } = config ?? {};
+    const { enemyPoints, combo, ...scalarValues } = config ?? {};
     const enemies = Object.values(enemyPoints ?? {});
     const values = [startingScore, ...Object.values(scalarValues), ...enemies];
-    const isComplete = Object.keys(scalarValues).length === 6 && enemies.length > 0;
+    const isComplete = Object.keys(scalarValues).length === 7 && enemies.length > 0;
     if (isComplete && values.every((value) => {
       return Number.isFinite(value) && value >= 0;
-    })) return;
+    }) && combo) return;
     throw new TypeError("Die Punktewertung ist unvollständig oder ungültig.");
   }
 }
