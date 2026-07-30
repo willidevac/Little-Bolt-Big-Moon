@@ -56,6 +56,10 @@ Zellen gepackt.
   Animationsstufen für Stacheln, Strom, Warnleuchten und Arenatore.
 - Beide Tileblätter verwenden native 64-Pixel-Zellen. Plattformgröße,
   Oberflächenversatz und Gefahren-Hitbox bleiben unverändert.
+- `img/sprites/enemies/scrap-crawler-clean-hd.png` enthält alle 13 Lauf-,
+  Angriffs-, Treffer- und Ausschaltframes in nativen 96 × 64 Pixeln.
+- Der Crawler bleibt im Canvas 96 × 64 Pixel groß. Hitbox,
+  Animationsreihenfolge und Gegnerverhalten wurden nicht verändert.
 
 ## Reihenfolge nach der Freigabe
 

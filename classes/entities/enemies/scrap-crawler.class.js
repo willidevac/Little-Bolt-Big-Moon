@@ -3,12 +3,12 @@ import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
-    source: getAssetPath("enemies", "scrap-crawler.png"),
-    frameWidth: 48,
-    frameHeight: 32,
+    source: getAssetPath("enemies", "scrap-crawler-clean-hd.png"),
+    frameWidth: 96,
+    frameHeight: 64,
     frameCount: 13,
   }),
-  renderScale: 2,
+  renderScale: 1,
   collisionBox: Object.freeze({
     offsetX: 12,
     offsetY: 16,

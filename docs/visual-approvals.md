@@ -436,12 +436,12 @@ Verbindliche Merkmale:
 
 | Feld | Freigabe |
 | --- | --- |
-| Status | freigegeben |
-| Datum | 23.07.2026 |
-| Richtung | niedriger vierbeiniger Gegner mit deutlich angekündigtem Vorstoß |
-| Masterdatei | `img/concepts/approvals/scrap-crawler-animation-master-v1.png` |
-| Runtime-Zieldatei | `img/sprites/enemies/scrap-crawler.png` |
-| Produktionsraster | 48 × 32 px pro Frame, insgesamt 13 Frames |
+| Status | Clean-HD-Runtime freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Richtung | sauberer niedriger vierbeiniger Gegner mit deutlich angekündigtem Vorstoß |
+| Masterdatei | `img/concepts/approvals/scrap-crawler-clean-hd-production-layout-v1.png` |
+| Runtime-Zieldatei | `img/sprites/enemies/scrap-crawler-clean-hd.png` |
+| Produktionsraster | 96 × 64 px pro Frame, insgesamt 13 Frames |
 
 Verbindliche Merkmale:
 
@@ -571,7 +571,7 @@ Verbindliche Merkmale:
 
 | Gegner | Produktionsmuster | Runtime-Datei | Raster | Belegung |
 | --- | --- | --- | --- | --- |
-| Schrottkrabbler | `img/concepts/approvals/scrap-crawler-production-layout-v1.png` | `img/sprites/enemies/scrap-crawler.png` | 7 × 2 Zellen à 48 × 32 px, 336 × 64 px | 13 belegt, 1 transparent |
+| Schrottkrabbler | `img/concepts/approvals/scrap-crawler-clean-hd-production-layout-v1.png` | `img/sprites/enemies/scrap-crawler-clean-hd.png` | 7 × 2 Zellen à 96 × 64 px, 672 × 128 px | 13 belegt, 1 transparent |
 | Wächterdrohne | `img/concepts/approvals/drone-guard-production-layout-v1.png` | `img/sprites/enemies/drone-guard.png` | 5 × 4 Zellen à 48 × 32 px, 240 × 128 px | 20 belegt |
 | Mondwächter | `img/concepts/approvals/moon-warden-production-layout-v1.png` | `img/sprites/enemies/moon-warden.png` | 7 × 4 Zellen à 96 × 96 px, 672 × 384 px | 26 belegt, 2 transparent |
 

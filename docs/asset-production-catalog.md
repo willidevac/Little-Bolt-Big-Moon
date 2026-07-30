@@ -28,7 +28,7 @@ für Dateipfade, Raster, Zustände, Framezahlen und Lizenz-IDs ist
 | --- | --- | ---: | ---: | --- |
 | Byte | `img/sprites/characters/byte-clean-hd.png` | 64 × 64 | 33 | idle 4, run 6, jump 1, fall 1, land 2, melee 4, shoot 3, hurt 2, sleep 4, dead 6 |
 | Luma | `img/sprites/characters/luma.png` | 32 × 32 | 10 | poweredOff 1, idle 4, revive 5 |
-| Schrottkrabbler | `img/sprites/enemies/scrap-crawler.png` | 48 × 32 | 13 | walk 4, attack 3, hurt 2, dead 4 |
+| Schrottkrabbler | `img/sprites/enemies/scrap-crawler-clean-hd.png` | 96 × 64 | 13 | walk 4, attack 3, hurt 2, dead 4 |
 | Drohnenwächter | `img/sprites/enemies/drone-guard.png` | 48 × 32 | 20 | idle 4, move 4, telegraph 3, attack 3, hurt 2, dead 4 |
 | Mondwächter | `img/sprites/enemies/moon-warden.png` | 96 × 96 | 26 | idle 4, move 4, meleeAttack 5, rangedAttack 5, hurt 2, dead 6 |
 
