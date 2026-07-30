@@ -29,6 +29,10 @@ const CHECKS = Object.freeze([
     id: "scrapyard-background-clean-hd",
     file: "tests/qa-scrapyard-background-clean-hd.mjs",
   }),
+  Object.freeze({
+    id: "factory-background-clean-hd",
+    file: "tests/qa-factory-background-clean-hd.mjs",
+  }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),

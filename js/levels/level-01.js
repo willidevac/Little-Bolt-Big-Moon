@@ -28,7 +28,8 @@ const TILESET_NAMES = Object.freeze([
 const TILESET_CONFIGS = Object.freeze(
   Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),
 );
-const SCRAPYARD_BACKGROUND_LAYERS = Object.freeze([
+const CLEAN_HD_BACKGROUND_IDS = new Set(["scrapyard", "factory"]);
+const CLEAN_HD_BACKGROUND_LAYERS = Object.freeze([
   Object.freeze({ name: "far", scrollRate: 0.72 }),
   Object.freeze({ name: "mid", scrollRate: 0.86 }),
   Object.freeze({ name: "near", scrollRate: 1 }),
@@ -143,8 +144,8 @@ function getPlatformClass(platformData) {
 }
 
 function createSection(sectionData) {
-  const backgroundLayers = sectionData.backgroundId === "scrapyard"
-    ? createScrapyardBackgroundLayers()
+  const backgroundLayers = CLEAN_HD_BACKGROUND_IDS.has(sectionData.backgroundId)
+    ? createCleanHdBackgroundLayers(sectionData.backgroundId)
     : createRoomBackgroundLayer(sectionData.id);
   return Object.freeze({
     ...sectionData,
@@ -152,12 +153,12 @@ function createSection(sectionData) {
   });
 }
 
-function createScrapyardBackgroundLayers() {
-  return Object.freeze(SCRAPYARD_BACKGROUND_LAYERS.map((layer) => {
+function createCleanHdBackgroundLayers(backgroundId) {
+  return Object.freeze(CLEAN_HD_BACKGROUND_LAYERS.map((layer) => {
     return Object.freeze({
       source: getAssetPath(
         "backgrounds",
-        `scrapyard-${layer.name}-clean-hd.png`,
+        `${backgroundId}-${layer.name}-clean-hd.png`,
       ),
       frameWidth: 1024,
       frameHeight: 1536,

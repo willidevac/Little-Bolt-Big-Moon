@@ -68,6 +68,10 @@ Zellen gepackt.
   Clean-HD-Set aus Fern-, Mittel- und Nahpanorama.
 - Die drei Ebenen bewegen sich mit getrennten Scrollraten. Sie wiederholen
   sich innerhalb des Bioms nicht und enthalten keine Spielflächen.
+- Die Fabrik verwendet dieselbe Drei-Ebenen-Technik von Höhe 120.000 bis
+  90.000. Warmes Ofenlicht entwickelt sich dabei zu kühlem Mondblau.
+- Seitlich montierte Produktionsarme und leere orange sowie cremefarbene
+  Halterungen erzählen die gemeinsame Herkunft, ohne Laufkanten vorzutäuschen.
 
 ## Reihenfolge nach der Freigabe
 

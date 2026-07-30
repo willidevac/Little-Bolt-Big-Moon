@@ -61,15 +61,16 @@ Einzelplattformen und Dekoration bereit.
 | Zone | Höhenbereich | Tileset | Hintergrundebenen |
 | --- | ---: | --- | --- |
 | Schrottplatz | 120.000–150.000 | `img/tilesets/scrapyard-tiles-clean-hd.png` | `scrapyard-far-clean-hd.png`, `scrapyard-mid-clean-hd.png`, `scrapyard-near-clean-hd.png` |
-| Fabrik | 1.600–3.199 | `img/tilesets/factory-tiles.png` | `factory-far.png`, `factory-mid.png`, `factory-near.png` |
+| Fabrik | 90.000–120.000 | `img/tilesets/factory-tiles.png` | `factory-far-clean-hd.png`, `factory-mid-clean-hd.png`, `factory-near-clean-hd.png` |
 | Startturm/Wolken | 3.200–4.799 | `img/tilesets/launch-tower-tiles.png` | `launch-tower-far.png`, `launch-tower-mid.png`, `launch-tower-near.png` |
 | Raumstation | 4.800–6.399 | `img/tilesets/space-station-tiles.png` | `space-station-far.png`, `space-station-mid.png`, `space-station-near.png` |
 | Mond | 6.400–8.000 | `img/tilesets/moon-tiles.png` | `moon-far.png`, `moon-mid.png`, `moon-near.png` |
 
 Alle Hintergrunddateien liegen unter `img/backgrounds/`. Das
-Schrottplatz-Set wird einmal über seinen zusammenhängenden 30.000-Pixel-Bereich
-geführt. Seine drei Scrollraten erzeugen Tiefe ohne wiederholte Raumbilder.
-An der nächsten Zone werden vier Weltpixel überlappt, damit auch bei
+Schrottplatz- und Fabrikset werden jeweils einmal über ihren
+zusammenhängenden 30.000-Pixel-Bereich geführt. Drei Scrollraten erzeugen
+Tiefe ohne wiederholte Raumbilder. An der nächsten Zone werden vier Weltpixel
+überlappt, damit auch bei
 Rundungsfehlern keine Lücke sichtbar wird.
 
 Das zusätzliche `img/tilesets/scrapyard-hazards-clean-hd.png` enthält

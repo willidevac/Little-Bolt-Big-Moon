@@ -443,14 +443,14 @@
       "id": "factory-background-far",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/factory-far.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/factory-far-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousPanorama": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -458,14 +458,14 @@
       "id": "factory-background-mid",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/factory-mid.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/factory-mid-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -473,14 +473,14 @@
       "id": "factory-background-near",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/factory-near.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/factory-near-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },

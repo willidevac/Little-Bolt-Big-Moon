@@ -7,7 +7,8 @@ import { GAME_CONFIG } from "../js/config/game-config.js";
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs"]);
 const STYLE_EXTENSIONS = new Set([".css"]);
-const SCRAPYARD_LAYERS = Object.freeze(["far", "mid", "near"]);
+const CLEAN_HD_BACKGROUNDS = new Set(["scrapyard", "factory"]);
+const CLEAN_HD_LAYERS = Object.freeze(["far", "mid", "near"]);
 const levelData = JSON.parse(
   await fs.readFile(path.join(ROOT, "data", "levels", "level-01.json")),
 );
@@ -122,14 +123,14 @@ function addLevelAssets(assets) {
 }
 
 function addSectionBackgrounds(assets, section) {
-  if (section.backgroundId !== "scrapyard") {
+  if (!CLEAN_HD_BACKGROUNDS.has(section.backgroundId)) {
     assets.add(resolveAsset("backgrounds", `${section.id}-background-v1.png`));
     return;
   }
-  SCRAPYARD_LAYERS.forEach((layer) => {
+  CLEAN_HD_LAYERS.forEach((layer) => {
     assets.add(resolveAsset(
       "backgrounds",
-      `scrapyard-${layer}-clean-hd.png`,
+      `${section.backgroundId}-${layer}-clean-hd.png`,
     ));
   });
 }

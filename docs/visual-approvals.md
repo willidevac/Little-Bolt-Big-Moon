@@ -836,3 +836,29 @@ Verbindliche Merkmale:
 - Größere, ruhigere Formen ersetzen die bisherigen kleinteiligen Rostmuster.
 - Plattformen, Gegner, Figuren und HUD bleiben vollständig getrennte
   Runtime-Objekte.
+
+## Clean-HD-Fabrik-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmaster | `img/concepts/approvals/factory-clean-hd-background-master-v1.png` |
+| Zusammengesetzte Vorschau | `img/concepts/approvals/factory-clean-hd-background-composite-v1.png` |
+| Fernebene | `img/backgrounds/factory-far-clean-hd.png` |
+| Mittelebene | `img/backgrounds/factory-mid-clean-hd.png` |
+| Nahebene | `img/backgrounds/factory-near-clean-hd.png` |
+| Runtime-Größe | jeweils 1024 × 1536 px |
+| Höhenbereich | 90.000–120.000 Weltpixel |
+
+Verbindliche Merkmale:
+
+- Ein einziges Drei-Ebenen-Set verbindet Montagehalle, Schmelzwerk und
+  Energiekern. Innerhalb des Bioms wird kein Raumbild wiederholt.
+- Die Fernebene wechselt von warmem Ofenlicht zu kühlem Mondblau.
+- Orange und cremefarbene Maschinenhalterungen erzählen Bytes und Lumas
+  gemeinsame Herkunft, ohne die Figuren selbst in den Hintergrund zu malen.
+- Mittel- und Nahschicht bleiben seitlich montiert. Keine ihrer Kanten darf
+  wie eine echte spielbare Plattform aussehen.
+- Plattformen, Gegner, Figuren, Story-Requisiten und HUD bleiben getrennte
+  Runtime-Objekte.

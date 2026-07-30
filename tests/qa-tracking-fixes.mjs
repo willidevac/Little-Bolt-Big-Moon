@@ -62,10 +62,10 @@ async function assertBackgroundAssets() {
   const sources = level.sections.flatMap((section) => {
     return section.backgroundLayers.map(({ source }) => source);
   });
-  const scrapyardSections = level.sections.slice(0, 3);
-  assert.deepEqual(scrapyardSections.map(({ backgroundLayers }) => {
+  const cleanHdSections = level.sections.slice(0, 6);
+  assert.deepEqual(cleanHdSections.map(({ backgroundLayers }) => {
     return backgroundLayers.length;
-  }), [3, 3, 3]);
+  }), [3, 3, 3, 3, 3, 3]);
   assert.equal(new Set(sources).size, 15);
   await Promise.all(sources.map((source) => fs.access(source)));
 }
