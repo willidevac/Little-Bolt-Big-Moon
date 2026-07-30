@@ -60,7 +60,7 @@ Einzelplattformen und Dekoration bereit.
 
 | Zone | Höhenbereich | Tileset | Hintergrundebenen |
 | --- | ---: | --- | --- |
-| Schrottplatz | 0–1.599 | `img/tilesets/scrapyard-tiles.png` | `scrapyard-far.png`, `scrapyard-mid.png`, `scrapyard-near.png` |
+| Schrottplatz | 0–1.599 | `img/tilesets/scrapyard-tiles-clean-hd.png` | `scrapyard-far.png`, `scrapyard-mid.png`, `scrapyard-near.png` |
 | Fabrik | 1.600–3.199 | `img/tilesets/factory-tiles.png` | `factory-far.png`, `factory-mid.png`, `factory-near.png` |
 | Startturm/Wolken | 3.200–4.799 | `img/tilesets/launch-tower-tiles.png` | `launch-tower-far.png`, `launch-tower-mid.png`, `launch-tower-near.png` |
 | Raumstation | 4.800–6.399 | `img/tilesets/space-station-tiles.png` | `space-station-far.png`, `space-station-mid.png`, `space-station-near.png` |
@@ -72,8 +72,8 @@ nächsten Zone überlappbar sein. Beim Zeichnen werden vier Weltpixel
 Überlappung eingeplant, damit auch bei Rundungsfehlern keine Lücke sichtbar
 wird.
 
-Das zusätzliche `img/tilesets/hazard-tiles.png` enthält 16 Frames für
-Stacheln, Elektrizität, Warnmarkierungen und Arenatore.
+Das zusätzliche `img/tilesets/scrapyard-hazards-clean-hd.png` enthält
+16 Clean-HD-Frames für Stacheln, Elektrizität, Warnleuchten und Arenatore.
 
 ## 5. Wortlose Story-Requisiten
 

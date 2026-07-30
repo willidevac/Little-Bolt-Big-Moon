@@ -3,12 +3,12 @@ import { AnimationController } from "../systems/animation-controller.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
 
 const DAMAGE_ZONE_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("effects", "gameplay-effects.png"),
-  frameWidth: 32,
-  frameHeight: 32,
-  frameCount: 23,
+  source: getAssetPath("tilesets", "scrapyard-hazards-clean-hd.png"),
+  frameWidth: 64,
+  frameHeight: 64,
+  frameCount: 16,
 });
-const DAMAGE_ZONE_RENDER_SCALE = 2;
+const DAMAGE_ZONE_RENDER_SCALE = 1;
 const DAMAGE_ZONE_COLLISION_BOX = Object.freeze({
   offsetX: 16,
   offsetY: 10,
@@ -17,8 +17,8 @@ const DAMAGE_ZONE_COLLISION_BOX = Object.freeze({
 });
 const ELECTRIC_ANIMATION = Object.freeze({
   electric: Object.freeze({
-    startFrame: 11,
-    frameCount: 6,
+    startFrame: 4,
+    frameCount: 4,
     frameDurationSeconds: 0.1,
     loop: true,
   }),

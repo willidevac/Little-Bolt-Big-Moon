@@ -50,6 +50,12 @@ Zellen gepackt.
   Laufzeitblatt aus 8 × 5 Zellen mit jeweils 64 × 64 Pixeln.
 - Byte bleibt im Canvas 64 × 64 Pixel groß. Kollisionsflächen, Zustände und
   Frame-Reihenfolge wurden nicht verändert.
+- `img/tilesets/scrapyard-tiles-clean-hd.png` enthält 32 lückenlos
+  ausgerichtete Plattform-, Wand-, Bewegungs- und Zerfallstiles.
+- `img/tilesets/scrapyard-hazards-clean-hd.png` enthält jeweils vier
+  Animationsstufen für Stacheln, Strom, Warnleuchten und Arenatore.
+- Beide Tileblätter verwenden native 64-Pixel-Zellen. Plattformgröße,
+  Oberflächenversatz und Gefahren-Hitbox bleiben unverändert.
 
 ## Reihenfolge nach der Freigabe
 

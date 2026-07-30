@@ -252,12 +252,12 @@ Verbindliche Merkmale:
 
 | Feld | Freigabe |
 | --- | --- |
-| Status | freigegeben |
-| Datum | 23.07.2026 |
-| Richtung | zonenspezifische 32-px-Module mit einheitlicher Gameplay-Lesbarkeit |
+| Status | Schrottplatz-Clean-HD freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Richtung | zonenspezifische 64-px-Clean-HD-Module mit einheitlicher Gameplay-Lesbarkeit |
 | Masterdatei | `img/concepts/approvals/tiles-hazards-master-v1.png` |
 | Runtime-Zieldateien | fünf Tilesets mit je 32 Tiles und ein Gefahren-Set mit 16 Tiles |
-| Produktionsraster | 32 × 32 px pro Tile |
+| Produktionsraster | Clean-HD 64 × 64 px, übrige bestehende Zonen 32 × 32 px |
 
 Verbindliche Merkmale:
 
@@ -668,11 +668,11 @@ Verbindliche Merkmale:
 
 | Feld | Freigabe |
 | --- | --- |
-| Status | freigegeben und integriert |
-| Datum | 24.07.2026 |
-| Produktionsmuster | `img/concepts/approvals/scrapyard-tiles-production-layout-v1.png` |
-| Runtime-Datei | `img/tilesets/scrapyard-tiles.png` |
-| Raster | 8 × 4 Zellen à 32 × 32 px, 256 × 128 px |
+| Status | Clean-HD freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/scrapyard-clean-hd-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/scrapyard-tiles-clean-hd.png` |
+| Raster | 8 × 4 Zellen à 64 × 64 px, 512 × 256 px |
 | Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
 
 Verbindliche Merkmale:
@@ -691,6 +691,24 @@ Verbindliche Merkmale:
   Tileset mit dem freigegebenen Schrottplatz-Hintergrund.
 - Die Runtime-PNG besitzt einen geprüften Alpha-Kanal und keine
   Chroma-Key-Randpixel.
+
+## Schrottplatz-Clean-HD-Gefahren
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/scrapyard-clean-hd-hazards-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/scrapyard-hazards-clean-hd.png` |
+| Raster | 8 × 2 Zellen à 64 × 64 px, 512 × 128 px |
+
+Verbindliche Merkmale:
+
+- Je vier aufeinanderfolgende Frames zeigen Stacheln, Strom, Warnleuchten
+  und Arenatore.
+- Form und Helligkeit zeigen jede Gefahrenstufe zusätzlich zur Farbe.
+- Die vorhandene Stromfalle verwendet die Frames fünf bis acht.
+- Sichtbare Größe, Schadenswert und Kollisionsfläche bleiben unverändert.
 
 ## Fabrik-Runtime-Tileset
 

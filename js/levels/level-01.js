@@ -26,17 +26,21 @@ const TILESET_NAMES = Object.freeze([
   "moon",
 ]);
 const TILESET_CONFIGS = Object.freeze(
-  Object.fromEntries(TILESET_NAMES.map((tilesetName) => {
-    return [tilesetName, Object.freeze({
-      source: getAssetPath("tilesets", `${tilesetName}-tiles.png`),
-      frameWidth: 32,
-      frameHeight: 32,
-      frameCount: 32,
-      renderScale: 2,
-      surfaceOffset: 12,
-    })];
-  })),
+  Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),
 );
+
+function createTilesetEntry(tilesetName) {
+  const isCleanHd = tilesetName === "scrapyard";
+  const fileSuffix = isCleanHd ? "-tiles-clean-hd.png" : "-tiles.png";
+  return [tilesetName, Object.freeze({
+    source: getAssetPath("tilesets", `${tilesetName}${fileSuffix}`),
+    frameWidth: isCleanHd ? 64 : 32,
+    frameHeight: isCleanHd ? 64 : 32,
+    frameCount: 32,
+    renderScale: isCleanHd ? 1 : 2,
+    surfaceOffset: isCleanHd ? 24 : 12,
+  })];
+}
 
 /**
  * Erzeugt eine neue, unabhängige Instanz des ersten Levelabschnitts.

@@ -16,6 +16,10 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "upgrade-seltenheiten", file: "tests/qa-upgrade-rarities.mjs" }),
   Object.freeze({ id: "combo-wertung", file: "tests/qa-combo-score.mjs" }),
   Object.freeze({ id: "byte-clean-hd", file: "tests/qa-byte-clean-hd.mjs" }),
+  Object.freeze({
+    id: "schrottplatz-clean-hd",
+    file: "tests/qa-scrapyard-clean-hd.mjs",
+  }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),
