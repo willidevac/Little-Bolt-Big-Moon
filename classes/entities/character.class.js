@@ -7,12 +7,12 @@ import { clamp } from "../../js/utils/math.js";
 import { resolveCharacterState } from "../../js/utils/character-state.js";
 
 const BYTE_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("characters", "byte.png"),
-  frameWidth: 32,
-  frameHeight: 32,
+  source: getAssetPath("characters", "byte-clean-hd.png"),
+  frameWidth: 64,
+  frameHeight: 64,
   frameCount: 33,
 });
-const BYTE_RENDER_SCALE = 2;
+const BYTE_RENDER_SCALE = 1;
 const BYTE_HURTBOX = Object.freeze({
   offsetX: 12,
   offsetY: 6,

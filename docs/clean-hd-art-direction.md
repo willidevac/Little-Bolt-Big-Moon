@@ -1,6 +1,6 @@
 # Clean-HD-Pixel-Art-Direction
 
-Status: Stilprobe, noch nicht als Runtime-Grafik freigegeben
+Status: Stilrichtung freigegeben, Byte-Runtime integriert und in Prüfung
 
 ## Ziel
 
@@ -41,6 +41,15 @@ werden.
 Die transparenten Bögen sind Design- und Größenproben. Für die Runtime werden
 die vollständigen Animationen anschließend einzeln ausgerichtet und in feste
 Zellen gepackt.
+
+## Erste Runtime-Umsetzung
+
+- `img/concepts/approvals/byte-clean-hd-production-layout-v1.png` enthält das
+  vollständige Produktionsmuster mit allen 33 Byte-Posen.
+- `img/sprites/characters/byte-clean-hd.png` enthält das transparente
+  Laufzeitblatt aus 8 × 5 Zellen mit jeweils 64 × 64 Pixeln.
+- Byte bleibt im Canvas 64 × 64 Pixel groß. Kollisionsflächen, Zustände und
+  Frame-Reihenfolge wurden nicht verändert.
 
 ## Reihenfolge nach der Freigabe
 

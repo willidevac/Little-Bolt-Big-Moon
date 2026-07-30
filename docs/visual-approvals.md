@@ -380,12 +380,12 @@ Verbindliche Merkmale:
 
 | Feld | Freigabe |
 | --- | --- |
-| Status | freigegeben |
-| Datum | 23.07.2026 |
-| Richtung | robuste, klar lesbare Bewegungen mit mechanischem Gewicht |
-| Masterdatei | `img/concepts/approvals/byte-animation-master-v1.png` |
-| Runtime-Zieldatei | `img/sprites/characters/byte.png` |
-| Produktionsraster | 32 × 32 px pro Frame, insgesamt 33 Frames |
+| Status | Clean-HD-Runtime freigegeben und integriert |
+| Datum | 30.07.2026 |
+| Richtung | saubere, klar lesbare Bewegungen mit mechanischem Gewicht |
+| Masterdatei | `img/concepts/approvals/byte-clean-hd-production-layout-v1.png` |
+| Runtime-Zieldatei | `img/sprites/characters/byte-clean-hd.png` |
+| Produktionsraster | 64 × 64 px pro Frame, insgesamt 33 Frames |
 
 Verbindliche Merkmale:
 
@@ -519,11 +519,11 @@ Verbindliche Merkmale:
 | Feld | Freigabe |
 | --- | --- |
 | Status | freigegeben und integriert |
-| Datum | 23.07.2026 |
-| Produktionsmuster | `img/concepts/approvals/byte-production-layout-v1.png` |
-| Runtime-Datei | `img/sprites/characters/byte.png` |
-| Dateigröße | 256 × 160 px |
-| Raster | 8 × 5 Zellen mit jeweils 32 × 32 px |
+| Datum | 30.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/byte-clean-hd-production-layout-v1.png` |
+| Runtime-Datei | `img/sprites/characters/byte-clean-hd.png` |
+| Dateigröße | 512 × 320 px |
+| Raster | 8 × 5 Zellen mit jeweils 64 × 64 px |
 | Verarbeitung | JavaScript/Node, Chroma-Key und Nearest-Neighbor |
 
 Verbindliche Merkmale:
@@ -534,8 +534,8 @@ Verbindliche Merkmale:
   unbenutzte Reserve außerhalb aller Animationen.
 - Jede belegte Zelle enthält genau eine Pose. Figuren und Effekte überschreiten
   keine Zellgrenze.
-- Hintergrund und Hilfsraster wurden per JavaScript entfernt. Die Skalierung
-  auf 32 × 32 px verwendet ausschließlich Nearest-Neighbor.
+- Hintergrund und Hilfsraster wurden lokal entfernt. Die Skalierung auf
+  64 × 64 px verwendet ausschließlich Nearest-Neighbor.
 - Die Runtime-PNG besitzt einen Alpha-Kanal und wurde auf 33 belegte sowie
   sieben leere Zellen geprüft.
 - Im Repository und im Spiel werden für diesen Arbeitsschritt keine
