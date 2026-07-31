@@ -5,6 +5,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "clean-code", file: "tests/qa-clean-code.mjs" }),
   Object.freeze({ id: "hitboxen", file: "tests/qa-collision-boundaries.mjs" }),
   Object.freeze({ id: "levelroute", file: "tests/qa-full-route.mjs" }),
+  Object.freeze({ id: "challenge-raeume", file: "tests/qa-challenge-rooms.mjs" }),
   Object.freeze({ id: "start-sieg-restart", file: "tests/qa-game-states.mjs" }),
   Object.freeze({ id: "responsive", file: "tests/qa-responsive-world.mjs" }),
   Object.freeze({ id: "runtime-assets", file: "tests/qa-runtime.mjs" }),

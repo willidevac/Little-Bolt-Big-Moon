@@ -33,15 +33,16 @@ export class PlatformRouteBuilder {
     if (!Array.isArray(sections) || sections.length === 0) {
       throw new TypeError("Die Plattformroute benötigt mindestens ein Gebiet.");
     }
-    return Object.freeze(
-      sections.flatMap((section, sectionIndex) => {
-        return this.#buildSection(
-          section,
-          sectionIndex,
-          sections[sectionIndex + 1],
-        );
-      }),
-    );
+    this.validator.validatePlan(sections);
+    return Object.freeze(this.#buildSections(sections));
+  }
+
+  #buildSections(sections) {
+    return sections.flatMap((section, sectionIndex) => {
+      return this.#buildSection(
+        section, sectionIndex, sections[sectionIndex + 1],
+      );
+    });
   }
 
   #buildSection(section, sectionIndex, nextSection) {
@@ -142,7 +143,15 @@ export class PlatformRouteBuilder {
       y,
       type: step.type,
       tileset: section.tileset,
+      roomId: room.id,
+      roomRole: this.#getRoomRole(room.steps.length, stepIndex),
     };
+  }
+
+  #getRoomRole(stepCount, stepIndex) {
+    if (stepIndex === 0) return "entry";
+    if (stepIndex === stepCount - 1) return "exit";
+    return "challenge";
   }
 
   #addPlatformBehavior(platform, route) {

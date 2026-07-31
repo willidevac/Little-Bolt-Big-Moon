@@ -7,6 +7,12 @@ import {
   SIDE_PADDING,
 } from "../../js/config/platform-route-rules.js";
 
+const ROOM_RISK_TYPES = new Set(["narrow", "moving", "falling"]);
+const ROOM_SAFE_TYPES = new Set(["path", "catch"]);
+const MINIMUM_ROOMS_PER_BIOME = 5;
+const MINIMUM_ROOM_STEPS = 3;
+const MAXIMUM_ROOM_STEPS = 6;
+
 /** Prüft Gebietsrezepte, bevor daraus Plattformen entstehen. */
 export class PlatformRouteValidator {
   /** @param {number} worldWidth */
@@ -18,6 +24,33 @@ export class PlatformRouteValidator {
   validate(section) {
     if (this.#getSectionChecks(section).every(Boolean)) return;
     throw new TypeError(`Das Sprungrezept für ${section?.id ?? "ein Gebiet"} ist ungültig.`);
+  }
+
+  /** @param {ReadonlyArray<object>} sections */
+  validatePlan(sections) {
+    const biomeRooms = this.#groupRoomsByBiome(sections);
+    const valid = [...biomeRooms.values()].every((roomIds) => {
+      return roomIds.size >= MINIMUM_ROOMS_PER_BIOME;
+    });
+    if (valid && this.#hasUniqueRoomIds(sections)) return;
+    throw new TypeError("Der Challenge-Raum-Plan ist ungültig.");
+  }
+
+  #hasUniqueRoomIds(sections) {
+    const ids = sections.flatMap(({ route }) => {
+      return route.rooms?.map(({ id }) => id) ?? [];
+    });
+    return new Set(ids).size === ids.length;
+  }
+
+  #groupRoomsByBiome(sections) {
+    const biomeRooms = new Map();
+    sections.forEach((section) => {
+      const roomIds = biomeRooms.get(section.tileset) ?? new Set();
+      section.route.rooms?.forEach(({ id }) => roomIds.add(id));
+      biomeRooms.set(section.tileset, roomIds);
+    });
+    return biomeRooms;
   }
 
   #getSectionChecks(section) {
@@ -68,8 +101,30 @@ export class PlatformRouteValidator {
   #hasValidRoom(room) {
     return typeof room?.id === "string" &&
       Array.isArray(room?.steps) &&
-      room.steps.length > 0 &&
-      room.steps.every((step) => this.#hasValidAuthoredStep(step));
+      room.steps.length >= MINIMUM_ROOM_STEPS &&
+      room.steps.length <= MAXIMUM_ROOM_STEPS &&
+      room.steps.every((step) => this.#hasValidAuthoredStep(step)) &&
+      this.#hasSafeRoomEdges(room.steps) &&
+      this.#hasControlledFallPath(room.steps);
+  }
+
+  #hasSafeRoomEdges(steps) {
+    return ROOM_SAFE_TYPES.has(steps[0].type) &&
+      ROOM_SAFE_TYPES.has(steps.at(-1).type);
+  }
+
+  #hasControlledFallPath(steps) {
+    const entry = steps[0];
+    return steps.slice(1, -1).some((step) => {
+      return ROOM_RISK_TYPES.has(step.type) &&
+        this.#overlapsHorizontally(entry, step);
+    });
+  }
+
+  #overlapsHorizontally(lower, upper) {
+    const lowerRight = lower.x + PLATFORM_WIDTHS[lower.type];
+    const upperRight = upper.x + PLATFORM_WIDTHS[upper.type];
+    return lower.x < upperRight && lowerRight > upper.x;
   }
 
   #hasValidAuthoredStep(step) {
