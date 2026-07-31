@@ -2507,9 +2507,204 @@
       "enemyIds": [
         "moon-warden-01"
       ]
+    },
+    {
+      "id": "scrapyard-patrol-01", "x": 0, "y": 142440,
+      "width": 1280, "height": 650,
+      "enemyIds": ["scrapyard-patrol-crawler-01", "scrapyard-patrol-drone-01"]
+    },
+    {
+      "id": "scrapyard-patrol-02", "x": 0, "y": 128588,
+      "width": 1280, "height": 650,
+      "enemyIds": ["scrapyard-patrol-crawler-02", "scrapyard-patrol-drone-02"]
+    },
+    {
+      "id": "scrapyard-patrol-03", "x": 0, "y": 123624,
+      "width": 1280, "height": 650,
+      "enemyIds": ["scrapyard-patrol-crawler-03", "scrapyard-patrol-drone-03"]
+    },
+    {
+      "id": "factory-patrol-01", "x": 0, "y": 108588,
+      "width": 1280, "height": 650,
+      "enemyIds": ["factory-patrol-crawler-01", "factory-patrol-drone-01"]
+    },
+    {
+      "id": "factory-patrol-02", "x": 0, "y": 98584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["factory-patrol-crawler-02", "factory-patrol-drone-02"]
+    },
+    {
+      "id": "factory-patrol-03", "x": 0, "y": 93656,
+      "width": 1280, "height": 650,
+      "enemyIds": ["factory-patrol-crawler-03", "factory-patrol-drone-03"]
+    },
+    {
+      "id": "launch-patrol-01", "x": 0, "y": 78584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["launch-patrol-drone-01", "launch-patrol-drone-02"]
+    },
+    {
+      "id": "launch-patrol-02", "x": 0, "y": 68584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["launch-patrol-drone-03", "launch-patrol-drone-04"]
+    },
+    {
+      "id": "launch-patrol-03", "x": 0, "y": 63656,
+      "width": 1280, "height": 650,
+      "enemyIds": ["launch-patrol-drone-05", "launch-patrol-drone-06"]
+    },
+    {
+      "id": "space-patrol-01", "x": 0, "y": 48584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["space-patrol-drone-01", "space-patrol-drone-02"]
+    },
+    {
+      "id": "space-patrol-02", "x": 0, "y": 38584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["space-patrol-drone-03", "space-patrol-drone-04"]
+    },
+    {
+      "id": "space-patrol-03", "x": 0, "y": 33656,
+      "width": 1280, "height": 650,
+      "enemyIds": ["space-patrol-drone-05", "space-patrol-drone-06"]
+    },
+    {
+      "id": "moon-patrol-01", "x": 0, "y": 18584,
+      "width": 1280, "height": 650,
+      "enemyIds": ["moon-patrol-drone-01", "moon-patrol-drone-02"]
+    },
+    {
+      "id": "moon-patrol-02", "x": 0, "y": 8596,
+      "width": 1280, "height": 650,
+      "enemyIds": ["moon-patrol-drone-03", "moon-patrol-drone-04"]
+    },
+    {
+      "id": "moon-patrol-03", "x": 0, "y": 3548,
+      "width": 1280, "height": 650,
+      "enemyIds": ["moon-patrol-drone-05", "moon-patrol-drone-06"]
     }
   ],
   "enemies": [
+    {
+      "id": "scrapyard-patrol-crawler-01", "type": "scrapCrawler",
+      "x": 400, "y": 142876, "patrolMinX": 352, "patrolMaxX": 544
+    },
+    {
+      "id": "scrapyard-patrol-drone-01", "type": "droneGuard",
+      "x": 736, "y": 142620, "patrolMinX": 640, "patrolMaxX": 1024
+    },
+    {
+      "id": "scrapyard-patrol-crawler-02", "type": "scrapCrawler",
+      "x": 560, "y": 129024, "patrolMinX": 512, "patrolMaxX": 704
+    },
+    {
+      "id": "scrapyard-patrol-drone-02", "type": "droneGuard",
+      "x": 240, "y": 128800, "patrolMinX": 128, "patrolMaxX": 512
+    },
+    {
+      "id": "scrapyard-patrol-crawler-03", "type": "scrapCrawler",
+      "x": 720, "y": 124060, "patrolMinX": 672, "patrolMaxX": 864
+    },
+    {
+      "id": "scrapyard-patrol-drone-03", "type": "droneGuard",
+      "x": 320, "y": 123820, "patrolMinX": 192, "patrolMaxX": 576
+    },
+    {
+      "id": "factory-patrol-crawler-01", "type": "scrapCrawler",
+      "x": 496, "y": 109024, "patrolMinX": 448, "patrolMaxX": 640
+    },
+    {
+      "id": "factory-patrol-drone-01", "type": "droneGuard",
+      "x": 832, "y": 108800, "patrolMinX": 704, "patrolMaxX": 1088
+    },
+    {
+      "id": "factory-patrol-crawler-02", "type": "scrapCrawler",
+      "x": 144, "y": 99020, "patrolMinX": 96, "patrolMaxX": 288
+    },
+    {
+      "id": "factory-patrol-drone-02", "type": "droneGuard",
+      "x": 704, "y": 98780, "patrolMinX": 576, "patrolMaxX": 960
+    },
+    {
+      "id": "factory-patrol-crawler-03", "type": "scrapCrawler",
+      "x": 176, "y": 94092, "patrolMinX": 128, "patrolMaxX": 320
+    },
+    {
+      "id": "factory-patrol-drone-03", "type": "droneGuard",
+      "x": 736, "y": 93820, "patrolMinX": 608, "patrolMaxX": 992
+    },
+    {
+      "id": "launch-patrol-drone-01", "type": "droneGuard",
+      "x": 928, "y": 78884, "patrolMinX": 832, "patrolMaxX": 1184
+    },
+    {
+      "id": "launch-patrol-drone-02", "type": "droneGuard",
+      "x": 256, "y": 78720, "patrolMinX": 128, "patrolMaxX": 512
+    },
+    {
+      "id": "launch-patrol-drone-03", "type": "droneGuard",
+      "x": 384, "y": 68884, "patrolMinX": 256, "patrolMaxX": 640
+    },
+    {
+      "id": "launch-patrol-drone-04", "type": "droneGuard",
+      "x": 864, "y": 68720, "patrolMinX": 736, "patrolMaxX": 1120
+    },
+    {
+      "id": "launch-patrol-drone-05", "type": "droneGuard",
+      "x": 480, "y": 63956, "patrolMinX": 352, "patrolMaxX": 736
+    },
+    {
+      "id": "launch-patrol-drone-06", "type": "droneGuard",
+      "x": 928, "y": 63780, "patrolMinX": 800, "patrolMaxX": 1184
+    },
+    {
+      "id": "space-patrol-drone-01", "type": "droneGuard",
+      "x": 416, "y": 48884, "patrolMinX": 288, "patrolMaxX": 672
+    },
+    {
+      "id": "space-patrol-drone-02", "type": "droneGuard",
+      "x": 896, "y": 48720, "patrolMinX": 768, "patrolMaxX": 1152
+    },
+    {
+      "id": "space-patrol-drone-03", "type": "droneGuard",
+      "x": 672, "y": 38884, "patrolMinX": 544, "patrolMaxX": 928
+    },
+    {
+      "id": "space-patrol-drone-04", "type": "droneGuard",
+      "x": 192, "y": 38720, "patrolMinX": 64, "patrolMaxX": 448
+    },
+    {
+      "id": "space-patrol-drone-05", "type": "droneGuard",
+      "x": 480, "y": 33956, "patrolMinX": 352, "patrolMaxX": 736
+    },
+    {
+      "id": "space-patrol-drone-06", "type": "droneGuard",
+      "x": 896, "y": 33780, "patrolMinX": 768, "patrolMaxX": 1152
+    },
+    {
+      "id": "moon-patrol-drone-01", "type": "droneGuard",
+      "x": 672, "y": 18884, "patrolMinX": 544, "patrolMaxX": 928
+    },
+    {
+      "id": "moon-patrol-drone-02", "type": "droneGuard",
+      "x": 192, "y": 18720, "patrolMinX": 64, "patrolMaxX": 448
+    },
+    {
+      "id": "moon-patrol-drone-03", "type": "droneGuard",
+      "x": 640, "y": 8896, "patrolMinX": 512, "patrolMaxX": 896
+    },
+    {
+      "id": "moon-patrol-drone-04", "type": "droneGuard",
+      "x": 192, "y": 8720, "patrolMinX": 64, "patrolMaxX": 448
+    },
+    {
+      "id": "moon-patrol-drone-05", "type": "droneGuard",
+      "x": 704, "y": 3848, "patrolMinX": 576, "patrolMaxX": 960
+    },
+    {
+      "id": "moon-patrol-drone-06", "type": "droneGuard",
+      "x": 192, "y": 3680, "patrolMinX": 64, "patrolMaxX": 448
+    },
     {
       "id": "scrapyard-crawler-01",
       "type": "scrapCrawler",

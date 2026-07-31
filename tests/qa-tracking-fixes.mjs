@@ -84,9 +84,9 @@ function countPlatforms(PlatformType) {
 }
 
 function assertEncounterDistribution() {
-  assert.equal(level.enemies.length, 27);
-  assert.equal(level.combatZones.length, 15);
-  assert.equal(normalZones.length, 10);
+  assert.equal(level.enemies.length, 57);
+  assert.equal(level.combatZones.length, 30);
+  assert.equal(normalZones.length, 25);
   BIOME_PREFIXES.forEach(assertBiomeEncounterCount);
   assertEveryEnemyIsReferencedOnce();
   assert.ok(level.combatZones.every(isNonBlockingTrigger));
@@ -96,7 +96,7 @@ function assertBiomeEncounterCount(prefix) {
   const zones = level.combatZones.filter((zone) => {
     return zone.id.startsWith(prefix);
   });
-  assert.equal(zones.length, 3, `${prefix} braucht drei Begegnungen.`);
+  assert.equal(zones.length, 6, `${prefix} braucht sechs Begegnungen.`);
 }
 
 function assertEveryEnemyIsReferencedOnce() {
@@ -118,7 +118,7 @@ function assertEncounterLifecycle() {
   level.combatZones.forEach((zone) => {
     triggerAndCompleteZone(manager, world, zone, activeEnemies);
   });
-  assert.equal(manager.takeCompletedWaveIds().length, 15);
+  assert.equal(manager.takeCompletedWaveIds().length, 30);
 }
 
 function createEncounterWorld(activeEnemies) {
