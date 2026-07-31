@@ -30,7 +30,7 @@ für Dateipfade, Raster, Zustände, Framezahlen und Lizenz-IDs ist
 | Luma | `img/sprites/characters/luma.png` | 32 × 32 | 10 | poweredOff 1, idle 4, revive 5 |
 | Schrottkrabbler | `img/sprites/enemies/scrap-crawler-clean-hd.png` | 96 × 64 | 13 | walk 4, attack 3, hurt 2, dead 4 |
 | Drohnenwächter | `img/sprites/enemies/drone-guard-clean-hd.png` | 96 × 64 | 20 | idle 4, move 4, telegraph 3, attack 3, hurt 2, dead 4 |
-| Mondwächter | `img/sprites/enemies/moon-warden.png` | 96 × 96 | 26 | idle 4, move 4, meleeAttack 5, rangedAttack 5, hurt 2, dead 6 |
+| Mondwächter | `img/sprites/enemies/moon-warden-clean-hd.png` | 192 × 192 | 26 | idle 4, move 4, meleeAttack 5, rangedAttack 5, hurt 2, dead 6 |
 
 Byte muss in jedem Zustand an Antenne, cyanfarbenem Gesicht und
 halbiertem Mondabzeichen erkennbar bleiben. Luma nutzt dieselben

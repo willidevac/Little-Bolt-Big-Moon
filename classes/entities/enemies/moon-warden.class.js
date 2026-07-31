@@ -3,12 +3,12 @@ import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
-    source: getAssetPath("enemies", "moon-warden.png"),
-    frameWidth: 96,
-    frameHeight: 96,
+    source: getAssetPath("enemies", "moon-warden-clean-hd.png"),
+    frameWidth: 192,
+    frameHeight: 192,
     frameCount: 26,
   }),
-  renderScale: 2,
+  renderScale: 1,
   collisionBox: Object.freeze({
     offsetX: 24,
     offsetY: 16,

@@ -581,7 +581,7 @@ Verbindliche Merkmale:
 | --- | --- | --- | --- | --- |
 | Schrottkrabbler | `img/concepts/approvals/scrap-crawler-clean-hd-production-layout-v1.png` | `img/sprites/enemies/scrap-crawler-clean-hd.png` | 7 × 2 Zellen à 96 × 64 px, 672 × 128 px | 13 belegt, 1 transparent |
 | Wächterdrohne | `img/concepts/approvals/drone-guard-clean-hd-production-layout-v1.png` | `img/sprites/enemies/drone-guard-clean-hd.png` | 5 × 4 Zellen à 96 × 64 px, 480 × 256 px | 20 belegt |
-| Mondwächter | `img/concepts/approvals/moon-warden-production-layout-v1.png` | `img/sprites/enemies/moon-warden.png` | 7 × 4 Zellen à 96 × 96 px, 672 × 384 px | 26 belegt, 2 transparent |
+| Mondwächter | `img/concepts/approvals/moon-warden-clean-hd-production-layout-v1.png` | `img/sprites/enemies/moon-warden-clean-hd.png` | 7 × 4 Zellen à 192 × 192 px, 1344 × 768 px | 26 belegt, 2 transparent |
 
 | Feld | Freigabe |
 | --- | --- |
@@ -962,5 +962,29 @@ Verbindliche Merkmale:
   genau eine Pose und überschreitet ihre Grenzen nicht.
 - Die Canvas-Größe bleibt 96 × 64 Pixel. Renderfaktor, Hitbox, Kampfwerte,
   Flugbewegung, Angriff und Frame-Reihenfolge wurden nicht verändert.
+- Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
+  ergänzt.
+
+## Clean-HD-Moon-Warden
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/moon-warden-clean-hd-production-layout-v1.png` |
+| Runtime-Datei | `img/sprites/enemies/moon-warden-clean-hd.png` |
+| Dateigröße | 1344 × 768 px |
+| Raster | 7 × 4 Zellen mit jeweils 192 × 192 px |
+
+Verbindliche Merkmale:
+
+- Die ersten 26 Zellen enthalten Idle, Move, Melee Attack, Ranged Attack,
+  Hurt und Dead in der bisherigen Reihenfolge; Zellen 27 und 28 bleiben leer.
+- Breiter Silberrumpf, roter Kern, Schulterwaffen, große Fäuste und kurze
+  Beine bleiben über alle Frames eindeutig derselbe Moon Warden.
+- Magenta, Hilfsraster und sieben grünliche Metallrandpixel wurden lokal
+  entfernt. Keine Pose überschreitet ihre Zellgrenze.
+- Die Canvas-Größe bleibt 192 × 192 Pixel. Hitbox, Bossphasen, Kampfwerte,
+  Nah- und Fernangriffe sowie Frame-Reihenfolge wurden nicht verändert.
 - Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
   ergänzt.

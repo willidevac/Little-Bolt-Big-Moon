@@ -64,6 +64,10 @@ Zellen gepackt.
   Flug-, Warn-, Angriffs-, Treffer- und Ausschaltframes in 96 × 64 Pixeln.
 - Die Drohne bleibt im Canvas 96 × 64 Pixel groß. Hitbox, Flugbewegung,
   Schussverhalten, Zustände und Frame-Reihenfolge bleiben unverändert.
+- `img/sprites/enemies/moon-warden-clean-hd.png` enthält 26 Bossframes und
+  zwei transparente Reservefelder in nativen 192 × 192 Pixeln.
+- Der Wächter bleibt im Canvas 192 × 192 Pixel groß. Hitbox, drei Kampfphasen,
+  Nah- und Fernangriff, Kampfwerte und Frame-Reihenfolge bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,
