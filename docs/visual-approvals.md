@@ -741,6 +741,29 @@ Verbindliche Merkmale:
 - Alle 32 Zellen sind belegt. Alpha-Kanal und Chroma-Key-Ränder wurden
   geprüft.
 
+## Clean-HD-Fabrik-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/factory-clean-hd-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/factory-tiles-clean-hd.png` |
+| Raster | 8 × 4 Zellen à 64 × 64 px, 512 × 256 px |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs bleiben in der unveränderten gemeinsamen Reihenfolge.
+- Dunkler Fabrikstahl, Bronzeverstrebungen, cremefarbene Laufkanten und
+  cyanfarbene Maschinenlichter passen zum Clean-HD-Fabrikhintergrund.
+- Jede neue Alpha-Außengrenze entspricht exakt der zweifach vergrößerten
+  Außengrenze des bisherigen 32-Pixel-Feldes.
+- Sichtbare Plattformgröße, Oberflächenversatz, Bewegung, Falllogik und
+  Kollisionen bleiben unverändert.
+- Die Fabrik besitzt aktuell keine eigene Schadenszone; ART-018 ergänzt daher
+  bewusst keine neue Gefahr und verändert das Leveldesign nicht.
+- Alle 32 Zellen sind belegt und enthalten keine Magentareste.
+
 ## Clean-HD-Pixel-Stilrichtung
 
 | Feld | Freigabe |

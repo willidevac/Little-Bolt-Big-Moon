@@ -77,6 +77,10 @@ Zellen gepackt.
   64 × 64 Pixel; die Lichtbogenladung verwendet native 48 × 72 Pixel.
 - Sichtbare Größen, Sammelwerte, Upgrade-Wirkungen, Trefferlogik und
   Animationsreihenfolgen bleiben unverändert.
+- `img/tilesets/factory-tiles-clean-hd.png` enthält alle 32 Fabrikfelder in
+  nativen 64 × 64 Pixeln und der unveränderten 8-mal-4-Reihenfolge.
+- Die Alpha-Grenzen der bisherigen 32-Pixel-Felder wurden exakt verdoppelt.
+  Plattformbreite, Oberflächenversatz und Kollisionshöhe bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,

@@ -25,6 +25,7 @@ const TILESET_NAMES = Object.freeze([
   "space-station",
   "moon",
 ]);
+const CLEAN_HD_TILESET_IDS = new Set(["scrapyard", "factory"]);
 const TILESET_CONFIGS = Object.freeze(
   Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),
 );
@@ -42,7 +43,7 @@ const CLEAN_HD_BACKGROUND_LAYERS = Object.freeze([
 ]);
 
 function createTilesetEntry(tilesetName) {
-  const isCleanHd = tilesetName === "scrapyard";
+  const isCleanHd = CLEAN_HD_TILESET_IDS.has(tilesetName);
   const fileSuffix = isCleanHd ? "-tiles-clean-hd.png" : "-tiles.png";
   return [tilesetName, Object.freeze({
     source: getAssetPath("tilesets", `${tilesetName}${fileSuffix}`),

@@ -64,7 +64,7 @@ Einzelplattformen und Dekoration bereit.
 | Zone | Höhenbereich | Tileset | Hintergrundebenen |
 | --- | ---: | --- | --- |
 | Schrottplatz | 120.000–150.000 | `img/tilesets/scrapyard-tiles-clean-hd.png` | `scrapyard-far-clean-hd.png`, `scrapyard-mid-clean-hd.png`, `scrapyard-near-clean-hd.png` |
-| Fabrik | 90.000–120.000 | `img/tilesets/factory-tiles.png` | `factory-far-clean-hd.png`, `factory-mid-clean-hd.png`, `factory-near-clean-hd.png` |
+| Fabrik | 90.000–120.000 | `img/tilesets/factory-tiles-clean-hd.png` | `factory-far-clean-hd.png`, `factory-mid-clean-hd.png`, `factory-near-clean-hd.png` |
 | Startturm/Wolken | 60.000–90.000 | `img/tilesets/launch-tower-tiles.png` | `launch-tower-far-clean-hd.png`, `launch-tower-mid-clean-hd.png`, `launch-tower-near-clean-hd.png` |
 | Raumstation | 30.000–60.000 | `img/tilesets/space-station-tiles.png` | `space-station-far-clean-hd.png`, `space-station-mid-clean-hd.png`, `space-station-near-clean-hd.png` |
 | Mond | 0–30.000 | `img/tilesets/moon-tiles.png` | `moon-far-clean-hd.png`, `moon-mid-clean-hd.png`, `moon-near-clean-hd.png` |
