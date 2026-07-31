@@ -488,8 +488,8 @@
     {
       "id": "player-weapons-runtime-v1",
       "file": "img/sprites/weapons/player-weapons.png",
-      "role": "runtime-player-weapons-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-player-weapons-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
       "created": "2026-07-24",
       "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x32 with two occupied 32x32 cells.",
@@ -498,8 +498,8 @@
     {
       "id": "bolt-projectile-runtime-v1",
       "file": "img/sprites/weapons/bolt-projectile.png",
-      "role": "runtime-player-projectile-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-player-projectile-spritesheet",
+      "status": "legacy-present",
       "origin": "Pixel-precise JavaScript adaptation of the approved bolt design and OpenAI-generated weapons production layout",
       "created": "2026-07-24",
       "modifications": "The generated bolt was manually refined in JavaScript for readability at 16x8 pixels; final size 32x8 with two occupied cells and validated alpha.",
@@ -508,8 +508,8 @@
     {
       "id": "drone-projectile-runtime-v1",
       "file": "img/sprites/weapons/drone-projectile.png",
-      "role": "runtime-drone-projectile-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-drone-projectile-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
       "created": "2026-07-24",
       "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x16 with four occupied 16x16 cells.",
@@ -518,11 +518,81 @@
     {
       "id": "boss-projectiles-runtime-v1",
       "file": "img/sprites/weapons/boss-projectiles.png",
-      "role": "runtime-boss-projectiles-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-boss-projectiles-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
       "created": "2026-07-24",
       "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 128x32 with four shockwave and four energy-bolt cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "weapons-projectiles-clean-hd-layout-v1",
+      "file": "img/concepts/approvals/weapons-projectiles-clean-hd-production-layout-v1.png",
+      "role": "clean-hd-weapons-projectiles-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved weapon, Byte, arc-cannon and arc-projectile references",
+      "created": "2026-07-31",
+      "modifications": "Twenty generated weapon and projectile poses were isolated from the flat magenta production field and packed into exact runtime grids with JavaScript/Node.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "player-weapons-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/player-weapons-clean-hd.png",
+      "role": "runtime-player-weapons-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "Chroma-key removal and native 64x64 packing produced two transparent weapon cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "bolt-projectile-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/bolt-projectile-clean-hd.png",
+      "role": "runtime-player-projectile-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "Two bolt impulses were packed into native 32x16 transparent cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "drone-projectile-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/drone-projectile-clean-hd.png",
+      "role": "runtime-drone-projectile-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "Four hostile energy impulses were packed into native 32x32 transparent cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "boss-projectiles-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/boss-projectiles-clean-hd.png",
+      "role": "runtime-boss-projectiles-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "Four shockwaves and four moon bolts were packed into an exact 4x2 grid of native 64x32 cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "arc-cannon-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/arc-cannon-clean-hd.png",
+      "role": "runtime-arc-cannon-clean-hd-pickup",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "The isolated arc cannon was centered in its existing native 96x64 runtime frame.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "arc-projectile-clean-hd-runtime-v1",
+      "file": "img/sprites/weapons/arc-projectile-clean-hd.png",
+      "role": "runtime-arc-projectile-clean-hd-animation",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+      "created": "2026-07-31",
+      "modifications": "Four electric discharge stages were centered in native 64x64 transparent cells.",
       "licenseId": "openai-assisted-project-art"
     },
     {
@@ -1098,8 +1168,8 @@
     {
       "id": "arc-cannon-runtime-v1",
       "file": "img/sprites/weapons/arc-cannon.png",
-      "role": "runtime-arc-cannon-pickup",
-      "status": "present",
+      "role": "legacy-runtime-arc-cannon-pickup",
+      "status": "legacy-present",
       "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
       "created": "2026-07-29",
       "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",
@@ -1108,8 +1178,8 @@
     {
       "id": "arc-projectile-runtime-v1",
       "file": "img/sprites/weapons/arc-projectile.png",
-      "role": "runtime-arc-projectile-animation",
-      "status": "present",
+      "role": "legacy-runtime-arc-projectile-animation",
+      "status": "legacy-present",
       "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
       "created": "2026-07-29",
       "modifications": "Four generated discharge stages were isolated, centered and assembled into a transparent sprite sheet.",

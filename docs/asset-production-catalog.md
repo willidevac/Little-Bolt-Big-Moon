@@ -41,10 +41,12 @@ verwenden rote Angriffssignale und deutlich andere Silhouetten.
 
 | Asset | Datei | Frame | Frames | Inhalt |
 | --- | --- | ---: | ---: | --- |
-| Spielerwaffen | `img/sprites/weapons/player-weapons.png` | 32 × 32 | 2 | Reparaturschlüssel, Bolzenwerfer |
-| Bolzen | `img/sprites/weapons/bolt-projectile.png` | 16 × 8 | 2 | Flug |
-| Drohnenschuss | `img/sprites/weapons/drone-projectile.png` | 16 × 16 | 4 | Flug |
-| Bossprojektile | `img/sprites/weapons/boss-projectiles.png` | 32 × 16 | 8 | Schockwelle 4, Mondbolzen 4 |
+| Spielerwaffen | `img/sprites/weapons/player-weapons-clean-hd.png` | 64 × 64 | 2 | Reparaturschlüssel, Bolzenwerfer |
+| Bolzen | `img/sprites/weapons/bolt-projectile-clean-hd.png` | 32 × 16 | 2 | Flug |
+| Drohnenschuss | `img/sprites/weapons/drone-projectile-clean-hd.png` | 32 × 32 | 4 | Flug |
+| Bossprojektile | `img/sprites/weapons/boss-projectiles-clean-hd.png` | 64 × 32 | 8 | Schockwelle 4, Mondbolzen 4 |
+| Lichtbogenkanone | `img/sprites/weapons/arc-cannon-clean-hd.png` | 96 × 64 | 1 | Pickup |
+| Lichtbogenprojektil | `img/sprites/weapons/arc-projectile-clean-hd.png` | 64 × 64 | 4 | Flug |
 | Collectibles | `img/sprites/items/collectables.png` | 32 × 32 | 15 | Zahnrad 4, Energie 4, Munition 1, Waffenpickup 4, Abzeichenhälften 2 |
 | Upgrade-Icons | `img/sprites/items/upgrade-icons.png` | 32 × 32 | 5 | Energie, Schaden, Munition, Rückstoßschutz, Sprungkontrolle |
 | Spieleffekte | `img/sprites/effects/gameplay-effects.png` | 32 × 32 | 23 | Sprungstaub 4, Treffer 4, Mündungslicht 3, Pickup 6, Explosion 6 |

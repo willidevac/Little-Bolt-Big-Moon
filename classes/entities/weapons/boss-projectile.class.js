@@ -2,15 +2,15 @@ import { Projectile } from "./projectile.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const BOSS_PROJECTILE_SPRITE = Object.freeze({
-  source: getAssetPath("weapons", "boss-projectiles.png"),
-  frameWidth: 32,
-  frameHeight: 16,
+  source: getAssetPath("weapons", "boss-projectiles-clean-hd.png"),
+  frameWidth: 64,
+  frameHeight: 32,
   frameCount: 8,
 });
 const VISUAL_CONFIGS = Object.freeze({
   shockwave: Object.freeze({
     sprite: BOSS_PROJECTILE_SPRITE,
-    renderScale: 2,
+    renderScale: 1,
     collisionBox: Object.freeze({
       offsetX: 4,
       offsetY: 10,
@@ -23,7 +23,7 @@ const VISUAL_CONFIGS = Object.freeze({
   }),
   moonBolt: Object.freeze({
     sprite: BOSS_PROJECTILE_SPRITE,
-    renderScale: 2,
+    renderScale: 1,
     collisionBox: Object.freeze({
       offsetX: 8,
       offsetY: 4,

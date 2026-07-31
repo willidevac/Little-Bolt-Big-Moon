@@ -3,12 +3,12 @@ import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const BOLT_VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
-    source: getAssetPath("weapons", "bolt-projectile.png"),
-    frameWidth: 16,
-    frameHeight: 8,
+    source: getAssetPath("weapons", "bolt-projectile-clean-hd.png"),
+    frameWidth: 32,
+    frameHeight: 16,
     frameCount: 2,
   }),
-  renderScale: 2,
+  renderScale: 1,
   collisionBox: Object.freeze({
     offsetX: 2,
     offsetY: 2,

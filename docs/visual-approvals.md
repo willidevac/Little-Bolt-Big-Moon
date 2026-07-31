@@ -965,6 +965,36 @@ Verbindliche Merkmale:
 - Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
   ergänzt.
 
+## Clean-HD-Waffen-und-Projektile
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/weapons-projectiles-clean-hd-production-layout-v1.png` |
+| Verarbeitung | integrierte Bildgenerierung und JavaScript/Node |
+
+| Asset | Runtime-Datei | Raster | Frames |
+| --- | --- | --- | --- |
+| Spielerwaffen | `img/sprites/weapons/player-weapons-clean-hd.png` | 2 × 1 Zellen à 64 × 64 px | 2 |
+| Bolzenprojektil | `img/sprites/weapons/bolt-projectile-clean-hd.png` | 2 × 1 Zellen à 32 × 16 px | 2 |
+| Drohnenprojektil | `img/sprites/weapons/drone-projectile-clean-hd.png` | 4 × 1 Zellen à 32 × 32 px | 4 |
+| Bossprojektile | `img/sprites/weapons/boss-projectiles-clean-hd.png` | 4 × 2 Zellen à 64 × 32 px | 8 |
+| Lichtbogenkanone | `img/sprites/weapons/arc-cannon-clean-hd.png` | 1 × 1 Zelle à 96 × 64 px | 1 |
+| Lichtbogenprojektil | `img/sprites/weapons/arc-projectile-clean-hd.png` | 4 × 1 Zellen à 64 × 64 px | 4 |
+
+Verbindliche Merkmale:
+
+- Reparaturschlüssel, Bolzenwerfer und Lichtbogenkanone bleiben an Form,
+  Cremegehäuse, dunklem Metall und cyanfarbener Energie erkennbar.
+- Spielerprojektile leuchten cyan; feindliche Projektile verwenden weiterhin
+  rote und orangefarbene Gefahrenenergie.
+- Alle 21 Runtime-Zellen sind belegt und besitzen transparente Außenflächen.
+- Sichtbare Größe, Trefferflächen, Flugbahnen, Schaden, Munition und
+  Animationsreihenfolge bleiben unverändert.
+- Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
+  ergänzt.
+
 ## Clean-HD-Moon-Warden
 
 | Feld | Freigabe |

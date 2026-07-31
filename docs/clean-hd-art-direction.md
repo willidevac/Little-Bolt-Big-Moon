@@ -68,6 +68,11 @@ Zellen gepackt.
   zwei transparente Reservefelder in nativen 192 × 192 Pixeln.
 - Der Wächter bleibt im Canvas 192 × 192 Pixel groß. Hitbox, drei Kampfphasen,
   Nah- und Fernangriff, Kampfwerte und Frame-Reihenfolge bleiben unverändert.
+- Waffen und Projektile verwenden native Clean-HD-Zellen: Spielerwaffen
+  64 × 64, Bolzen 32 × 16, Drohnenschüsse 32 × 32, Bossgeschosse 64 × 32,
+  Lichtbogenkanone 96 × 64 und Lichtbogenimpulse 64 × 64 Pixel.
+- Die sichtbaren Projektilgrößen, Trefferflächen, Flugbahnen, Schäden,
+  Munitionswerte und Animationsreihenfolgen bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,

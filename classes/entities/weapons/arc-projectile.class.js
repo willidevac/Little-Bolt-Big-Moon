@@ -3,7 +3,7 @@ import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const ARC_VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
-    source: getAssetPath("weapons", "arc-projectile.png"),
+    source: getAssetPath("weapons", "arc-projectile-clean-hd.png"),
     frameWidth: 64,
     frameHeight: 64,
     frameCount: 4,

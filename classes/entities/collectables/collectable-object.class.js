@@ -23,7 +23,7 @@ const ARC_CHARGE_SPRITE_CONFIG = Object.freeze({
   frameCount: 1,
 });
 const ARC_CANNON_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("weapons", "arc-cannon.png"),
+  source: getAssetPath("weapons", "arc-cannon-clean-hd.png"),
   frameWidth: 96,
   frameHeight: 64,
   frameCount: 1,
