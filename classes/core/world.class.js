@@ -16,12 +16,7 @@ import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 
 const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
-const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
-  x: 96,
-  y: 560,
-  width: 512,
-  height: 32,
-});
+const FALLBACK_PLATFORM_BOUNDS = Object.freeze({ x: 96, y: 560, width: 512, height: 32 });
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
 const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
@@ -184,6 +179,8 @@ export class World {
     this.waveManager.update(this);
     this.bossFight.update(this);
     this.#fallTracker.update(this.character);
+    const fall = this.#fallTracker.takeCompletedFall();
+    if (fall) this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_FALL, fall);
     this.camera.update(this.character, deltaTimeSeconds);
   }
 

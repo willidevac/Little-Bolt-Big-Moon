@@ -157,6 +157,38 @@
   animation: pickup-feedback 2.4s ease-out both;
 }
 
+.hud-fall-feedback {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  justify-self: center;
+  margin-bottom: clamp(3rem, 9vh, 5.5rem);
+  padding: 0.45rem 0.8rem;
+  border-bottom: 2px solid var(--color-orange);
+  color: white;
+  background: rgb(7 20 38 / 88%);
+  font-size: clamp(0.65rem, 1.4vw, 1rem);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hud-fall-feedback:empty {
+  display: none;
+}
+
+.hud-fall-feedback[data-severity="hard"] {
+  color: #ffd09a;
+}
+
+.hud-fall-feedback[data-severity="severe"] {
+  border-color: #ff645f;
+  color: #ffb0ac;
+}
+
+.hud-fall-feedback.is-visible {
+  animation: fall-feedback 2.8s ease-out both;
+}
+
 .hud-jump-charge {
   display: grid;
   grid-column: 3;
@@ -201,6 +233,31 @@
   100% {
     opacity: 0;
     transform: translateY(-0.5rem) scale(1);
+  }
+}
+
+@keyframes fall-feedback {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.75rem) scale(1.05);
+  }
+
+  12%,
+  72% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-fall-feedback.is-visible {
+    animation: none;
+    opacity: 1;
   }
 }
 

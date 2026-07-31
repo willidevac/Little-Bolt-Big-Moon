@@ -1,6 +1,7 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 import { PickupFeedback } from "./pickup-feedback.class.js";
+import { FallFeedback } from "./fall-feedback.class.js";
 import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
@@ -24,6 +25,7 @@ const VALUE_SELECTORS = Object.freeze({
   comboValue: "[data-hud-combo-value]",
   weapon: '[data-hud-value="weapon"]',
   pickupFeedback: "[data-hud-pickup-feedback]",
+  fallFeedback: "[data-hud-fall-feedback]",
   jumpCharge: "[data-hud-jump-charge]",
   jumpChargeBar: "[data-hud-jump-charge-bar]",
   jumpChargeValue: "[data-hud-jump-charge-value]",
@@ -94,6 +96,8 @@ export class StatusBar {
     this.unsubscribeLanguage = null;
     this.currentWeapon = null;
     this.pickupFeedback = new PickupFeedback(this.elements.pickupFeedback);
+    const pixelsPerMeter = this.game.config.hud.heightPixelsPerMeter;
+    this.fallFeedback = new FallFeedback(this.elements.fallFeedback, pixelsPerMeter);
   }
 
   /**
@@ -123,6 +127,7 @@ export class StatusBar {
     this.unsubscribeGameplay?.();
     this.unsubscribeLanguage?.();
     this.pickupFeedback.destroy();
+    this.fallFeedback.destroy();
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
     this.unsubscribeGameplay = null;
@@ -165,6 +170,9 @@ export class StatusBar {
     }
     if (event.type === GAMEPLAY_EVENTS.PICKUP) {
       this.pickupFeedback.show(event.detail);
+    }
+    if (event.type === GAMEPLAY_EVENTS.PLAYER_FALL) {
+      this.fallFeedback.show(event.detail);
     }
     if (event.type === GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE) {
       this.renderJumpCharge(event.detail);

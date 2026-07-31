@@ -9,6 +9,11 @@ const WORLD_CONFIG = Object.freeze({
   width: 1280,
   height: 150000,
   deathZoneOffsetPixels: 128,
+  fallFeedback: Object.freeze({
+    minimumPixels: 360,
+    hardPixels: 900,
+    severePixels: 1800,
+  }),
 });
 
 const TIMING_CONFIG = Object.freeze({
