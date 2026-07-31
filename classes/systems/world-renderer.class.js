@@ -34,6 +34,7 @@ export class WorldRenderer {
     this.context.translate(-camera.x, -camera.y);
     try {
       this.#drawEntities(entityGroups, camera, world);
+      world.feedback.draw(this.context);
       this.collisionDebug.draw(this.context, entityGroups);
     } finally {
       this.context.restore();

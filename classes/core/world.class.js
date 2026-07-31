@@ -6,6 +6,7 @@ import { WaveManager } from "../systems/wave-manager.class.js";
 import { BossFightManager } from "../systems/boss-fight-manager.class.js";
 import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
 import { PlatformMotionSystem } from "../systems/platform-motion-system.class.js";
+import { VisualFeedbackSystem } from "../systems/visual-feedback-system.class.js";
 import { WorldRenderer } from "../systems/world-renderer.class.js";
 import { Character } from "../entities/character.class.js";
 import { Platform } from "../environment/platform.class.js";
@@ -57,6 +58,7 @@ export class World {
     gameplayEvents = new GameplayEventHub()) {
     Object.assign(this, { context, config, input, level, gameplayEvents });
     this.eventReporter = new WorldEventReporter(gameplayEvents);
+    this.feedback = new VisualFeedbackSystem(gameplayEvents, () => this.character);
     this.isInitialized = false;
     this.#initializeCollections();
     this.#initializeSimulation(config);
@@ -179,6 +181,7 @@ export class World {
     this.waveManager.update(this);
     this.bossFight.update(this);
     this.#fallTracker.update(this.character);
+    this.feedback.update(deltaTimeSeconds);
     const fall = this.#fallTracker.takeCompletedFall();
     if (fall) this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_FALL, fall);
     this.camera.update(this.character, deltaTimeSeconds);
@@ -247,6 +250,7 @@ export class World {
   /** Leert und deaktiviert die Welt für einen kontrollierten Neuaufbau. */
   destroy() {
     this.clear();
+    this.feedback.destroy();
     this.camera.reset();
     this.isInitialized = false;
   }
