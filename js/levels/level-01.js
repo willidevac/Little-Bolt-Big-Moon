@@ -2,7 +2,11 @@ import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { Platform } from "../../classes/environment/platform.class.js";
 import { MovingPlatform } from "../../classes/environment/moving-platform.class.js";
 import { FallingPlatform } from "../../classes/environment/falling-platform.class.js";
-import { CollectableObject } from "../../classes/entities/collectables/collectable-object.class.js";
+import {
+  CollectableObject,
+  COLLECTABLE_TYPES,
+} from "../../classes/entities/collectables/collectable-object.class.js";
+import { StoryBadge } from "../../classes/entities/collectables/story-badge.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { StoryProp } from "../../classes/environment/story-prop.class.js";
@@ -96,9 +100,10 @@ function createLevelData(enemyConfig, platformData) {
 }
 
 function createLevelEntities(enemyConfig, platformData) {
+  const platforms = platformData.map(createPlatform);
   return {
-    platforms: Object.freeze(platformData.map(createPlatform)),
-    collectables: Object.freeze(levelData.collectables.map(createCollectable)),
+    platforms: Object.freeze(platforms),
+    collectables: Object.freeze(createCollectables(platforms)),
     storyProps: Object.freeze(levelData.storyProps.map(createStoryProp)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
@@ -133,7 +138,15 @@ function createEnemyConfig(enemyData, enemyConfig) {
   return Object.freeze({ ...baseConfig, ...overrides });
 }
 
-function createCollectable(collectableData) {
+function createCollectables(platforms) {
+  return levelData.collectables.map((data) => createCollectable(data, platforms));
+}
+
+function createCollectable(collectableData, platforms) {
+  if (collectableData.type === COLLECTABLE_TYPES.STORY_BADGE) {
+    const anchor = platforms.find(({ id }) => id === collectableData.anchorPlatformId);
+    return new StoryBadge(collectableData, anchor);
+  }
   return new CollectableObject(collectableData);
 }
 

@@ -1,7 +1,9 @@
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 const FEEDBACK_DURATION_MILLISECONDS = 2400;
-const PICKUP_TYPES = Object.freeze(["gear", "energy", "ammo", "arcCharge"]);
+const PICKUP_TYPES = Object.freeze([
+  "gear", "energy", "ammo", "arcCharge", "storyBadge",
+]);
 
 /** Zeigt einen Fund kurz und barrierefrei über der Spielwelt an. */
 export class PickupFeedback {

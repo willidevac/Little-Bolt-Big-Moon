@@ -47,6 +47,7 @@ export const COLLECTABLE_TYPES = Object.freeze({
   AMMO: "ammo",
   ARC_CHARGE: "arcCharge",
   WEAPON: "weapon",
+  STORY_BADGE: "storyBadge",
 });
 
 const ANIMATION_CLIPS = Object.freeze({
@@ -56,6 +57,8 @@ const ANIMATION_CLIPS = Object.freeze({
   [COLLECTABLE_TYPES.ARC_CHARGE]: createClip(0, 1),
   arcCannon: createClip(0, 1),
   [COLLECTABLE_TYPES.WEAPON]: createClip(9, 4),
+  badgeLeft: createClip(13, 1),
+  badgeRight: createClip(14, 1),
 });
 
 const STANDARD_VISUAL = Object.freeze({
@@ -104,6 +107,7 @@ export class CollectableObject extends DrawableObject {
     this.type = collectableData.type;
     this.amount = collectableData.amount;
     this.weaponId = collectableData.weaponId ?? null;
+    this.badgePart = collectableData.badgePart ?? null;
     this.x = collectableData.x;
     this.y = collectableData.y;
   }
@@ -127,6 +131,7 @@ export class CollectableObject extends DrawableObject {
   getPickup() {
     const pickup = { id: this.id, type: this.type, amount: this.amount };
     if (this.weaponId) pickup.weaponId = this.weaponId;
+    if (this.badgePart) pickup.badgePart = this.badgePart;
     return Object.freeze(pickup);
   }
 
@@ -137,7 +142,11 @@ export class CollectableObject extends DrawableObject {
     const hasAmount = Number.isFinite(data?.amount) && data.amount > 0;
     const hasWeapon = data?.type !== COLLECTABLE_TYPES.WEAPON ||
       (typeof data?.weaponId === "string" && data.weaponId.length > 0);
-    if (hasIdentity && hasType && hasPosition && hasAmount && hasWeapon) return;
+    const hasBadge = data?.type !== COLLECTABLE_TYPES.STORY_BADGE ||
+      ["left", "right"].includes(data?.badgePart);
+    if (hasIdentity && hasType && hasPosition && hasAmount && hasWeapon && hasBadge) {
+      return;
+    }
     throw new TypeError("Die Daten des Sammelobjekts sind ungültig.");
   }
 
@@ -149,6 +158,7 @@ export class CollectableObject extends DrawableObject {
   }
 
   #getVisual(data) {
+    if (data.type === COLLECTABLE_TYPES.STORY_BADGE) return this.#getBadgeVisual(data);
     if (data.type === COLLECTABLE_TYPES.ARC_CHARGE) {
       this.animationState = COLLECTABLE_TYPES.ARC_CHARGE;
       return ARC_CHARGE_VISUAL;
@@ -158,6 +168,11 @@ export class CollectableObject extends DrawableObject {
       return ARC_CANNON_VISUAL;
     }
     this.animationState = data.type;
+    return STANDARD_VISUAL;
+  }
+
+  #getBadgeVisual(data) {
+    this.animationState = data.badgePart === "left" ? "badgeLeft" : "badgeRight";
     return STANDARD_VISUAL;
   }
 }

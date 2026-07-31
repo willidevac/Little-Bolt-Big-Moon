@@ -3255,6 +3255,51 @@
       "amount": 3,
       "x": 544,
       "y": 728
+    },
+    {
+      "id": "scrapyard-story-badge-01",
+      "type": "storyBadge",
+      "badgePart": "left",
+      "amount": 1,
+      "x": 768,
+      "y": 148688,
+      "anchorPlatformId": "scrapyard-machine-graveyard-erste-kante-shortcut-3"
+    },
+    {
+      "id": "factory-story-badge-01",
+      "type": "storyBadge",
+      "badgePart": "right",
+      "amount": 1,
+      "x": 640,
+      "y": 118900,
+      "anchorPlatformId": "factory-assembly-zahnradlager-shortcut-3"
+    },
+    {
+      "id": "launch-story-badge-01",
+      "type": "storyBadge",
+      "badgePart": "left",
+      "amount": 1,
+      "x": 320,
+      "y": 88512,
+      "anchorPlatformId": "launch-tower-supply-shafts-raketen-kabelschacht-shortcut-3"
+    },
+    {
+      "id": "space-story-badge-01",
+      "type": "storyBadge",
+      "badgePart": "right",
+      "amount": 1,
+      "x": 224,
+      "y": 58508,
+      "anchorPlatformId": "space-station-cargo-ring-containerbogen-shortcut-3"
+    },
+    {
+      "id": "moon-story-badge-01",
+      "type": "storyBadge",
+      "badgePart": "left",
+      "amount": 1,
+      "x": 544,
+      "y": 28852,
+      "anchorPlatformId": "moon-crater-field-flacher-krater-shortcut-1"
     }
   ]
 }

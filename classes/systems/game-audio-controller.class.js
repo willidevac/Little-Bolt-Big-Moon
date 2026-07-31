@@ -22,6 +22,7 @@ const PICKUP_EFFECTS = Object.freeze({
   ammo: "pickupAmmo",
   arcCharge: "pickupEnergy",
   weapon: "pickupAmmo",
+  storyBadge: "pickupGear",
 });
 
 /**

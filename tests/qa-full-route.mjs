@@ -164,7 +164,9 @@ const moonFortressPlatforms = route.filter(({ id }) => {
 const factoryAnchors = [
   ...levelData.collectables
     .filter(({ id }) => id.startsWith("factory-"))
-    .map(({ id, x, y }) => ({ id, x, y, width: 64 })),
+    .map(({ id, x, y, anchorPlatformId }) => ({
+      id, x, y, width: 64, anchorPlatformId,
+    })),
   ...levelData.enemies
     .filter(({ id, type }) => {
       return id.startsWith("factory-") && type === "scrapCrawler";
@@ -179,7 +181,9 @@ factoryAnchors.forEach((anchor) => {
     return platform.y === anchor.y + 64 && overlaps;
   });
   assert.ok(support, `${anchor.id} hat keine pixelgenaue feste Plattform.`);
-  if (anchor.id !== "factory-gear-01") assert.equal(support.type, "path");
+  if (!anchor.anchorPlatformId && anchor.id !== "factory-gear-01") {
+    assert.equal(support.type, "path");
+  }
 });
 
 const movingData = route.find(({ type }) => type === "moving");

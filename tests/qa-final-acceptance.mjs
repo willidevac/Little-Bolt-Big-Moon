@@ -95,6 +95,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),
   Object.freeze({ id: "story-positionen", file: "tests/qa-story-placement.mjs" }),
+  Object.freeze({ id: "story-abzeichen", file: "tests/qa-story-badges.mjs" }),
   Object.freeze({ id: "storysequenzen", file: "tests/qa-story-sequences.mjs" }),
   Object.freeze({
     id: "weiterbildungs-checkliste",

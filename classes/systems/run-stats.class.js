@@ -13,7 +13,7 @@ const CAPACITY_BY_STAT = Object.freeze({
   arcCharges: "maximumArcCharges",
 });
 const SPENDABLE_PICKUP_TYPES = Object.freeze(["ammo", "arcCharge"]);
-const NON_STAT_PICKUP_TYPES = Object.freeze(["weapon"]);
+const NON_STAT_PICKUP_TYPES = Object.freeze(["weapon", "storyBadge"]);
 /**
  * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
  */
