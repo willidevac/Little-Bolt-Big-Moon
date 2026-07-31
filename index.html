@@ -69,17 +69,30 @@
         </button>
       </section>
 
-      <button
-        class="sound-button"
-        type="button"
-        aria-label="Ton stummschalten"
-        aria-pressed="false"
-        data-i18n="audio.active"
-        data-i18n-aria-label="audio.disable"
-        data-ui-action="mute"
-      >
-        Ton: an
-      </button>
+      <div class="utility-buttons">
+        <button
+          class="utility-button fullscreen-button"
+          type="button"
+          aria-label="Vollbild starten"
+          aria-pressed="false"
+          data-i18n="fullscreen.enter"
+          data-i18n-aria-label="fullscreen.enter"
+          data-fullscreen-toggle
+        >
+          Vollbild starten
+        </button>
+        <button
+          class="utility-button sound-button"
+          type="button"
+          aria-label="Ton stummschalten"
+          aria-pressed="false"
+          data-i18n="audio.active"
+          data-i18n-aria-label="audio.disable"
+          data-ui-action="mute"
+        >
+          Ton: an
+        </button>
+      </div>
 
       <aside class="review-banner" data-review-banner hidden>
         <strong data-i18n="review.banner">Review-Modus – keine Wertung</strong>

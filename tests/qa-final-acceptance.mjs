@@ -15,6 +15,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "speicher-audio", file: "tests/qa-storage-audio.mjs" }),
   Object.freeze({ id: "multitouch", file: "tests/qa-touch-input.mjs" }),
   Object.freeze({ id: "links-dialoge", file: "tests/qa-ui-contract.mjs" }),
+  Object.freeze({ id: "vollbild", file: "tests/qa-fullscreen.mjs" }),
   Object.freeze({ id: "waffenlauf", file: "tests/qa-weapon-run.mjs" }),
   Object.freeze({ id: "lichtbogenkanone", file: "tests/qa-arc-cannon.mjs" }),
   Object.freeze({ id: "upgrade-seltenheiten", file: "tests/qa-upgrade-rarities.mjs" }),
