@@ -33,13 +33,13 @@ const VISUAL_CONFIG = Object.freeze({
     meleeAttack: Object.freeze({
       startFrame: 8,
       frameCount: 5,
-      frameDurationSeconds: 0.1,
+      frameDurationSeconds: 0.16,
       loop: false,
     }),
     rangedAttack: Object.freeze({
       startFrame: 13,
       frameCount: 5,
-      frameDurationSeconds: 0.1,
+      frameDurationSeconds: 0.16,
       loop: false,
     }),
     hurt: Object.freeze({
@@ -61,17 +61,17 @@ const PHASES = Object.freeze([
   Object.freeze({
     minimumHealthRatio: 2 / 3,
     speedMultiplier: 1,
-    cooldownMultiplier: 1,
+    recoverySeconds: 1.4,
   }),
   Object.freeze({
     minimumHealthRatio: 1 / 3,
     speedMultiplier: 1.25,
-    cooldownMultiplier: 0.75,
+    recoverySeconds: 1.1,
   }),
   Object.freeze({
     minimumHealthRatio: 0,
     speedMultiplier: 1.5,
-    cooldownMultiplier: 0.55,
+    recoverySeconds: 0.85,
   }),
 ]);
 const RANGED_SPREAD_RADIANS = Object.freeze({
@@ -106,6 +106,48 @@ export class MoonWarden extends Enemy {
     this.#nextAttackIndex = 0;
   }
 
+  /** Zeichnet vor jedem Angriff eine eindeutige, weltgebundene Warnung. */
+  draw(context) {
+    this.#drawAttackTelegraph(context);
+    super.draw(context);
+  }
+
+  #drawAttackTelegraph(context) {
+    if (!this.#pendingAttack) return;
+    const progress = 1 - this.#pendingAttack.secondsRemaining /
+      this.bossConfig.attackReleaseSeconds;
+    context.save();
+    context.globalAlpha = 0.45 + progress * 0.45;
+    context.lineWidth = 4 + progress * 4;
+    if (this.#pendingAttack.pattern === "meleeAttack") {
+      this.#drawShockwaveWarning(context, progress);
+    } else this.#drawMoonBoltWarning(context);
+    context.restore();
+  }
+
+  #drawShockwaveWarning(context, progress) {
+    const bounds = this.getCollisionBounds();
+    context.strokeStyle = "#ff9b32";
+    context.beginPath();
+    context.ellipse(
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height,
+      72 + progress * 92, 14, 0, 0, Math.PI * 2,
+    );
+    context.stroke();
+  }
+
+  #drawMoonBoltWarning(context) {
+    const target = this.#pendingAttack.target;
+    const origin = this.#getRangedOrigin(target);
+    context.strokeStyle = "#65efff";
+    context.setLineDash([12, 8]);
+    context.beginPath();
+    context.moveTo(origin.x, origin.y);
+    context.lineTo(target.x, target.y);
+    context.stroke();
+  }
+
   /**
    * Aktiviert, bewegt und steuert den Boss abhängig von Byte und seiner Phase.
    * @param {number} deltaTimeSeconds
@@ -117,16 +159,24 @@ export class MoonWarden extends Enemy {
     this.#tryActivate(target);
     this.#updatePhase();
     if (!this.#canAct(deltaTimeSeconds, target)) return;
-    if (this.#tryBeginAttack()) return;
+    if (this.attackCooldownSecondsRemaining > 0) return this.#recover(deltaTimeSeconds, world);
+    if (this.#tryBeginAttack(target)) return;
     this.#moveToward(target);
     super.update(deltaTimeSeconds, world);
     this.stayInsidePatrol();
     this.updateAnimation(deltaTimeSeconds);
   }
 
-  #tryBeginAttack() {
+  #recover(deltaTimeSeconds, world) {
+    this.velocityX = 0;
+    super.update(deltaTimeSeconds, world);
+    this.stayInsidePatrol();
+    this.updateAnimation(deltaTimeSeconds);
+  }
+
+  #tryBeginAttack(target) {
     if (this.attackCooldownSecondsRemaining !== 0) return false;
-    this.#beginNextAttack();
+    this.#beginNextAttack(target);
     return true;
   }
 
@@ -182,15 +232,15 @@ export class MoonWarden extends Enemy {
     this.phase = (phaseIndex < 0 ? PHASES.length - 1 : phaseIndex) + 1;
   }
 
-  #beginNextAttack() {
+  #beginNextAttack(target) {
     const pattern = ATTACK_PATTERNS[this.#nextAttackIndex];
     if (!this.startAttackState(pattern)) return;
     this.velocityX = 0;
     this.#pendingAttack = {
       pattern,
+      target: this.#getCenter(target),
       secondsRemaining: this.bossConfig.attackReleaseSeconds,
     };
-    this.attackCooldownSecondsRemaining *= this.#getPhase().cooldownMultiplier;
     this.#nextAttackIndex = (this.#nextAttackIndex + 1) % ATTACK_PATTERNS.length;
   }
 
@@ -199,7 +249,8 @@ export class MoonWarden extends Enemy {
     this.#pendingAttack.secondsRemaining -= deltaTimeSeconds;
     if (this.#pendingAttack.secondsRemaining > 0) return;
     if (this.#pendingAttack.pattern === "meleeAttack") this.#releaseShockwaves();
-    else this.#releaseMoonBolts(target);
+    else this.#releaseMoonBolts(this.#pendingAttack.target);
+    this.attackCooldownSecondsRemaining = this.#getPhase().recoverySeconds;
     this.#pendingAttack = null;
   }
 
@@ -212,9 +263,8 @@ export class MoonWarden extends Enemy {
     );
   }
 
-  #releaseMoonBolts(target) {
-    const origin = this.#getRangedOrigin(target);
-    const targetCenter = this.#getCenter(target);
+  #releaseMoonBolts(targetCenter) {
+    const origin = this.#getRangedOrigin(targetCenter);
     const baseAngle = Math.atan2(
       targetCenter.y - origin.y,
       targetCenter.x - origin.x,
@@ -247,9 +297,9 @@ export class MoonWarden extends Enemy {
     });
   }
 
-  #getRangedOrigin(target) {
+  #getRangedOrigin(targetCenter) {
     const bounds = this.getCollisionBounds();
-    const targetIsLeft = this.#getCenter(target).x < this.#getCenter(this).x;
+    const targetIsLeft = targetCenter.x < this.#getCenter(this).x;
     return Object.freeze({
       x: targetIsLeft ? bounds.x : bounds.x + bounds.width,
       y: bounds.y + bounds.height * 0.42,

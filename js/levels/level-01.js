@@ -69,8 +69,17 @@ function createTilesetEntry(tilesetName) {
 export function createLevelOne(enemyConfig) {
   validateLevelData(levelData);
   const routeBuilder = new PlatformRouteBuilder(levelData.width);
-  const platformData = routeBuilder.build(levelData.sections);
+  const routePlatforms = routeBuilder.build(levelData.sections);
+  const platformData = createPlatformPlan(routePlatforms);
   return createLevelData(enemyConfig, platformData);
+}
+
+function createPlatformPlan(routePlatforms) {
+  const arena = levelData.bossArena;
+  const route = routePlatforms.filter((platform) => {
+    return platform.y >= arena.replacePlatformsAboveY;
+  });
+  return Object.freeze([...route, ...arena.platforms.map(Object.freeze)]);
 }
 
 function createLevelData(enemyConfig, platformData) {
@@ -209,7 +218,15 @@ function hasValidCollections(data) {
     Array.isArray(data?.combatZones) &&
     Array.isArray(data?.enemies) &&
     data.sections.every((section) => section?.route) &&
+    hasValidBossArena(data.bossArena) &&
     data?.platformTypes &&
     typeof data.platformTypes === "object";
   return hasCollections;
+}
+
+function hasValidBossArena(arena) {
+  const hasBoundary = Number.isFinite(arena?.replacePlatformsAboveY);
+  const hasPlatforms = Array.isArray(arena?.platforms) &&
+    arena.platforms.length >= 3;
+  return hasBoundary && hasPlatforms;
 }
