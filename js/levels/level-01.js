@@ -30,6 +30,7 @@ const CLEAN_HD_TILESET_IDS = new Set([
   "factory",
   "launch-tower",
   "space-station",
+  "moon",
 ]);
 const TILESET_CONFIGS = Object.freeze(
   Object.fromEntries(TILESET_NAMES.map(createTilesetEntry)),

@@ -906,6 +906,46 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "moon-tiles-production-layout-v1",
+      "file": "img/concepts/approvals/moon-tiles-production-layout-v1.png",
+      "role": "approved-moon-runtime-tiles-layout-reference",
+      "status": "present",
+      "origin": "OpenAI image generation using the space-station tile layout and approved moon environment references",
+      "created": "2026-07-24",
+      "modifications": "Approved as the moon-material variant of the shared 8x4, 32-tile semantic order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-tiles-runtime-v1",
+      "file": "img/tilesets/moon-tiles.png",
+      "role": "legacy-runtime-moon-tileset",
+      "status": "legacy-present",
+      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon tiles production layout",
+      "created": "2026-07-24",
+      "modifications": "Proportional cell extraction and chroma-key removal produced the legacy 256x128 sheet with 32 occupied cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-tiles-layout-v1",
+      "file": "img/concepts/approvals/moon-clean-hd-tiles-production-layout-v1.png",
+      "role": "clean-hd-moon-tiles-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved moon tiles, background and Clean-HD references",
+      "created": "2026-07-31",
+      "modifications": "All 32 moon tile identities were recreated in the unchanged 8x4 semantic order on a flat magenta field.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-clean-hd-tiles-runtime-v1",
+      "file": "img/tilesets/moon-tiles-clean-hd.png",
+      "role": "runtime-moon-clean-hd-tileset",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD moon tiles layout",
+      "created": "2026-07-31",
+      "modifications": "Chroma removal and legacy-alpha-bound packing produced 32 native 64x64 cells with exactly doubled legacy bounds.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "scrapyard-background-far-runtime-v1",
       "file": "img/backgrounds/scrapyard-far.png",
       "role": "unused-background-layer-draft",

@@ -89,6 +89,10 @@ Zellen gepackt.
   Raumstationsfelder in nativen 64 × 64 Pixeln und unveränderter Reihenfolge.
 - Silberblaue Laufkanten, dunkle Raumtechnik und Cyanenergie entsprechen dem
   Raumstationshintergrund. Geometrie und Kollision bleiben unverändert.
+- `img/tilesets/moon-tiles-clean-hd.png` enthält alle 32 Mondfelder in
+  nativen 64 × 64 Pixeln und unveränderter Reihenfolge.
+- Helles Mondgestein überwächst dunkle alte Technik. Cyanenergie verbindet die
+  Ruinen visuell mit Byte; Geometrie und Kollision bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,

@@ -808,6 +808,28 @@ Verbindliche Merkmale:
 - ART-020 ergänzt keine neue Gefahr und verändert das Leveldesign nicht.
 - Alle 32 Zellen sind belegt und enthalten keine Magentareste.
 
+## Clean-HD-Mond-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/moon-clean-hd-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/moon-tiles-clean-hd.png` |
+| Raster | 8 × 4 Zellen à 64 × 64 px, 512 × 256 px |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs bleiben in der unveränderten gemeinsamen Reihenfolge.
+- Helles gebrochenes Mondgestein, dunkle alte Technik, Cyanenergie und kleine
+  orange Warnlichter passen zum Clean-HD-Mondhintergrund.
+- Jede neue Alpha-Außengrenze entspricht exakt der zweifach vergrößerten
+  Außengrenze des bisherigen 32-Pixel-Feldes.
+- Plattformgröße, Oberflächenversatz, Bewegung, Falllogik und Kollisionen
+  bleiben unverändert.
+- ART-021 ergänzt keine neue Gefahr und verändert das Leveldesign nicht.
+- Alle 32 Zellen sind belegt und enthalten keine Magentareste.
+
 ## Clean-HD-Pixel-Stilrichtung
 
 | Feld | Freigabe |
