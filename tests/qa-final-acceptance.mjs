@@ -87,6 +87,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
   Object.freeze({ id: "boss-arena", file: "tests/qa-boss-arena.mjs" }),
   Object.freeze({ id: "gegnerdichte", file: "tests/qa-enemy-density.mjs" }),
+  Object.freeze({ id: "sprungmine", file: "tests/qa-spring-mine.mjs" }),
   Object.freeze({
     id: "fallplattform-rueckkehr",
     file: "tests/qa-falling-platform-respawn.mjs",

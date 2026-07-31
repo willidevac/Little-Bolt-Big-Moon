@@ -148,6 +148,16 @@ const ENEMY_CONFIG = Object.freeze({
     contactDamage: 20,
     attackCooldownSeconds: 1.4,
   }),
+  springMine: Object.freeze({
+    jumpHorizontalSpeedPixelsPerSecond: 220,
+    jumpVerticalSpeedPixelsPerSecond: 620,
+    jumpCooldownSeconds: 2.2,
+    detectionRangePixels: 420,
+    detectionHeightPixels: 240,
+    maximumHealth: 48,
+    contactDamage: 20,
+    attackCooldownSeconds: 1.2,
+  }),
   moonWarden: Object.freeze({
     speedPixelsPerSecond: 72,
     maximumHealth: 400,
@@ -189,6 +199,7 @@ const SCORE_CONFIG = Object.freeze({
   enemyPoints: Object.freeze({
     scrapCrawler: 750,
     droneGuard: 1000,
+    springMine: 1100,
     moonWarden: 5000,
   }),
 });

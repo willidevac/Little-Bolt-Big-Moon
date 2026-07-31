@@ -8,6 +8,7 @@ import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { StoryProp } from "../../classes/environment/story-prop.class.js";
 import { ScrapCrawler } from "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js";
+import { SpringMine } from "../../classes/entities/enemies/spring-mine.class.js";
 import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js";
 import { PlatformRouteBuilder } from "../../classes/systems/platform-route-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
@@ -16,6 +17,7 @@ import { STORY_PROP_CONFIGS } from "../config/story-prop-config.js";
 const ENEMY_CLASSES = Object.freeze({
   scrapCrawler: ScrapCrawler,
   droneGuard: DroneGuard,
+  springMine: SpringMine,
   moonWarden: MoonWarden,
 });
 const TILESET_NAMES = Object.freeze([

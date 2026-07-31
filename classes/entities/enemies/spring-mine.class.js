@@ -1,0 +1,218 @@
+import { Enemy } from "./enemy.class.js";
+import { getAssetPath } from "../../../js/config/asset-paths.js";
+
+const FULL_CIRCLE_RADIANS = Math.PI * 2;
+const MOVEMENT_PHASES = Object.freeze({
+  READY: "ready",
+  TELEGRAPH: "telegraph",
+  AIRBORNE: "airborne",
+});
+const VISUAL_CONFIG = Object.freeze({
+  sprite: Object.freeze({
+    source: getAssetPath("enemies", "scrap-crawler-clean-hd.png"),
+    frameWidth: 96,
+    frameHeight: 64,
+    frameCount: 13,
+  }),
+  renderScale: 1,
+  collisionBox: Object.freeze({
+    offsetX: 12,
+    offsetY: 16,
+    width: 72,
+    height: 48,
+  }),
+  initialState: "idle",
+  animations: Object.freeze({
+    idle: Object.freeze({
+      startFrame: 0,
+      frameCount: 4,
+      frameDurationSeconds: 0.16,
+      loop: true,
+    }),
+    jump: Object.freeze({
+      startFrame: 0,
+      frameCount: 4,
+      frameDurationSeconds: 0.08,
+      loop: true,
+    }),
+    attack: Object.freeze({
+      startFrame: 4,
+      frameCount: 3,
+      frameDurationSeconds: 0.16,
+      loop: false,
+    }),
+    hurt: Object.freeze({
+      startFrame: 7,
+      frameCount: 2,
+      frameDurationSeconds: 0.1,
+      loop: false,
+    }),
+    dead: Object.freeze({
+      startFrame: 9,
+      frameCount: 4,
+      frameDurationSeconds: 0.12,
+      loop: false,
+    }),
+  }),
+});
+
+/**
+ * Warnt sichtbar und springt danach ohne nachträgliches Lenken auf Byte zu.
+ */
+export class SpringMine extends Enemy {
+  /**
+   * @param {Readonly<object>} enemyData
+   * @param {Readonly<object>} config
+   */
+  constructor(enemyData, config) {
+    super(enemyData, VISUAL_CONFIG, config);
+    this.#validateConfig(config);
+    this.#applyConfig(config);
+    this.movementPhase = MOVEMENT_PHASES.READY;
+    this.leapCooldownSecondsRemaining = 0;
+    this.plannedDirection = this.direction;
+  }
+
+  /**
+   * Wartet, warnt und springt in einer vorhersagbaren Flugbahn.
+   * @param {number} deltaTimeSeconds
+   * @param {import("../../core/world.class.js").World} world
+   */
+  update(deltaTimeSeconds, world) {
+    if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
+    this.activateBoss();
+    const canAct = this.updateEnemyState(deltaTimeSeconds, this.#getAnimation());
+    if (this.isDead) return;
+    if (canAct) this.#updateBehavior(deltaTimeSeconds, world.character);
+    this.#updateMovement(deltaTimeSeconds, world, canAct);
+  }
+
+  /** Zeichnet eine klar erkennbare Warnung vor jedem Sprung. */
+  draw(context) {
+    context.save();
+    context.filter = "hue-rotate(145deg) saturate(1.25)";
+    super.draw(context);
+    context.restore();
+    if (this.movementPhase === MOVEMENT_PHASES.TELEGRAPH) {
+      this.#drawWarning(context);
+    }
+  }
+
+  #updateBehavior(deltaTimeSeconds, target) {
+    if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
+      if (this.isOnGround) this.#finishLeap();
+      return;
+    }
+    if (this.movementPhase === MOVEMENT_PHASES.TELEGRAPH) {
+      this.#launch();
+      return;
+    }
+    this.#updateReadyState(deltaTimeSeconds, target);
+  }
+
+  #updateReadyState(deltaTimeSeconds, target) {
+    this.velocityX = 0;
+    this.leapCooldownSecondsRemaining = Math.max(
+      0,
+      this.leapCooldownSecondsRemaining - deltaTimeSeconds,
+    );
+    if (this.#canPrepareLeap(target)) this.#prepareLeap(target);
+  }
+
+  #canPrepareLeap(target) {
+    if (!target || !this.isOnGround || this.leapCooldownSecondsRemaining > 0) {
+      return false;
+    }
+    const horizontalDistance = Math.abs(this.#getTargetCenterX(target) - this.#getCenterX());
+    const verticalDistance = Math.abs(this.#getTargetCenterY(target) - this.#getCenterY());
+    return horizontalDistance <= this.detectionRangePixels &&
+      verticalDistance <= this.detectionHeightPixels;
+  }
+
+  #prepareLeap(target) {
+    const targetDirection = this.#getTargetCenterX(target) < this.#getCenterX()
+      ? -1
+      : 1;
+    this.plannedDirection = targetDirection;
+    this.direction = targetDirection;
+    this.facingDirection = targetDirection;
+    this.movementPhase = MOVEMENT_PHASES.TELEGRAPH;
+    this.startAttackState("attack");
+  }
+
+  #launch() {
+    this.movementPhase = MOVEMENT_PHASES.AIRBORNE;
+    this.velocityX = this.plannedDirection * this.jumpHorizontalSpeedPixelsPerSecond;
+    this.applyUpwardImpulse(this.jumpVerticalSpeedPixelsPerSecond);
+    this.setAnimationState("jump");
+  }
+
+  #finishLeap() {
+    this.movementPhase = MOVEMENT_PHASES.READY;
+    this.velocityX = 0;
+    this.leapCooldownSecondsRemaining = this.jumpCooldownSeconds;
+  }
+
+  #updateMovement(deltaTimeSeconds, world, updateAnimation) {
+    super.update(deltaTimeSeconds, world);
+    if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
+      this.stayInsidePatrol();
+    }
+    if (updateAnimation) this.updateAnimation(deltaTimeSeconds);
+  }
+
+  #getAnimation() {
+    return this.movementPhase === MOVEMENT_PHASES.AIRBORNE ? "jump" : "idle";
+  }
+
+  #drawWarning(context) {
+    const progress = 1 - this.attackSecondsRemaining / this.attackStateSeconds;
+    const centerX = this.x + this.width / 2;
+    const centerY = this.y + this.height / 2;
+    context.save();
+    context.strokeStyle = "#ffb340";
+    context.lineWidth = 4;
+    context.globalAlpha = 0.55 + progress * 0.45;
+    context.beginPath();
+    context.arc(centerX, centerY, 34 + progress * 18, 0, FULL_CIRCLE_RADIANS);
+    context.stroke();
+    context.restore();
+  }
+
+  #applyConfig(config) {
+    this.jumpHorizontalSpeedPixelsPerSecond =
+      config.jumpHorizontalSpeedPixelsPerSecond;
+    this.jumpVerticalSpeedPixelsPerSecond = config.jumpVerticalSpeedPixelsPerSecond;
+    this.jumpCooldownSeconds = config.jumpCooldownSeconds;
+    this.detectionRangePixels = config.detectionRangePixels;
+    this.detectionHeightPixels = config.detectionHeightPixels;
+  }
+
+  #validateConfig(config) {
+    const values = [
+      config?.jumpHorizontalSpeedPixelsPerSecond,
+      config?.jumpVerticalSpeedPixelsPerSecond,
+      config?.jumpCooldownSeconds,
+      config?.detectionRangePixels,
+      config?.detectionHeightPixels,
+    ];
+    if (values.every((value) => Number.isFinite(value) && value > 0)) return;
+    throw new TypeError("Die Bewegung der Sprungmine ist ungültig.");
+  }
+
+  #getCenterX() {
+    return this.x + this.width / 2;
+  }
+
+  #getCenterY() {
+    return this.y + this.height / 2;
+  }
+
+  #getTargetCenterX(target) {
+    return target.x + target.width / 2;
+  }
+
+  #getTargetCenterY(target) {
+    return target.y + target.height / 2;
+  }
+}

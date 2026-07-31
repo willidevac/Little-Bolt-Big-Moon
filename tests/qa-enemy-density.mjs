@@ -28,13 +28,17 @@ function assertPatrolZonesContainEnemies() {
 }
 
 function assertGroundEnemiesHaveFixedSupport() {
-  patrolEnemies.filter(({ type }) => type === "scrapCrawler").forEach((enemy) => {
+  patrolEnemies.filter(isGroundEnemy).forEach((enemy) => {
     const support = level.platforms.find((platform) => {
       return platform.constructor.name === "Platform" &&
         platform.y === enemy.y + enemy.height && overlaps(enemy, platform);
     });
     assert.ok(support, `${enemy.id} braucht eine feste Plattform.`);
   });
+}
+
+function isGroundEnemy(enemy) {
+  return enemy.type === "scrapCrawler" || enemy.type === "springMine";
 }
 
 function assertBiomeSpacing(prefix) {

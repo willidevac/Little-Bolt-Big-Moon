@@ -2516,7 +2516,7 @@
     {
       "id": "scrapyard-patrol-02", "x": 0, "y": 128588,
       "width": 1280, "height": 650,
-      "enemyIds": ["scrapyard-patrol-crawler-02", "scrapyard-patrol-drone-02"]
+      "enemyIds": ["scrapyard-patrol-spring-mine-01", "scrapyard-patrol-drone-02"]
     },
     {
       "id": "scrapyard-patrol-03", "x": 0, "y": 123624,
@@ -2531,7 +2531,7 @@
     {
       "id": "factory-patrol-02", "x": 0, "y": 98584,
       "width": 1280, "height": 650,
-      "enemyIds": ["factory-patrol-crawler-02", "factory-patrol-drone-02"]
+      "enemyIds": ["factory-patrol-spring-mine-01", "factory-patrol-drone-02"]
     },
     {
       "id": "factory-patrol-03", "x": 0, "y": 93656,
@@ -2546,7 +2546,7 @@
     {
       "id": "launch-patrol-02", "x": 0, "y": 68584,
       "width": 1280, "height": 650,
-      "enemyIds": ["launch-patrol-drone-03", "launch-patrol-drone-04"]
+      "enemyIds": ["launch-patrol-spring-mine-01", "launch-patrol-drone-04"]
     },
     {
       "id": "launch-patrol-03", "x": 0, "y": 63656,
@@ -2561,7 +2561,7 @@
     {
       "id": "space-patrol-02", "x": 0, "y": 38584,
       "width": 1280, "height": 650,
-      "enemyIds": ["space-patrol-drone-03", "space-patrol-drone-04"]
+      "enemyIds": ["space-patrol-spring-mine-01", "space-patrol-drone-04"]
     },
     {
       "id": "space-patrol-03", "x": 0, "y": 33656,
@@ -2576,7 +2576,7 @@
     {
       "id": "moon-patrol-02", "x": 0, "y": 8596,
       "width": 1280, "height": 650,
-      "enemyIds": ["moon-patrol-drone-03", "moon-patrol-drone-04"]
+      "enemyIds": ["moon-patrol-spring-mine-01", "moon-patrol-drone-04"]
     },
     {
       "id": "moon-patrol-03", "x": 0, "y": 3548,
@@ -2594,7 +2594,7 @@
       "x": 736, "y": 142620, "patrolMinX": 640, "patrolMaxX": 1024
     },
     {
-      "id": "scrapyard-patrol-crawler-02", "type": "scrapCrawler",
+      "id": "scrapyard-patrol-spring-mine-01", "type": "springMine",
       "x": 560, "y": 129024, "patrolMinX": 512, "patrolMaxX": 704
     },
     {
@@ -2618,7 +2618,7 @@
       "x": 832, "y": 108800, "patrolMinX": 704, "patrolMaxX": 1088
     },
     {
-      "id": "factory-patrol-crawler-02", "type": "scrapCrawler",
+      "id": "factory-patrol-spring-mine-01", "type": "springMine",
       "x": 144, "y": 99020, "patrolMinX": 96, "patrolMaxX": 288
     },
     {
@@ -2642,8 +2642,8 @@
       "x": 256, "y": 78720, "patrolMinX": 128, "patrolMaxX": 512
     },
     {
-      "id": "launch-patrol-drone-03", "type": "droneGuard",
-      "x": 384, "y": 68884, "patrolMinX": 256, "patrolMaxX": 640
+      "id": "launch-patrol-spring-mine-01", "type": "springMine",
+      "x": 432, "y": 69020, "patrolMinX": 384, "patrolMaxX": 576
     },
     {
       "id": "launch-patrol-drone-04", "type": "droneGuard",
@@ -2666,8 +2666,8 @@
       "x": 896, "y": 48720, "patrolMinX": 768, "patrolMaxX": 1152
     },
     {
-      "id": "space-patrol-drone-03", "type": "droneGuard",
-      "x": 672, "y": 38884, "patrolMinX": 544, "patrolMaxX": 928
+      "id": "space-patrol-spring-mine-01", "type": "springMine",
+      "x": 720, "y": 39020, "patrolMinX": 672, "patrolMaxX": 864
     },
     {
       "id": "space-patrol-drone-04", "type": "droneGuard",
@@ -2690,8 +2690,8 @@
       "x": 192, "y": 18720, "patrolMinX": 64, "patrolMaxX": 448
     },
     {
-      "id": "moon-patrol-drone-03", "type": "droneGuard",
-      "x": 640, "y": 8896, "patrolMinX": 512, "patrolMaxX": 896
+      "id": "moon-patrol-spring-mine-01", "type": "springMine",
+      "x": 688, "y": 9032, "patrolMinX": 640, "patrolMaxX": 832
     },
     {
       "id": "moon-patrol-drone-04", "type": "droneGuard",
