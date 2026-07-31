@@ -37,7 +37,7 @@ function verifyManifest() {
 
 function verifyPlatformConfig() {
   const source = readFileSync("js/levels/level-01.js", "utf8");
-  assert.match(source, /new Set\(\["scrapyard", "factory"\]\)/);
+  assert.match(source, /"scrapyard",\s+"factory",\s+"launch-tower"/);
   assert.match(source, /CLEAN_HD_TILESET_IDS\.has\(tilesetName\)/);
   assert.match(source, /frameWidth: isCleanHd \? 64 : 32/);
   assert.match(source, /renderScale: isCleanHd \? 1 : 2/);

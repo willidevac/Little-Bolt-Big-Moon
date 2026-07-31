@@ -764,6 +764,28 @@ Verbindliche Merkmale:
   bewusst keine neue Gefahr und verändert das Leveldesign nicht.
 - Alle 32 Zellen sind belegt und enthalten keine Magentareste.
 
+## Clean-HD-Startturm-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/launch-tower-clean-hd-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/launch-tower-tiles-clean-hd.png` |
+| Raster | 8 × 4 Zellen à 64 × 64 px, 512 × 256 px |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs bleiben in der unveränderten gemeinsamen Reihenfolge.
+- Cremefarbene Paneele, dunkle Turmtechnik, orange Verstrebungen und
+  cyanfarbene Lichter passen zum Clean-HD-Startturmhintergrund.
+- Jede neue Alpha-Außengrenze entspricht exakt der zweifach vergrößerten
+  Außengrenze des bisherigen 32-Pixel-Feldes.
+- Plattformgröße, Oberflächenversatz, Bewegung, Falllogik und Kollisionen
+  bleiben unverändert.
+- ART-019 ergänzt keine neue Gefahr und verändert das Leveldesign nicht.
+- Alle 32 Zellen sind belegt und enthalten keine Magentareste.
+
 ## Clean-HD-Pixel-Stilrichtung
 
 | Feld | Freigabe |

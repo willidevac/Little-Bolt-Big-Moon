@@ -81,6 +81,10 @@ Zellen gepackt.
   nativen 64 × 64 Pixeln und der unveränderten 8-mal-4-Reihenfolge.
 - Die Alpha-Grenzen der bisherigen 32-Pixel-Felder wurden exakt verdoppelt.
   Plattformbreite, Oberflächenversatz und Kollisionshöhe bleiben unverändert.
+- `img/tilesets/launch-tower-tiles-clean-hd.png` enthält alle 32
+  Startturmfelder in nativen 64 × 64 Pixeln und unveränderter Reihenfolge.
+- Helle Laufkanten, dunkle Turmtechnik, orange Verstrebungen und Cyanlichter
+  entsprechen dem Startturmhintergrund. Geometrie und Kollision bleiben gleich.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,

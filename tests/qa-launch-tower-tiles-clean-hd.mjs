@@ -1,17 +1,16 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
-const RUNTIME_FILE = "img/tilesets/factory-tiles-clean-hd.png";
+const RUNTIME_FILE = "img/tilesets/launch-tower-tiles-clean-hd.png";
 const MASTER_FILE =
-  "img/concepts/approvals/factory-clean-hd-tiles-production-layout-v1.png";
+  "img/concepts/approvals/launch-tower-clean-hd-tiles-production-layout-v1.png";
 
 verifyFilesAndPng();
 verifyManifest();
 verifyPlatformConfig();
-verifyLevelHazards();
 verifyCredits();
 
-console.log("ART-018: 32 Clean-HD-Fabriktiles ohne neue Gefahr bestanden.");
+console.log("ART-019: 32 Clean-HD-Startturmtiles bestanden.");
 
 function verifyFilesAndPng() {
   assert.equal(existsSync(RUNTIME_FILE), true);
@@ -25,7 +24,7 @@ function verifyFilesAndPng() {
 
 function verifyManifest() {
   const assets = readJson("data/asset-manifest.json").assets;
-  const tiles = assets.find((asset) => asset.id === "factory-tiles");
+  const tiles = assets.find((asset) => asset.id === "launch-tower-tiles");
   assert.deepEqual(readGrid(tiles), [RUNTIME_FILE, 64, 64, 8, 4, 32]);
   assert.equal(tiles.states.tiles, 32);
 }
@@ -37,12 +36,6 @@ function verifyPlatformConfig() {
   assert.match(source, /frameWidth: isCleanHd \? 64 : 32/);
   assert.match(source, /renderScale: isCleanHd \? 1 : 2/);
   assert.match(source, /surfaceOffset: isCleanHd \? 24 : 12/);
-}
-
-function verifyLevelHazards() {
-  const hazards = readJson("data/levels/level-01.json").hazards;
-  assert.equal(hazards.length, 1);
-  assert.equal(hazards[0].id, "scrapyard-electric-01");
 }
 
 function verifyCredits() {
