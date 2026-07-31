@@ -152,7 +152,9 @@ async function assertStaticTouchMarkup() {
   const html = await fs.readFile("index.html", "utf8");
   const source = await fs.readFile("classes/input/touch-controls.class.js", "utf8");
   const actions = [...html.matchAll(/data-input-action="([^"]+)"/g)];
-  assert.equal(actions.length, 5);
+  assert.equal(actions.length, 7);
+  assert.ok(actions.some((match) => match[1] === "down"));
+  assert.ok(actions.some((match) => match[1] === "fast"));
   assert.match(html, /<nav[\s\S]*?data-touch-controls[\s\S]*?<\/nav>/);
   assert.doesNotMatch(source, /createElement/);
 }

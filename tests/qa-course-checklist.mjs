@@ -91,7 +91,9 @@ function assertResponsiveLayout() {
 
 function assertStaticInterface() {
   const touchActions = [...html.matchAll(/data-input-action="([^"]+)"/g)];
-  assert.equal(touchActions.length, 5);
+  assert.equal(touchActions.length, 7);
+  assert.ok(touchActions.some((match) => match[1] === "down"));
+  assert.ok(touchActions.some((match) => match[1] === "fast"));
   assert.match(html, /data-game-screen="home"/);
   assert.match(html, /data-game-dialog="controls"/);
   assert.match(html, /data-game-dialog="imprint"/);

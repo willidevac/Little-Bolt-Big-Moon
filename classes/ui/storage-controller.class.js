@@ -117,6 +117,7 @@ export class StorageController {
    * @param {string} state
    */
   handleStateChange(state) {
+    if (this.game.canvas.dataset.reviewMode === "true") return;
     const isVictory = state === GAME_STATES.WON;
     if (!isVictory && state !== GAME_STATES.LOST) return;
     const records = this.storage.recordRun(this.game.getHudSnapshot(), isVictory);

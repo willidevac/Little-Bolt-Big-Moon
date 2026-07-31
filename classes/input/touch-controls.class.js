@@ -8,6 +8,7 @@ const REQUIRED_ACTIONS = Object.freeze([
   "attack",
   "weaponSwitch",
 ]);
+const REVIEW_ACTIONS = Object.freeze(["down", "fast"]);
 
 const POINTER_END_EVENTS = Object.freeze([
   "pointerup",
@@ -166,7 +167,10 @@ export class TouchControls {
     const actions = this.buttons.map((button) => button.dataset.inputAction);
     const uniqueActions = new Set(actions);
     const isComplete = REQUIRED_ACTIONS.every((action) => uniqueActions.has(action));
-    if (actions.length === REQUIRED_ACTIONS.length && isComplete) return;
+    const reviewCount = actions.filter((action) => REVIEW_ACTIONS.includes(action)).length;
+    const hasReviewActions = REVIEW_ACTIONS.every((action) => uniqueActions.has(action));
+    const reviewIsValid = reviewCount === 0 || hasReviewActions;
+    if (actions.length === uniqueActions.size && isComplete && reviewIsValid) return;
     throw new Error("Touch-Steuerung ist unvollständig oder doppelt.");
   }
 

@@ -9,6 +9,16 @@ const ACTION_BY_KEY_CODE = Object.freeze({
   KeyF: "attack",
   KeyJ: "attack",
   KeyQ: "weaponSwitch",
+  KeyS: "down",
+  ArrowDown: "down",
+  ShiftLeft: "fast",
+  ShiftRight: "fast",
+  Digit1: "reviewBiome1",
+  Digit2: "reviewBiome2",
+  Digit3: "reviewBiome3",
+  Digit4: "reviewBiome4",
+  Digit5: "reviewBiome5",
+  Digit6: "reviewBoss",
   Escape: "pause",
 });
 
@@ -16,6 +26,7 @@ const PREVENTED_DEFAULT_CODES = Object.freeze([
   "ArrowLeft",
   "ArrowRight",
   "ArrowUp",
+  "ArrowDown",
   "Space",
 ]);
 

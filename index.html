@@ -81,6 +81,24 @@
         Ton: an
       </button>
 
+      <aside class="review-banner" data-review-banner hidden>
+        <strong data-i18n="review.banner">Review-Modus – keine Wertung</strong>
+        <label>
+          <span data-i18n="review.biome">Landschaft</span>
+          <select data-review-biome>
+            <option value="0" data-i18n="review.scrapyard">Schrottplatz</option>
+            <option value="1" data-i18n="review.factory">Fabrik</option>
+            <option value="2" data-i18n="review.launchTower">Startturm</option>
+            <option value="3" data-i18n="review.spaceStation">Raumstation</option>
+            <option value="4" data-i18n="review.moon">Mond</option>
+            <option value="5" data-i18n="review.boss">Boss-Arena</option>
+          </select>
+        </label>
+        <button type="button" data-review-exit data-i18n="review.exit">
+          Review verlassen
+        </button>
+      </aside>
+
       <section
         class="game-hud"
         aria-label="Spielstatus"
@@ -344,6 +362,29 @@
             Q
           </button>
         </div>
+
+        <div class="touch-controls__group touch-controls__group--review" data-review-control>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach unten fliegen"
+            data-i18n-aria-label="review.flyDown"
+            aria-pressed="false"
+            data-input-action="down"
+          >
+            ↓
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Schnell fliegen"
+            data-i18n-aria-label="review.flyFast"
+            aria-pressed="false"
+            data-input-action="fast"
+          >
+            ×3
+          </button>
+        </div>
       </nav>
 
       <section
@@ -429,9 +470,50 @@
           <p class="start-screen__hint" data-i18n="home.hint">
             Hilf Byte vom Schrottplatz bis zum Mond.
           </p>
+          <button
+            class="start-screen__version"
+            type="button"
+            aria-label="Version 1.0.0"
+            data-review-version
+          >
+            v1.0.0
+          </button>
         </div>
 
       </section>
+
+      <dialog class="review-dialog" data-review-dialog>
+        <form class="screen-panel review-dialog__form" method="dialog" data-review-form>
+          <p class="screen-panel__eyebrow" data-i18n="review.eyebrow">
+            Abgabe und Art-Prüfung
+          </p>
+          <h2 class="screen-panel__title" data-i18n="review.title">
+            Review-Modus
+          </h2>
+          <p class="screen-panel__copy" data-i18n="review.copy">
+            Dieser Lauf speichert keine Rekorde. Gib den Mentor-Code ein.
+          </p>
+          <label class="review-dialog__label" for="review-code" data-i18n="review.code">
+            Review-Code
+          </label>
+          <input
+            id="review-code"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            data-review-code
+          >
+          <p class="review-dialog__error" role="alert" data-review-error hidden></p>
+          <div class="review-dialog__actions">
+            <button class="menu-button menu-button--primary" type="button" data-review-start data-i18n="review.start">
+              Review starten
+            </button>
+            <button class="menu-button" type="button" data-review-cancel data-i18n="review.cancel">
+              Abbrechen
+            </button>
+          </div>
+        </form>
+      </dialog>
 
       <section
         class="game-screen overlay-screen"

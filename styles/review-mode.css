@@ -1,0 +1,113 @@
+.start-screen__version {
+  margin-top: 0.6rem;
+  padding: 0.2rem;
+  border: 0;
+  color: rgb(198 184 153 / 58%);
+  background: transparent;
+  font-family: "Silkscreen", monospace;
+  font-size: 0.55rem;
+}
+
+.start-screen__version:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+.review-dialog {
+  max-width: none;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+}
+
+.review-dialog::backdrop {
+  background: rgb(2 7 13 / 90%);
+}
+
+.review-dialog__form {
+  width: min(calc(100vw - 2rem), 30rem);
+}
+
+.review-dialog__label,
+.review-dialog input {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.review-dialog input {
+  min-height: 2.75rem;
+  padding: 0.55rem;
+  border: 2px solid var(--color-cream);
+  color: var(--color-cream);
+  background: #07131d;
+  font: inherit;
+}
+
+.review-dialog__error {
+  margin: 0.6rem 0 0;
+  color: #ff9b86;
+}
+
+.review-dialog__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.review-banner {
+  position: absolute;
+  z-index: 24;
+  top: 0.6rem;
+  left: 50%;
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.45rem 0.65rem;
+  border: 2px solid var(--color-orange);
+  align-items: center;
+  color: var(--color-cream);
+  background: rgb(9 20 30 / 94%);
+  transform: translateX(-50%);
+  font-size: clamp(0.5rem, 0.9vw, 0.7rem);
+}
+
+.review-banner[hidden] {
+  display: none;
+}
+
+.review-banner label {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.review-banner button,
+.review-banner select {
+  min-height: 2rem;
+  border: 1px solid var(--color-cream);
+  color: var(--color-cream);
+  background: #07131d;
+  font: inherit;
+}
+
+[data-review-control] {
+  display: none;
+}
+
+[data-review-mode="true"] [data-review-control] {
+  display: flex;
+}
+
+@media (max-width: 700px) and (orientation: landscape) {
+  .review-banner {
+    top: 0.25rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  .review-banner strong,
+  .review-banner label span {
+    display: none;
+  }
+}

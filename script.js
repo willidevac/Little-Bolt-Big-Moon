@@ -6,6 +6,7 @@ import { getGameStorage, initializeStorage } from "./js/ui/storage.js";
 import { initializeLocalization } from "./js/ui/localization.js";
 import { initializeTouchControls } from "./js/ui/touch-controls.js";
 import { initializeAudio } from "./js/ui/audio.js";
+import { initializeReviewMode } from "./js/ui/review-mode.js";
 
 let gameInstance = null;
 
@@ -57,4 +58,5 @@ initializeScreens(game);
 initializeHud(game);
 initializeStorage(game, audio, document.body, storage);
 initializeTouchControls(game);
+initializeReviewMode(game);
 globalThis.littleBoltGame = game;

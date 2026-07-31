@@ -8,6 +8,7 @@ const CHECKS = Object.freeze([
   Object.freeze({ id: "challenge-raeume", file: "tests/qa-challenge-rooms.mjs" }),
   Object.freeze({ id: "biom-challenges", file: "tests/qa-biome-challenges.mjs" }),
   Object.freeze({ id: "risiko-routen", file: "tests/qa-risk-routes.mjs" }),
+  Object.freeze({ id: "mentor-review", file: "tests/qa-review-mode.mjs" }),
   Object.freeze({ id: "start-sieg-restart", file: "tests/qa-game-states.mjs" }),
   Object.freeze({ id: "responsive", file: "tests/qa-responsive-world.mjs" }),
   Object.freeze({ id: "runtime-assets", file: "tests/qa-runtime.mjs" }),
