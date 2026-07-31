@@ -7,6 +7,8 @@ export const MAXIMUM_AUTHORED_GAP_Y = 180;
 export const MAXIMUM_HORIZONTAL_GAP = 128;
 export const MAXIMUM_AUTHORED_HORIZONTAL_GAP = 192;
 export const SIDE_PADDING = 64;
+export const FALLING_PLATFORM_DROP_PIXELS = 900;
+export const FALLING_PLATFORM_RESPAWN_SECONDS = 3;
 export const PLATFORM_WIDTHS = Object.freeze({
   floor: 1152,
   path: 192,

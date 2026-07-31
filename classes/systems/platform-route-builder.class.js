@@ -8,6 +8,8 @@ import {
   MAXIMUM_AUTHORED_HORIZONTAL_GAP,
   SIDE_PADDING,
   PLATFORM_WIDTHS,
+  FALLING_PLATFORM_DROP_PIXELS,
+  FALLING_PLATFORM_RESPAWN_SECONDS,
 } from "../../js/config/platform-route-rules.js";
 
 /**
@@ -300,6 +302,8 @@ export class PlatformRouteBuilder {
     return Object.freeze({
       warningDelaySeconds: route.fallWarningSeconds,
       speedPixelsPerSecond: route.fallSpeed,
+      maximumDropPixels: FALLING_PLATFORM_DROP_PIXELS,
+      respawnDelaySeconds: FALLING_PLATFORM_RESPAWN_SECONDS,
     });
   }
 

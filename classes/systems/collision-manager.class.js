@@ -83,7 +83,7 @@ export class CollisionManager {
   }
 
   #canLandOn(movableObject, platform, deltaTimeSeconds) {
-    if (movableObject.velocityY < 0) return false;
+    if (movableObject.velocityY < 0 || platform.isCollidable === false) return false;
     const movableBounds = this.#getCollisionBounds(movableObject);
     const platformBounds = this.#getCollisionBounds(platform);
     if (!this.#hasHorizontalOverlap(movableBounds, platformBounds)) return false;

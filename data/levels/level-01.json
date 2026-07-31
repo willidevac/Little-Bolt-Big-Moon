@@ -521,7 +521,7 @@
         "movingDistance": 80,
         "movingSpeed": 55,
         "fallingEvery": 11,
-        "fallWarningSeconds": 0.9,
+        "fallWarningSeconds": 1.6,
         "fallSpeed": 360,
         "rooms": [
           {
@@ -702,7 +702,7 @@
         "movingDistance": 64,
         "movingSpeed": 55,
         "fallingEvery": 11,
-        "fallWarningSeconds": 0.85,
+        "fallWarningSeconds": 1.5,
         "fallSpeed": 390,
         "rooms": [
           {
@@ -845,7 +845,7 @@
         "movingDistance": 80,
         "movingSpeed": 65,
         "fallingEvery": 10,
-        "fallWarningSeconds": 0.8,
+        "fallWarningSeconds": 1.4,
         "fallSpeed": 420,
         "rooms": [
           {
@@ -988,7 +988,7 @@
         "movingDistance": 96,
         "movingSpeed": 70,
         "fallingEvery": 9,
-        "fallWarningSeconds": 0.75,
+        "fallWarningSeconds": 1.4,
         "fallSpeed": 450,
         "rooms": [
           {
@@ -1149,7 +1149,7 @@
         "movingDistance": 112,
         "movingSpeed": 80,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.7,
+        "fallWarningSeconds": 1.3,
         "fallSpeed": 480,
         "rooms": [
           {
@@ -1292,7 +1292,7 @@
         "movingDistance": 128,
         "movingSpeed": 90,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.65,
+        "fallWarningSeconds": 1.2,
         "fallSpeed": 510,
         "rooms": [
           {
@@ -1435,7 +1435,7 @@
         "movingDistance": 128,
         "movingSpeed": 90,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.65,
+        "fallWarningSeconds": 1.3,
         "fallSpeed": 510,
         "rooms": [
           {
@@ -1596,7 +1596,7 @@
         "movingDistance": 144,
         "movingSpeed": 100,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.6,
+        "fallWarningSeconds": 1.2,
         "fallSpeed": 540,
         "rooms": [
           {
@@ -1739,7 +1739,7 @@
         "movingDistance": 160,
         "movingSpeed": 110,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.55,
+        "fallWarningSeconds": 1.1,
         "fallSpeed": 570,
         "rooms": [
           {
@@ -1882,7 +1882,7 @@
         "movingDistance": 160,
         "movingSpeed": 110,
         "fallingEvery": 7,
-        "fallWarningSeconds": 0.55,
+        "fallWarningSeconds": 1.2,
         "fallSpeed": 570,
         "rooms": [
           {
@@ -2043,7 +2043,7 @@
         "movingDistance": 176,
         "movingSpeed": 120,
         "fallingEvery": 5,
-        "fallWarningSeconds": 0.5,
+        "fallWarningSeconds": 1.1,
         "fallSpeed": 600,
         "rooms": [
           {
@@ -2186,7 +2186,7 @@
         "movingDistance": 192,
         "movingSpeed": 130,
         "fallingEvery": 5,
-        "fallWarningSeconds": 0.45,
+        "fallWarningSeconds": 1,
         "fallSpeed": 640,
         "rooms": [
           {

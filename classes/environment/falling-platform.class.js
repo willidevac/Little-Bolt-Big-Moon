@@ -25,8 +25,12 @@ export class FallingPlatform extends Platform {
     this.#validateFall(platformData.fall);
     this.warningDelaySeconds = platformData.fall.warningDelaySeconds;
     this.fallSpeedPixelsPerSecond = platformData.fall.speedPixelsPerSecond;
+    this.maximumDropPixels = platformData.fall.maximumDropPixels;
+    this.respawnDelaySeconds = platformData.fall.respawnDelaySeconds;
+    this.initialY = this.y;
     this.warningSecondsRemaining = 0;
     this.warningElapsedSeconds = 0;
+    this.respawnSecondsRemaining = 0;
     this.state = FALLING_PLATFORM_STATES.STABLE;
   }
 
@@ -55,8 +59,16 @@ export class FallingPlatform extends Platform {
       return this.#updateWarning(deltaTimeSeconds, world);
     }
     if (this.state === FALLING_PLATFORM_STATES.FALLING) {
-      this.#fall(deltaTimeSeconds, world);
+      return this.#fall(deltaTimeSeconds, world);
     }
+    if (this.state === FALLING_PLATFORM_STATES.FALLEN) {
+      this.#updateRespawn(deltaTimeSeconds);
+    }
+  }
+
+  /** Unsichtbare gefallene Plattformen besitzen vorübergehend keine Oberfläche. */
+  get isCollidable() {
+    return this.state !== FALLING_PLATFORM_STATES.FALLEN;
   }
 
   /**
@@ -64,6 +76,7 @@ export class FallingPlatform extends Platform {
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
+    if (this.state === FALLING_PLATFORM_STATES.FALLEN) return;
     if (this.state !== FALLING_PLATFORM_STATES.WARNING) {
       return super.draw(context);
     }
@@ -92,13 +105,29 @@ export class FallingPlatform extends Platform {
       maximumY,
     );
     this.setFrameDisplacement(0, this.y - previousY);
-    if (this.y >= maximumY) this.state = FALLING_PLATFORM_STATES.FALLEN;
+    if (this.y >= maximumY) this.#beginRespawnWait();
   }
 
   #getMaximumY(world) {
     const worldHeight = world?.config?.world?.height;
-    if (!Number.isFinite(worldHeight)) return Number.POSITIVE_INFINITY;
-    return worldHeight + this.height;
+    const dropY = this.initialY + this.maximumDropPixels;
+    if (!Number.isFinite(worldHeight)) return dropY;
+    return Math.min(dropY, worldHeight + this.height);
+  }
+
+  #beginRespawnWait() {
+    this.state = FALLING_PLATFORM_STATES.FALLEN;
+    this.respawnSecondsRemaining = this.respawnDelaySeconds;
+  }
+
+  #updateRespawn(deltaTimeSeconds) {
+    this.respawnSecondsRemaining = Math.max(
+      0, this.respawnSecondsRemaining - deltaTimeSeconds,
+    );
+    if (this.respawnSecondsRemaining > 0) return;
+    this.y = this.initialY;
+    this.warningElapsedSeconds = 0;
+    this.state = FALLING_PLATFORM_STATES.STABLE;
   }
 
   #getWarningShake() {
@@ -119,6 +148,8 @@ export class FallingPlatform extends Platform {
     const values = [
       fall?.warningDelaySeconds,
       fall?.speedPixelsPerSecond,
+      fall?.maximumDropPixels,
+      fall?.respawnDelaySeconds,
     ];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
     throw new TypeError(`Der Fall von Plattform ${this.id} ist ungueltig.`);
