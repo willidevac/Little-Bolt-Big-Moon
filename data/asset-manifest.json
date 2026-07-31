@@ -578,14 +578,14 @@
       "id": "moon-background-far",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/moon-far.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/moon-far-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousPanorama": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -593,14 +593,14 @@
       "id": "moon-background-mid",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/moon-mid.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/moon-mid-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },
@@ -608,14 +608,14 @@
       "id": "moon-background-near",
       "priority": "P0",
       "category": "backgrounds",
-      "file": "img/backgrounds/moon-near.png",
-      "frameWidth": 320,
-      "frameHeight": 360,
+      "file": "img/backgrounds/moon-near-clean-hd.png",
+      "frameWidth": 1024,
+      "frameHeight": 1536,
       "columns": 1,
       "rows": 1,
       "totalFrames": 1,
       "states": {
-        "static": 1
+        "continuousParallax": 1
       },
       "licenseId": "openai-assisted-project-art"
     },

@@ -915,3 +915,29 @@ Verbindliche Merkmale:
   Seiten und täuschen keine spielbaren Plattformen vor.
 - Story-Requisiten, Plattformen, Gegner, Figuren und HUD bleiben getrennte
   Runtime-Objekte.
+
+## Clean-HD-Mond-Hintergrund
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 31.07.2026 |
+| Produktionsmaster | `img/concepts/approvals/moon-clean-hd-background-master-v1.png` |
+| Zusammengesetzte Vorschau | `img/concepts/approvals/moon-clean-hd-background-composite-v2.png` |
+| Fernebene | `img/backgrounds/moon-far-clean-hd.png` |
+| Mittelebene | `img/backgrounds/moon-mid-clean-hd.png` |
+| Nahebene | `img/backgrounds/moon-near-clean-hd.png` |
+| Runtime-Größe | jeweils 1024 × 1536 px |
+| Höhenbereich | 0–30.000 Weltpixel |
+
+Verbindliche Merkmale:
+
+- Ein einziges Drei-Ebenen-Set verbindet Kraterfeld, Ruinen und
+  Wächterfestung ohne wiederholte Raumbilder.
+- Die kleine Erde markiert unten den zurückgelegten Weg; die entfernte
+  Sichelfestung zeigt oben das Endziel.
+- Die ruhige Sternenmitte hält die echten Plattformen und Gefahren lesbar.
+- Mittel- und Nahschicht verwenden nur schmale vertikale Randformen ohne
+  vorgetäuschte Plattformen oder verbindende Brücken.
+- Story-Requisiten, Plattformen, Gegner, Figuren, Boss und HUD bleiben
+  getrennte Runtime-Objekte.

@@ -41,6 +41,10 @@ const CHECKS = Object.freeze([
     id: "space-station-background-clean-hd",
     file: "tests/qa-space-station-background-clean-hd.mjs",
   }),
+  Object.freeze({
+    id: "moon-background-clean-hd",
+    file: "tests/qa-moon-background-clean-hd.mjs",
+  }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
   Object.freeze({ id: "abschlusskorrekturen", file: "tests/qa-tracking-fixes.mjs" }),
   Object.freeze({ id: "umweltgeschichte", file: "tests/qa-story-run.mjs" }),

@@ -1346,6 +1346,56 @@
       "licenseId": "openai-assisted-project-art"
     },
     {
+      "id": "moon-clean-hd-background-master-v1",
+      "file": "img/concepts/approvals/moon-clean-hd-background-master-v1.png",
+      "role": "clean-hd-moon-parallax-production-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved Moon and Clean-HD space-station masters",
+      "created": "2026-07-30",
+      "modifications": "Preserves one composite preview plus far, middle and near depth panels for the final Moon biome.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "moon-clean-hd-background-composite-v2",
+      "file": "img/concepts/approvals/moon-clean-hd-background-composite-v2.png",
+      "role": "clean-hd-moon-runtime-composite-preview",
+      "status": "approved",
+      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD Moon runtime layers",
+      "created": "2026-07-30",
+      "modifications": "The corrected vertical ruin layer removes shelf-like silhouettes before final composition.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-background-far-v1",
+      "file": "img/backgrounds/moon-far-clean-hd.png",
+      "role": "runtime-moon-clean-hd-far-panorama",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
+      "created": "2026-07-30",
+      "modifications": "Generated as one calm opaque 1024x1536 panorama from Earth memory to Warden fortress.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-background-mid-v1",
+      "file": "img/backgrounds/moon-mid-clean-hd.png",
+      "role": "runtime-moon-clean-hd-mid-parallax",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
+      "created": "2026-07-30",
+      "modifications": "A correction pass replaced shelf-like ruins with vertical edge fragments before chroma-key removal.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-background-near-v1",
+      "file": "img/backgrounds/moon-near-clean-hd.png",
+      "role": "runtime-moon-clean-hd-near-parallax",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
+      "created": "2026-07-30",
+      "modifications": "Magenta chroma key was removed locally; slim basalt and machine framing leaves the central route open.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "hud-icons-clean-hd-layout-v1",
       "file": "img/concepts/approvals/hud-icons-clean-hd-production-layout-v1.png",
       "role": "clean-hd-hud-icons-layout-reference",

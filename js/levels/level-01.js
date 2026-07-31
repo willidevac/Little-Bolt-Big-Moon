@@ -33,6 +33,7 @@ const CLEAN_HD_BACKGROUND_IDS = new Set([
   "factory",
   "launch-tower",
   "space-station",
+  "moon",
 ]);
 const CLEAN_HD_BACKGROUND_LAYERS = Object.freeze([
   Object.freeze({ name: "far", scrollRate: 0.72 }),

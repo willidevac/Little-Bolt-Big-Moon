@@ -80,6 +80,10 @@ Zellen gepackt.
   30.000. Die Erde bleibt unten zurück, während der Mond oben näher rückt.
 - Stationsmodule und Hüllenrahmen bleiben an den Seiten. Der breite,
   sternenklare Spielkorridor enthält keine vorgetäuschten Plattformen.
+- Der Mond verwendet dieselbe Drei-Ebenen-Technik von Höhe 30.000 bis null.
+  Erde, Ruinen und Wächterfestung markieren Anfang, Mitte und Endziel.
+- Senkrechte Ruinenfragmente und schmale Basaltrahmen halten den zentralen
+  Sprungweg frei und sind nicht mit echten Plattformen zu verwechseln.
 
 ## Reihenfolge nach der Freigabe
 
