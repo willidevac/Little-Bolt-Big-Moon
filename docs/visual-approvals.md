@@ -786,6 +786,28 @@ Verbindliche Merkmale:
 - ART-019 ergänzt keine neue Gefahr und verändert das Leveldesign nicht.
 - Alle 32 Zellen sind belegt und enthalten keine Magentareste.
 
+## Clean-HD-Raumstations-Tileset
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/space-station-clean-hd-tiles-production-layout-v1.png` |
+| Runtime-Datei | `img/tilesets/space-station-tiles-clean-hd.png` |
+| Raster | 8 × 4 Zellen à 64 × 64 px, 512 × 256 px |
+
+Verbindliche Merkmale:
+
+- Die 32 Tile-IDs bleiben in der unveränderten gemeinsamen Reihenfolge.
+- Silberblaue Paneele, dunkle Stationstechnik, Cyanenergie und kleine orange
+  Warnlichter passen zum Clean-HD-Raumstationshintergrund.
+- Jede neue Alpha-Außengrenze entspricht exakt der zweifach vergrößerten
+  Außengrenze des bisherigen 32-Pixel-Feldes.
+- Plattformgröße, Oberflächenversatz, Bewegung, Falllogik und Kollisionen
+  bleiben unverändert.
+- ART-020 ergänzt keine neue Gefahr und verändert das Leveldesign nicht.
+- Alle 32 Zellen sind belegt und enthalten keine Magentareste.
+
 ## Clean-HD-Pixel-Stilrichtung
 
 | Feld | Freigabe |

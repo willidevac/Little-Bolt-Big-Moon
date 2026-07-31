@@ -85,6 +85,10 @@ Zellen gepackt.
   Startturmfelder in nativen 64 × 64 Pixeln und unveränderter Reihenfolge.
 - Helle Laufkanten, dunkle Turmtechnik, orange Verstrebungen und Cyanlichter
   entsprechen dem Startturmhintergrund. Geometrie und Kollision bleiben gleich.
+- `img/tilesets/space-station-tiles-clean-hd.png` enthält alle 32
+  Raumstationsfelder in nativen 64 × 64 Pixeln und unveränderter Reihenfolge.
+- Silberblaue Laufkanten, dunkle Raumtechnik und Cyanenergie entsprechen dem
+  Raumstationshintergrund. Geometrie und Kollision bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,
