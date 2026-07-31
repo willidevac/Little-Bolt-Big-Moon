@@ -100,12 +100,18 @@ export class PlatformRouteBuilder {
 
   #appendAuthoredRooms(platforms, section, state) {
     section.route.rooms.forEach((room, roomIndex) => {
-      room.steps.forEach((step, stepIndex) => {
-        this.#appendAuthoredStep(
-          platforms, section, room, roomIndex, step, stepIndex, state,
-        );
-      });
+      this.#appendAuthoredRoom(platforms, section, room, roomIndex, state);
     });
+  }
+
+  #appendAuthoredRoom(platforms, section, room, roomIndex, state) {
+    const roomStart = platforms.length;
+    room.steps.forEach((step, stepIndex) => {
+      this.#appendAuthoredStep(
+        platforms, section, room, roomIndex, step, stepIndex, state,
+      );
+    });
+    this.#appendShortcut(platforms, section, room, roomIndex, roomStart);
   }
 
   #appendAuthoredStep(
@@ -116,6 +122,33 @@ export class PlatformRouteBuilder {
       section, room, roomIndex, step, stepIndex, state.y, state.previous,
     );
     platforms.push(state.previous);
+  }
+
+  #appendShortcut(platforms, section, room, roomIndex, roomStart) {
+    if (!room.shortcut) return;
+    let previous = platforms[roomStart];
+    room.shortcut.forEach((step, shortcutIndex) => {
+      const target = platforms[roomStart + step.stepIndex];
+      previous = this.#createShortcutPlatform(
+        section, room, roomIndex, step, shortcutIndex, target.y, previous,
+      );
+      platforms.push(previous);
+    });
+    this.#validateAuthoredJump(platforms[roomStart + room.steps.length - 1], previous);
+  }
+
+  #createShortcutPlatform(
+    section, room, roomIndex, step, shortcutIndex, y, previous,
+  ) {
+    this.#validateAuthoredJump(step, previous);
+    const platform = {
+      id: `${section.id}-${room.id}-shortcut-${shortcutIndex + 1}`,
+      x: step.x, y, type: step.type, tileset: section.tileset,
+      roomId: room.id, roomRole: "shortcut",
+      rewardId: step.rewardId ?? null,
+    };
+    this.#addPlatformBehavior(platform, section.route);
+    return Object.freeze(platform);
   }
 
   #addAuthoredFloor(platforms, section, sectionIndex, y) {

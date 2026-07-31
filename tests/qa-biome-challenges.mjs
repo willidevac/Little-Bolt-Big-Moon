@@ -8,6 +8,7 @@ const level = JSON.parse(
   await readFile(new URL("../data/levels/level-01.json", import.meta.url), "utf8"),
 );
 const route = new PlatformRouteBuilder(level.width).build(level.sections);
+const mainRoute = route.filter(({ roomRole }) => roomRole !== "shortcut");
 const biomeOrder = [...new Set(level.sections.map(({ tileset }) => tileset))];
 
 assert.deepEqual(biomeOrder, [
@@ -16,7 +17,7 @@ assert.deepEqual(biomeOrder, [
 assert.equal(new Set(Object.values(BIOME_CHALLENGE_PROFILES).map(String)).size, 5);
 assert.ok(isNonDecreasingComplexity(biomeOrder));
 biomeOrder.forEach(assertBiome);
-assert.equal(route.length, 956);
+assert.equal(mainRoute.length, 956);
 
 console.log("BIO-001: Fünf Landschaften besitzen eigene Challenge-Sprachen.");
 
@@ -29,7 +30,8 @@ function assertBiome(tileset) {
 
 function assertRoomProfile(room, tileset) {
   const profile = BIOME_CHALLENGE_PROFILES[tileset];
-  const risks = room.steps.filter(({ type }) => RISK_TYPES.has(type));
+  const steps = [...room.steps, ...(room.shortcut ?? [])];
+  const risks = steps.filter(({ type }) => RISK_TYPES.has(type));
   assert.ok(profile.every((type) => risks.some((step) => step.type === type)));
   assert.ok(risks.every((step) => profile.includes(step.type)));
 }

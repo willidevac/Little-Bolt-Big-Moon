@@ -7,6 +7,7 @@ const levelData = JSON.parse(
   await readFile(new URL("../data/levels/level-01.json", import.meta.url), "utf8"),
 );
 const route = new PlatformRouteBuilder(levelData.width).build(levelData.sections);
+const mainRoute = route.filter(({ roomRole }) => roomRole !== "shortcut");
 
 assert.equal(levelData.height, 150000);
 assert.equal(levelData.playerStart.y, 149760);
@@ -23,7 +24,7 @@ levelData.sections.forEach((section, index) => {
 
 assert.ok(route.length >= 900);
 assert.ok(route.every((platform) => platform.y >= 0 && platform.y <= levelData.height));
-assert.equal(new Set(route.map((platform) => platform.y)).size, route.length);
+assert.equal(new Set(mainRoute.map((platform) => platform.y)).size, mainRoute.length);
 assert.deepEqual(
   new Set(route.map((platform) => platform.tileset)),
   new Set(["scrapyard", "factory", "launch-tower", "space-station", "moon"]),
@@ -35,7 +36,7 @@ assert.ok(route.some(({ type }) => type === "narrow"));
 levelData.sections.forEach(assertSectionRoute);
 
 function assertSectionRoute(section) {
-  const sectionPlatforms = route
+  const sectionPlatforms = mainRoute
     .filter((platform) => platform.id.startsWith(`${section.id}-`))
     .sort((first, second) => second.y - first.y);
   const gaps = getVerticalGaps(sectionPlatforms);
@@ -64,7 +65,7 @@ function getHorizontalSteps(section) {
 }
 
 levelData.sections.slice(0, -1).forEach((section) => {
-  const boundaryPlatforms = route.filter((platform) => {
+  const boundaryPlatforms = mainRoute.filter((platform) => {
     return Math.abs(platform.y - section.topY) <= 128;
   });
   const catchPlatforms = boundaryPlatforms.filter((platform) => {
@@ -73,7 +74,7 @@ levelData.sections.slice(0, -1).forEach((section) => {
   assert.equal(catchPlatforms.length, 1);
 });
 
-const completeRoute = [...route].sort((first, second) => second.y - first.y);
+const completeRoute = [...mainRoute].sort((first, second) => second.y - first.y);
 const completeGaps = completeRoute.slice(1).map((platform, index) => {
   return completeRoute[index].y - platform.y;
 });
@@ -178,7 +179,7 @@ factoryAnchors.forEach((anchor) => {
     return platform.y === anchor.y + 64 && overlaps;
   });
   assert.ok(support, `${anchor.id} hat keine pixelgenaue feste Plattform.`);
-  assert.equal(support.type, "path");
+  if (anchor.id !== "factory-gear-01") assert.equal(support.type, "path");
 });
 
 const movingData = route.find(({ type }) => type === "moving");

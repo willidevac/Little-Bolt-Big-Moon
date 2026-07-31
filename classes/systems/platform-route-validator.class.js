@@ -106,8 +106,31 @@ export class PlatformRouteValidator {
       room.steps.length <= MAXIMUM_ROOM_STEPS &&
       room.steps.every((step) => this.#hasValidAuthoredStep(step)) &&
       this.#hasSafeRoomEdges(room.steps) &&
-      this.#hasControlledFallPath(room.steps) &&
-      this.#matchesBiomeProfile(room.steps, tileset);
+      this.#hasValidShortcut(room) &&
+      this.#hasControlledFallPath(room.steps, room.shortcut) &&
+      this.#matchesBiomeProfile([...room.steps, ...(room.shortcut ?? [])], tileset);
+  }
+
+  #hasValidShortcut(room) {
+    if (room.shortcut === undefined) return true;
+    const validSteps = room.shortcut.every((step) => {
+      return this.#hasValidShortcutStep(step, room.steps.length);
+    });
+    const indexes = room.shortcut.map(({ stepIndex }) => stepIndex);
+    const rewards = room.shortcut.filter(({ rewardId }) => rewardId);
+    return room.shortcut.length === 3 && validSteps &&
+      new Set(indexes).size === indexes.length && rewards.length === 1;
+  }
+
+  #hasValidShortcutStep(step, stepCount) {
+    const typeIsValid = ROOM_RISK_TYPES.has(step?.type);
+    const indexIsValid = Number.isInteger(step?.stepIndex) &&
+      step.stepIndex > 0 && step.stepIndex < stepCount - 1;
+    const xIsValid = Number.isFinite(step?.x) && step.x >= SIDE_PADDING &&
+      step.x + PLATFORM_WIDTHS[step.type] <= this.worldWidth - SIDE_PADDING;
+    const rewardIsValid = step.rewardId === undefined ||
+      (typeof step.rewardId === "string" && step.rewardId.length > 0);
+    return typeIsValid && indexIsValid && xIsValid && rewardIsValid;
   }
 
   #matchesBiomeProfile(steps, tileset) {
@@ -127,9 +150,10 @@ export class PlatformRouteValidator {
       ROOM_SAFE_TYPES.has(steps.at(-1).type);
   }
 
-  #hasControlledFallPath(steps) {
+  #hasControlledFallPath(steps, shortcut = []) {
     const entry = steps[0];
-    return steps.slice(1, -1).some((step) => {
+    const challenges = [...steps.slice(1, -1), ...shortcut];
+    return challenges.some((step) => {
       return ROOM_RISK_TYPES.has(step.type) &&
         this.#overlapsHorizontally(entry, step);
     });

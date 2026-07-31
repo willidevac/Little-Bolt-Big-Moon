@@ -32,18 +32,20 @@ function getBiomeCounts(allRooms) {
 }
 
 function assertRoomRecipe(room) {
+  const challenges = [...room.steps.slice(1, -1), ...(room.shortcut ?? [])];
   assert.ok(room.steps.length >= 3 && room.steps.length <= 6);
   assert.ok(SAFE_TYPES.has(room.steps[0].type));
   assert.ok(SAFE_TYPES.has(room.steps.at(-1).type));
-  assert.ok(room.steps.slice(1, -1).some((step) => {
+  assert.ok(challenges.some((step) => {
     return RISK_TYPES.has(step.type);
   }));
-  assert.ok(hasControlledFall(room.steps));
+  assert.ok(hasControlledFall(room));
 }
 
-function hasControlledFall(steps) {
-  const entry = steps[0];
-  return steps.slice(1, -1).some((step) => {
+function hasControlledFall(room) {
+  const entry = room.steps[0];
+  const challenges = [...room.steps.slice(1, -1), ...(room.shortcut ?? [])];
+  return challenges.some((step) => {
     if (!RISK_TYPES.has(step.type)) return false;
     return overlapsHorizontally(entry, step);
   });

@@ -36,10 +36,28 @@
             "id": "erste-kante",
             "steps": [
               { "x": 768, "gapY": 120, "type": "path" },
-              { "x": 672, "gapY": 128, "type": "narrow" },
+              { "x": 672, "gapY": 128, "type": "path" },
               { "x": 352, "gapY": 136, "type": "path" },
-              { "x": 512, "gapY": 144, "type": "narrow" },
+              { "x": 512, "gapY": 144, "type": "path" },
               { "x": 736, "gapY": 152, "type": "path" }
+            ],
+            "shortcut": [
+              {
+                "stepIndex": 1,
+                "x": 864,
+                "type": "narrow"
+              },
+              {
+                "stepIndex": 2,
+                "x": 736,
+                "type": "narrow",
+                "rewardId": "scrapyard-gear-01"
+              },
+              {
+                "stepIndex": 3,
+                "x": 736,
+                "type": "narrow"
+              }
             ]
           },
           {
@@ -520,10 +538,28 @@
             "id": "zahnradlager",
             "steps": [
               { "x": 480, "gapY": 112, "type": "path" },
-              { "x": 320, "gapY": 128, "type": "falling" },
+              { "x": 320, "gapY": 128, "type": "path" },
               { "x": 512, "gapY": 136, "type": "path" },
               { "x": 384, "gapY": 124, "type": "path" },
               { "x": 640, "gapY": 172, "type": "path" }
+            ],
+            "shortcut": [
+              {
+                "stepIndex": 1,
+                "x": 512,
+                "type": "falling"
+              },
+              {
+                "stepIndex": 2,
+                "x": 704,
+                "type": "falling",
+                "rewardId": "factory-gear-01"
+              },
+              {
+                "stepIndex": 3,
+                "x": 576,
+                "type": "falling"
+              }
             ]
           },
           {
@@ -969,10 +1005,28 @@
             "id": "raketen-kabelschacht",
             "steps": [
               { "x": 128, "gapY": 160, "type": "path" },
-              { "x": 288, "gapY": 164, "type": "moving" },
+              { "x": 288, "gapY": 164, "type": "path" },
               { "x": 608, "gapY": 168, "type": "path" },
-              { "x": 864, "gapY": 176, "type": "moving" },
+              { "x": 864, "gapY": 176, "type": "path" },
               { "x": 640, "gapY": 152, "type": "path" }
+            ],
+            "shortcut": [
+              {
+                "stepIndex": 1,
+                "x": 96,
+                "type": "moving"
+              },
+              {
+                "stepIndex": 2,
+                "x": 128,
+                "type": "moving",
+                "rewardId": "launch-tower-gear-01"
+              },
+              {
+                "stepIndex": 3,
+                "x": 256,
+                "type": "moving"
+              }
             ]
           },
           {
@@ -1398,10 +1452,28 @@
             "id": "containerbogen",
             "steps": [
               { "x": 640, "gapY": 160, "type": "path" },
-              { "x": 800, "gapY": 168, "type": "moving" },
-              { "x": 672, "gapY": 172, "type": "falling" },
-              { "x": 416, "gapY": 172, "type": "moving" },
+              { "x": 800, "gapY": 168, "type": "path" },
+              { "x": 672, "gapY": 172, "type": "path" },
+              { "x": 416, "gapY": 172, "type": "path" },
               { "x": 160, "gapY": 148, "type": "path" }
+            ],
+            "shortcut": [
+              {
+                "stepIndex": 1,
+                "x": 480,
+                "type": "moving"
+              },
+              {
+                "stepIndex": 2,
+                "x": 160,
+                "type": "falling",
+                "rewardId": "space-station-gear-01"
+              },
+              {
+                "stepIndex": 3,
+                "x": 160,
+                "type": "moving"
+              }
             ]
           },
           {
@@ -1827,10 +1899,28 @@
             "id": "flacher-krater",
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 320, "gapY": 168, "type": "narrow" },
-              { "x": 416, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 172, "type": "moving" },
+              { "x": 320, "gapY": 168, "type": "path" },
+              { "x": 416, "gapY": 172, "type": "path" },
+              { "x": 672, "gapY": 172, "type": "path" },
               { "x": 928, "gapY": 148, "type": "path" }
+            ],
+            "shortcut": [
+              {
+                "stepIndex": 1,
+                "x": 512,
+                "type": "narrow"
+              },
+              {
+                "stepIndex": 2,
+                "x": 608,
+                "type": "falling",
+                "rewardId": "moon-gear-01"
+              },
+              {
+                "stepIndex": 3,
+                "x": 864,
+                "type": "moving"
+              }
             ]
           },
           {
@@ -2766,8 +2856,8 @@
       "id": "scrapyard-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 288,
-      "y": 149776
+      "x": 768,
+      "y": 148832
     },
     {
       "id": "scrapyard-ammo-01",
@@ -2802,8 +2892,8 @@
       "id": "factory-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 416,
-      "y": 118900
+      "x": 768,
+      "y": 119024
     },
     {
       "id": "factory-energy-01",
@@ -2830,8 +2920,8 @@
       "id": "launch-tower-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 416,
-      "y": 88900
+      "x": 192,
+      "y": 88688
     },
     {
       "id": "launch-tower-energy-01",
@@ -2858,8 +2948,8 @@
       "id": "space-station-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 416,
-      "y": 58900
+      "x": 224,
+      "y": 58680
     },
     {
       "id": "space-station-arc-cannon-01",
@@ -2915,8 +3005,8 @@
       "id": "moon-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 416,
-      "y": 8900
+      "x": 672,
+      "y": 28680
     },
     {
       "id": "moon-energy-01",
