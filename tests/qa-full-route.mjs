@@ -150,7 +150,7 @@ const moonFortressPlatforms = route.filter(({ id }) => {
 [
   { x: 544, y: 8964, type: "narrow" },
   { x: 160, y: 7564, type: "path" },
-  { x: 384, y: 6164, type: "path" },
+  { x: 384, y: 6164, type: "falling" },
   { x: 384, y: 792, type: "catch" },
 ].forEach((expectedPlatform) => {
   assert.ok(moonFortressPlatforms.some((platform) => {

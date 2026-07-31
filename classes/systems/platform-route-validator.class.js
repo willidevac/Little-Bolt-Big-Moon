@@ -5,6 +5,7 @@ import {
   MINIMUM_PLATFORM_GAP_Y,
   PLATFORM_WIDTHS,
   SIDE_PADDING,
+  BIOME_CHALLENGE_PROFILES,
 } from "../../js/config/platform-route-rules.js";
 
 const ROOM_RISK_TYPES = new Set(["narrow", "moving", "falling"]);
@@ -63,7 +64,7 @@ export class PlatformRouteValidator {
       this.#hasValidGaps(route),
       Number.isInteger(route?.catchEvery) && route.catchEvery > 0,
       this.#hasValidChallengeRules(route),
-      this.#hasValidRooms(route?.rooms),
+      this.#hasValidRooms(route?.rooms, section.tileset),
       Number.isFinite(route?.floorX),
     ];
   }
@@ -92,20 +93,33 @@ export class PlatformRouteValidator {
       });
   }
 
-  #hasValidRooms(rooms) {
+  #hasValidRooms(rooms, tileset) {
     if (rooms === undefined) return true;
     return Array.isArray(rooms) && rooms.length > 0 &&
-      rooms.every((room) => this.#hasValidRoom(room));
+      rooms.every((room) => this.#hasValidRoom(room, tileset));
   }
 
-  #hasValidRoom(room) {
+  #hasValidRoom(room, tileset) {
     return typeof room?.id === "string" &&
       Array.isArray(room?.steps) &&
       room.steps.length >= MINIMUM_ROOM_STEPS &&
       room.steps.length <= MAXIMUM_ROOM_STEPS &&
       room.steps.every((step) => this.#hasValidAuthoredStep(step)) &&
       this.#hasSafeRoomEdges(room.steps) &&
-      this.#hasControlledFallPath(room.steps);
+      this.#hasControlledFallPath(room.steps) &&
+      this.#matchesBiomeProfile(room.steps, tileset);
+  }
+
+  #matchesBiomeProfile(steps, tileset) {
+    const requiredTypes = BIOME_CHALLENGE_PROFILES[tileset];
+    if (!requiredTypes) return false;
+    const hasRequiredTypes = requiredTypes.every((type) => {
+      return steps.some((step) => step.type === type);
+    });
+    const risksAreAllowed = steps.every((step) => {
+      return !ROOM_RISK_TYPES.has(step.type) || requiredTypes.includes(step.type);
+    });
+    return hasRequiredTypes && risksAreAllowed;
   }
 
   #hasSafeRoomEdges(steps) {

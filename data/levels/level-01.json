@@ -28,7 +28,7 @@
               { "x": 176, "gapY": 80, "type": "path" },
               { "x": 320, "gapY": 96, "type": "narrow" },
               { "x": 544, "gapY": 112, "type": "path" },
-              { "x": 784, "gapY": 128, "type": "path" },
+              { "x": 768, "gapY": 128, "type": "narrow" },
               { "x": 944, "gapY": 144, "type": "path" }
             ]
           },
@@ -37,8 +37,8 @@
             "steps": [
               { "x": 768, "gapY": 120, "type": "path" },
               { "x": 672, "gapY": 128, "type": "narrow" },
-              { "x": 352, "gapY": 136, "type": "narrow" },
-              { "x": 512, "gapY": 144, "type": "path" },
+              { "x": 352, "gapY": 136, "type": "path" },
+              { "x": 512, "gapY": 144, "type": "narrow" },
               { "x": 736, "gapY": 152, "type": "path" }
             ]
           },
@@ -58,7 +58,7 @@
               { "x": 640, "gapY": 128, "type": "path" },
               { "x": 800, "gapY": 136, "type": "narrow" },
               { "x": 672, "gapY": 144, "type": "path" },
-              { "x": 432, "gapY": 152, "type": "narrow" },
+              { "x": 416, "gapY": 152, "type": "narrow" },
               { "x": 160, "gapY": 160, "type": "path" }
             ]
           },
@@ -97,8 +97,8 @@
             "steps": [
               { "x": 832, "gapY": 128, "type": "path" },
               { "x": 736, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "narrow" },
-              { "x": 128, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 144, "type": "path" },
+              { "x": 128, "gapY": 152, "type": "narrow" },
               { "x": 384, "gapY": 160, "type": "path" }
             ]
           },
@@ -188,8 +188,8 @@
             "steps": [
               { "x": 320, "gapY": 96, "type": "path" },
               { "x": 480, "gapY": 112, "type": "narrow" },
-              { "x": 768, "gapY": 120, "type": "narrow" },
-              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 768, "gapY": 120, "type": "path" },
+              { "x": 928, "gapY": 128, "type": "narrow" },
               { "x": 704, "gapY": 144, "type": "path" }
             ]
           },
@@ -199,7 +199,7 @@
               { "x": 480, "gapY": 112, "type": "path" },
               { "x": 384, "gapY": 128, "type": "narrow" },
               { "x": 512, "gapY": 136, "type": "path" },
-              { "x": 736, "gapY": 144, "type": "falling" },
+              { "x": 736, "gapY": 144, "type": "narrow" },
               { "x": 960, "gapY": 160, "type": "path" }
             ]
           },
@@ -207,9 +207,9 @@
             "id": "kolben-zickzack",
             "steps": [
               { "x": 704, "gapY": 124, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "falling" },
-              { "x": 224, "gapY": 140, "type": "narrow" },
-              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 136, "type": "narrow" },
+              { "x": 224, "gapY": 140, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
               { "x": 672, "gapY": 152, "type": "path" }
             ]
           },
@@ -218,8 +218,8 @@
             "steps": [
               { "x": 896, "gapY": 128, "type": "path" },
               { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "falling" },
-              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 144, "type": "path" },
+              { "x": 160, "gapY": 152, "type": "narrow" },
               { "x": 416, "gapY": 160, "type": "path" }
             ]
           },
@@ -229,7 +229,7 @@
               { "x": 672, "gapY": 124, "type": "path" },
               { "x": 832, "gapY": 136, "type": "narrow" },
               { "x": 704, "gapY": 140, "type": "path" },
-              { "x": 448, "gapY": 148, "type": "falling" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
               { "x": 192, "gapY": 152, "type": "path" }
             ]
           },
@@ -239,7 +239,7 @@
               { "x": 416, "gapY": 128, "type": "path" },
               { "x": 576, "gapY": 136, "type": "narrow" },
               { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "falling" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           },
@@ -257,9 +257,9 @@
             "id": "doppelkolben",
             "steps": [
               { "x": 832, "gapY": 128, "type": "path" },
-              { "x": 672, "gapY": 136, "type": "falling" },
-              { "x": 352, "gapY": 144, "type": "narrow" },
-              { "x": 128, "gapY": 152, "type": "falling" },
+              { "x": 736, "gapY": 136, "type": "narrow" },
+              { "x": 352, "gapY": 144, "type": "path" },
+              { "x": 128, "gapY": 152, "type": "narrow" },
               { "x": 384, "gapY": 160, "type": "path" }
             ]
           },
@@ -269,7 +269,7 @@
               { "x": 640, "gapY": 124, "type": "path" },
               { "x": 800, "gapY": 136, "type": "narrow" },
               { "x": 672, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
               { "x": 160, "gapY": 152, "type": "path" }
             ]
           },
@@ -277,9 +277,9 @@
             "id": "pressen-takt",
             "steps": [
               { "x": 384, "gapY": 128, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "falling" },
-              { "x": 864, "gapY": 144, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 544, "gapY": 136, "type": "narrow" },
+              { "x": 864, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           },
@@ -288,7 +288,7 @@
             "steps": [
               { "x": 128, "gapY": 124, "type": "path" },
               { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "falling" },
+              { "x": 576, "gapY": 140, "type": "path" },
               { "x": 832, "gapY": 148, "type": "narrow" },
               { "x": 608, "gapY": 152, "type": "path" }
             ]
@@ -297,7 +297,7 @@
             "id": "gegenpressung",
             "steps": [
               { "x": 864, "gapY": 128, "type": "path" },
-              { "x": 704, "gapY": 136, "type": "falling" },
+              { "x": 768, "gapY": 136, "type": "narrow" },
               { "x": 384, "gapY": 144, "type": "path" },
               { "x": 160, "gapY": 152, "type": "narrow" },
               { "x": 416, "gapY": 160, "type": "path" }
@@ -308,7 +308,7 @@
             "steps": [
               { "x": 672, "gapY": 128, "type": "path" },
               { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 704, "gapY": 144, "type": "falling" },
+              { "x": 704, "gapY": 144, "type": "path" },
               { "x": 448, "gapY": 152, "type": "narrow" },
               { "x": 192, "gapY": 160, "type": "path" }
             ]
@@ -317,9 +317,9 @@
             "id": "tor-zum-funkturm",
             "steps": [
               { "x": 416, "gapY": 136, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "falling" },
-              { "x": 864, "gapY": 148, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 576, "gapY": 144, "type": "narrow" },
+              { "x": 864, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           }
@@ -348,8 +348,8 @@
             "steps": [
               { "x": 256, "gapY": 96, "type": "path" },
               { "x": 416, "gapY": 112, "type": "narrow" },
-              { "x": 704, "gapY": 120, "type": "narrow" },
-              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 704, "gapY": 120, "type": "path" },
+              { "x": 928, "gapY": 128, "type": "narrow" },
               { "x": 704, "gapY": 144, "type": "path" }
             ]
           },
@@ -358,8 +358,8 @@
             "steps": [
               { "x": 480, "gapY": 112, "type": "path" },
               { "x": 384, "gapY": 128, "type": "narrow" },
-              { "x": 512, "gapY": 136, "type": "moving" },
-              { "x": 736, "gapY": 144, "type": "path" },
+              { "x": 512, "gapY": 136, "type": "path" },
+              { "x": 736, "gapY": 144, "type": "narrow" },
               { "x": 960, "gapY": 160, "type": "path" }
             ]
           },
@@ -367,9 +367,9 @@
             "id": "pendelleitung",
             "steps": [
               { "x": 704, "gapY": 124, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "moving" },
-              { "x": 224, "gapY": 140, "type": "narrow" },
-              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 136, "type": "narrow" },
+              { "x": 224, "gapY": 140, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "narrow" },
               { "x": 672, "gapY": 152, "type": "path" }
             ]
           },
@@ -378,8 +378,8 @@
             "steps": [
               { "x": 896, "gapY": 128, "type": "path" },
               { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "moving" },
-              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 144, "type": "path" },
+              { "x": 160, "gapY": 152, "type": "narrow" },
               { "x": 416, "gapY": 160, "type": "path" }
             ]
           },
@@ -387,7 +387,7 @@
             "id": "signalbogen",
             "steps": [
               { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "moving" },
+              { "x": 832, "gapY": 136, "type": "narrow" },
               { "x": 704, "gapY": 140, "type": "path" },
               { "x": 448, "gapY": 148, "type": "narrow" },
               { "x": 192, "gapY": 152, "type": "path" }
@@ -397,9 +397,9 @@
             "id": "schwingkreis",
             "steps": [
               { "x": 416, "gapY": 128, "type": "path" },
-              { "x": 576, "gapY": 136, "type": "moving" },
-              { "x": 864, "gapY": 144, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 576, "gapY": 136, "type": "narrow" },
+              { "x": 864, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           },
@@ -418,7 +418,7 @@
             "steps": [
               { "x": 832, "gapY": 128, "type": "path" },
               { "x": 736, "gapY": 136, "type": "narrow" },
-              { "x": 352, "gapY": 144, "type": "moving" },
+              { "x": 352, "gapY": 144, "type": "path" },
               { "x": 128, "gapY": 152, "type": "narrow" },
               { "x": 384, "gapY": 160, "type": "path" }
             ]
@@ -427,7 +427,7 @@
             "id": "frequenzsprung",
             "steps": [
               { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "moving" },
+              { "x": 800, "gapY": 136, "type": "narrow" },
               { "x": 672, "gapY": 140, "type": "path" },
               { "x": 416, "gapY": 148, "type": "narrow" },
               { "x": 160, "gapY": 152, "type": "path" }
@@ -438,8 +438,8 @@
             "steps": [
               { "x": 384, "gapY": 128, "type": "path" },
               { "x": 544, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "moving" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 864, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           },
@@ -447,9 +447,9 @@
             "id": "antennenkranz",
             "steps": [
               { "x": 128, "gapY": 124, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "moving" },
-              { "x": 576, "gapY": 140, "type": "narrow" },
-              { "x": 832, "gapY": 148, "type": "path" },
+              { "x": 288, "gapY": 136, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 832, "gapY": 148, "type": "narrow" },
               { "x": 608, "gapY": 152, "type": "path" }
             ]
           },
@@ -458,8 +458,8 @@
             "steps": [
               { "x": 864, "gapY": 128, "type": "path" },
               { "x": 768, "gapY": 136, "type": "narrow" },
-              { "x": 384, "gapY": 144, "type": "moving" },
-              { "x": 160, "gapY": 152, "type": "path" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 160, "gapY": 152, "type": "narrow" },
               { "x": 416, "gapY": 160, "type": "path" }
             ]
           },
@@ -467,9 +467,9 @@
             "id": "sendespitze",
             "steps": [
               { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "moving" },
-              { "x": 704, "gapY": 144, "type": "narrow" },
-              { "x": 448, "gapY": 152, "type": "path" },
+              { "x": 832, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "narrow" },
               { "x": 192, "gapY": 160, "type": "path" }
             ]
           },
@@ -478,8 +478,8 @@
             "steps": [
               { "x": 416, "gapY": 136, "type": "path" },
               { "x": 576, "gapY": 144, "type": "narrow" },
-              { "x": 864, "gapY": 148, "type": "moving" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 864, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
               { "x": 352, "gapY": 160, "type": "path" }
             ]
           }
@@ -510,9 +510,9 @@
             "id": "fabrikschleuse",
             "steps": [
               { "x": 256, "gapY": 96, "type": "path" },
-              { "x": 416, "gapY": 112, "type": "narrow" },
-              { "x": 704, "gapY": 120, "type": "narrow" },
-              { "x": 928, "gapY": 128, "type": "path" },
+              { "x": 416, "gapY": 112, "type": "falling" },
+              { "x": 704, "gapY": 120, "type": "path" },
+              { "x": 928, "gapY": 128, "type": "falling" },
               { "x": 704, "gapY": 144, "type": "path" }
             ]
           },
@@ -521,7 +521,7 @@
             "steps": [
               { "x": 480, "gapY": 112, "type": "path" },
               { "x": 320, "gapY": 128, "type": "falling" },
-              { "x": 512, "gapY": 136, "type": "narrow" },
+              { "x": 512, "gapY": 136, "type": "path" },
               { "x": 384, "gapY": 124, "type": "path" },
               { "x": 640, "gapY": 172, "type": "path" }
             ]
@@ -530,9 +530,9 @@
             "id": "krabblerhalle",
             "steps": [
               { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 480, "gapY": 128, "type": "moving" },
-              { "x": 320, "gapY": 128, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 480, "gapY": 128, "type": "falling" },
+              { "x": 320, "gapY": 128, "type": "path" },
+              { "x": 576, "gapY": 140, "type": "falling" },
               { "x": 800, "gapY": 180, "type": "path" }
             ]
           },
@@ -541,7 +541,7 @@
             "steps": [
               { "x": 800, "gapY": 128, "type": "path" },
               { "x": 640, "gapY": 128, "type": "falling" },
-              { "x": 320, "gapY": 136, "type": "moving" },
+              { "x": 320, "gapY": 136, "type": "path" },
               { "x": 160, "gapY": 136, "type": "path" },
               { "x": 416, "gapY": 176, "type": "path" }
             ]
@@ -550,9 +550,9 @@
             "id": "foerderkreuz",
             "steps": [
               { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 704, "gapY": 140, "type": "falling" },
-              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 832, "gapY": 136, "type": "falling" },
+              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "falling" },
               { "x": 192, "gapY": 152, "type": "path" }
             ]
           },
@@ -561,7 +561,7 @@
             "steps": [
               { "x": 416, "gapY": 128, "type": "path" },
               { "x": 576, "gapY": 128, "type": "falling" },
-              { "x": 416, "gapY": 132, "type": "narrow" },
+              { "x": 416, "gapY": 132, "type": "path" },
               { "x": 384, "gapY": 136, "type": "path" },
               { "x": 160, "gapY": 176, "type": "path" }
             ]
@@ -570,9 +570,9 @@
             "id": "sicherheitssteg",
             "steps": [
               { "x": 384, "gapY": 120, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "narrow" },
+              { "x": 544, "gapY": 136, "type": "falling" },
               { "x": 832, "gapY": 140, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "narrow" },
+              { "x": 576, "gapY": 144, "type": "falling" },
               { "x": 384, "gapY": 160, "type": "catch" }
             ]
           },
@@ -581,8 +581,8 @@
             "steps": [
               { "x": 832, "gapY": 128, "type": "path" },
               { "x": 672, "gapY": 136, "type": "falling" },
-              { "x": 352, "gapY": 144, "type": "moving" },
-              { "x": 128, "gapY": 152, "type": "narrow" },
+              { "x": 352, "gapY": 144, "type": "path" },
+              { "x": 128, "gapY": 152, "type": "falling" },
               { "x": 384, "gapY": 172, "type": "path" }
             ]
           },
@@ -590,7 +590,7 @@
             "id": "heisser-wechsel",
             "steps": [
               { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "moving" },
+              { "x": 800, "gapY": 136, "type": "falling" },
               { "x": 672, "gapY": 140, "type": "path" },
               { "x": 416, "gapY": 148, "type": "falling" },
               { "x": 160, "gapY": 152, "type": "path" }
@@ -601,8 +601,8 @@
             "steps": [
               { "x": 384, "gapY": 128, "type": "path" },
               { "x": 544, "gapY": 136, "type": "falling" },
-              { "x": 864, "gapY": 144, "type": "moving" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 864, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "falling" },
               { "x": 352, "gapY": 172, "type": "path" }
             ]
           },
@@ -611,8 +611,8 @@
             "steps": [
               { "x": 128, "gapY": 124, "type": "path" },
               { "x": 288, "gapY": 136, "type": "falling" },
-              { "x": 576, "gapY": 140, "type": "moving" },
-              { "x": 832, "gapY": 148, "type": "narrow" },
+              { "x": 576, "gapY": 140, "type": "path" },
+              { "x": 832, "gapY": 148, "type": "falling" },
               { "x": 608, "gapY": 152, "type": "path" }
             ]
           },
@@ -621,8 +621,8 @@
             "steps": [
               { "x": 864, "gapY": 128, "type": "path" },
               { "x": 704, "gapY": 136, "type": "falling" },
-              { "x": 384, "gapY": 144, "type": "moving" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 160, "gapY": 152, "type": "falling" },
               { "x": 416, "gapY": 172, "type": "path" }
             ]
           },
@@ -630,8 +630,8 @@
             "id": "montagespitze",
             "steps": [
               { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "moving" },
-              { "x": 704, "gapY": 144, "type": "narrow" },
+              { "x": 832, "gapY": 136, "type": "falling" },
+              { "x": 704, "gapY": 144, "type": "path" },
               { "x": 448, "gapY": 152, "type": "falling" },
               { "x": 192, "gapY": 160, "type": "path" }
             ]
@@ -641,8 +641,8 @@
             "steps": [
               { "x": 416, "gapY": 136, "type": "path" },
               { "x": 576, "gapY": 144, "type": "falling" },
-              { "x": 864, "gapY": 148, "type": "moving" },
-              { "x": 608, "gapY": 152, "type": "path" },
+              { "x": 864, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "falling" },
               { "x": 352, "gapY": 168, "type": "path" }
             ]
           }
@@ -673,7 +673,7 @@
             "id": "schmelzwerk-einlass",
             "steps": [
               { "x": 224, "gapY": 148, "type": "path" },
-              { "x": 384, "gapY": 156, "type": "narrow" },
+              { "x": 384, "gapY": 156, "type": "falling" },
               { "x": 672, "gapY": 164, "type": "path" },
               { "x": 896, "gapY": 172, "type": "falling" },
               { "x": 672, "gapY": 180, "type": "path" }
@@ -683,9 +683,9 @@
             "id": "glutpendel",
             "steps": [
               { "x": 448, "gapY": 156, "type": "path" },
-              { "x": 352, "gapY": 164, "type": "narrow" },
-              { "x": 480, "gapY": 172, "type": "falling" },
-              { "x": 736, "gapY": 180, "type": "narrow" },
+              { "x": 352, "gapY": 164, "type": "falling" },
+              { "x": 480, "gapY": 172, "type": "path" },
+              { "x": 736, "gapY": 180, "type": "falling" },
               { "x": 960, "gapY": 148, "type": "path" }
             ]
           },
@@ -693,9 +693,9 @@
             "id": "schlackezickzack",
             "steps": [
               { "x": 704, "gapY": 164, "type": "path" },
-              { "x": 608, "gapY": 172, "type": "narrow" },
-              { "x": 224, "gapY": 180, "type": "falling" },
-              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 608, "gapY": 172, "type": "falling" },
+              { "x": 224, "gapY": 180, "type": "path" },
+              { "x": 416, "gapY": 148, "type": "falling" },
               { "x": 672, "gapY": 156, "type": "path" }
             ]
           },
@@ -704,8 +704,8 @@
             "steps": [
               { "x": 896, "gapY": 172, "type": "path" },
               { "x": 736, "gapY": 180, "type": "falling" },
-              { "x": 384, "gapY": 148, "type": "moving" },
-              { "x": 160, "gapY": 156, "type": "narrow" },
+              { "x": 384, "gapY": 148, "type": "path" },
+              { "x": 160, "gapY": 156, "type": "falling" },
               { "x": 416, "gapY": 164, "type": "path" }
             ]
           },
@@ -713,9 +713,9 @@
             "id": "hitzebogen",
             "steps": [
               { "x": 672, "gapY": 180, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "narrow" },
-              { "x": 704, "gapY": 156, "type": "falling" },
-              { "x": 448, "gapY": 164, "type": "moving" },
+              { "x": 832, "gapY": 148, "type": "falling" },
+              { "x": 704, "gapY": 156, "type": "path" },
+              { "x": 448, "gapY": 164, "type": "falling" },
               { "x": 192, "gapY": 172, "type": "path" }
             ]
           },
@@ -723,8 +723,8 @@
             "id": "giessrinne",
             "steps": [
               { "x": 416, "gapY": 148, "type": "path" },
-              { "x": 576, "gapY": 164, "type": "moving" },
-              { "x": 864, "gapY": 180, "type": "narrow" },
+              { "x": 576, "gapY": 164, "type": "falling" },
+              { "x": 864, "gapY": 180, "type": "path" },
               { "x": 608, "gapY": 156, "type": "falling" },
               { "x": 352, "gapY": 172, "type": "path" }
             ]
@@ -733,9 +733,9 @@
             "id": "kuehlbruch",
             "steps": [
               { "x": 128, "gapY": 156, "type": "path" },
-              { "x": 288, "gapY": 172, "type": "narrow" },
-              { "x": 576, "gapY": 148, "type": "falling" },
-              { "x": 832, "gapY": 180, "type": "path" },
+              { "x": 288, "gapY": 172, "type": "falling" },
+              { "x": 576, "gapY": 148, "type": "path" },
+              { "x": 832, "gapY": 180, "type": "falling" },
               { "x": 608, "gapY": 164, "type": "path" }
             ]
           },
@@ -743,8 +743,8 @@
             "id": "ofenrachen",
             "steps": [
               { "x": 864, "gapY": 164, "type": "path" },
-              { "x": 704, "gapY": 180, "type": "moving" },
-              { "x": 384, "gapY": 156, "type": "narrow" },
+              { "x": 704, "gapY": 180, "type": "falling" },
+              { "x": 384, "gapY": 156, "type": "path" },
               { "x": 160, "gapY": 172, "type": "falling" },
               { "x": 416, "gapY": 148, "type": "path" }
             ]
@@ -754,8 +754,8 @@
             "steps": [
               { "x": 672, "gapY": 172, "type": "path" },
               { "x": 832, "gapY": 156, "type": "falling" },
-              { "x": 704, "gapY": 180, "type": "narrow" },
-              { "x": 448, "gapY": 148, "type": "moving" },
+              { "x": 704, "gapY": 180, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "falling" },
               { "x": 192, "gapY": 164, "type": "path" }
             ]
           },
@@ -763,8 +763,8 @@
             "id": "gluttakt",
             "steps": [
               { "x": 416, "gapY": 180, "type": "path" },
-              { "x": 576, "gapY": 148, "type": "moving" },
-              { "x": 864, "gapY": 164, "type": "narrow" },
+              { "x": 576, "gapY": 148, "type": "falling" },
+              { "x": 864, "gapY": 164, "type": "path" },
               { "x": 608, "gapY": 172, "type": "falling" },
               { "x": 352, "gapY": 156, "type": "path" }
             ]
@@ -774,8 +774,8 @@
             "steps": [
               { "x": 128, "gapY": 148, "type": "path" },
               { "x": 288, "gapY": 180, "type": "falling" },
-              { "x": 576, "gapY": 172, "type": "moving" },
-              { "x": 832, "gapY": 164, "type": "narrow" },
+              { "x": 576, "gapY": 172, "type": "path" },
+              { "x": 832, "gapY": 164, "type": "falling" },
               { "x": 608, "gapY": 156, "type": "path" }
             ]
           },
@@ -784,8 +784,8 @@
             "steps": [
               { "x": 864, "gapY": 156, "type": "path" },
               { "x": 704, "gapY": 172, "type": "falling" },
-              { "x": 384, "gapY": 148, "type": "moving" },
-              { "x": 160, "gapY": 180, "type": "narrow" },
+              { "x": 384, "gapY": 148, "type": "path" },
+              { "x": 160, "gapY": 180, "type": "falling" },
               { "x": 416, "gapY": 164, "type": "path" }
             ]
           }
@@ -816,7 +816,7 @@
             "id": "kernschleuse",
             "steps": [
               { "x": 288, "gapY": 152, "type": "path" },
-              { "x": 448, "gapY": 160, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "falling" },
               { "x": 800, "gapY": 164, "type": "path" },
               { "x": 576, "gapY": 168, "type": "falling" },
               { "x": 320, "gapY": 176, "type": "path" }
@@ -827,8 +827,8 @@
             "steps": [
               { "x": 96, "gapY": 160, "type": "path" },
               { "x": 256, "gapY": 164, "type": "falling" },
-              { "x": 576, "gapY": 168, "type": "narrow" },
-              { "x": 832, "gapY": 176, "type": "moving" },
+              { "x": 576, "gapY": 168, "type": "path" },
+              { "x": 832, "gapY": 176, "type": "falling" },
               { "x": 608, "gapY": 152, "type": "path" }
             ]
           },
@@ -836,8 +836,8 @@
             "id": "leiterkreis",
             "steps": [
               { "x": 384, "gapY": 164, "type": "path" },
-              { "x": 224, "gapY": 168, "type": "moving" },
-              { "x": 416, "gapY": 176, "type": "narrow" },
+              { "x": 224, "gapY": 168, "type": "falling" },
+              { "x": 416, "gapY": 176, "type": "path" },
               { "x": 672, "gapY": 152, "type": "falling" },
               { "x": 896, "gapY": 160, "type": "path" }
             ]
@@ -847,8 +847,8 @@
             "steps": [
               { "x": 640, "gapY": 168, "type": "path" },
               { "x": 480, "gapY": 176, "type": "falling" },
-              { "x": 128, "gapY": 152, "type": "moving" },
-              { "x": 352, "gapY": 160, "type": "narrow" },
+              { "x": 128, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "falling" },
               { "x": 608, "gapY": 164, "type": "path" }
             ]
           },
@@ -856,9 +856,9 @@
             "id": "generatorbogen",
             "steps": [
               { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 704, "gapY": 152, "type": "moving" },
-              { "x": 384, "gapY": 160, "type": "falling" },
-              { "x": 160, "gapY": 164, "type": "moving" },
+              { "x": 704, "gapY": 152, "type": "falling" },
+              { "x": 384, "gapY": 160, "type": "path" },
+              { "x": 160, "gapY": 164, "type": "falling" },
               { "x": 416, "gapY": 168, "type": "path" }
             ]
           },
@@ -867,8 +867,8 @@
             "steps": [
               { "x": 672, "gapY": 152, "type": "path" },
               { "x": 832, "gapY": 164, "type": "falling" },
-              { "x": 704, "gapY": 176, "type": "narrow" },
-              { "x": 448, "gapY": 160, "type": "moving" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 448, "gapY": 160, "type": "falling" },
               { "x": 192, "gapY": 168, "type": "path" }
             ]
           },
@@ -876,9 +876,9 @@
             "id": "magnettakt",
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "moving" },
-              { "x": 864, "gapY": 152, "type": "falling" },
-              { "x": 608, "gapY": 176, "type": "moving" },
+              { "x": 576, "gapY": 168, "type": "falling" },
+              { "x": 864, "gapY": 152, "type": "path" },
+              { "x": 608, "gapY": 176, "type": "falling" },
               { "x": 352, "gapY": 164, "type": "path" }
             ]
           },
@@ -887,8 +887,8 @@
             "steps": [
               { "x": 128, "gapY": 168, "type": "path" },
               { "x": 288, "gapY": 152, "type": "falling" },
-              { "x": 608, "gapY": 164, "type": "moving" },
-              { "x": 864, "gapY": 176, "type": "narrow" },
+              { "x": 608, "gapY": 164, "type": "path" },
+              { "x": 864, "gapY": 176, "type": "falling" },
               { "x": 640, "gapY": 160, "type": "path" }
             ]
           },
@@ -896,9 +896,9 @@
             "id": "kernpendel",
             "steps": [
               { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 256, "gapY": 160, "type": "moving" },
-              { "x": 384, "gapY": 168, "type": "falling" },
-              { "x": 640, "gapY": 152, "type": "moving" },
+              { "x": 256, "gapY": 160, "type": "falling" },
+              { "x": 384, "gapY": 168, "type": "path" },
+              { "x": 640, "gapY": 152, "type": "falling" },
               { "x": 896, "gapY": 164, "type": "path" }
             ]
           },
@@ -907,8 +907,8 @@
             "steps": [
               { "x": 672, "gapY": 152, "type": "path" },
               { "x": 512, "gapY": 176, "type": "falling" },
-              { "x": 192, "gapY": 164, "type": "moving" },
-              { "x": 416, "gapY": 168, "type": "narrow" },
+              { "x": 192, "gapY": 164, "type": "path" },
+              { "x": 416, "gapY": 168, "type": "falling" },
               { "x": 672, "gapY": 160, "type": "path" }
             ]
           },
@@ -916,9 +916,9 @@
             "id": "reaktorkranz",
             "steps": [
               { "x": 928, "gapY": 164, "type": "path" },
-              { "x": 768, "gapY": 152, "type": "moving" },
-              { "x": 448, "gapY": 176, "type": "falling" },
-              { "x": 224, "gapY": 160, "type": "moving" },
+              { "x": 768, "gapY": 152, "type": "falling" },
+              { "x": 448, "gapY": 176, "type": "path" },
+              { "x": 224, "gapY": 160, "type": "falling" },
               { "x": 480, "gapY": 168, "type": "path" }
             ]
           },
@@ -927,7 +927,7 @@
             "steps": [
               { "x": 736, "gapY": 168, "type": "path" },
               { "x": 896, "gapY": 164, "type": "falling" },
-              { "x": 704, "gapY": 160, "type": "moving" },
+              { "x": 704, "gapY": 160, "type": "path" },
               { "x": 448, "gapY": 176, "type": "falling" },
               { "x": 192, "gapY": 152, "type": "path" }
             ]
@@ -961,7 +961,7 @@
               { "x": 320, "gapY": 152, "type": "path" },
               { "x": 480, "gapY": 160, "type": "moving" },
               { "x": 832, "gapY": 164, "type": "path" },
-              { "x": 608, "gapY": 168, "type": "falling" },
+              { "x": 608, "gapY": 168, "type": "moving" },
               { "x": 352, "gapY": 176, "type": "path" }
             ]
           },
@@ -969,8 +969,8 @@
             "id": "raketen-kabelschacht",
             "steps": [
               { "x": 128, "gapY": 160, "type": "path" },
-              { "x": 288, "gapY": 164, "type": "falling" },
-              { "x": 608, "gapY": 168, "type": "narrow" },
+              { "x": 288, "gapY": 164, "type": "moving" },
+              { "x": 608, "gapY": 168, "type": "path" },
               { "x": 864, "gapY": 176, "type": "moving" },
               { "x": 640, "gapY": 152, "type": "path" }
             ]
@@ -980,8 +980,8 @@
             "steps": [
               { "x": 384, "gapY": 164, "type": "path" },
               { "x": 224, "gapY": 168, "type": "moving" },
-              { "x": 416, "gapY": 176, "type": "narrow" },
-              { "x": 672, "gapY": 152, "type": "falling" },
+              { "x": 416, "gapY": 176, "type": "path" },
+              { "x": 672, "gapY": 152, "type": "moving" },
               { "x": 896, "gapY": 160, "type": "path" }
             ]
           },
@@ -989,9 +989,9 @@
             "id": "ventilkreuz",
             "steps": [
               { "x": 640, "gapY": 168, "type": "path" },
-              { "x": 480, "gapY": 176, "type": "falling" },
-              { "x": 128, "gapY": 152, "type": "moving" },
-              { "x": 352, "gapY": 160, "type": "narrow" },
+              { "x": 480, "gapY": 176, "type": "moving" },
+              { "x": 128, "gapY": 152, "type": "path" },
+              { "x": 352, "gapY": 160, "type": "moving" },
               { "x": 608, "gapY": 164, "type": "path" }
             ]
           },
@@ -999,9 +999,9 @@
             "id": "druckleitung",
             "steps": [
               { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 768, "gapY": 152, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "moving" },
-              { "x": 160, "gapY": 164, "type": "falling" },
+              { "x": 768, "gapY": 152, "type": "moving" },
+              { "x": 384, "gapY": 160, "type": "path" },
+              { "x": 160, "gapY": 164, "type": "moving" },
               { "x": 416, "gapY": 168, "type": "path" }
             ]
           },
@@ -1010,8 +1010,8 @@
             "steps": [
               { "x": 672, "gapY": 152, "type": "path" },
               { "x": 832, "gapY": 164, "type": "moving" },
-              { "x": 704, "gapY": 176, "type": "falling" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 448, "gapY": 160, "type": "moving" },
               { "x": 192, "gapY": 168, "type": "path" }
             ]
           },
@@ -1020,8 +1020,8 @@
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
               { "x": 576, "gapY": 168, "type": "moving" },
-              { "x": 864, "gapY": 152, "type": "narrow" },
-              { "x": 608, "gapY": 176, "type": "falling" },
+              { "x": 864, "gapY": 152, "type": "path" },
+              { "x": 608, "gapY": 176, "type": "moving" },
               { "x": 352, "gapY": 164, "type": "path" }
             ]
           },
@@ -1029,9 +1029,9 @@
             "id": "relaisschacht",
             "steps": [
               { "x": 128, "gapY": 168, "type": "path" },
-              { "x": 288, "gapY": 152, "type": "falling" },
-              { "x": 608, "gapY": 164, "type": "moving" },
-              { "x": 864, "gapY": 176, "type": "narrow" },
+              { "x": 288, "gapY": 152, "type": "moving" },
+              { "x": 608, "gapY": 164, "type": "path" },
+              { "x": 864, "gapY": 176, "type": "moving" },
               { "x": 640, "gapY": 160, "type": "path" }
             ]
           },
@@ -1040,8 +1040,8 @@
             "steps": [
               { "x": 416, "gapY": 176, "type": "path" },
               { "x": 256, "gapY": 160, "type": "moving" },
-              { "x": 384, "gapY": 168, "type": "narrow" },
-              { "x": 640, "gapY": 152, "type": "falling" },
+              { "x": 384, "gapY": 168, "type": "path" },
+              { "x": 640, "gapY": 152, "type": "moving" },
               { "x": 896, "gapY": 164, "type": "path" }
             ]
           },
@@ -1049,9 +1049,9 @@
             "id": "seitenwechsel",
             "steps": [
               { "x": 672, "gapY": 152, "type": "path" },
-              { "x": 512, "gapY": 176, "type": "falling" },
-              { "x": 192, "gapY": 164, "type": "moving" },
-              { "x": 416, "gapY": 168, "type": "narrow" },
+              { "x": 512, "gapY": 176, "type": "moving" },
+              { "x": 192, "gapY": 164, "type": "path" },
+              { "x": 416, "gapY": 168, "type": "moving" },
               { "x": 672, "gapY": 160, "type": "path" }
             ]
           },
@@ -1059,9 +1059,9 @@
             "id": "druckausgleich",
             "steps": [
               { "x": 928, "gapY": 164, "type": "path" },
-              { "x": 832, "gapY": 152, "type": "narrow" },
-              { "x": 448, "gapY": 176, "type": "moving" },
-              { "x": 224, "gapY": 160, "type": "falling" },
+              { "x": 832, "gapY": 152, "type": "moving" },
+              { "x": 448, "gapY": 176, "type": "path" },
+              { "x": 224, "gapY": 160, "type": "moving" },
               { "x": 480, "gapY": 168, "type": "path" }
             ]
           },
@@ -1069,8 +1069,8 @@
             "id": "ausstieg-zur-aussenhuelle",
             "steps": [
               { "x": 736, "gapY": 168, "type": "path" },
-              { "x": 896, "gapY": 164, "type": "falling" },
-              { "x": 704, "gapY": 160, "type": "narrow" },
+              { "x": 896, "gapY": 164, "type": "moving" },
+              { "x": 704, "gapY": 160, "type": "path" },
               { "x": 448, "gapY": 176, "type": "moving" },
               { "x": 192, "gapY": 152, "type": "path" }
             ]
@@ -1103,7 +1103,7 @@
             "steps": [
               { "x": 704, "gapY": 152, "type": "path" },
               { "x": 544, "gapY": 160, "type": "moving" },
-              { "x": 192, "gapY": 164, "type": "falling" },
+              { "x": 192, "gapY": 164, "type": "path" },
               { "x": 416, "gapY": 168, "type": "moving" },
               { "x": 672, "gapY": 176, "type": "path" }
             ]
@@ -1113,8 +1113,8 @@
             "steps": [
               { "x": 928, "gapY": 160, "type": "path" },
               { "x": 768, "gapY": 164, "type": "moving" },
-              { "x": 448, "gapY": 168, "type": "narrow" },
-              { "x": 224, "gapY": 176, "type": "falling" },
+              { "x": 448, "gapY": 168, "type": "path" },
+              { "x": 224, "gapY": 176, "type": "moving" },
               { "x": 480, "gapY": 152, "type": "path" }
             ]
           },
@@ -1122,9 +1122,9 @@
             "id": "antennenrippen",
             "steps": [
               { "x": 736, "gapY": 164, "type": "path" },
-              { "x": 896, "gapY": 168, "type": "falling" },
-              { "x": 704, "gapY": 176, "type": "moving" },
-              { "x": 448, "gapY": 152, "type": "narrow" },
+              { "x": 896, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "moving" },
               { "x": 192, "gapY": 160, "type": "path" }
             ]
           },
@@ -1133,8 +1133,8 @@
             "steps": [
               { "x": 416, "gapY": 168, "type": "path" },
               { "x": 576, "gapY": 176, "type": "moving" },
-              { "x": 928, "gapY": 152, "type": "narrow" },
-              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 928, "gapY": 152, "type": "path" },
+              { "x": 704, "gapY": 160, "type": "moving" },
               { "x": 448, "gapY": 164, "type": "path" }
             ]
           },
@@ -1142,9 +1142,9 @@
             "id": "offene-servicearme",
             "steps": [
               { "x": 192, "gapY": 176, "type": "path" },
-              { "x": 352, "gapY": 152, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "moving" },
-              { "x": 928, "gapY": 164, "type": "narrow" },
+              { "x": 352, "gapY": 152, "type": "moving" },
+              { "x": 672, "gapY": 160, "type": "path" },
+              { "x": 928, "gapY": 164, "type": "moving" },
               { "x": 704, "gapY": 168, "type": "path" }
             ]
           },
@@ -1153,8 +1153,8 @@
             "steps": [
               { "x": 448, "gapY": 152, "type": "path" },
               { "x": 288, "gapY": 164, "type": "moving" },
-              { "x": 416, "gapY": 176, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "narrow" },
+              { "x": 416, "gapY": 176, "type": "path" },
+              { "x": 672, "gapY": 160, "type": "moving" },
               { "x": 928, "gapY": 168, "type": "path" }
             ]
           },
@@ -1163,8 +1163,8 @@
             "steps": [
               { "x": 704, "gapY": 160, "type": "path" },
               { "x": 544, "gapY": 168, "type": "moving" },
-              { "x": 192, "gapY": 152, "type": "falling" },
-              { "x": 416, "gapY": 176, "type": "narrow" },
+              { "x": 192, "gapY": 152, "type": "path" },
+              { "x": 416, "gapY": 176, "type": "moving" },
               { "x": 672, "gapY": 164, "type": "path" }
             ]
           },
@@ -1172,9 +1172,9 @@
             "id": "aussenluecke",
             "steps": [
               { "x": 928, "gapY": 168, "type": "path" },
-              { "x": 768, "gapY": 152, "type": "falling" },
-              { "x": 448, "gapY": 164, "type": "moving" },
-              { "x": 224, "gapY": 176, "type": "narrow" },
+              { "x": 768, "gapY": 152, "type": "moving" },
+              { "x": 448, "gapY": 164, "type": "path" },
+              { "x": 224, "gapY": 176, "type": "moving" },
               { "x": 480, "gapY": 160, "type": "path" }
             ]
           },
@@ -1183,8 +1183,8 @@
             "steps": [
               { "x": 736, "gapY": 176, "type": "path" },
               { "x": 896, "gapY": 160, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
-              { "x": 448, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "moving" },
               { "x": 192, "gapY": 164, "type": "path" }
             ]
           },
@@ -1192,9 +1192,9 @@
             "id": "vereiste-platten",
             "steps": [
               { "x": 416, "gapY": 152, "type": "path" },
-              { "x": 576, "gapY": 176, "type": "falling" },
-              { "x": 928, "gapY": 164, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 576, "gapY": 176, "type": "moving" },
+              { "x": 928, "gapY": 164, "type": "path" },
+              { "x": 704, "gapY": 168, "type": "moving" },
               { "x": 448, "gapY": 160, "type": "path" }
             ]
           },
@@ -1203,8 +1203,8 @@
             "steps": [
               { "x": 192, "gapY": 164, "type": "path" },
               { "x": 352, "gapY": 152, "type": "moving" },
-              { "x": 672, "gapY": 176, "type": "narrow" },
-              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 672, "gapY": 176, "type": "path" },
+              { "x": 928, "gapY": 160, "type": "moving" },
               { "x": 704, "gapY": 168, "type": "path" }
             ]
           },
@@ -1212,8 +1212,8 @@
             "id": "aufstieg-zur-startrampe",
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
-              { "x": 320, "gapY": 164, "type": "falling" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 320, "gapY": 164, "type": "moving" },
+              { "x": 448, "gapY": 160, "type": "path" },
               { "x": 704, "gapY": 176, "type": "moving" },
               { "x": 960, "gapY": 152, "type": "path" }
             ]
@@ -1246,7 +1246,7 @@
             "steps": [
               { "x": 128, "gapY": 152, "type": "path" },
               { "x": 288, "gapY": 160, "type": "moving" },
-              { "x": 640, "gapY": 164, "type": "falling" },
+              { "x": 640, "gapY": 164, "type": "path" },
               { "x": 896, "gapY": 168, "type": "moving" },
               { "x": 640, "gapY": 176, "type": "path" }
             ]
@@ -1256,8 +1256,8 @@
             "steps": [
               { "x": 384, "gapY": 160, "type": "path" },
               { "x": 224, "gapY": 164, "type": "moving" },
-              { "x": 352, "gapY": 168, "type": "narrow" },
-              { "x": 608, "gapY": 176, "type": "falling" },
+              { "x": 352, "gapY": 168, "type": "path" },
+              { "x": 608, "gapY": 176, "type": "moving" },
               { "x": 864, "gapY": 152, "type": "path" }
             ]
           },
@@ -1265,9 +1265,9 @@
             "id": "startschienen",
             "steps": [
               { "x": 640, "gapY": 164, "type": "path" },
-              { "x": 800, "gapY": 168, "type": "falling" },
-              { "x": 672, "gapY": 176, "type": "moving" },
-              { "x": 416, "gapY": 152, "type": "narrow" },
+              { "x": 800, "gapY": 168, "type": "moving" },
+              { "x": 672, "gapY": 176, "type": "path" },
+              { "x": 416, "gapY": 152, "type": "moving" },
               { "x": 160, "gapY": 160, "type": "path" }
             ]
           },
@@ -1276,8 +1276,8 @@
             "steps": [
               { "x": 416, "gapY": 168, "type": "path" },
               { "x": 576, "gapY": 176, "type": "moving" },
-              { "x": 928, "gapY": 152, "type": "narrow" },
-              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 928, "gapY": 152, "type": "path" },
+              { "x": 704, "gapY": 160, "type": "moving" },
               { "x": 448, "gapY": 164, "type": "path" }
             ]
           },
@@ -1285,9 +1285,9 @@
             "id": "greifarme",
             "steps": [
               { "x": 192, "gapY": 176, "type": "path" },
-              { "x": 352, "gapY": 152, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "moving" },
-              { "x": 928, "gapY": 164, "type": "narrow" },
+              { "x": 352, "gapY": 152, "type": "moving" },
+              { "x": 672, "gapY": 160, "type": "path" },
+              { "x": 928, "gapY": 164, "type": "moving" },
               { "x": 704, "gapY": 168, "type": "path" }
             ]
           },
@@ -1296,8 +1296,8 @@
             "steps": [
               { "x": 448, "gapY": 152, "type": "path" },
               { "x": 288, "gapY": 164, "type": "moving" },
-              { "x": 416, "gapY": 176, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "narrow" },
+              { "x": 416, "gapY": 176, "type": "path" },
+              { "x": 672, "gapY": 160, "type": "moving" },
               { "x": 928, "gapY": 168, "type": "path" }
             ]
           },
@@ -1306,8 +1306,8 @@
             "steps": [
               { "x": 704, "gapY": 160, "type": "path" },
               { "x": 864, "gapY": 168, "type": "moving" },
-              { "x": 736, "gapY": 152, "type": "falling" },
-              { "x": 480, "gapY": 176, "type": "narrow" },
+              { "x": 736, "gapY": 152, "type": "path" },
+              { "x": 480, "gapY": 176, "type": "moving" },
               { "x": 224, "gapY": 164, "type": "path" }
             ]
           },
@@ -1315,9 +1315,9 @@
             "id": "windabweiser",
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
-              { "x": 320, "gapY": 152, "type": "falling" },
-              { "x": 448, "gapY": 164, "type": "moving" },
-              { "x": 704, "gapY": 176, "type": "narrow" },
+              { "x": 320, "gapY": 152, "type": "moving" },
+              { "x": 448, "gapY": 164, "type": "path" },
+              { "x": 704, "gapY": 176, "type": "moving" },
               { "x": 960, "gapY": 160, "type": "path" }
             ]
           },
@@ -1326,8 +1326,8 @@
             "steps": [
               { "x": 736, "gapY": 176, "type": "path" },
               { "x": 896, "gapY": 160, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
-              { "x": 448, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "moving" },
               { "x": 192, "gapY": 164, "type": "path" }
             ]
           },
@@ -1335,9 +1335,9 @@
             "id": "gebrochene-gantry",
             "steps": [
               { "x": 416, "gapY": 152, "type": "path" },
-              { "x": 576, "gapY": 176, "type": "falling" },
-              { "x": 928, "gapY": 164, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 576, "gapY": 176, "type": "moving" },
+              { "x": 928, "gapY": 164, "type": "path" },
+              { "x": 704, "gapY": 168, "type": "moving" },
               { "x": 448, "gapY": 160, "type": "path" }
             ]
           },
@@ -1346,8 +1346,8 @@
             "steps": [
               { "x": 192, "gapY": 164, "type": "path" },
               { "x": 352, "gapY": 152, "type": "moving" },
-              { "x": 672, "gapY": 176, "type": "narrow" },
-              { "x": 928, "gapY": 160, "type": "falling" },
+              { "x": 672, "gapY": 176, "type": "path" },
+              { "x": 928, "gapY": 160, "type": "moving" },
               { "x": 704, "gapY": 168, "type": "path" }
             ]
           },
@@ -1356,8 +1356,8 @@
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
               { "x": 320, "gapY": 164, "type": "moving" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
-              { "x": 704, "gapY": 176, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "path" },
+              { "x": 704, "gapY": 176, "type": "moving" },
               { "x": 960, "gapY": 152, "type": "path" }
             ]
           }
@@ -1399,8 +1399,8 @@
             "steps": [
               { "x": 640, "gapY": 160, "type": "path" },
               { "x": 800, "gapY": 168, "type": "moving" },
-              { "x": 672, "gapY": 172, "type": "narrow" },
-              { "x": 416, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 172, "type": "moving" },
               { "x": 160, "gapY": 148, "type": "path" }
             ]
           },
@@ -1408,9 +1408,9 @@
             "id": "ringstreben",
             "steps": [
               { "x": 384, "gapY": 168, "type": "path" },
-              { "x": 544, "gapY": 172, "type": "falling" },
-              { "x": 896, "gapY": 172, "type": "moving" },
-              { "x": 640, "gapY": 148, "type": "narrow" },
+              { "x": 544, "gapY": 172, "type": "moving" },
+              { "x": 896, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 148, "type": "moving" },
               { "x": 384, "gapY": 160, "type": "path" }
             ]
           },
@@ -1419,8 +1419,8 @@
             "steps": [
               { "x": 128, "gapY": 172, "type": "path" },
               { "x": 288, "gapY": 172, "type": "moving" },
-              { "x": 640, "gapY": 148, "type": "narrow" },
-              { "x": 896, "gapY": 160, "type": "falling" },
+              { "x": 640, "gapY": 148, "type": "falling" },
+              { "x": 896, "gapY": 160, "type": "moving" },
               { "x": 672, "gapY": 168, "type": "path" }
             ]
           },
@@ -1428,9 +1428,9 @@
             "id": "frachtkran",
             "steps": [
               { "x": 416, "gapY": 172, "type": "path" },
-              { "x": 256, "gapY": 148, "type": "falling" },
-              { "x": 384, "gapY": 160, "type": "moving" },
-              { "x": 640, "gapY": 168, "type": "narrow" },
+              { "x": 256, "gapY": 148, "type": "moving" },
+              { "x": 384, "gapY": 160, "type": "falling" },
+              { "x": 640, "gapY": 168, "type": "moving" },
               { "x": 896, "gapY": 172, "type": "path" }
             ]
           },
@@ -1440,7 +1440,7 @@
               { "x": 672, "gapY": 148, "type": "path" },
               { "x": 832, "gapY": 168, "type": "moving" },
               { "x": 704, "gapY": 172, "type": "falling" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 448, "gapY": 160, "type": "moving" },
               { "x": 192, "gapY": 172, "type": "path" }
             ]
           },
@@ -1448,9 +1448,9 @@
             "id": "aussencontainer",
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 172, "type": "falling" },
-              { "x": 928, "gapY": 148, "type": "moving" },
-              { "x": 704, "gapY": 172, "type": "narrow" },
+              { "x": 576, "gapY": 172, "type": "moving" },
+              { "x": 928, "gapY": 148, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
               { "x": 448, "gapY": 168, "type": "path" }
             ]
           },
@@ -1460,7 +1460,7 @@
               { "x": 192, "gapY": 168, "type": "path" },
               { "x": 352, "gapY": 172, "type": "moving" },
               { "x": 704, "gapY": 160, "type": "falling" },
-              { "x": 960, "gapY": 148, "type": "narrow" },
+              { "x": 960, "gapY": 148, "type": "moving" },
               { "x": 736, "gapY": 172, "type": "path" }
             ]
           },
@@ -1468,9 +1468,9 @@
             "id": "kupplungsarme",
             "steps": [
               { "x": 480, "gapY": 172, "type": "path" },
-              { "x": 320, "gapY": 160, "type": "falling" },
-              { "x": 448, "gapY": 148, "type": "moving" },
-              { "x": 704, "gapY": 172, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "moving" },
+              { "x": 448, "gapY": 148, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
               { "x": 960, "gapY": 168, "type": "path" }
             ]
           },
@@ -1479,8 +1479,8 @@
             "steps": [
               { "x": 736, "gapY": 148, "type": "path" },
               { "x": 896, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
-              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
               { "x": 192, "gapY": 160, "type": "path" }
             ]
           },
@@ -1488,9 +1488,9 @@
             "id": "ringoberseite",
             "steps": [
               { "x": 416, "gapY": 172, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "falling" },
-              { "x": 928, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 160, "type": "narrow" },
+              { "x": 576, "gapY": 168, "type": "moving" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "moving" },
               { "x": 448, "gapY": 148, "type": "path" }
             ]
           },
@@ -1499,8 +1499,8 @@
             "steps": [
               { "x": 192, "gapY": 160, "type": "path" },
               { "x": 352, "gapY": 148, "type": "moving" },
-              { "x": 672, "gapY": 172, "type": "narrow" },
-              { "x": 928, "gapY": 168, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 928, "gapY": 168, "type": "moving" },
               { "x": 704, "gapY": 172, "type": "path" }
             ]
           }
@@ -1542,8 +1542,8 @@
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
               { "x": 256, "gapY": 168, "type": "moving" },
-              { "x": 384, "gapY": 172, "type": "narrow" },
-              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "falling" },
+              { "x": 640, "gapY": 172, "type": "moving" },
               { "x": 896, "gapY": 148, "type": "path" }
             ]
           },
@@ -1551,9 +1551,9 @@
             "id": "laserbruecke",
             "steps": [
               { "x": 640, "gapY": 168, "type": "path" },
-              { "x": 800, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 172, "type": "moving" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 800, "gapY": 172, "type": "moving" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "moving" },
               { "x": 160, "gapY": 160, "type": "path" }
             ]
           },
@@ -1562,8 +1562,8 @@
             "steps": [
               { "x": 384, "gapY": 172, "type": "path" },
               { "x": 544, "gapY": 172, "type": "moving" },
-              { "x": 896, "gapY": 148, "type": "narrow" },
-              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 896, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
               { "x": 416, "gapY": 168, "type": "path" }
             ]
           },
@@ -1571,9 +1571,9 @@
             "id": "analysearme",
             "steps": [
               { "x": 160, "gapY": 172, "type": "path" },
-              { "x": 320, "gapY": 148, "type": "falling" },
-              { "x": 640, "gapY": 160, "type": "moving" },
-              { "x": 896, "gapY": 168, "type": "narrow" },
+              { "x": 320, "gapY": 148, "type": "moving" },
+              { "x": 640, "gapY": 160, "type": "falling" },
+              { "x": 896, "gapY": 168, "type": "moving" },
               { "x": 672, "gapY": 172, "type": "path" }
             ]
           },
@@ -1583,7 +1583,7 @@
               { "x": 416, "gapY": 148, "type": "path" },
               { "x": 256, "gapY": 168, "type": "moving" },
               { "x": 384, "gapY": 172, "type": "falling" },
-              { "x": 640, "gapY": 160, "type": "narrow" },
+              { "x": 640, "gapY": 160, "type": "moving" },
               { "x": 896, "gapY": 172, "type": "path" }
             ]
           },
@@ -1591,9 +1591,9 @@
             "id": "testzellen",
             "steps": [
               { "x": 672, "gapY": 160, "type": "path" },
-              { "x": 832, "gapY": 172, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "moving" },
-              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 832, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
               { "x": 192, "gapY": 168, "type": "path" }
             ]
           },
@@ -1603,7 +1603,7 @@
               { "x": 416, "gapY": 168, "type": "path" },
               { "x": 576, "gapY": 172, "type": "moving" },
               { "x": 928, "gapY": 160, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 148, "type": "moving" },
               { "x": 448, "gapY": 172, "type": "path" }
             ]
           },
@@ -1611,9 +1611,9 @@
             "id": "antennenlabor",
             "steps": [
               { "x": 192, "gapY": 172, "type": "path" },
-              { "x": 352, "gapY": 160, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "moving" },
-              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 352, "gapY": 160, "type": "moving" },
+              { "x": 704, "gapY": 148, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
               { "x": 736, "gapY": 168, "type": "path" }
             ]
           },
@@ -1622,8 +1622,8 @@
             "steps": [
               { "x": 480, "gapY": 148, "type": "path" },
               { "x": 320, "gapY": 172, "type": "moving" },
-              { "x": 448, "gapY": 168, "type": "narrow" },
-              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
               { "x": 960, "gapY": 160, "type": "path" }
             ]
           },
@@ -1631,9 +1631,9 @@
             "id": "quarantaenerahmen",
             "steps": [
               { "x": 736, "gapY": 172, "type": "path" },
-              { "x": 896, "gapY": 168, "type": "falling" },
-              { "x": 704, "gapY": 172, "type": "moving" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 896, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "moving" },
               { "x": 192, "gapY": 148, "type": "path" }
             ]
           },
@@ -1642,8 +1642,8 @@
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
               { "x": 576, "gapY": 148, "type": "moving" },
-              { "x": 928, "gapY": 172, "type": "narrow" },
-              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "moving" },
               { "x": 448, "gapY": 172, "type": "path" }
             ]
           }
@@ -1685,8 +1685,8 @@
             "steps": [
               { "x": 672, "gapY": 160, "type": "path" },
               { "x": 832, "gapY": 168, "type": "moving" },
-              { "x": 704, "gapY": 172, "type": "narrow" },
-              { "x": 480, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 480, "gapY": 172, "type": "moving" },
               { "x": 256, "gapY": 148, "type": "path" }
             ]
           },
@@ -1694,9 +1694,9 @@
             "id": "kommunikationsschienen",
             "steps": [
               { "x": 128, "gapY": 168, "type": "path" },
-              { "x": 288, "gapY": 172, "type": "falling" },
-              { "x": 640, "gapY": 172, "type": "moving" },
-              { "x": 896, "gapY": 148, "type": "narrow" },
+              { "x": 288, "gapY": 172, "type": "moving" },
+              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 896, "gapY": 148, "type": "moving" },
               { "x": 640, "gapY": 160, "type": "path" }
             ]
           },
@@ -1705,8 +1705,8 @@
             "steps": [
               { "x": 384, "gapY": 172, "type": "path" },
               { "x": 224, "gapY": 172, "type": "moving" },
-              { "x": 352, "gapY": 148, "type": "narrow" },
-              { "x": 608, "gapY": 160, "type": "falling" },
+              { "x": 352, "gapY": 148, "type": "falling" },
+              { "x": 608, "gapY": 160, "type": "moving" },
               { "x": 864, "gapY": 168, "type": "path" }
             ]
           },
@@ -1714,9 +1714,9 @@
             "id": "navigationsarme",
             "steps": [
               { "x": 640, "gapY": 172, "type": "path" },
-              { "x": 800, "gapY": 148, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "moving" },
-              { "x": 416, "gapY": 168, "type": "narrow" },
+              { "x": 800, "gapY": 148, "type": "moving" },
+              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 416, "gapY": 168, "type": "moving" },
               { "x": 160, "gapY": 172, "type": "path" }
             ]
           },
@@ -1726,7 +1726,7 @@
               { "x": 416, "gapY": 148, "type": "path" },
               { "x": 576, "gapY": 168, "type": "moving" },
               { "x": 928, "gapY": 172, "type": "falling" },
-              { "x": 704, "gapY": 160, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "moving" },
               { "x": 448, "gapY": 172, "type": "path" }
             ]
           },
@@ -1736,7 +1736,7 @@
               { "x": 192, "gapY": 160, "type": "path" },
               { "x": 352, "gapY": 172, "type": "moving" },
               { "x": 704, "gapY": 148, "type": "falling" },
-              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 960, "gapY": 172, "type": "moving" },
               { "x": 736, "gapY": 168, "type": "path" }
             ]
           },
@@ -1744,9 +1744,9 @@
             "id": "kapitaensring",
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
-              { "x": 320, "gapY": 172, "type": "falling" },
-              { "x": 128, "gapY": 160, "type": "moving" },
-              { "x": 384, "gapY": 148, "type": "narrow" },
+              { "x": 320, "gapY": 172, "type": "moving" },
+              { "x": 128, "gapY": 160, "type": "falling" },
+              { "x": 384, "gapY": 148, "type": "moving" },
               { "x": 640, "gapY": 172, "type": "path" }
             ]
           },
@@ -1755,8 +1755,8 @@
             "steps": [
               { "x": 896, "gapY": 172, "type": "path" },
               { "x": 736, "gapY": 160, "type": "moving" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 160, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 160, "gapY": 172, "type": "moving" },
               { "x": 416, "gapY": 168, "type": "path" }
             ]
           },
@@ -1764,9 +1764,9 @@
             "id": "verteidigungskonsolen",
             "steps": [
               { "x": 672, "gapY": 148, "type": "path" },
-              { "x": 832, "gapY": 172, "type": "falling" },
-              { "x": 704, "gapY": 168, "type": "moving" },
-              { "x": 480, "gapY": 172, "type": "narrow" },
+              { "x": 832, "gapY": 172, "type": "moving" },
+              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 480, "gapY": 172, "type": "moving" },
               { "x": 256, "gapY": 160, "type": "path" }
             ]
           },
@@ -1775,8 +1775,8 @@
             "steps": [
               { "x": 128, "gapY": 172, "type": "path" },
               { "x": 288, "gapY": 168, "type": "moving" },
-              { "x": 640, "gapY": 172, "type": "narrow" },
-              { "x": 896, "gapY": 160, "type": "falling" },
+              { "x": 640, "gapY": 172, "type": "falling" },
+              { "x": 896, "gapY": 160, "type": "moving" },
               { "x": 640, "gapY": 148, "type": "path" }
             ]
           },
@@ -1784,9 +1784,9 @@
             "id": "ausstieg-zum-mond",
             "steps": [
               { "x": 384, "gapY": 160, "type": "path" },
-              { "x": 224, "gapY": 148, "type": "falling" },
-              { "x": 352, "gapY": 172, "type": "narrow" },
-              { "x": 608, "gapY": 168, "type": "falling" },
+              { "x": 224, "gapY": 148, "type": "moving" },
+              { "x": 352, "gapY": 172, "type": "falling" },
+              { "x": 608, "gapY": 168, "type": "moving" },
               { "x": 864, "gapY": 172, "type": "path" }
             ]
           }
@@ -1817,8 +1817,8 @@
             "id": "mondlandung",
             "steps": [
               { "x": 160, "gapY": 148, "type": "path" },
-              { "x": 320, "gapY": 160, "type": "moving" },
-              { "x": 672, "gapY": 168, "type": "falling" },
+              { "x": 320, "gapY": 160, "type": "narrow" },
+              { "x": 640, "gapY": 168, "type": "falling" },
               { "x": 928, "gapY": 172, "type": "moving" },
               { "x": 672, "gapY": 172, "type": "path" }
             ]
@@ -1827,9 +1827,9 @@
             "id": "flacher-krater",
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 256, "gapY": 168, "type": "moving" },
-              { "x": 416, "gapY": 172, "type": "narrow" },
-              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 320, "gapY": 168, "type": "narrow" },
+              { "x": 416, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 172, "type": "moving" },
               { "x": 928, "gapY": 148, "type": "path" }
             ]
           },
@@ -1837,9 +1837,9 @@
             "id": "basaltzaehne",
             "steps": [
               { "x": 672, "gapY": 168, "type": "path" },
-              { "x": 832, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 172, "type": "moving" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 832, "gapY": 172, "type": "narrow" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 416, "gapY": 148, "type": "moving" },
               { "x": 160, "gapY": 160, "type": "path" }
             ]
           },
@@ -1847,9 +1847,9 @@
             "id": "staubrinne",
             "steps": [
               { "x": 416, "gapY": 172, "type": "path" },
-              { "x": 576, "gapY": 172, "type": "moving" },
-              { "x": 928, "gapY": 148, "type": "narrow" },
-              { "x": 672, "gapY": 160, "type": "falling" },
+              { "x": 576, "gapY": 172, "type": "narrow" },
+              { "x": 896, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 160, "type": "moving" },
               { "x": 416, "gapY": 168, "type": "path" }
             ]
           },
@@ -1857,9 +1857,9 @@
             "id": "meteorboegen",
             "steps": [
               { "x": 160, "gapY": 172, "type": "path" },
-              { "x": 320, "gapY": 148, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "moving" },
-              { "x": 928, "gapY": 168, "type": "narrow" },
+              { "x": 320, "gapY": 148, "type": "narrow" },
+              { "x": 640, "gapY": 160, "type": "falling" },
+              { "x": 928, "gapY": 168, "type": "moving" },
               { "x": 672, "gapY": 172, "type": "path" }
             ]
           },
@@ -1867,9 +1867,9 @@
             "id": "roverwrack",
             "steps": [
               { "x": 416, "gapY": 148, "type": "path" },
-              { "x": 256, "gapY": 168, "type": "moving" },
+              { "x": 320, "gapY": 168, "type": "narrow" },
               { "x": 416, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "narrow" },
+              { "x": 672, "gapY": 160, "type": "moving" },
               { "x": 928, "gapY": 172, "type": "path" }
             ]
           },
@@ -1877,9 +1877,9 @@
             "id": "stiller-grat",
             "steps": [
               { "x": 672, "gapY": 160, "type": "path" },
-              { "x": 832, "gapY": 172, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "moving" },
-              { "x": 448, "gapY": 172, "type": "narrow" },
+              { "x": 832, "gapY": 172, "type": "narrow" },
+              { "x": 704, "gapY": 148, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
               { "x": 192, "gapY": 168, "type": "path" }
             ]
           },
@@ -1887,9 +1887,9 @@
             "id": "kraterhals",
             "steps": [
               { "x": 416, "gapY": 168, "type": "path" },
-              { "x": 576, "gapY": 172, "type": "moving" },
-              { "x": 928, "gapY": 160, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 576, "gapY": 172, "type": "narrow" },
+              { "x": 896, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
               { "x": 448, "gapY": 172, "type": "path" }
             ]
           },
@@ -1897,9 +1897,9 @@
             "id": "schattenseite",
             "steps": [
               { "x": 192, "gapY": 172, "type": "path" },
-              { "x": 352, "gapY": 160, "type": "falling" },
-              { "x": 704, "gapY": 148, "type": "moving" },
-              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 352, "gapY": 160, "type": "narrow" },
+              { "x": 672, "gapY": 148, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
               { "x": 736, "gapY": 168, "type": "path" }
             ]
           },
@@ -1907,9 +1907,9 @@
             "id": "antennenwrack",
             "steps": [
               { "x": 480, "gapY": 148, "type": "path" },
-              { "x": 320, "gapY": 172, "type": "moving" },
-              { "x": 448, "gapY": 168, "type": "narrow" },
-              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "moving" },
               { "x": 960, "gapY": 160, "type": "path" }
             ]
           },
@@ -1917,9 +1917,9 @@
             "id": "hoher-kraterrand",
             "steps": [
               { "x": 736, "gapY": 172, "type": "path" },
-              { "x": 896, "gapY": 168, "type": "falling" },
-              { "x": 704, "gapY": 172, "type": "moving" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 896, "gapY": 168, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "moving" },
               { "x": 192, "gapY": 148, "type": "path" }
             ]
           },
@@ -1927,9 +1927,9 @@
             "id": "eingang-zu-den-ruinen",
             "steps": [
               { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 148, "type": "moving" },
-              { "x": 928, "gapY": 172, "type": "narrow" },
-              { "x": 672, "gapY": 168, "type": "falling" },
+              { "x": 576, "gapY": 148, "type": "narrow" },
+              { "x": 896, "gapY": 172, "type": "falling" },
+              { "x": 672, "gapY": 168, "type": "moving" },
               { "x": 416, "gapY": 172, "type": "path" }
             ]
           }
@@ -1960,8 +1960,8 @@
             "id": "ruinentor",
             "steps": [
               { "x": 928, "gapY": 148, "type": "path" },
-              { "x": 768, "gapY": 160, "type": "moving" },
-              { "x": 416, "gapY": 168, "type": "falling" },
+              { "x": 832, "gapY": 160, "type": "narrow" },
+              { "x": 448, "gapY": 168, "type": "falling" },
               { "x": 160, "gapY": 172, "type": "moving" },
               { "x": 416, "gapY": 172, "type": "path" }
             ]
@@ -1970,9 +1970,9 @@
             "id": "gebrochene-saeulen",
             "steps": [
               { "x": 672, "gapY": 160, "type": "path" },
-              { "x": 832, "gapY": 168, "type": "moving" },
-              { "x": 704, "gapY": 172, "type": "narrow" },
-              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 832, "gapY": 168, "type": "narrow" },
+              { "x": 704, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 172, "type": "moving" },
               { "x": 192, "gapY": 148, "type": "path" }
             ]
           },
@@ -1980,9 +1980,9 @@
             "id": "echoschacht",
             "steps": [
               { "x": 448, "gapY": 168, "type": "path" },
-              { "x": 608, "gapY": 172, "type": "falling" },
-              { "x": 960, "gapY": 172, "type": "moving" },
-              { "x": 736, "gapY": 148, "type": "narrow" },
+              { "x": 608, "gapY": 172, "type": "narrow" },
+              { "x": 928, "gapY": 172, "type": "falling" },
+              { "x": 736, "gapY": 148, "type": "moving" },
               { "x": 480, "gapY": 160, "type": "path" }
             ]
           },
@@ -1990,9 +1990,9 @@
             "id": "rissige-kuppel",
             "steps": [
               { "x": 224, "gapY": 172, "type": "path" },
-              { "x": 384, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 148, "type": "narrow" },
-              { "x": 960, "gapY": 160, "type": "falling" },
+              { "x": 384, "gapY": 172, "type": "narrow" },
+              { "x": 704, "gapY": 148, "type": "falling" },
+              { "x": 960, "gapY": 160, "type": "moving" },
               { "x": 736, "gapY": 168, "type": "path" }
             ]
           },
@@ -2000,9 +2000,9 @@
             "id": "satellitenkapelle",
             "steps": [
               { "x": 480, "gapY": 172, "type": "path" },
-              { "x": 320, "gapY": 148, "type": "falling" },
-              { "x": 448, "gapY": 160, "type": "moving" },
-              { "x": 704, "gapY": 168, "type": "narrow" },
+              { "x": 384, "gapY": 148, "type": "narrow" },
+              { "x": 448, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "moving" },
               { "x": 960, "gapY": 172, "type": "path" }
             ]
           },
@@ -2010,9 +2010,9 @@
             "id": "wandernder-altar",
             "steps": [
               { "x": 736, "gapY": 148, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "moving" },
-              { "x": 224, "gapY": 172, "type": "falling" },
-              { "x": 448, "gapY": 160, "type": "narrow" },
+              { "x": 640, "gapY": 168, "type": "narrow" },
+              { "x": 256, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 160, "type": "moving" },
               { "x": 704, "gapY": 172, "type": "path" }
             ]
           },
@@ -2020,9 +2020,9 @@
             "id": "eingestuerzte-bruecke",
             "steps": [
               { "x": 960, "gapY": 160, "type": "path" },
-              { "x": 800, "gapY": 172, "type": "moving" },
+              { "x": 864, "gapY": 172, "type": "narrow" },
               { "x": 480, "gapY": 148, "type": "falling" },
-              { "x": 224, "gapY": 172, "type": "narrow" },
+              { "x": 224, "gapY": 172, "type": "moving" },
               { "x": 448, "gapY": 168, "type": "path" }
             ]
           },
@@ -2030,9 +2030,9 @@
             "id": "glyphenschacht",
             "steps": [
               { "x": 704, "gapY": 168, "type": "path" },
-              { "x": 864, "gapY": 172, "type": "falling" },
-              { "x": 736, "gapY": 160, "type": "moving" },
-              { "x": 480, "gapY": 148, "type": "narrow" },
+              { "x": 864, "gapY": 172, "type": "narrow" },
+              { "x": 736, "gapY": 160, "type": "falling" },
+              { "x": 480, "gapY": 148, "type": "moving" },
               { "x": 224, "gapY": 172, "type": "path" }
             ]
           },
@@ -2040,9 +2040,9 @@
             "id": "orbitalring",
             "steps": [
               { "x": 448, "gapY": 172, "type": "path" },
-              { "x": 608, "gapY": 160, "type": "moving" },
-              { "x": 960, "gapY": 148, "type": "falling" },
-              { "x": 736, "gapY": 172, "type": "narrow" },
+              { "x": 608, "gapY": 160, "type": "narrow" },
+              { "x": 928, "gapY": 148, "type": "falling" },
+              { "x": 736, "gapY": 172, "type": "moving" },
               { "x": 480, "gapY": 168, "type": "path" }
             ]
           },
@@ -2050,9 +2050,9 @@
             "id": "mondbogen",
             "steps": [
               { "x": 224, "gapY": 148, "type": "path" },
-              { "x": 384, "gapY": 172, "type": "falling" },
-              { "x": 704, "gapY": 168, "type": "moving" },
-              { "x": 960, "gapY": 172, "type": "narrow" },
+              { "x": 384, "gapY": 172, "type": "narrow" },
+              { "x": 704, "gapY": 168, "type": "falling" },
+              { "x": 960, "gapY": 172, "type": "moving" },
               { "x": 736, "gapY": 160, "type": "path" }
             ]
           },
@@ -2060,9 +2060,9 @@
             "id": "letzte-terrasse",
             "steps": [
               { "x": 480, "gapY": 172, "type": "path" },
-              { "x": 320, "gapY": 168, "type": "moving" },
-              { "x": 448, "gapY": 172, "type": "narrow" },
-              { "x": 704, "gapY": 160, "type": "falling" },
+              { "x": 384, "gapY": 168, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "moving" },
               { "x": 960, "gapY": 148, "type": "path" }
             ]
           },
@@ -2070,9 +2070,9 @@
             "id": "festungstor",
             "steps": [
               { "x": 736, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 148, "type": "falling" },
-              { "x": 256, "gapY": 172, "type": "narrow" },
-              { "x": 448, "gapY": 168, "type": "falling" },
+              { "x": 640, "gapY": 148, "type": "narrow" },
+              { "x": 256, "gapY": 172, "type": "falling" },
+              { "x": 448, "gapY": 168, "type": "moving" },
               { "x": 704, "gapY": 172, "type": "path" }
             ]
           }
@@ -2103,8 +2103,8 @@
             "id": "aussere-bastion",
             "steps": [
               { "x": 160, "gapY": 148, "type": "path" },
-              { "x": 320, "gapY": 160, "type": "falling" },
-              { "x": 672, "gapY": 168, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "narrow" },
+              { "x": 640, "gapY": 168, "type": "falling" },
               { "x": 928, "gapY": 172, "type": "moving" },
               { "x": 672, "gapY": 172, "type": "path" }
             ]
@@ -2123,7 +2123,7 @@
             "id": "zersplitterter-damm",
             "steps": [
               { "x": 384, "gapY": 172, "type": "path" },
-              { "x": 544, "gapY": 176, "type": "moving" },
+              { "x": 544, "gapY": 176, "type": "narrow" },
               { "x": 416, "gapY": 180, "type": "falling" },
               { "x": 384, "gapY": 172, "type": "moving" },
               { "x": 160, "gapY": 172, "type": "path" }
@@ -2133,8 +2133,8 @@
             "id": "waechterrippen",
             "steps": [
               { "x": 416, "gapY": 172, "type": "path" },
-              { "x": 576, "gapY": 176, "type": "falling" },
-              { "x": 928, "gapY": 180, "type": "narrow" },
+              { "x": 576, "gapY": 176, "type": "narrow" },
+              { "x": 896, "gapY": 180, "type": "falling" },
               { "x": 704, "gapY": 172, "type": "moving" },
               { "x": 448, "gapY": 176, "type": "path" }
             ]
@@ -2143,8 +2143,8 @@
             "id": "versorgungskammer",
             "steps": [
               { "x": 192, "gapY": 180, "type": "path" },
-              { "x": 352, "gapY": 172, "type": "falling" },
-              { "x": 384, "gapY": 172, "type": "path" },
+              { "x": 352, "gapY": 172, "type": "narrow" },
+              { "x": 384, "gapY": 172, "type": "falling" },
               { "x": 640, "gapY": 148, "type": "moving" },
               { "x": 896, "gapY": 160, "type": "path" }
             ]
@@ -2153,9 +2153,9 @@
             "id": "gravitationstore",
             "steps": [
               { "x": 640, "gapY": 168, "type": "path" },
-              { "x": 480, "gapY": 172, "type": "moving" },
+              { "x": 544, "gapY": 172, "type": "narrow" },
               { "x": 160, "gapY": 172, "type": "falling" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
+              { "x": 416, "gapY": 148, "type": "moving" },
               { "x": 672, "gapY": 160, "type": "path" }
             ]
           },
@@ -2163,9 +2163,9 @@
             "id": "mondklingen",
             "steps": [
               { "x": 928, "gapY": 168, "type": "path" },
-              { "x": 768, "gapY": 172, "type": "falling" },
-              { "x": 448, "gapY": 172, "type": "moving" },
-              { "x": 192, "gapY": 148, "type": "narrow" },
+              { "x": 832, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 192, "gapY": 148, "type": "moving" },
               { "x": 448, "gapY": 160, "type": "path" }
             ]
           },
@@ -2173,9 +2173,9 @@
             "id": "verteidigungskamm",
             "steps": [
               { "x": 704, "gapY": 168, "type": "path" },
-              { "x": 864, "gapY": 172, "type": "moving" },
+              { "x": 864, "gapY": 172, "type": "narrow" },
               { "x": 736, "gapY": 172, "type": "falling" },
-              { "x": 480, "gapY": 148, "type": "narrow" },
+              { "x": 480, "gapY": 148, "type": "moving" },
               { "x": 224, "gapY": 160, "type": "path" }
             ]
           },
@@ -2183,9 +2183,9 @@
             "id": "einstuerzende-krone",
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
-              { "x": 640, "gapY": 172, "type": "falling" },
-              { "x": 960, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 640, "gapY": 172, "type": "narrow" },
+              { "x": 960, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
               { "x": 448, "gapY": 160, "type": "path" }
             ]
           },
@@ -2193,9 +2193,9 @@
             "id": "letzter-aufstieg",
             "steps": [
               { "x": 192, "gapY": 168, "type": "path" },
-              { "x": 352, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 172, "type": "falling" },
-              { "x": 960, "gapY": 148, "type": "narrow" },
+              { "x": 352, "gapY": 172, "type": "narrow" },
+              { "x": 672, "gapY": 172, "type": "falling" },
+              { "x": 960, "gapY": 148, "type": "moving" },
               { "x": 736, "gapY": 160, "type": "path" }
             ]
           },
@@ -2203,9 +2203,9 @@
             "id": "arenaschwelle",
             "steps": [
               { "x": 480, "gapY": 168, "type": "path" },
-              { "x": 320, "gapY": 172, "type": "falling" },
-              { "x": 448, "gapY": 172, "type": "moving" },
-              { "x": 704, "gapY": 148, "type": "narrow" },
+              { "x": 384, "gapY": 172, "type": "narrow" },
+              { "x": 448, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 148, "type": "moving" },
               { "x": 640, "gapY": 152, "type": "path" }
             ]
           },
@@ -2213,9 +2213,9 @@
             "id": "waechterarena",
             "steps": [
               { "x": 384, "gapY": 152, "type": "catch" },
-              { "x": 640, "gapY": 140, "type": "moving" },
-              { "x": 896, "gapY": 144, "type": "falling" },
               { "x": 640, "gapY": 140, "type": "narrow" },
+              { "x": 896, "gapY": 144, "type": "falling" },
+              { "x": 640, "gapY": 140, "type": "moving" },
               { "x": 384, "gapY": 144, "type": "path" }
             ]
           }

@@ -15,3 +15,11 @@ export const PLATFORM_WIDTHS = Object.freeze({
   falling: 192,
   catch: 512,
 });
+
+export const BIOME_CHALLENGE_PROFILES = Object.freeze({
+  scrapyard: Object.freeze(["narrow"]),
+  factory: Object.freeze(["falling"]),
+  "launch-tower": Object.freeze(["moving"]),
+  "space-station": Object.freeze(["moving", "falling"]),
+  moon: Object.freeze(["narrow", "moving", "falling"]),
+});

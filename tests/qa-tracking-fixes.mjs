@@ -73,8 +73,8 @@ async function assertBackgroundAssets() {
 function assertEnvironmentMotion() {
   const moving = countPlatforms(MovingPlatform);
   const falling = countPlatforms(FallingPlatform);
-  assert.ok(moving >= level.sections.length * 10);
-  assert.ok(falling >= level.sections.length * 10);
+  assert.ok(moving >= level.sections.length * 9);
+  assert.ok(falling >= level.sections.length * 9);
 }
 
 function countPlatforms(PlatformType) {
