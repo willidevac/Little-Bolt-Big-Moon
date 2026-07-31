@@ -66,7 +66,7 @@
   background-image: var(--upgrade-icon);
   background-position: calc(var(--upgrade-frame) * -3rem) 0;
   background-size: 15rem 3rem;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 
 .upgrade-card__name {

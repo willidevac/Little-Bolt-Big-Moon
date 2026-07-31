@@ -34,11 +34,11 @@ export const STORY_PROP_CONFIGS = Object.freeze({
     64,
   )),
   lumaBadgeHalf: createStatic(createSprite(
-    getAssetPath("items", "collectables.png"),
-    32,
-    32,
+    getAssetPath("items", "collectables-clean-hd.png"),
+    64,
+    64,
     15,
-  ), 2, 14),
+  ), 1, 14),
   blueSignalBeacon: Object.freeze({
     sprite: createSprite(
       getAssetPath("props", "blue-signal-beacon.png"),

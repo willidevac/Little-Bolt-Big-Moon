@@ -608,8 +608,8 @@
     {
       "id": "collectables-runtime-v1",
       "file": "img/sprites/items/collectables.png",
-      "role": "runtime-collectables-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-collectables-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated collectables production material",
       "created": "2026-07-24",
       "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x96 with fifteen occupied 32x32 cells.",
@@ -628,8 +628,8 @@
     {
       "id": "upgrade-icons-runtime-v1",
       "file": "img/sprites/items/upgrade-icons.png",
-      "role": "runtime-upgrade-icons-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-upgrade-icons-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated upgrade icon production material",
       "created": "2026-07-24",
       "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x32 with five occupied 32x32 cells.",
@@ -648,11 +648,81 @@
     {
       "id": "gameplay-effects-runtime-v1",
       "file": "img/sprites/effects/gameplay-effects.png",
-      "role": "runtime-gameplay-effects-spritesheet",
-      "status": "present",
+      "role": "legacy-runtime-gameplay-effects-spritesheet",
+      "status": "legacy-present",
       "origin": "JavaScript/Node processing of the approved OpenAI-generated gameplay-effects production material",
       "created": "2026-07-24",
       "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 192x128 with 23 occupied cells and one transparent reserve cell.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "collectables-clean-hd-layout-v1",
+      "file": "img/concepts/approvals/collectables-clean-hd-production-layout-v1.png",
+      "role": "clean-hd-collectables-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved collectibles, Clean-HD weapons and arc-charge references",
+      "created": "2026-07-31",
+      "modifications": "Fifteen collectible poses and one arc charge were generated in strict runtime order on a flat magenta field.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "upgrade-icons-clean-hd-layout-v1",
+      "file": "img/concepts/approvals/upgrade-icons-clean-hd-production-layout-v1.png",
+      "role": "clean-hd-upgrade-icons-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved upgrade and Clean-HD weapon references",
+      "created": "2026-07-31",
+      "modifications": "Five semantic upgrade symbols were generated in the unchanged runtime order.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "gameplay-effects-clean-hd-layout-v1",
+      "file": "img/concepts/approvals/gameplay-effects-clean-hd-production-layout-v1.png",
+      "role": "clean-hd-gameplay-effects-layout-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved gameplay-effects and Clean-HD energy references",
+      "created": "2026-07-31",
+      "modifications": "Twenty-three gameplay effects were generated in strict 6x4 runtime order with the final reserve cell empty.",
+      "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "collectables-clean-hd-runtime-v1",
+      "file": "img/sprites/items/collectables-clean-hd.png",
+      "role": "runtime-collectables-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
+      "created": "2026-07-31",
+      "modifications": "Chroma removal and exact packing produced fifteen native 64x64 transparent cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "upgrade-icons-clean-hd-runtime-v1",
+      "file": "img/sprites/items/upgrade-icons-clean-hd.png",
+      "role": "runtime-upgrade-icons-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD upgrade layout",
+      "created": "2026-07-31",
+      "modifications": "Five icons were centered in native 64x64 transparent cells.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "gameplay-effects-clean-hd-runtime-v1",
+      "file": "img/sprites/effects/gameplay-effects-clean-hd.png",
+      "role": "runtime-gameplay-effects-clean-hd-spritesheet",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD effects layout",
+      "created": "2026-07-31",
+      "modifications": "Twenty-three effects were centered in native 64x64 cells; the final reserve cell remains transparent.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "arc-charge-clean-hd-runtime-v1",
+      "file": "img/sprites/items/arc-charge-clean-hd.png",
+      "role": "runtime-arc-charge-clean-hd-pickup",
+      "status": "approved",
+      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
+      "created": "2026-07-31",
+      "modifications": "The arc charge was isolated and centered in its native 48x72 transparent frame.",
       "licenseId": "openai-assisted-project-art"
     },
     {
@@ -1188,8 +1258,8 @@
     {
       "id": "arc-charge-runtime-v1",
       "file": "img/sprites/items/arc-charge.png",
-      "role": "runtime-arc-charge-pickup",
-      "status": "present",
+      "role": "legacy-runtime-arc-charge-pickup",
+      "status": "legacy-present",
       "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
       "created": "2026-07-29",
       "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",

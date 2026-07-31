@@ -3,12 +3,12 @@ import { AnimationController } from "../../systems/animation-controller.class.js
 import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const COLLECTABLE_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("items", "collectables.png"),
-  frameWidth: 32,
-  frameHeight: 32,
+  source: getAssetPath("items", "collectables-clean-hd.png"),
+  frameWidth: 64,
+  frameHeight: 64,
   frameCount: 15,
 });
-const COLLECTABLE_RENDER_SCALE = 2;
+const COLLECTABLE_RENDER_SCALE = 1;
 const FRAME_DURATION_SECONDS = 0.14;
 const COLLECTABLE_COLLISION_BOX = Object.freeze({
   offsetX: 8,
@@ -17,9 +17,9 @@ const COLLECTABLE_COLLISION_BOX = Object.freeze({
   height: 48,
 });
 const ARC_CHARGE_SPRITE_CONFIG = Object.freeze({
-  source: getAssetPath("items", "arc-charge.png"),
-  frameWidth: 32,
-  frameHeight: 48,
+  source: getAssetPath("items", "arc-charge-clean-hd.png"),
+  frameWidth: 48,
+  frameHeight: 72,
   frameCount: 1,
 });
 const ARC_CANNON_SPRITE_CONFIG = Object.freeze({
@@ -65,7 +65,7 @@ const STANDARD_VISUAL = Object.freeze({
 });
 const ARC_CHARGE_VISUAL = Object.freeze({
   sprite: ARC_CHARGE_SPRITE_CONFIG,
-  renderScale: 1.5,
+  renderScale: 1,
   collisionBox: ARC_CHARGE_COLLISION_BOX,
 });
 const ARC_CANNON_VISUAL = Object.freeze({

@@ -73,6 +73,10 @@ Zellen gepackt.
   Lichtbogenkanone 96 × 64 und Lichtbogenimpulse 64 × 64 Pixel.
 - Die sichtbaren Projektilgrößen, Trefferflächen, Flugbahnen, Schäden,
   Munitionswerte und Animationsreihenfolgen bleiben unverändert.
+- Collectibles, Upgrade-Symbole und Gameplay-Effekte verwenden native
+  64 × 64 Pixel; die Lichtbogenladung verwendet native 48 × 72 Pixel.
+- Sichtbare Größen, Sammelwerte, Upgrade-Wirkungen, Trefferlogik und
+  Animationsreihenfolgen bleiben unverändert.
 - `img/ui/hud-icons-clean-hd.png` enthält acht native 48-Pixel-Symbole für
   die tatsächlich sichtbaren HUD-Werte und die Pause.
 - HUD-Rahmen bleiben responsive CSS-Flächen mit ruhiger Oberkante,

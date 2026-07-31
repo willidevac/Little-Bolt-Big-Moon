@@ -965,6 +965,38 @@ Verbindliche Merkmale:
 - Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
   ergänzt.
 
+## Clean-HD-Collectibles-Upgrades-und-Effekte
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben |
+| Datum | 31.07.2026 |
+| Collectibles-Muster | `img/concepts/approvals/collectables-clean-hd-production-layout-v1.png` |
+| Upgrade-Muster | `img/concepts/approvals/upgrade-icons-clean-hd-production-layout-v1.png` |
+| Effekt-Muster | `img/concepts/approvals/gameplay-effects-clean-hd-production-layout-v1.png` |
+
+| Asset | Runtime-Datei | Raster | Belegung |
+| --- | --- | --- | --- |
+| Collectibles | `img/sprites/items/collectables-clean-hd.png` | 5 × 3 Zellen à 64 × 64 px | 15 belegt |
+| Upgrade-Symbole | `img/sprites/items/upgrade-icons-clean-hd.png` | 5 × 1 Zellen à 64 × 64 px | 5 belegt |
+| Gameplay-Effekte | `img/sprites/effects/gameplay-effects-clean-hd.png` | 6 × 4 Zellen à 64 × 64 px | 23 belegt, 1 transparent |
+| Lichtbogenladung | `img/sprites/items/arc-charge-clean-hd.png` | 1 × 1 Zelle à 48 × 72 px | 1 belegt |
+
+Verbindliche Merkmale:
+
+- Zahnrad, Energiezelle, Bolzenmunition, Waffenfund und Mondhälften bleiben
+  in ihrer bisherigen Frame-Reihenfolge erhalten.
+- Die fünf Upgrade-Symbole behalten ihre Bedeutungen Energie, Schaden,
+  Munition, Rückstoßschutz und Sprungkontrolle.
+- Sprungstaub, Treffer, Mündungslicht, Fundglanz und Explosion behalten ihre
+  bisherige Frameanzahl und Reihenfolge.
+- Sichtbare Größen, Sammelwerte, Upgrade-Wirkungen und Spielmechaniken wurden
+  nicht verändert.
+- Alle 44 belegten Runtime-Zellen besitzen transparente Außenflächen und
+  enthalten keine Magentareste.
+- Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
+  ergänzt.
+
 ## Clean-HD-Waffen-und-Projektile
 
 | Feld | Freigabe |

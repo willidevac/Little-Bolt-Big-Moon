@@ -1,9 +1,9 @@
 {
   "selectionSize": 3,
   "iconSheet": {
-    "source": "./img/sprites/items/upgrade-icons.png",
-    "frameWidth": 32,
-    "frameHeight": 32
+    "source": "./img/sprites/items/upgrade-icons-clean-hd.png",
+    "frameWidth": 64,
+    "frameHeight": 64
   },
   "rarities": [
     {

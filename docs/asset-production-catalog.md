@@ -47,9 +47,10 @@ verwenden rote Angriffssignale und deutlich andere Silhouetten.
 | Bossprojektile | `img/sprites/weapons/boss-projectiles-clean-hd.png` | 64 × 32 | 8 | Schockwelle 4, Mondbolzen 4 |
 | Lichtbogenkanone | `img/sprites/weapons/arc-cannon-clean-hd.png` | 96 × 64 | 1 | Pickup |
 | Lichtbogenprojektil | `img/sprites/weapons/arc-projectile-clean-hd.png` | 64 × 64 | 4 | Flug |
-| Collectibles | `img/sprites/items/collectables.png` | 32 × 32 | 15 | Zahnrad 4, Energie 4, Munition 1, Waffenpickup 4, Abzeichenhälften 2 |
-| Upgrade-Icons | `img/sprites/items/upgrade-icons.png` | 32 × 32 | 5 | Energie, Schaden, Munition, Rückstoßschutz, Sprungkontrolle |
-| Spieleffekte | `img/sprites/effects/gameplay-effects.png` | 32 × 32 | 23 | Sprungstaub 4, Treffer 4, Mündungslicht 3, Pickup 6, Explosion 6 |
+| Collectibles | `img/sprites/items/collectables-clean-hd.png` | 64 × 64 | 15 | Zahnrad 4, Energie 4, Munition 1, Waffenpickup 4, Abzeichenhälften 2 |
+| Upgrade-Icons | `img/sprites/items/upgrade-icons-clean-hd.png` | 64 × 64 | 5 | Energie, Schaden, Munition, Rückstoßschutz, Sprungkontrolle |
+| Spieleffekte | `img/sprites/effects/gameplay-effects-clean-hd.png` | 64 × 64 | 23 | Sprungstaub 4, Treffer 4, Mündungslicht 3, Pickup 6, Explosion 6 |
+| Lichtbogenladung | `img/sprites/items/arc-charge-clean-hd.png` | 48 × 72 | 1 | Pickup |
 
 Effekte dürfen nie die Trefferbox verdecken. Projektile benötigen eine klare
 Flugrichtung und unterscheiden Spieler-Cyan von Gegner-Rot.
