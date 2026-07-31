@@ -3016,38 +3016,44 @@
     {
       "id": "story-empty-luma-cradle",
       "type": "emptyLumaCradle",
-      "x": 64,
-      "y": 149712
+      "x": 1000,
+      "y": 149712,
+      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
     },
     {
       "id": "story-factory-duo-poster",
       "type": "factoryDuoPoster",
-      "x": 1088,
-      "y": 117372
+      "x": 832,
+      "y": 117772,
+      "anchorPlatformId": "factory-assembly-energiegang-4-1"
     },
     {
       "id": "story-luma-cargo-crate",
       "type": "lumaCargoCrate",
       "x": 672,
-      "y": 88296
+      "y": 88296,
+      "anchorPlatformId": "launch-tower-supply-shafts-raketen-kabelschacht-2-5"
     },
     {
       "id": "story-luma-badge-half",
       "type": "lumaBadgeHalf",
-      "x": 64,
-      "y": 44920
+      "x": 736,
+      "y": 45900,
+      "anchorPlatformId": "space-station-research-analysearme-5-5"
     },
     {
       "id": "story-blue-signal-beacon",
       "type": "blueSignalBeacon",
-      "x": 1088,
-      "y": 34800
+      "x": 224,
+      "y": 34792,
+      "anchorPlatformId": "space-station-command-signalknoten-7-1"
     },
     {
       "id": "story-powered-off-luma",
       "type": "poweredOffLuma",
-      "x": 816,
-      "y": 728
+      "x": 1024,
+      "y": 616,
+      "anchorPlatformId": "moon-boss-arena-right"
     }
   ],
   "hazards": [

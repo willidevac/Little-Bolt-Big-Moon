@@ -8,7 +8,7 @@ const ANIMATION_STATE = "active";
  */
 export class StoryProp extends DrawableObject {
   /**
-   * @param {Readonly<{id:string,type:string,x:number,y:number}>} data
+   * @param {Readonly<{id:string,type:string,x:number,y:number,anchorPlatformId:string}>} data
    * @param {Readonly<object>} visualConfig
    */
   constructor(data, visualConfig) {
@@ -49,7 +49,7 @@ export class StoryProp extends DrawableObject {
   }
 
   #validateData(data) {
-    const text = [data?.id, data?.type];
+    const text = [data?.id, data?.type, data?.anchorPlatformId];
     const position = [data?.x, data?.y];
     if (text.every(this.#isText) && position.every(Number.isFinite)) return;
     throw new TypeError("Die Storyobjektdaten sind ungültig.");
