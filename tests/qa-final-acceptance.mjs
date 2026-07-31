@@ -24,6 +24,10 @@ const CHECKS = Object.freeze([
     id: "scrap-crawler-clean-hd",
     file: "tests/qa-scrap-crawler-clean-hd.mjs",
   }),
+  Object.freeze({
+    id: "drone-guard-clean-hd",
+    file: "tests/qa-drone-guard-clean-hd.mjs",
+  }),
   Object.freeze({ id: "hud-clean-hd", file: "tests/qa-hud-clean-hd.mjs" }),
   Object.freeze({
     id: "scrapyard-background-clean-hd",

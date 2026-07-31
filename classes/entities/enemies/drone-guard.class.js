@@ -5,12 +5,12 @@ import { clamp } from "../../../js/utils/math.js";
 const FULL_CIRCLE_RADIANS = Math.PI * 2;
 const VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
-    source: getAssetPath("enemies", "drone-guard.png"),
-    frameWidth: 48,
-    frameHeight: 32,
+    source: getAssetPath("enemies", "drone-guard-clean-hd.png"),
+    frameWidth: 96,
+    frameHeight: 64,
     frameCount: 20,
   }),
-  renderScale: 2,
+  renderScale: 1,
   collisionBox: Object.freeze({
     offsetX: 14,
     offsetY: 10,

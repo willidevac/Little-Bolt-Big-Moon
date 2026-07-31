@@ -580,7 +580,7 @@ Verbindliche Merkmale:
 | Gegner | Produktionsmuster | Runtime-Datei | Raster | Belegung |
 | --- | --- | --- | --- | --- |
 | Schrottkrabbler | `img/concepts/approvals/scrap-crawler-clean-hd-production-layout-v1.png` | `img/sprites/enemies/scrap-crawler-clean-hd.png` | 7 × 2 Zellen à 96 × 64 px, 672 × 128 px | 13 belegt, 1 transparent |
-| Wächterdrohne | `img/concepts/approvals/drone-guard-production-layout-v1.png` | `img/sprites/enemies/drone-guard.png` | 5 × 4 Zellen à 48 × 32 px, 240 × 128 px | 20 belegt |
+| Wächterdrohne | `img/concepts/approvals/drone-guard-clean-hd-production-layout-v1.png` | `img/sprites/enemies/drone-guard-clean-hd.png` | 5 × 4 Zellen à 96 × 64 px, 480 × 256 px | 20 belegt |
 | Mondwächter | `img/concepts/approvals/moon-warden-production-layout-v1.png` | `img/sprites/enemies/moon-warden.png` | 7 × 4 Zellen à 96 × 96 px, 672 × 384 px | 26 belegt, 2 transparent |
 
 | Feld | Freigabe |
@@ -600,9 +600,8 @@ Verbindliche Merkmale:
   Treffer und mechanische Abschaltung. Alle 20 Zellen sind belegt.
 - Der Mondwächter enthält Leerlauf, schweren Lauf, Nahkampf, Fernkampf,
   Treffer und Deaktivierung. Die letzten beiden Zellen bleiben transparent.
-- Der grüne Produktionshintergrund und das Hilfsraster wurden per
-  JavaScript entfernt. Die Skalierung verwendet ausschließlich
-  Nearest-Neighbor, damit harte Pixelkanten erhalten bleiben.
+- Produktionshintergründe und Hilfsraster wurden lokal entfernt. Die
+  Runtime-Blätter verwenden ihre jeweils dokumentierte native Zellgröße.
 - Alle drei Runtime-PNGs besitzen einen geprüften Alpha-Kanal. Jede belegte
   Zelle enthält genau eine Pose oder einen zur Pose gehörenden Effekt.
 - Im Repository und im Spiel werden für diesen Arbeitsschritt keine
@@ -941,3 +940,27 @@ Verbindliche Merkmale:
   vorgetäuschte Plattformen oder verbindende Brücken.
 - Story-Requisiten, Plattformen, Gegner, Figuren, Boss und HUD bleiben
   getrennte Runtime-Objekte.
+
+## Clean-HD-Drone-Guard
+
+| Feld | Freigabe |
+| --- | --- |
+| Status | freigegeben und integriert |
+| Datum | 31.07.2026 |
+| Produktionsmuster | `img/concepts/approvals/drone-guard-clean-hd-production-layout-v1.png` |
+| Runtime-Datei | `img/sprites/enemies/drone-guard-clean-hd.png` |
+| Dateigröße | 480 × 256 px |
+| Raster | 5 × 4 Zellen mit jeweils 96 × 64 px |
+
+Verbindliche Merkmale:
+
+- Alle 20 Zellen sind in der bisherigen Reihenfolge belegt: Idle, Move,
+  Telegraph, Attack, Hurt und Dead.
+- Silber-blauer Rumpf, roter Sensor, zwei Finnen, Waffenmodule und Schubdüse
+  bleiben über alle Frames eindeutig dieselbe Drohne.
+- Magenta und das grüne Hilfsraster wurden lokal entfernt. Jede Zelle enthält
+  genau eine Pose und überschreitet ihre Grenzen nicht.
+- Die Canvas-Größe bleibt 96 × 64 Pixel. Renderfaktor, Hitbox, Kampfwerte,
+  Flugbewegung, Angriff und Frame-Reihenfolge wurden nicht verändert.
+- Im Repository wurden keine Python-Dateien oder Python-Abhängigkeiten
+  ergänzt.
