@@ -73,6 +73,23 @@ echten Werten aus `GAME_CONFIG` in Ladungsschritten von 0,1 Prozent.
   höchstens 7, 9, 9, 12 und 20 Treffer; die Lichtbogenkanone verkürzt späte Kämpfe.
 - Alle 55 eigenständigen QA-Dateien laufen ohne Fehler durch.
 
+## Release-Abnahme
+
+Der zentrale Abnahmelauf findet jetzt jede eigenständige `qa-*.mjs`-Datei
+automatisch. Neue Regressionstests können dadurch nicht mehr versehentlich aus
+der Gesamtabnahme ausgeschlossen werden. Sechs unverzichtbare Spielerwege
+werden zusätzlich als fester Vertrag bewacht:
+
+- normaler Start, Pause, Fortsetzen, Niederlage, Sieg und Neustart
+- versteckter Mentor-Modus inklusive Neustart einer frischen Welt
+- gleichzeitige Touch-Eingaben und Tastatursteuerung
+- deutsche und englische Oberfläche samt gespeicherter Auswahl
+- responsive Darstellung von 320 bis 1440 Pixel
+- vollständige lokale Runtime- und Assetpfade
+
+Die zuvor fehlenden Prüfungen für HTML-Fragmente, verankerte Funde und den
+Review-Neustart gehören damit ebenfalls verbindlich zur Gesamtabnahme.
+
 ## Automatische Sicherungen
 
 - Jede JavaScript-Datei bleibt unter 400 Zeilen.

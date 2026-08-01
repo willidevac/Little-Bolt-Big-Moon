@@ -28,8 +28,9 @@ game.onStateChange((state) => states.push(state));
 
 game.initialize();
 assert.equal(game.state, "home");
-game.reset();
+assert.equal(game.play(), true);
 assert.equal(game.state, "playing");
+assert.equal(game.play(), false);
 assert.equal(game.pause(), true);
 assert.equal(game.state, "paused");
 assert.equal(game.resume(), true);
