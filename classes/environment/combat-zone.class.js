@@ -21,6 +21,7 @@ export class CombatZone {
     this.width = zoneData.width;
     this.height = zoneData.height;
     this.enemyIds = Object.freeze([...zoneData.enemyIds]);
+    this.unlockPlatformId = zoneData.unlockPlatformId ?? null;
     this.#state = COMBAT_ZONE_STATES.WAITING;
   }
 
@@ -68,6 +69,7 @@ export class CombatZone {
       id: this.id,
       state: this.#state,
       enemyIds: this.enemyIds,
+      unlockPlatformId: this.unlockPlatformId,
     });
   }
 
@@ -87,8 +89,16 @@ export class CombatZone {
     const hasDimensions = dimensions.every((value) => {
       return Number.isFinite(value) && value > 0;
     });
-    if (hasId && hasPosition && hasDimensions && this.#hasEnemyIds(data)) return;
+    const hasUnlock = this.#hasUnlockPlatformId(data);
+    if (hasId && hasPosition && hasDimensions && hasUnlock &&
+      this.#hasEnemyIds(data)) return;
     throw new TypeError("Die Kampfzonendaten sind ungültig.");
+  }
+
+  #hasUnlockPlatformId(data) {
+    const id = data?.unlockPlatformId;
+    return id === undefined || id === null ||
+      (typeof id === "string" && id.length > 0);
   }
 
   #hasEnemyIds(data) {

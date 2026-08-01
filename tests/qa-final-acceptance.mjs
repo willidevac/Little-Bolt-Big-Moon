@@ -89,6 +89,7 @@ const CHECKS = Object.freeze([
     file: "tests/qa-moon-background-clean-hd.mjs",
   }),
   Object.freeze({ id: "bosslauf", file: "tests/qa-boss-run.mjs" }),
+  Object.freeze({ id: "normalmodus", file: "tests/qa-normal-gameplay.mjs" }),
   Object.freeze({ id: "boss-arena", file: "tests/qa-boss-arena.mjs" }),
   Object.freeze({ id: "gegnerdichte", file: "tests/qa-enemy-density.mjs" }),
   Object.freeze({ id: "sprungmine", file: "tests/qa-spring-mine.mjs" }),

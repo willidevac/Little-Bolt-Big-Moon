@@ -568,8 +568,8 @@
               { "x": 640, "gapY": 124, "type": "path" },
               { "x": 480, "gapY": 128, "type": "falling" },
               { "x": 320, "gapY": 128, "type": "path" },
-              { "x": 576, "gapY": 140, "type": "falling" },
-              { "x": 800, "gapY": 180, "type": "path" }
+              { "x": 576, "gapY": 144, "type": "falling" },
+              { "x": 800, "gapY": 176, "type": "path" }
             ]
           },
           {
@@ -708,11 +708,11 @@
           {
             "id": "schmelzwerk-einlass",
             "steps": [
-              { "x": 224, "gapY": 148, "type": "path" },
+              { "x": 224, "gapY": 152, "type": "path" },
               { "x": 384, "gapY": 156, "type": "falling" },
               { "x": 672, "gapY": 164, "type": "path" },
               { "x": 896, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 180, "type": "path" }
+              { "x": 672, "gapY": 176, "type": "path" }
             ]
           },
           {
@@ -721,8 +721,8 @@
               { "x": 448, "gapY": 156, "type": "path" },
               { "x": 352, "gapY": 164, "type": "falling" },
               { "x": 480, "gapY": 172, "type": "path" },
-              { "x": 736, "gapY": 180, "type": "falling" },
-              { "x": 960, "gapY": 148, "type": "path" }
+              { "x": 736, "gapY": 176, "type": "falling" },
+              { "x": 960, "gapY": 152, "type": "path" }
             ]
           },
           {
@@ -730,8 +730,8 @@
             "steps": [
               { "x": 704, "gapY": 164, "type": "path" },
               { "x": 608, "gapY": 172, "type": "falling" },
-              { "x": 224, "gapY": 180, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "falling" },
+              { "x": 224, "gapY": 176, "type": "path" },
+              { "x": 416, "gapY": 152, "type": "falling" },
               { "x": 672, "gapY": 156, "type": "path" }
             ]
           },
@@ -739,8 +739,8 @@
             "id": "ofenwende",
             "steps": [
               { "x": 896, "gapY": 172, "type": "path" },
-              { "x": 736, "gapY": 180, "type": "falling" },
-              { "x": 384, "gapY": 148, "type": "path" },
+              { "x": 736, "gapY": 176, "type": "falling" },
+              { "x": 384, "gapY": 152, "type": "path" },
               { "x": 160, "gapY": 156, "type": "falling" },
               { "x": 416, "gapY": 164, "type": "path" }
             ]
@@ -748,8 +748,8 @@
           {
             "id": "hitzebogen",
             "steps": [
-              { "x": 672, "gapY": 180, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "falling" },
+              { "x": 672, "gapY": 176, "type": "path" },
+              { "x": 832, "gapY": 152, "type": "falling" },
               { "x": 704, "gapY": 156, "type": "path" },
               { "x": 448, "gapY": 164, "type": "falling" },
               { "x": 192, "gapY": 172, "type": "path" }
@@ -758,9 +758,9 @@
           {
             "id": "giessrinne",
             "steps": [
-              { "x": 416, "gapY": 148, "type": "path" },
+              { "x": 416, "gapY": 152, "type": "path" },
               { "x": 576, "gapY": 164, "type": "falling" },
-              { "x": 864, "gapY": 180, "type": "path" },
+              { "x": 864, "gapY": 176, "type": "path" },
               { "x": 608, "gapY": 156, "type": "falling" },
               { "x": 352, "gapY": 172, "type": "path" }
             ]
@@ -770,8 +770,8 @@
             "steps": [
               { "x": 128, "gapY": 156, "type": "path" },
               { "x": 288, "gapY": 172, "type": "falling" },
-              { "x": 576, "gapY": 148, "type": "path" },
-              { "x": 832, "gapY": 180, "type": "falling" },
+              { "x": 576, "gapY": 152, "type": "path" },
+              { "x": 832, "gapY": 176, "type": "falling" },
               { "x": 608, "gapY": 164, "type": "path" }
             ]
           },
@@ -779,10 +779,10 @@
             "id": "ofenrachen",
             "steps": [
               { "x": 864, "gapY": 164, "type": "path" },
-              { "x": 704, "gapY": 180, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "falling" },
               { "x": 384, "gapY": 156, "type": "path" },
               { "x": 160, "gapY": 172, "type": "falling" },
-              { "x": 416, "gapY": 148, "type": "path" }
+              { "x": 416, "gapY": 152, "type": "path" }
             ]
           },
           {
@@ -790,16 +790,16 @@
             "steps": [
               { "x": 672, "gapY": 172, "type": "path" },
               { "x": 832, "gapY": 156, "type": "falling" },
-              { "x": 704, "gapY": 180, "type": "path" },
-              { "x": 448, "gapY": 148, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "falling" },
               { "x": 192, "gapY": 164, "type": "path" }
             ]
           },
           {
             "id": "gluttakt",
             "steps": [
-              { "x": 416, "gapY": 180, "type": "path" },
-              { "x": 576, "gapY": 148, "type": "falling" },
+              { "x": 416, "gapY": 176, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "falling" },
               { "x": 864, "gapY": 164, "type": "path" },
               { "x": 608, "gapY": 172, "type": "falling" },
               { "x": 352, "gapY": 156, "type": "path" }
@@ -808,8 +808,8 @@
           {
             "id": "hochofenkranz",
             "steps": [
-              { "x": 128, "gapY": 148, "type": "path" },
-              { "x": 288, "gapY": 180, "type": "falling" },
+              { "x": 128, "gapY": 152, "type": "path" },
+              { "x": 288, "gapY": 176, "type": "falling" },
               { "x": 576, "gapY": 172, "type": "path" },
               { "x": 832, "gapY": 164, "type": "falling" },
               { "x": 608, "gapY": 156, "type": "path" }
@@ -820,8 +820,8 @@
             "steps": [
               { "x": 864, "gapY": 156, "type": "path" },
               { "x": 704, "gapY": 172, "type": "falling" },
-              { "x": 384, "gapY": 148, "type": "path" },
-              { "x": 160, "gapY": 180, "type": "falling" },
+              { "x": 384, "gapY": 152, "type": "path" },
+              { "x": 160, "gapY": 176, "type": "falling" },
               { "x": 416, "gapY": 164, "type": "path" }
             ]
           }
@@ -2464,6 +2464,7 @@
       "y": 119764,
       "width": 1280,
       "height": 600,
+      "unlockPlatformId": "factory-assembly-fabrikschleuse-1-1",
       "enemyIds": [
         "scrapyard-breaker-01"
       ]
@@ -2474,6 +2475,7 @@
       "y": 89764,
       "width": 1280,
       "height": 600,
+      "unlockPlatformId": "launch-tower-supply-shafts-versorgungsschleuse-1-1",
       "enemyIds": [
         "pressworks-colossus-01"
       ]
@@ -2484,6 +2486,7 @@
       "y": 59764,
       "width": 1280,
       "height": 600,
+      "unlockPlatformId": "space-station-cargo-ring-dockschleuse-1-1",
       "enemyIds": [
         "launch-sentinel-01"
       ]
@@ -2494,6 +2497,7 @@
       "y": 29764,
       "width": 1280,
       "height": 600,
+      "unlockPlatformId": "moon-crater-field-mondlandung-1-1",
       "enemyIds": [
         "orbit-warden-01"
       ]

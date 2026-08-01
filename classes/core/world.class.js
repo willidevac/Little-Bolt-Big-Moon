@@ -61,7 +61,7 @@ export class World {
     this.isInitialized = false;
     this.#initializeCollections();
     this.#initializeSimulation(config);
-    this.waveManager = new WaveManager(level?.combatZones, level?.enemies);
+    this.waveManager = new WaveManager(level?.combatZones, level?.enemies, level?.platforms);
     this.bossFight = new BossFightManager(level?.enemies);
     this.character = null;
     this.camera = new Camera(config);

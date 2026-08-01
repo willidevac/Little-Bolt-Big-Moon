@@ -55,6 +55,22 @@ damit spätere Positionsänderungen nicht erneut zu schwebenden Objekten führen
 - Bei 320 Pixeln erscheint der verständliche Hinweis zum Drehen des Geräts.
 - Bei 1280 und 1440 Pixeln wurden keine überstehenden HUD- oder Dialogelemente gefunden.
 
+## Normalmodus und Balancing
+
+Der normale Spielstart wurde sichtbar im Browser geprüft. Zusätzlich simuliert
+`qa-normal-gameplay.mjs` jeden der 955 aufeinanderfolgenden Hauptsprünge mit den
+echten Werten aus `GAME_CONFIG` in Ladungsschritten von 0,1 Prozent.
+
+- Alle Hauptsprünge besitzen mindestens ein erreichbares Ladungsfenster.
+- Die frühen Fabriksprünge verlangen keine nahezu perfekte Vollladung mehr.
+- Die vier engsten Ladungsfenster bleiben als späte Mondherausforderung erhalten.
+- Jeder Zwischenboss sperrt genau einen notwendigen Übergang zum nächsten Biom.
+- Ohne freigegebenen Übergang existiert auch über Nebenrouten kein Sprung vorbei.
+- Nach dem Bossabschluss erscheint der fehlende Schritt und ist sicher erreichbar.
+- Die fünf Bosse benötigen mit vollem Bolzenmagazin und Reparaturschlüssel
+  höchstens 7, 9, 9, 12 und 20 Treffer; die Lichtbogenkanone verkürzt späte Kämpfe.
+- Alle 55 eigenständigen QA-Dateien laufen ohne Fehler durch.
+
 ## Automatische Sicherungen
 
 - Jede JavaScript-Datei bleibt unter 400 Zeilen.

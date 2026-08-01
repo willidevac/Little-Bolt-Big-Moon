@@ -3,27 +3,33 @@ import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
- * Aktiviert Begegnungsgegner und meldet sichere Abschlüsse ohne Einsperren.
+ * Aktiviert Begegnungen und öffnet Bossausgänge nach dem Sieg.
  */
 export class WaveManager {
   #zones;
   #enemiesById;
   #managedEnemyIds;
   #completedWaveIds;
+  #platformsById;
   #isInitialized;
 
   /**
    * @param {ReadonlyArray<CombatZone>} combatZones
    * @param {ReadonlyArray<object>} enemies
+   * @param {ReadonlyArray<object>} platforms
    */
-  constructor(combatZones = [], enemies = []) {
-    this.#validateCollections(combatZones, enemies);
+  constructor(combatZones = [], enemies = [], platforms = []) {
+    this.#validateCollections(combatZones, enemies, platforms);
     this.#zones = Object.freeze([...combatZones]);
     this.#enemiesById = new Map(enemies.map((enemy) => [enemy.id, enemy]));
+    this.#platformsById = new Map(
+      platforms.map((platform) => [platform.id, platform]),
+    );
     this.#managedEnemyIds = this.#collectManagedEnemyIds();
     this.#completedWaveIds = [];
     this.#isInitialized = false;
     this.#validateEnemyReferences();
+    this.#validatePlatformReferences();
   }
 
   /**
@@ -33,6 +39,7 @@ export class WaveManager {
    */
   initialize(world) {
     if (this.#isInitialized) return false;
+    this.#lockProgressionPlatforms(world);
     this.#enemiesById.forEach((enemy, id) => {
       if (!this.#managedEnemyIds.has(id)) {
         world.addEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
@@ -94,7 +101,25 @@ export class WaveManager {
   #complete(zone, world) {
     if (!zone.complete()) return;
     this.#completedWaveIds.push(zone.id);
+    this.#unlockProgressionPlatform(zone, world);
     world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, { id: zone.id });
+  }
+
+  #lockProgressionPlatforms(world) {
+    this.#zones.forEach((zone) => {
+      const platform = this.#getUnlockPlatform(zone);
+      if (platform) world.removeEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
+    });
+  }
+
+  #unlockProgressionPlatform(zone, world) {
+    const platform = this.#getUnlockPlatform(zone);
+    if (platform) world.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
+  }
+
+  #getUnlockPlatform(zone) {
+    if (!zone.unlockPlatformId) return null;
+    return this.#platformsById.get(zone.unlockPlatformId) ?? null;
   }
 
   #completeFinishedZones(world) {
@@ -110,14 +135,27 @@ export class WaveManager {
     return new Set(this.#zones.flatMap((zone) => zone.enemyIds));
   }
 
-  #validateCollections(combatZones, enemies) {
+  #validateCollections(combatZones, enemies, platforms) {
     const hasZones = Array.isArray(combatZones) &&
       combatZones.every((zone) => zone instanceof CombatZone);
     const hasEnemies = Array.isArray(enemies) &&
       enemies.every((enemy) => typeof enemy?.id === "string");
+    const hasPlatforms = Array.isArray(platforms) &&
+      platforms.every((platform) => typeof platform?.id === "string");
     const uniqueEnemyIds = new Set(enemies.map((enemy) => enemy.id));
-    if (hasZones && hasEnemies && uniqueEnemyIds.size === enemies.length) return;
+    if (hasZones && hasEnemies && hasPlatforms &&
+      uniqueEnemyIds.size === enemies.length) return;
     throw new TypeError("Die Kampfphasen-Daten sind ungültig.");
+  }
+
+  #validatePlatformReferences() {
+    if (this.#platformsById.size === 0) return;
+    const ids = this.#zones.flatMap((zone) => {
+      return zone.unlockPlatformId ? [zone.unlockPlatformId] : [];
+    });
+    const allExist = ids.every((id) => this.#platformsById.has(id));
+    if (allExist && new Set(ids).size === ids.length) return;
+    throw new RangeError("Bossausgänge sind unbekannt oder doppelt vergeben.");
   }
 
   #validateEnemyReferences() {
