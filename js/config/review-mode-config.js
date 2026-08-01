@@ -5,6 +5,7 @@ export const REVIEW_MODE_CONFIG = Object.freeze({
   storageKey: "little-bolt-review-mode",
   flightSpeedPixelsPerSecond: 900,
   fastMultiplier: 3,
+  bossArenaMaximumY: 944,
   reviewTargets: Object.freeze([
     Object.freeze({ x: 160, y: 149600 }),
     Object.freeze({ x: 160, y: 119600 }),

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 import { FallTracker } from "../classes/systems/fall-tracker.class.js";
 import { GAMEPLAY_EVENTS } from "../classes/core/gameplay-event-hub.class.js";
@@ -39,7 +40,7 @@ function assertFall(startY, landingY, severity) {
 }
 
 async function assertAccessibleHudContract() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   const status = await fs.readFile("classes/ui/status-bar.class.js", "utf8");
   assert.match(html, /data-hud-fall-feedback[\s\S]*?<\/output>/);
   assert.match(html, /hud-fall-feedback[\s\S]+aria-live="polite"/);

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { Keyboard } from "../classes/input/keyboard.class.js";
 
 class FakeClassList {
@@ -149,7 +150,7 @@ function createTouchElement(ownerDocument) {
 }
 
 async function assertStaticTouchMarkup() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   const source = await fs.readFile("classes/input/touch-controls.class.js", "utf8");
   const actions = [...html.matchAll(/data-input-action="([^"]+)"/g)];
   assert.equal(actions.length, 7);

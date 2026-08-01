@@ -3,10 +3,11 @@ import { Platform } from "../../classes/environment/platform.class.js";
 import { MovingPlatform } from "../../classes/environment/moving-platform.class.js";
 import { FallingPlatform } from "../../classes/environment/falling-platform.class.js";
 import {
-  CollectableObject,
   COLLECTABLE_TYPES,
 } from "../../classes/entities/collectables/collectable-object.class.js";
 import { StoryBadge } from "../../classes/entities/collectables/story-badge.class.js";
+import { AnchoredCollectable } from
+  "../../classes/entities/collectables/anchored-collectable.class.js";
 import { DamageZone } from "../../classes/environment/damage-zone.class.js";
 import { CombatZone } from "../../classes/environment/combat-zone.class.js";
 import { StoryProp } from "../../classes/environment/story-prop.class.js";
@@ -104,7 +105,7 @@ function createLevelEntities(enemyConfig, platformData) {
   return {
     platforms: Object.freeze(platforms),
     collectables: Object.freeze(createCollectables(platforms)),
-    storyProps: Object.freeze(levelData.storyProps.map(createStoryProp)),
+    storyProps: Object.freeze(createStoryProps(platforms)),
     hazards: Object.freeze(levelData.hazards.map(createHazard)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
     enemies: Object.freeze(createEnemies(enemyConfig)),
@@ -143,17 +144,26 @@ function createCollectables(platforms) {
 }
 
 function createCollectable(collectableData, platforms) {
-  if (collectableData.type === COLLECTABLE_TYPES.STORY_BADGE) {
-    const anchor = platforms.find(({ id }) => id === collectableData.anchorPlatformId);
-    return new StoryBadge(collectableData, anchor);
-  }
-  return new CollectableObject(collectableData);
+  const anchor = findPlatform(platforms, collectableData.anchorPlatformId);
+  const CollectableClass = collectableData.type === COLLECTABLE_TYPES.STORY_BADGE
+    ? StoryBadge
+    : AnchoredCollectable;
+  return new CollectableClass(collectableData, anchor);
 }
 
-function createStoryProp(propData) {
+function createStoryProps(platforms) {
+  return levelData.storyProps.map((data) => createStoryProp(data, platforms));
+}
+
+function createStoryProp(propData, platforms) {
   const config = STORY_PROP_CONFIGS[propData.type];
-  if (config) return new StoryProp(propData, config);
+  const anchor = findPlatform(platforms, propData.anchorPlatformId);
+  if (config) return new StoryProp(propData, config, anchor);
   throw new RangeError(`Unbekanntes Storyobjekt: ${propData.type}`);
+}
+
+function findPlatform(platforms, platformId) {
+  return platforms.find(({ id }) => id === platformId);
 }
 
 function createHazard(hazardData) {

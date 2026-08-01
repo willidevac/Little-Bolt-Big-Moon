@@ -1,0 +1,94 @@
+<section
+        class="game-screen start-screen"
+        aria-labelledby="game-title"
+        data-game-screen="home"
+      >
+        <img
+          class="start-screen__cover"
+          src="./img/cover/little-bolt-big-moon-cover-v1.png"
+          alt=""
+          width="1672"
+          height="941"
+        >
+
+        <div class="start-screen__menu">
+          <p class="start-screen__eyebrow" data-i18n="home.eyebrow">
+            Vertikales Pixel-Abenteuer
+          </p>
+          <h1 id="game-title" class="visually-hidden">Little Bolt, Big Moon</h1>
+          <p class="start-screen__story" data-i18n="home.story">
+            Ein kleiner Roboter. Ein großer Weg nach oben.
+          </p>
+
+          <dl
+            class="record-summary"
+            aria-label="Deine lokalen Rekorde"
+            data-i18n-aria-label="home.records"
+          >
+            <div class="record-summary__item">
+              <dt data-i18n="home.bestScore">Bestpunkte</dt>
+              <dd data-record-score>000000</dd>
+            </div>
+            <div class="record-summary__item">
+              <dt data-i18n="home.maximumHeight">Höchste Höhe</dt>
+              <dd data-record-height>0 m</dd>
+            </div>
+            <div class="record-summary__item">
+              <dt data-i18n="home.bestTime">Bestzeit</dt>
+              <dd data-record-time>–</dd>
+            </div>
+          </dl>
+
+          <nav
+            class="start-menu"
+            aria-label="Hauptmenü"
+            data-i18n-aria-label="home.menu"
+          >
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-i18n="home.start"
+              data-ui-action="start"
+            >
+              Spiel starten
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.controls"
+              data-ui-action="controls"
+            >
+              Steuerung
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.settings"
+              data-ui-action="settings"
+            >
+              Einstellungen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.imprint"
+              data-ui-action="imprint"
+            >
+              Impressum
+            </button>
+          </nav>
+
+          <p class="start-screen__hint" data-i18n="home.hint">
+            Hilf Byte vom Schrottplatz bis zum Mond.
+          </p>
+          <button
+            class="start-screen__version"
+            type="button"
+            aria-label="Version 1.0.0"
+            data-review-version
+          >
+            v1.0.0
+          </button>
+        </div>
+
+      </section>

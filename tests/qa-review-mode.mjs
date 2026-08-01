@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { Keyboard } from "../classes/input/keyboard.class.js";
 import { ReviewFlightController } from "../classes/systems/review-flight-controller.class.js";
 import { REVIEW_MODE_CONFIG } from "../js/config/review-mode-config.js";
@@ -50,7 +51,7 @@ function createCharacter() {
 }
 
 async function assertReviewContract() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   const styles = await fs.readFile("styles/review-mode.css", "utf8");
   const ui = await fs.readFile("classes/ui/review-mode-controller.class.js", "utf8");
   const storage = await fs.readFile("classes/ui/storage-controller.class.js", "utf8");

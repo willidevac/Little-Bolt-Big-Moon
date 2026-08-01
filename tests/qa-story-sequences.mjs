@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { readAppMarkupSync } from "./helpers/read-app-markup.mjs";
 import { GAME_STATES } from "../classes/core/game-state-machine.class.js";
 import { StorySequenceController } from
   "../classes/ui/story-sequence-controller.class.js";
 
-const html = fs.readFileSync("index.html", "utf8");
+const html = readAppMarkupSync();
 const css = fs.readFileSync("styles/story-sequences.css", "utf8");
 const source = fs.readFileSync(
   "classes/ui/story-sequence-controller.class.js",

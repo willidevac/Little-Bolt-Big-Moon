@@ -10,14 +10,16 @@ export class StoryProp extends DrawableObject {
   /**
    * @param {Readonly<{id:string,type:string,x:number,y:number,anchorPlatformId:string}>} data
    * @param {Readonly<object>} visualConfig
+   * @param {Readonly<object>} anchorPlatform
    */
-  constructor(data, visualConfig) {
+  constructor(data, visualConfig, anchorPlatform) {
     super();
     this.#validateData(data);
     this.#validateVisualConfig(visualConfig);
     Object.assign(this, data);
     this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
     this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
+    this.#anchorTo(anchorPlatform);
     this.loadSprite(visualConfig.sprite);
     this.animationController = this.#createAnimation(visualConfig.animation);
     this.#setInitialFrame(visualConfig.frameIndex);
@@ -62,6 +64,16 @@ export class StoryProp extends DrawableObject {
     const hasFrame = this.#hasValidFrame(config);
     if (hasSprite && hasScale && hasFrame) return;
     throw new TypeError("Die Storyobjektdarstellung ist ungültig.");
+  }
+
+  #anchorTo(platform) {
+    const matches = this.anchorPlatformId === platform?.id;
+    const fits = this.x >= platform?.x &&
+      this.x + this.width <= platform?.x + platform?.width;
+    if (!matches || !fits) {
+      throw new TypeError("Das Storyobjekt braucht eine passende Plattform.");
+    }
+    this.y = platform.y - this.height;
   }
 
   #hasValidSprite(sprite) {

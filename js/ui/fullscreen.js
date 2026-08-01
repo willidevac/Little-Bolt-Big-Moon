@@ -9,7 +9,7 @@ export function initializeFullscreen(root = document.querySelector("[data-game-r
   if (fullscreenController) return fullscreenController;
   const button = root?.querySelector("[data-fullscreen-toggle]");
   if (!(root instanceof HTMLElement) || !(button instanceof HTMLButtonElement)) {
-    throw new Error("Die Vollbildsteuerung ist unvollstÃ¤ndig.");
+    throw new Error("Die Vollbildsteuerung ist unvollständig.");
   }
   fullscreenController = new FullscreenController(document, root, button).initialize();
   return fullscreenController;

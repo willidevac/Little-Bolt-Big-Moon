@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 
-const html = await fs.readFile("index.html", "utf8");
+const html = await readAppMarkup();
 const screenSource = await fs.readFile(
   "classes/ui/screen-controller.class.js",
   "utf8",

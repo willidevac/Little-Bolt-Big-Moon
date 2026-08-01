@@ -1,0 +1,236 @@
+<section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="controls-title"
+        data-game-dialog="controls"
+        hidden
+      >
+        <div class="screen-panel screen-panel--controls">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Steuerung schließen"
+            data-i18n-aria-label="controls.close"
+            data-ui-action="close-dialog"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow" data-i18n="controls.eyebrow">
+            Deine Aufgabe
+          </p>
+          <h2
+            id="controls-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+            data-i18n="controls.title"
+          >
+            Hilfe &amp; Steuerung
+          </h2>
+          <p class="screen-panel__copy" data-i18n="controls.copy">
+            Klettere mit Byte vom Schrottplatz bis zum Mond. Ein Sturz kostet
+            dich Höhe, aber nicht sofort den ganzen Lauf.
+          </p>
+
+          <dl class="controls-list">
+            <div class="controls-list__row">
+              <dt data-i18n="controls.run">Laufen</dt>
+              <dd>
+                <kbd>A</kbd> <kbd>D</kbd>
+                <span data-i18n="controls.runKeys">oder Pfeiltasten</span>
+              </dd>
+            </div>
+            <div class="controls-list__row">
+              <dt data-i18n="controls.jump">Springen</dt>
+              <dd>
+                <kbd>W</kbd>, <kbd>↑</kbd>
+                <span data-i18n="controls.jumpKeys">
+                  oder Leertaste halten und loslassen
+                </span>
+              </dd>
+            </div>
+            <div class="controls-list__row">
+              <dt data-i18n="controls.attack">Angreifen</dt>
+              <dd><kbd>F</kbd> <span data-i18n="controls.or">oder</span> <kbd>J</kbd></dd>
+            </div>
+            <div class="controls-list__row">
+              <dt data-i18n="controls.switchWeapon">Waffe wechseln</dt>
+              <dd><kbd>Q</kbd></dd>
+            </div>
+            <div class="controls-list__row">
+              <dt data-i18n="controls.pause">Pause</dt>
+              <dd><kbd>Escape</kbd></dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+        data-game-dialog="settings"
+        hidden
+      >
+        <div class="screen-panel screen-panel--settings">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Einstellungen schließen"
+            data-i18n-aria-label="settings.close"
+            data-ui-action="close-dialog"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow" data-i18n="settings.eyebrow">
+            Deine Einstellungen
+          </p>
+          <h2
+            id="settings-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+            data-i18n="settings.title"
+          >
+            Einstellungen
+          </h2>
+          <p class="screen-panel__copy" data-i18n="settings.copy">
+            Passe Sprache, Musik und Spielgeräusche so an, wie es für dich
+            angenehm ist.
+          </p>
+
+          <div class="audio-settings">
+            <div class="audio-setting">
+              <div class="audio-setting__heading">
+                <label for="music-volume" data-i18n="settings.music">Musik</label>
+                <output for="music-volume" data-volume-output="music">75 %</output>
+              </div>
+              <input
+                id="music-volume"
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value="75"
+                data-volume-control="music"
+              >
+            </div>
+
+            <div class="audio-setting">
+              <div class="audio-setting__heading">
+                <label for="effects-volume" data-i18n="settings.effects">
+                  Effekte
+                </label>
+                <output for="effects-volume" data-volume-output="effects">85 %</output>
+              </div>
+              <input
+                id="effects-volume"
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value="85"
+                data-volume-control="effects"
+              >
+            </div>
+
+            <div class="audio-setting language-setting">
+              <label for="language" data-i18n="settings.language">Sprache</label>
+              <select id="language" data-language-control>
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="screen-panel__hint" data-i18n="settings.hint">
+            Der Tonknopf oben schaltet weiterhin alles gemeinsam an oder aus.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="game-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="imprint-title"
+        data-game-dialog="imprint"
+        hidden
+      >
+        <div class="screen-panel screen-panel--legal">
+          <button
+            class="close-button"
+            type="button"
+            aria-label="Impressum schließen"
+            data-i18n-aria-label="imprint.close"
+            data-ui-action="close-dialog"
+          >
+            ×
+          </button>
+
+          <p class="screen-panel__eyebrow" data-i18n="imprint.eyebrow">
+            Projektangaben
+          </p>
+          <h2
+            id="imprint-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-dialog-focus
+            data-i18n="imprint.title"
+          >
+            Impressum
+          </h2>
+
+          <section class="legal-section" aria-labelledby="responsible-title">
+            <h3 id="responsible-title" data-i18n="imprint.responsible">
+              Projektverantwortlich
+            </h3>
+            <p>
+              <strong>Willi Kasberg</strong><br>
+              <span data-i18n="imprint.projectCopy">
+                Idee und Umsetzung des nicht kommerziellen Weiterbildungsprojekts
+              </span>
+            </p>
+          </section>
+
+          <section class="legal-section" aria-labelledby="academy-title">
+            <h3 id="academy-title" data-i18n="imprint.academy">
+              Weiterbildungsträger und Kontakt
+            </h3>
+            <address>
+              <strong>Developer Akademie GmbH</strong><br>
+              Tassiloplatz 25<br>
+              81541 München<br>
+              <span data-i18n="imprint.country">Deutschland</span><br>
+              <span data-i18n="imprint.email">E-Mail:</span>
+              <a href="mailto:info@developerakademie.com">
+                info@developerakademie.com
+              </a>
+            </address>
+          </section>
+
+          <p class="legal-note" data-i18n="imprint.note">
+            Die Developer Akademie GmbH wird als Weiterbildungsträger
+            aufgeführt. Die Projektverantwortung für das Spiel liegt bei
+            Willi Kasberg.
+          </p>
+
+          <a
+            class="legal-link"
+            href="https://developerakademie.com/impressum/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="imprint.official">
+              Offizielles Impressum der Developer Akademie
+            </span>
+            <span class="visually-hidden" data-i18n="imprint.newTab">
+              – öffnet einen neuen Tab
+            </span>
+          </a>
+        </div>
+      </section>

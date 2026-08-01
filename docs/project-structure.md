@@ -5,6 +5,9 @@ Spiel/
 ├── index.html                 Hauptseite
 ├── style.css                  zentraler CSS-Einstieg
 ├── script.js                  zentraler JavaScript-Einstieg
+├── html/
+│   ├── fragments/             kleine, statische Bereiche der Hauptseite
+│   └── pages/                 eigenständige Zusatzseiten
 ├── classes/                   alle objektorientierten Klassen
 │   ├── base/                  DrawableObject, MovableObject
 │   ├── core/                  Game, World, Camera, Level
@@ -28,7 +31,7 @@ Spiel/
 │   └── fonts/                 lokal eingebundene Schriftarten
 ├── styles/                    aufgeteilte CSS-Dateien
 ├── templates/                 optionale wiederverwendbare Markupteile
-├── audio/                     wird erst in einer späteren Phase befüllt
+├── audio/                     lokal eingebundene Musik und Effekte
 └── docs/                      Planung und Projektnachweise
 ```
 
@@ -38,6 +41,7 @@ Spiel/
 - Keine Gameplaylogik in `script.js`.
 - Keine Klassen unter `js/`.
 - Keine statischen HTML-Bereiche unnötig mit JavaScript generieren.
+- `index.html` bleibt der kurze Einstieg; Markupbereiche liegen unter `html/`.
 - Funktionen bleiben klein und erfüllen jeweils eine Aufgabe.
 - Keine JavaScript-Datei überschreitet 400 Zeilen.
 - Namen bleiben englisch und verwenden konsistentes `camelCase`.

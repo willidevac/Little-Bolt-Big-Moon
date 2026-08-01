@@ -9,7 +9,7 @@ export class FallFeedback {
   constructor(element, pixelsPerMeter) {
     if (!element?.classList) throw new TypeError("Die Sturzanzeige fehlt.");
     if (!Number.isFinite(pixelsPerMeter) || pixelsPerMeter <= 0) {
-      throw new TypeError("Der MetermaÃŸstab der Sturzanzeige ist ungÃ¼ltig.");
+      throw new TypeError("Der Metermaßstab der Sturzanzeige ist ungültig.");
     }
     this.element = element;
     this.pixelsPerMeter = pixelsPerMeter;
@@ -18,7 +18,7 @@ export class FallFeedback {
     this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
-  /** Zeigt die verlorene HÃ¶he mit passender StÃ¤rke an. */
+  /** Zeigt die verlorene Höhe mit passender Stärke an. */
   show(fall) {
     this.#validateFall(fall);
     this.currentFall = this.#createVisibleFall(fall);
@@ -31,7 +31,7 @@ export class FallFeedback {
     this.timeoutId = setTimeout(() => this.clear(), FEEDBACK_DURATION_MILLISECONDS);
   }
 
-  /** Leert Meldung und Zeitsteuerung vollstÃ¤ndig. */
+  /** Leert Meldung und Zeitsteuerung vollständig. */
   clear() {
     clearTimeout(this.timeoutId);
     this.timeoutId = null;
@@ -63,6 +63,6 @@ export class FallFeedback {
   #validateFall(fall) {
     const hasLoss = Number.isFinite(fall?.lossPixels) && fall.lossPixels > 0;
     if (hasLoss && SEVERITIES.includes(fall?.severity)) return;
-    throw new TypeError("Die Sturzmeldung ist ungÃ¼ltig.");
+    throw new TypeError("Die Sturzmeldung ist ungültig.");
   }
 }

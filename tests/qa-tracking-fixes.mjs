@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 import { createLevelOne } from "../js/levels/level-01.js";
 import { MovingPlatform } from "../classes/environment/moving-platform.class.js";
@@ -38,7 +39,7 @@ console.log(
 );
 
 async function assertWeaponHud() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   assert.match(html, /aria-label="Ausgewählte Waffe"/);
   assert.match(html, /<dt[^>]*>Waffe wechseln<\/dt>[\s\S]*?<kbd>Q<\/kbd>/);
   assertWeaponChangeRendering();

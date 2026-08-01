@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 
 const ROOT = process.cwd();
 const REQUIRED_PATHS = Object.freeze([
@@ -12,7 +13,7 @@ const REQUIRED_PATHS = Object.freeze([
   "img",
   "templates",
 ]);
-const html = await fs.readFile("index.html", "utf8");
+const html = await readAppMarkup();
 const baseCss = await fs.readFile("styles/base.css", "utf8");
 const layoutCss = await fs.readFile("styles/layout.css", "utf8");
 const responsiveCss = await fs.readFile("styles/responsive.css", "utf8");

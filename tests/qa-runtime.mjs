@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { ASSET_PATHS } from "../js/config/asset-paths.js";
 import { GAME_CONFIG } from "../js/config/game-config.js";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs"]);
@@ -77,7 +78,7 @@ function getRelativeImports(source) {
 }
 
 async function assertDocumentAssets() {
-  const html = await fs.readFile(path.join(ROOT, "index.html"), "utf8");
+  const html = await readAppMarkup(ROOT);
   const matches = html.matchAll(/\b(?:src|href)=["']([^"']+)["']/g);
   const localPaths = [...matches].map((match) => match[1]).filter(isLocalFile);
   await assertFiles(localPaths.map((file) => path.join(ROOT, file)));

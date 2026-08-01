@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
+import { readAppMarkupSync } from "./helpers/read-app-markup.mjs";
 
 const RUNTIME_FILE = "img/ui/hud-icons-clean-hd.png";
 const MASTER_FILE =
@@ -45,7 +46,7 @@ function verifyManifest() {
 }
 
 function verifyMarkup() {
-  const html = readFileSync("index.html", "utf8");
+  const html = readAppMarkupSync();
   ICON_NAMES.forEach((name) => {
     assert.match(html, new RegExp(`data-hud-icon="${name}"[^>]+aria-hidden="true"`));
   });

@@ -1,6 +1,6 @@
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
-/** HÃ¤lt Browser-Vollbild und sichtbaren Schalter synchron. */
+/** Hält Browser-Vollbild und sichtbaren Schalter synchron. */
 export class FullscreenController {
   /** @param {Document} documentTarget @param {HTMLElement} root @param {HTMLElement} button */
   constructor(documentTarget, root, button) {
@@ -13,7 +13,7 @@ export class FullscreenController {
     this.unsubscribeLanguage = null;
   }
 
-  /** Bindet den Schalter oder blendet ihn bei fehlender UnterstÃ¼tzung aus. */
+  /** Bindet den Schalter oder blendet ihn bei fehlender Unterstützung aus. */
   initialize() {
     this.button.hidden = !this.isSupported;
     if (!this.isSupported) return this;
@@ -24,7 +24,7 @@ export class FullscreenController {
     return this;
   }
 
-  /** Betritt oder verlÃ¤sst Vollbild nach einer echten Nutzeraktion. */
+  /** Betritt oder verlässt Vollbild nach einer echten Nutzeraktion. */
   async toggle() {
     try {
       if (this.document.fullscreenElement) await this.document.exitFullscreen();

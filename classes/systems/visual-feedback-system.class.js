@@ -21,7 +21,7 @@ export class VisualFeedbackSystem {
     this.unsubscribe = events.on((event) => this.#handleEvent(event));
   }
 
-  /** Aktualisiert und entfernt vollstÃ¤ndig verblasste Impulse. */
+  /** Aktualisiert und entfernt vollständig verblasste Impulse. */
   update(deltaTimeSeconds) {
     this.bursts = this.bursts.filter((burst) => burst.update(deltaTimeSeconds));
   }

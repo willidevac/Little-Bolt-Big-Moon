@@ -8,6 +8,7 @@ import { initializeTouchControls } from "./js/ui/touch-controls.js";
 import { initializeAudio } from "./js/ui/audio.js";
 import { initializeReviewMode } from "./js/ui/review-mode.js";
 import { initializeFullscreen } from "./js/ui/fullscreen.js";
+import { loadHtmlFragments } from "./js/ui/html-fragments.js";
 
 let gameInstance = null;
 
@@ -51,6 +52,7 @@ export function getGame() {
   return gameInstance;
 }
 
+await loadHtmlFragments();
 const storage = getGameStorage();
 initializeLocalization(storage);
 const game = initializeGame();

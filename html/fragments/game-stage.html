@@ -1,0 +1,397 @@
+<canvas
+        id="game-canvas"
+        width="1280"
+        height="720"
+        aria-label="Spielfläche von Little Bolt, Big Moon"
+        data-i18n="canvas.fallback"
+        data-i18n-aria-label="canvas.label"
+        data-game-canvas
+      >
+        Dein Browser unterstützt das Canvas-Element leider nicht.
+      </canvas>
+
+      <section
+        class="story-sequence"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Wortlose Geschichte"
+        data-i18n-aria-label="story.label"
+        data-story-sequence
+        hidden
+      >
+        <div class="story-sequence__viewport" aria-hidden="true">
+          <div class="story-sequence__scene story-sequence__scene--intro">
+            <span class="story-sequence__signal"></span>
+            <img
+              class="story-sequence__cradle"
+              src="./img/sprites/props/empty-luma-cradle.png"
+              alt=""
+              width="96"
+              height="64"
+            >
+            <span class="story-sprite story-sprite--byte"></span>
+          </div>
+
+          <div class="story-sequence__scene story-sequence__scene--outro">
+            <span class="story-sequence__earth"></span>
+            <span class="story-sprite story-sprite--byte"></span>
+            <span class="story-sprite story-sprite--luma"></span>
+            <span class="story-sprite story-sprite--energy"></span>
+            <span class="story-sprite story-sprite--badge-left"></span>
+            <span class="story-sprite story-sprite--badge-right"></span>
+          </div>
+        </div>
+
+        <p
+          class="visually-hidden"
+          aria-live="polite"
+          data-story-sequence-status
+        ></p>
+        <button
+          class="story-sequence__skip"
+          type="button"
+          data-i18n="story.skip"
+          data-story-sequence-skip
+        >
+          Überspringen
+        </button>
+      </section>
+
+      <div class="utility-buttons">
+        <button
+          class="utility-button fullscreen-button"
+          type="button"
+          aria-label="Vollbild starten"
+          aria-pressed="false"
+          data-i18n="fullscreen.enter"
+          data-i18n-aria-label="fullscreen.enter"
+          data-fullscreen-toggle
+        >
+          Vollbild starten
+        </button>
+        <button
+          class="utility-button sound-button"
+          type="button"
+          aria-label="Ton stummschalten"
+          aria-pressed="false"
+          data-i18n="audio.active"
+          data-i18n-aria-label="audio.disable"
+          data-ui-action="mute"
+        >
+          Ton: an
+        </button>
+      </div>
+
+      <aside class="review-banner" data-review-banner hidden>
+        <strong data-i18n="review.banner">Review-Modus – keine Wertung</strong>
+        <label>
+          <span data-i18n="review.biome">Landschaft</span>
+          <select data-review-biome>
+            <option value="0" data-i18n="review.scrapyard">Schrottplatz</option>
+            <option value="1" data-i18n="review.factory">Fabrik</option>
+            <option value="2" data-i18n="review.launchTower">Startturm</option>
+            <option value="3" data-i18n="review.spaceStation">Raumstation</option>
+            <option value="4" data-i18n="review.moon">Mond</option>
+            <option value="5" data-i18n="review.boss">Boss-Arena</option>
+          </select>
+        </label>
+        <button type="button" data-review-exit data-i18n="review.exit">
+          Review verlassen
+        </button>
+      </aside>
+
+      <section
+        class="game-hud"
+        aria-label="Spielstatus"
+        data-i18n-aria-label="hud.label"
+        data-game-hud
+        hidden
+      >
+        <div class="hud-panel hud-energy">
+          <span class="hud-symbol" data-hud-icon="energy" aria-hidden="true"></span>
+          <div class="hud-energy__body">
+            <span class="hud-label" data-i18n="hud.energy">Energie</span>
+            <div
+              class="hud-energy__bar"
+              role="progressbar"
+              aria-label="Energie"
+              data-i18n-aria-label="hud.energy"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="100"
+              data-hud-energy-bar
+            >
+              <span class="hud-energy__fill"></span>
+            </div>
+          </div>
+          <output
+            class="hud-number"
+            aria-label="Energiepunkte"
+            data-i18n-aria-label="hud.energyPoints"
+          >
+            <span data-hud-value="energy">100</span>
+          </output>
+        </div>
+
+        <div class="hud-panel hud-height">
+          <span class="hud-symbol" data-hud-icon="height" aria-hidden="true"></span>
+          <span class="hud-label" data-i18n="hud.height">Höhe</span>
+          <output
+            class="hud-number"
+            aria-label="Höhe in Metern"
+            data-i18n-aria-label="hud.heightMeters"
+          >
+            <span data-hud-value="height">0</span> m
+          </output>
+        </div>
+
+        <div class="hud-score-group">
+          <div class="hud-panel hud-score">
+            <span class="hud-symbol" data-hud-icon="score" aria-hidden="true"></span>
+            <span class="hud-label" data-i18n="hud.score">Punkte</span>
+            <output
+              class="hud-number"
+              aria-label="Punkte"
+              data-i18n-aria-label="hud.score"
+              data-hud-value="score"
+            >
+              000000
+            </output>
+          </div>
+          <div
+            class="hud-panel hud-combo"
+            data-hud-combo
+            hidden
+          >
+            <span class="hud-label" data-i18n="hud.combo">Combo</span>
+            <output
+              class="hud-number hud-combo__value"
+              aria-label="Combo"
+              aria-live="polite"
+              data-i18n-aria-label="hud.combo"
+              data-hud-combo-value
+            >
+              0 ×1
+            </output>
+          </div>
+          <button
+            class="hud-pause-button"
+            type="button"
+            aria-label="Spiel pausieren"
+            data-i18n-aria-label="hud.pause"
+            data-ui-action="pause"
+          >
+            <span class="hud-symbol" data-hud-icon="pause" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div
+          class="hud-resources"
+          aria-label="Ressourcen"
+          data-i18n-aria-label="hud.resources"
+        >
+          <div class="hud-panel hud-resource">
+            <span class="hud-symbol" data-hud-icon="ammo" aria-hidden="true"></span>
+            <span class="hud-label" data-i18n="hud.ammo">Munition</span>
+            <output
+              class="hud-number"
+              aria-label="Munition"
+              data-i18n-aria-label="hud.ammo"
+              data-hud-value="ammo"
+            >
+              0
+            </output>
+          </div>
+          <div class="hud-panel hud-resource">
+            <span class="hud-symbol" data-hud-icon="arcCharge" aria-hidden="true"></span>
+            <span class="hud-label" data-i18n="hud.arcCharges">Ladungen</span>
+            <output
+              class="hud-number"
+              aria-label="Lichtbogen-Ladungen"
+              data-i18n-aria-label="hud.arcCharges"
+              data-hud-value="arcCharges"
+            >
+              0
+            </output>
+          </div>
+          <div class="hud-panel hud-resource">
+            <span class="hud-symbol" data-hud-icon="gears" aria-hidden="true"></span>
+            <span class="hud-label" data-i18n="hud.gears">Zahnräder</span>
+            <output
+              class="hud-number"
+              aria-label="Zahnräder"
+              data-i18n-aria-label="hud.gears"
+              data-hud-value="gears"
+            >
+              0
+            </output>
+          </div>
+          <div class="hud-panel hud-resource hud-resource--weapon">
+            <span class="hud-symbol" data-hud-icon="weapon" aria-hidden="true"></span>
+            <span class="hud-label" data-i18n="hud.weapon">Waffe</span>
+            <output
+              class="hud-number"
+              aria-label="Ausgewählte Waffe"
+              data-i18n-aria-label="hud.selectedWeapon"
+              data-hud-value="weapon"
+            >
+              –
+            </output>
+          </div>
+        </div>
+
+        <output
+          class="hud-pickup-feedback"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          data-hud-pickup-feedback
+        ></output>
+
+        <output
+          class="hud-fall-feedback"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          data-hud-fall-feedback
+        ></output>
+
+        <div
+          class="hud-panel hud-jump-charge"
+          data-hud-jump-charge
+          hidden
+        >
+          <span class="hud-label" data-i18n="hud.jumpPower">Sprungkraft</span>
+          <div
+            class="hud-jump-charge__bar"
+            role="progressbar"
+            aria-label="Geladene Sprungkraft"
+            data-i18n-aria-label="hud.chargedJump"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            data-hud-jump-charge-bar
+          >
+            <span class="hud-jump-charge__fill"></span>
+          </div>
+          <output class="hud-number" data-hud-jump-charge-value>0%</output>
+        </div>
+
+        <div
+          class="hud-panel hud-boss"
+          aria-label="Bossstatus"
+          data-i18n-aria-label="hud.bossStatus"
+          aria-live="polite"
+          data-hud-boss
+          hidden
+        >
+          <div class="hud-boss__heading">
+            <strong data-hud-boss-name>Mondwächter</strong>
+            <span>
+              <span data-i18n="hud.phase">Phase</span>
+              <output data-hud-boss-phase>1</output>
+            </span>
+          </div>
+          <div
+            class="hud-boss__bar"
+            role="progressbar"
+            aria-label="Lebensenergie des Mondwächters"
+            aria-valuemin="0"
+            aria-valuemax="400"
+            aria-valuenow="400"
+            data-hud-boss-bar
+          >
+            <span class="hud-boss__fill"></span>
+          </div>
+          <output class="hud-boss__health" data-hud-boss-health>
+            400 / 400
+          </output>
+        </div>
+      </section>
+
+      <nav
+        class="touch-controls"
+        aria-label="Touch-Steuerung"
+        data-i18n-aria-label="touch.label"
+        data-touch-controls
+        hidden
+      >
+        <div class="touch-controls__group touch-controls__group--move">
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach links laufen"
+            data-i18n-aria-label="touch.left"
+            aria-pressed="false"
+            data-input-action="left"
+          >
+            ◀
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach rechts laufen"
+            data-i18n-aria-label="touch.right"
+            aria-pressed="false"
+            data-input-action="right"
+          >
+            ▶
+          </button>
+        </div>
+
+        <div class="touch-controls__group touch-controls__group--action">
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Sprung laden und beim Loslassen springen"
+            data-i18n-aria-label="touch.jump"
+            aria-pressed="false"
+            data-input-action="jump"
+          >
+            ↑
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Angreifen"
+            data-i18n-aria-label="touch.attack"
+            aria-pressed="false"
+            data-input-action="attack"
+          >
+            F
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Waffe wechseln"
+            data-i18n-aria-label="touch.switchWeapon"
+            aria-pressed="false"
+            data-input-action="weaponSwitch"
+          >
+            Q
+          </button>
+        </div>
+
+        <div class="touch-controls__group touch-controls__group--review" data-review-control>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Nach unten fliegen"
+            data-i18n-aria-label="review.flyDown"
+            aria-pressed="false"
+            data-input-action="down"
+          >
+            ↓
+          </button>
+          <button
+            class="touch-control"
+            type="button"
+            aria-label="Schnell fliegen"
+            data-i18n-aria-label="review.flyFast"
+            aria-pressed="false"
+            data-input-action="fast"
+          >
+            ×3
+          </button>
+        </div>
+      </nav>

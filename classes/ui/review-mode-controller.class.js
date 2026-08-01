@@ -1,6 +1,7 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 import { ReviewFlightController } from "../systems/review-flight-controller.class.js";
 import { translate } from "../../js/i18n/localization.js";
+import { GAME_STATES } from "../core/game-state-machine.class.js";
 
 const SELECTORS = Object.freeze({
   version: "[data-review-version]",
@@ -31,11 +32,17 @@ export class ReviewModeController {
     this.versionClicks = 0;
     this.flight = null;
     this.#assignElements();
+    this.#bindEvents();
+  }
+
+  #bindEvents() {
     this.boundVersionClick = this.handleVersionClick.bind(this);
     this.boundSubmit = this.handleSubmit.bind(this);
     this.boundExit = this.exit.bind(this);
     this.boundCancel = () => this.dialog.close();
     this.boundBiomeChange = this.handleBiomeChange.bind(this);
+    this.boundStateChange = this.handleStateChange.bind(this);
+    this.boundHudChange = this.syncBiomeControl.bind(this);
   }
 
   #assignElements() {
@@ -60,6 +67,8 @@ export class ReviewModeController {
     this.exitButton.addEventListener("click", this.boundExit);
     this.cancelButton.addEventListener("click", this.boundCancel);
     this.biomeControl.addEventListener("change", this.boundBiomeChange);
+    this.game.onStateChange(this.boundStateChange);
+    this.game.onHudChange(this.boundHudChange);
     if (this.#hasStoredAccess()) this.start();
     return this;
   }
@@ -92,10 +101,7 @@ export class ReviewModeController {
   start() {
     if (this.flight) return false;
     this.game.reset();
-    this.flight = new ReviewFlightController(this.game, this.config);
-    this.game.world.addEntity(WORLD_ENTITY_GROUPS.DECORATIONS, this.flight);
-    this.#showAllEnemies();
-    this.flight.enable();
+    this.#attachFlight();
     this.root.dataset.reviewMode = "true";
     this.game.canvas.dataset.reviewMode = "true";
     this.banner.hidden = false;
@@ -115,6 +121,45 @@ export class ReviewModeController {
   /** Springt über die Auswahl direkt an den Beginn einer Landschaft. */
   handleBiomeChange() {
     this.flight?.teleportTo(Number(this.biomeControl.value));
+  }
+
+  /** Verbindet den Review-Flug nach einem Neustart mit der frischen Welt. */
+  handleStateChange(state) {
+    if (!this.#isActive() || state !== GAME_STATES.PLAYING) return;
+    if (this.flight?.character === this.game.world.character) return;
+    this.#attachFlight();
+    this.syncBiomeControl();
+  }
+
+  /** Hält die sichtbare Landschaftsauswahl beim freien Flug aktuell. */
+  syncBiomeControl() {
+    if (!this.#isActive()) return;
+    this.biomeControl.value = String(this.#getCurrentTargetIndex());
+  }
+
+  #attachFlight() {
+    this.flight = new ReviewFlightController(this.game, this.config);
+    this.game.world.addEntity(WORLD_ENTITY_GROUPS.DECORATIONS, this.flight);
+    this.#showAllEnemies();
+    this.flight.enable();
+  }
+
+  #getCurrentTargetIndex() {
+    const y = this.game.world.character?.y;
+    if (y <= this.config.bossArenaMaximumY) return 5;
+    const section = this.game.world.level.sections.find((candidate) => {
+      return y >= candidate.topY && y < candidate.bottomY;
+    });
+    return this.#getBiomeIds().indexOf(section?.backgroundId);
+  }
+
+  #getBiomeIds() {
+    const ids = this.game.world.level.sections.map(({ backgroundId }) => backgroundId);
+    return [...new Set(ids)];
+  }
+
+  #isActive() {
+    return this.root.dataset.reviewMode === "true";
   }
 
   #showAllEnemies() {

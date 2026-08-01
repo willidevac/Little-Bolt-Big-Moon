@@ -8,7 +8,7 @@ Little Bolt, Big Moon bleibt ein Pixel-Art-Spiel. Die Grafiken erhalten jedoch
 mehr nutzbare Bildpunkte, ruhigere Flächen und eine klarere Trennung zwischen
 Spielfeld und Landschaft.
 
-Die Probe kann über `art-preview.html` auf dem lokalen Live Server betrachtet
+Die Probe kann über `html/pages/art-preview.html` auf dem lokalen Live Server betrachtet
 werden.
 
 ## Verbindliche Gestaltungsregeln

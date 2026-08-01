@@ -3070,21 +3070,24 @@
       "type": "gear",
       "amount": 1,
       "x": 768,
-      "y": 148832
+      "y": 148832,
+      "anchorPlatformId": "scrapyard-machine-graveyard-erste-kante-shortcut-2"
     },
     {
       "id": "scrapyard-ammo-01",
       "type": "ammo",
       "amount": 4,
       "x": 480,
-      "y": 149776
+      "y": 149776,
+      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
     },
     {
       "id": "scrapyard-energy-01",
       "type": "energy",
       "amount": 20,
       "x": 864,
-      "y": 149776
+      "y": 149776,
+      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
     },
     {
       "id": "scrapyard-bolt-thrower-01",
@@ -3092,169 +3095,193 @@
       "weaponId": "boltThrower",
       "amount": 6,
       "x": 224,
-      "y": 149776
+      "y": 149776,
+      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
     },
     {
       "id": "scrapyard-boss-ammo",
       "type": "ammo",
       "amount": 12,
       "x": 128,
-      "y": 120000
+      "y": 120000,
+      "anchorPlatformId": "scrapyard-signal-tower-catch-070"
     },
     {
       "id": "factory-gear-01",
       "type": "gear",
       "amount": 1,
       "x": 768,
-      "y": 119024
+      "y": 119024,
+      "anchorPlatformId": "factory-assembly-zahnradlager-shortcut-2"
     },
     {
       "id": "factory-energy-01",
       "type": "energy",
       "amount": 20,
       "x": 192,
-      "y": 117500
+      "y": 117500,
+      "anchorPlatformId": "factory-assembly-energiegang-4-4"
     },
     {
       "id": "factory-ammo-01",
       "type": "ammo",
       "amount": 4,
       "x": 416,
-      "y": 116100
+      "y": 116100,
+      "anchorPlatformId": "factory-assembly-munitionsband-6-4"
     },
     {
       "id": "pressworks-boss-ammo",
       "type": "ammo",
       "amount": 12,
       "x": 96,
-      "y": 90000
+      "y": 90000,
+      "anchorPlatformId": "factory-energy-core-catch-060"
     },
     {
       "id": "launch-tower-gear-01",
       "type": "gear",
       "amount": 1,
       "x": 192,
-      "y": 88688
+      "y": 88688,
+      "anchorPlatformId": "launch-tower-supply-shafts-raketen-kabelschacht-shortcut-2"
     },
     {
       "id": "launch-tower-energy-01",
       "type": "energy",
       "amount": 20,
-      "x": 192,
-      "y": 87500
+      "x": 288,
+      "y": 88028,
+      "anchorPlatformId": "launch-tower-supply-shafts-wartungslift-3-2"
     },
     {
       "id": "launch-tower-ammo-01",
       "type": "ammo",
       "amount": 4,
       "x": 416,
-      "y": 86100
+      "y": 86232,
+      "anchorPlatformId": "launch-tower-supply-shafts-druckleitung-5-3"
     },
     {
       "id": "launch-tower-boss-ammo",
       "type": "ammo",
       "amount": 12,
       "x": 736,
-      "y": 60000
+      "y": 60000,
+      "anchorPlatformId": "launch-tower-launch-platform-catch-060"
     },
     {
       "id": "space-station-gear-01",
       "type": "gear",
       "amount": 1,
       "x": 224,
-      "y": 58680
+      "y": 58680,
+      "anchorPlatformId": "space-station-cargo-ring-containerbogen-shortcut-2"
     },
     {
       "id": "space-station-arc-cannon-01",
       "type": "weapon",
       "weaponId": "arcCannon",
       "amount": 3,
-      "x": 544,
-      "y": 58900
+      "x": 432,
+      "y": 59180,
+      "anchorPlatformId": "space-station-cargo-ring-dockschleuse-1-5"
     },
     {
       "id": "space-station-energy-01",
       "type": "energy",
       "amount": 20,
       "x": 192,
-      "y": 57500
+      "y": 58360,
+      "anchorPlatformId": "space-station-cargo-ring-containerbogen-2-5"
     },
     {
       "id": "space-station-arc-charge-01",
       "type": "arcCharge",
       "amount": 2,
       "x": 288,
-      "y": 57500
+      "y": 58352,
+      "anchorPlatformId": "space-station-cargo-ring-containerbogen-2-5"
     },
     {
       "id": "space-station-ammo-01",
       "type": "ammo",
       "amount": 4,
       "x": 416,
-      "y": 56100
+      "y": 56240,
+      "anchorPlatformId": "space-station-cargo-ring-frachtkran-5-3"
     },
     {
       "id": "space-station-arc-charge-02",
       "type": "arcCharge",
       "amount": 2,
-      "x": 544,
-      "y": 56100
+      "x": 512,
+      "y": 56232,
+      "anchorPlatformId": "space-station-cargo-ring-frachtkran-5-3"
     },
     {
       "id": "space-station-boss-ammo",
       "type": "ammo",
       "amount": 12,
       "x": 384,
-      "y": 30000
+      "y": 30000,
+      "anchorPlatformId": "space-station-command-catch-060"
     },
     {
       "id": "space-station-boss-arc-charge",
       "type": "arcCharge",
       "amount": 3,
-      "x": 512,
-      "y": 30000
+      "x": 480,
+      "y": 30492,
+      "anchorPlatformId": "space-station-command-ausstieg-zum-mond-12-3"
     },
     {
       "id": "moon-gear-01",
       "type": "gear",
       "amount": 1,
       "x": 672,
-      "y": 28680
+      "y": 28680,
+      "anchorPlatformId": "moon-crater-field-flacher-krater-shortcut-2"
     },
     {
       "id": "moon-energy-01",
       "type": "energy",
       "amount": 20,
       "x": 192,
-      "y": 7500
+      "y": 7500,
+      "anchorPlatformId": "moon-warden-fortress-zersplitterter-damm-3-5"
     },
     {
       "id": "moon-ammo-01",
       "type": "ammo",
       "amount": 4,
       "x": 416,
-      "y": 6100
+      "y": 6100,
+      "anchorPlatformId": "moon-warden-fortress-versorgungskammer-5-3"
     },
     {
       "id": "moon-arc-charge-01",
       "type": "arcCharge",
       "amount": 2,
       "x": 544,
-      "y": 6100
+      "y": 6616,
+      "anchorPlatformId": "moon-warden-fortress-waechterrippen-4-5"
     },
     {
       "id": "moon-boss-ammo",
       "type": "ammo",
       "amount": 12,
       "x": 416,
-      "y": 728
+      "y": 728,
+      "anchorPlatformId": "moon-boss-arena-floor"
     },
     {
       "id": "moon-boss-arc-charge",
       "type": "arcCharge",
       "amount": 3,
       "x": 544,
-      "y": 728
+      "y": 1172,
+      "anchorPlatformId": "moon-warden-fortress-arenaschwelle-11-3"
     },
     {
       "id": "scrapyard-story-badge-01",

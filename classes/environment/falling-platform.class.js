@@ -125,7 +125,9 @@ export class FallingPlatform extends Platform {
       0, this.respawnSecondsRemaining - deltaTimeSeconds,
     );
     if (this.respawnSecondsRemaining > 0) return;
+    const previousY = this.y;
     this.y = this.initialY;
+    this.setFrameDisplacement(0, this.y - previousY);
     this.warningElapsedSeconds = 0;
     this.state = FALLING_PLATFORM_STATES.STABLE;
   }

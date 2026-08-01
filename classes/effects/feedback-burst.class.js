@@ -79,6 +79,6 @@ export class FeedbackBurst {
   #validateTarget(target) {
     const values = [target?.x, target?.y, target?.width, target?.height];
     if (values.every(Number.isFinite)) return;
-    throw new TypeError("Dem Feedbackeffekt fehlt eine gÃ¼ltige Position.");
+    throw new TypeError("Dem Feedbackeffekt fehlt eine gültige Position.");
   }
 }

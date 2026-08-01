@@ -1,0 +1,174 @@
+<dialog class="review-dialog" data-review-dialog>
+        <form class="screen-panel review-dialog__form" method="dialog" data-review-form>
+          <p class="screen-panel__eyebrow" data-i18n="review.eyebrow">
+            Abgabe und Art-Prüfung
+          </p>
+          <h2 class="screen-panel__title" data-i18n="review.title">
+            Review-Modus
+          </h2>
+          <p class="screen-panel__copy" data-i18n="review.copy">
+            Dieser Lauf speichert keine Rekorde. Gib den Mentor-Code ein.
+          </p>
+          <label class="review-dialog__label" for="review-code" data-i18n="review.code">
+            Review-Code
+          </label>
+          <input
+            id="review-code"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            data-review-code
+          >
+          <p class="review-dialog__error" role="alert" data-review-error hidden></p>
+          <div class="review-dialog__actions">
+            <button class="menu-button menu-button--primary" type="button" data-review-start data-i18n="review.start">
+              Review starten
+            </button>
+            <button class="menu-button" type="button" data-review-cancel data-i18n="review.cancel">
+              Abbrechen
+            </button>
+          </div>
+        </form>
+      </dialog>
+
+      <section
+        class="game-screen overlay-screen"
+        aria-labelledby="pause-title"
+        data-game-screen="paused"
+        hidden
+      >
+        <div class="screen-panel screen-panel--pause">
+          <p class="screen-panel__eyebrow" data-i18n="pause.eyebrow">
+            Byte wartet auf dich
+          </p>
+          <h2 id="pause-title" class="screen-panel__title" data-i18n="pause.title">
+            Pause
+          </h2>
+
+          <nav
+            class="start-menu"
+            aria-label="Pausenmenü"
+            data-i18n-aria-label="pause.menu"
+          >
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-i18n="pause.resume"
+              data-ui-action="resume"
+            >
+              Weiterspielen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.controls"
+              data-ui-action="controls"
+            >
+              Steuerung
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="home.settings"
+              data-ui-action="settings"
+            >
+              Einstellungen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="pause.home"
+              data-ui-action="home"
+            >
+              Zum Hauptmenü
+            </button>
+          </nav>
+
+          <p class="screen-panel__hint" data-i18n="pause.hint">
+            Mit Escape geht es ebenfalls weiter.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="game-screen overlay-screen upgrade-screen"
+        aria-labelledby="upgrade-title"
+        data-game-screen="upgrading"
+        hidden
+      >
+        <div class="screen-panel screen-panel--upgrade">
+          <p class="screen-panel__eyebrow" data-i18n="upgrade.eyebrow">
+            Arena geschafft
+          </p>
+          <h2
+            id="upgrade-title"
+            class="screen-panel__title"
+            tabindex="-1"
+            data-i18n="upgrade.title"
+          >
+            Wähle eine Verbesserung
+          </h2>
+          <p class="screen-panel__copy" data-i18n="upgrade.copy">
+            Ein Fundstück darf Byte auf seinem Weg zum Mond stärker machen.
+          </p>
+          <div
+            class="upgrade-options"
+            role="group"
+            aria-label="Verfügbare Verbesserungen"
+            data-i18n-aria-label="upgrade.group"
+            data-upgrade-options
+          ></div>
+          <p class="screen-panel__hint" data-i18n="upgrade.hint">
+            Die Auswahl gilt für diesen Lauf und kann nicht übersprungen werden.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="game-screen overlay-screen end-screen"
+        aria-labelledby="end-title" aria-live="assertive"
+        data-game-screen="end"
+        hidden
+      >
+        <div class="screen-panel screen-panel--end">
+          <p class="screen-panel__eyebrow" data-end-eyebrow></p>
+          <h2 id="end-title" class="screen-panel__title" tabindex="-1" data-end-title></h2>
+          <p class="screen-panel__copy" data-end-copy></p>
+          <dl
+            class="end-result"
+            aria-label="Laufergebnis"
+            data-i18n-aria-label="end.result"
+          >
+            <div class="end-result__item">
+              <dt data-i18n="end.bestHeight">Beste Höhe</dt>
+              <dd data-end-height>0 m</dd>
+            </div>
+            <div class="end-result__item">
+              <dt data-i18n="hud.score">Punkte</dt>
+              <dd data-end-score>000000</dd>
+            </div>
+          </dl>
+          <nav
+            class="start-menu"
+            aria-label="Lauf beenden"
+            data-i18n-aria-label="end.menu"
+          >
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-i18n="end.retry"
+              data-ui-action="restart"
+            >
+              Nochmal versuchen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="end.home"
+              data-ui-action="home"
+            >
+              Zum Hauptmenü
+            </button>
+          </nav>
+        </div>
+      </section>

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { LOCALIZATION_CONFIG } from "../js/config/localization-config.js";
 import { TRANSLATION_CATALOG } from "../js/i18n/translation-catalog.js";
 import {
@@ -59,7 +60,7 @@ function assertCatalogParity() {
 }
 
 async function assertMarkupKeys() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   const usedKeys = [
     ...getAttributes(html, "data-i18n"),
     ...getAttributes(html, "data-i18n-aria-label"),

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { FullscreenController } from
   "../classes/ui/fullscreen-controller.class.js";
 import { setLanguage } from "../js/i18n/localization.js";
@@ -31,7 +32,7 @@ function assertLanguageAndFallback() {
 }
 
 async function assertResponsiveContract() {
-  const html = await fs.readFile("index.html", "utf8");
+  const html = await readAppMarkup();
   const screens = await fs.readFile("styles/screens.css", "utf8");
   const responsive = await fs.readFile("styles/responsive.css", "utf8");
   assert.match(html, /data-fullscreen-toggle/);

@@ -836,7 +836,7 @@ Verbindliche Merkmale:
 | --- | --- |
 | Status | freigegeben als neue Gestaltungsrichtung |
 | Datum | 29.07.2026 |
-| Vorschauseite | `art-preview.html` |
+| Vorschauseite | `html/pages/art-preview.html` |
 | Spielszenenreferenz | `img/concepts/clean-hd-preview/clean-hd-gameplay-v1.png` |
 | Figurenprobe | `img/concepts/clean-hd-preview/byte-core-poses-v1.png` |
 | Gameplay-Kit | `img/concepts/clean-hd-preview/scrapyard-gameplay-kit-v1.png` |

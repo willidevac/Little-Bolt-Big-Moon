@@ -56,8 +56,20 @@
   }
 
   .hud-resources {
-    grid-column: 2;
+    grid-column: 1 / -1;
     justify-self: center;
+  }
+
+  .hud-resources .hud-label {
+    display: none;
+  }
+
+  .hud-resource {
+    min-width: auto;
+  }
+
+  .hud-resource--weapon {
+    min-width: 10rem;
   }
 
   .hud-boss {

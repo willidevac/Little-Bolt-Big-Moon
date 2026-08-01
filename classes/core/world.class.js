@@ -15,7 +15,6 @@ import { Camera } from "./camera.class.js";
 import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
-
 const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
 const FALLBACK_PLATFORM_BOUNDS = Object.freeze({ x: 96, y: 560, width: 512, height: 32 });
 const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
@@ -319,7 +318,8 @@ export class World {
     if (!this.character) return;
     const collectables = this.#entityGroups.get(WORLD_ENTITY_GROUPS.COLLECTABLES);
     const overlaps = collectables.filter((collectable) => {
-      return this.#collisionManager.areOverlapping(this.character, collectable);
+      return collectable.isAvailable !== false &&
+        this.#collisionManager.areOverlapping(this.character, collectable);
     });
     overlaps.forEach((collectable) => this.#collect(collectable));
   }
