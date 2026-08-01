@@ -1,0 +1,212 @@
+import { clamp } from "../../js/utils/math.js";
+
+const STAT_BY_PICKUP_TYPE = Object.freeze({
+  gear: "gears",
+  energy: "energy",
+  ammo: "ammo",
+  arcCharge: "arcCharges",
+});
+const CAPACITY_BY_STAT = Object.freeze({
+  energy: "maximumEnergy",
+  ammo: "maximumAmmo",
+  arcCharges: "maximumArcCharges",
+});
+const SPENDABLE_TYPES = Object.freeze(["ammo", "arcCharge"]);
+const NON_RESOURCE_TYPES = Object.freeze(["weapon", "storyBadge"]);
+
+/**
+ * Verwaltet Energie, Zahnräder und Munition eines einzelnen Laufs.
+ */
+export class RunResources {
+  #config;
+  #values;
+  #capacities;
+
+  /** @param {Readonly<object>} config Konfigurierte Start- und Höchstwerte. */
+  constructor(config) {
+    this.#validateConfig(config);
+    this.#config = config;
+    this.reset();
+  }
+
+  /** @returns {number} Verbleibende Energie. */
+  get energy() { return this.#values.energy; }
+
+  /** @returns {number} Höchstmögliche Energie. */
+  get maximumEnergy() { return this.#capacities.maximumEnergy; }
+
+  /** @returns {number} Verbleibende Bolzen. */
+  get ammo() { return this.#values.ammo; }
+
+  /** @returns {number} Höchstmögliche Bolzen. */
+  get maximumAmmo() { return this.#capacities.maximumAmmo; }
+
+  /** @returns {number} Verbleibende Lichtbogenladungen. */
+  get arcCharges() { return this.#values.arcCharges; }
+
+  /** @returns {number} Höchstmögliche Lichtbogenladungen. */
+  get maximumArcCharges() { return this.#capacities.maximumArcCharges; }
+
+  /** @returns {number} Gesammelte Zahnräder. */
+  get gears() { return this.#values.gears; }
+
+  /** Setzt alle Vorräte auf ihre konfigurierten Startwerte zurück. */
+  reset() {
+    this.#capacities = {
+      maximumEnergy: this.#config.maximumEnergy,
+      maximumAmmo: this.#config.maximumAmmo,
+      maximumArcCharges: this.#config.maximumArcCharges,
+    };
+    this.#values = {
+      energy: this.#config.startingEnergy, ammo: this.#config.startingAmmo,
+      arcCharges: this.#config.startingArcCharges,
+      gears: this.#config.startingGears,
+    };
+  }
+
+  /**
+   * Rechnet neue Funde gesammelt auf die passenden Vorräte.
+   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
+   * @returns {boolean} Ob sich mindestens ein Vorrat geändert hat.
+   */
+  applyPickups(pickups) {
+    if (!Array.isArray(pickups)) {
+      throw new TypeError("Funde müssen als Liste übergeben werden.");
+    }
+    return pickups.reduce((changed, pickup) => {
+      return this.#applyPickup(pickup) || changed;
+    }, false);
+  }
+
+  /**
+   * Zieht Energie ab und liefert den verbleibenden Wert.
+   * @param {number} amount
+   * @returns {number}
+   */
+  takeDamage(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new TypeError("Schaden muss eine positive Zahl sein.");
+    }
+    this.#values.energy = clamp(
+      this.energy - amount, 0, this.maximumEnergy,
+    );
+    return this.energy;
+  }
+
+  /**
+   * Verbraucht eine vorhandene Munitionsart atomar.
+   * @param {string} type
+   * @param {number} amount
+   * @returns {boolean} Ob genügend Munition vorhanden war.
+   */
+  spend(type, amount) {
+    this.#validateSpend(type, amount);
+    const statName = STAT_BY_PICKUP_TYPE[type];
+    if (amount > this.#values[statName]) return false;
+    this.#values[statName] -= amount;
+    return true;
+  }
+
+  /**
+   * Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff.
+   * @param {string} type
+   * @returns {number}
+   */
+  getAmount(type) {
+    if (!SPENDABLE_TYPES.includes(type)) {
+      throw new RangeError(`Unbekannte Munitionsart: ${type}`);
+    }
+    return this.#values[STAT_BY_PICKUP_TYPE[type]];
+  }
+
+  /**
+   * Vergrößert einen Vorrat und füllt den neuen Platz sofort.
+   * @param {"energy"|"ammo"|"arcCharge"} type
+   * @param {number} amount
+   */
+  increaseCapacity(type, amount) {
+    this.#validateUpgrade(type, amount);
+    const statName = STAT_BY_PICKUP_TYPE[type];
+    const capacityName = CAPACITY_BY_STAT[statName];
+    this.#capacities[capacityName] += amount;
+    this.#values[statName] = clamp(
+      this.#values[statName] + amount, 0, this.#capacities[capacityName],
+    );
+  }
+
+  /** @returns {Readonly<object>} Unveränderliche HUD-Werte. */
+  getSnapshot() {
+    return Object.freeze({
+      energy: this.energy, maximumEnergy: this.maximumEnergy,
+      ammo: this.ammo, maximumAmmo: this.maximumAmmo,
+      arcCharges: this.arcCharges,
+      maximumArcCharges: this.maximumArcCharges,
+      gears: this.gears,
+    });
+  }
+
+  #applyPickup(pickup) {
+    const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
+    if (NON_RESOURCE_TYPES.includes(pickup?.type)) return false;
+    if (!statName || !Number.isFinite(pickup.amount) || pickup.amount <= 0) {
+      throw new TypeError("Der eingesammelte Fund ist ungültig.");
+    }
+    const previousValue = this.#values[statName];
+    this.#values[statName] = this.#getPickupValue(statName, pickup.amount);
+    return this.#values[statName] !== previousValue;
+  }
+
+  #getPickupValue(statName, amount) {
+    const capacityName = CAPACITY_BY_STAT[statName];
+    if (!capacityName) return this.#values[statName] + amount;
+    return clamp(
+      this.#values[statName] + amount, 0, this.#capacities[capacityName],
+    );
+  }
+
+  #validateConfig(config) {
+    const values = [
+      config?.maximumEnergy, config?.startingEnergy, config?.startingGears,
+    ];
+    const hasNumbers = values.every((value) => Number.isFinite(value) && value >= 0);
+    if (!hasNumbers || config.maximumEnergy <= 0) {
+      throw new TypeError("Die Vorrats-Startwerte sind unvollständig oder ungültig.");
+    }
+    this.#validateEnergy(config);
+    this.#validateAmmunition(config);
+  }
+
+  #validateEnergy(config) {
+    if (config.startingEnergy <= config.maximumEnergy) return;
+    throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
+  }
+
+  #validateAmmunition(config) {
+    this.#validateRange(
+      config.startingAmmo, config.maximumAmmo,
+      "Die Startmunition liegt außerhalb der Magazingrenze.",
+    );
+    this.#validateRange(
+      config.startingArcCharges, config.maximumArcCharges,
+      "Die Startladung liegt außerhalb des Ladungsspeichers.",
+    );
+  }
+
+  #validateRange(starting, maximum, message) {
+    const hasIntegers = Number.isInteger(starting) && Number.isInteger(maximum);
+    if (hasIntegers && maximum > 0 && starting >= 0 && starting <= maximum) return;
+    throw new RangeError(message);
+  }
+
+  #validateSpend(type, amount) {
+    const hasType = SPENDABLE_TYPES.includes(type);
+    if (hasType && Number.isInteger(amount) && amount >= 0) return;
+    throw new TypeError("Der Munitionsverbrauch ist ungültig.");
+  }
+
+  #validateUpgrade(type, amount) {
+    const canGrow = Object.hasOwn(CAPACITY_BY_STAT, STAT_BY_PICKUP_TYPE[type]);
+    if (canGrow && Number.isFinite(amount) && amount > 0) return;
+    throw new TypeError("Eine Verbesserung muss gültig und positiv sein.");
+  }
+}

@@ -1,37 +1,48 @@
-import { clamp } from "../../js/utils/math.js";
+import { RunResources } from "./run-resources.class.js";
 import { RunScore } from "./run-score.class.js";
 
-const STAT_BY_PICKUP_TYPE = Object.freeze({
-  gear: "gears",
-  energy: "energy",
-  ammo: "ammo",
-  arcCharge: "arcCharges",
-});
-const CAPACITY_BY_STAT = Object.freeze({
-  energy: "maximumEnergy",
-  ammo: "maximumAmmo",
-  arcCharges: "maximumArcCharges",
-});
-const SPENDABLE_PICKUP_TYPES = Object.freeze(["ammo", "arcCharge"]);
-const NON_STAT_PICKUP_TYPES = Object.freeze(["weapon", "storyBadge"]);
 /**
- * Hält die kleinen Zahlen eines einzelnen Laufs unabhängig von der Anzeige.
+ * Bündelt Fortschritt, Vorräte und Wertung eines Laufs für das HUD.
  */
 export class RunStats {
   #listeners;
   #bossSignature;
+  #resources;
   #score;
+
   /**
    * @param {Readonly<object>} config
    * @param {number} startY
    */
   constructor(config, startY) {
-    this.validateConfig(config, startY);
+    this.#validateProgressConfig(config, startY);
     this.config = config;
+    this.#resources = new RunResources(config);
     this.#listeners = new Set();
     this.#score = new RunScore(config.startingScore, config.scoring);
     this.reset(startY);
   }
+
+  /** @returns {number} Verbleibende Energie. */
+  get energy() { return this.#resources.energy; }
+
+  /** @returns {number} Höchstmögliche Energie. */
+  get maximumEnergy() { return this.#resources.maximumEnergy; }
+
+  /** @returns {number} Verbleibende Bolzen. */
+  get ammo() { return this.#resources.ammo; }
+
+  /** @returns {number} Höchstmögliche Bolzen. */
+  get maximumAmmo() { return this.#resources.maximumAmmo; }
+
+  /** @returns {number} Verbleibende Lichtbogenladungen. */
+  get arcCharges() { return this.#resources.arcCharges; }
+
+  /** @returns {number} Höchstmögliche Lichtbogenladungen. */
+  get maximumArcCharges() { return this.#resources.maximumArcCharges; }
+
+  /** @returns {number} Gesammelte Zahnräder. */
+  get gears() { return this.#resources.gears; }
 
   /**
    * Setzt alle Laufwerte auf ihren konfigurierten Anfang zurück.
@@ -39,14 +50,8 @@ export class RunStats {
    */
   reset(startY = this.startY) {
     this.#validateStartY(startY);
-    Object.assign(this, {
-      startY, maximumEnergy: this.config.maximumEnergy,
-      maximumAmmo: this.config.maximumAmmo,
-      maximumArcCharges: this.config.maximumArcCharges,
-      energy: this.config.startingEnergy, ammo: this.config.startingAmmo,
-      arcCharges: this.config.startingArcCharges, gears: this.config.startingGears,
-      heightMeters: 0, boss: null,
-    });
+    this.#resources.reset();
+    Object.assign(this, { startY, heightMeters: 0, boss: null });
     this.#score.reset();
     this.#bossSignature = "";
     this.#notifyChange();
@@ -93,24 +98,20 @@ export class RunStats {
   }
 
   /**
-   * Rechnet neue Funde gesammelt auf die passenden Laufwerte.
+   * Rechnet neue Funde auf Wertung und Vorräte.
    * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
    * @returns {boolean} Ob sich mindestens ein sichtbarer Wert geändert hat.
    */
   applyPickups(pickups) {
-    if (!Array.isArray(pickups)) {
-      throw new TypeError("Funde müssen als Liste übergeben werden.");
-    }
-    let changed = this.#score.addPickups(pickups);
-    pickups.forEach((pickup) => {
-      if (this.#applyPickup(pickup)) changed = true;
-    });
+    const scoreChanged = this.#score.addPickups(pickups);
+    const resourcesChanged = this.#resources.applyPickups(pickups);
+    const changed = scoreChanged || resourcesChanged;
     if (changed) this.#notifyChange();
     return changed;
   }
 
   /**
-   * Bewertet jeden besiegten Gegner anhand seiner eindeutigen ID genau einmal.
+   * Bewertet jeden besiegten Gegner anhand seiner ID genau einmal.
    * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
    * @returns {boolean}
    */
@@ -149,15 +150,12 @@ export class RunStats {
    * @returns {number}
    */
   takeDamage(amount) {
-    if (!Number.isFinite(amount) || amount <= 0) {
-      throw new TypeError("Schaden muss eine positive Zahl sein.");
-    }
-    const nextEnergy = clamp(this.energy - amount, 0, this.maximumEnergy);
-    if (nextEnergy === this.energy) return this.energy;
-    this.energy = nextEnergy;
+    const previousEnergy = this.energy;
+    const remainingEnergy = this.#resources.takeDamage(amount);
+    if (remainingEnergy === previousEnergy) return remainingEnergy;
     this.#score.breakCombo();
     this.#notifyChange();
-    return this.energy;
+    return remainingEnergy;
   }
 
   /**
@@ -169,63 +167,44 @@ export class RunStats {
     return this.spendResource("ammo", amount);
   }
 
-  /** Verbraucht genau die Munitionsart der aktiven Waffe. */
+  /**
+   * Verbraucht genau die Munitionsart der aktiven Waffe.
+   * @param {string} type
+   * @param {number} amount
+   * @returns {boolean}
+   */
   spendResource(type, amount) {
-    const statName = STAT_BY_PICKUP_TYPE[type];
-    this.#validateResourceSpend(type, amount);
-    if (amount > this[statName]) return false;
-    if (amount === 0) return true;
-    this[statName] -= amount;
-    this.#notifyChange();
-    return true;
+    const spent = this.#resources.spend(type, amount);
+    if (spent && amount > 0) this.#notifyChange();
+    return spent;
   }
 
-  /** Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff. */
+  /**
+   * Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff.
+   * @param {string} type
+   * @returns {number}
+   */
   getResourceAmount(type) {
-    const statName = STAT_BY_PICKUP_TYPE[type];
-    if (SPENDABLE_PICKUP_TYPES.includes(type)) return this[statName];
-    throw new RangeError(`Unbekannte Munitionsart: ${type}`);
+    return this.#resources.getAmount(type);
   }
 
-  /**
-   * Vergrößert Bytes Batterie und repariert den neu gewonnenen Bereich.
-   * @param {number} amount
-   */
+  /** @param {number} amount Vergrößerung der Batterie. */
   increaseMaximumEnergy(amount) {
-    this.#validateUpgradeAmount(amount);
-    this.maximumEnergy += amount;
-    this.energy = clamp(this.energy + amount, 0, this.maximumEnergy);
-    this.#notifyChange();
+    this.#increaseCapacity("energy", amount);
   }
 
-  /**
-   * Vergrößert das Magazin und füllt die neuen Plätze sofort.
-   * @param {number} amount
-   */
+  /** @param {number} amount Vergrößerung des Bolzenmagazins. */
   increaseAmmoCapacity(amount) {
-    this.#validateUpgradeAmount(amount);
-    this.maximumAmmo += amount;
-    this.ammo = clamp(this.ammo + amount, 0, this.maximumAmmo);
-    this.#notifyChange();
+    this.#increaseCapacity("ammo", amount);
   }
 
-  /**
-   * Vergrößert den Ladungsspeicher und füllt den neuen Platz sofort.
-   * @param {number} amount
-   */
+  /** @param {number} amount Vergrößerung des Ladungsspeichers. */
   increaseArcChargeCapacity(amount) {
-    this.#validateUpgradeAmount(amount);
-    this.maximumArcCharges += amount;
-    this.arcCharges = clamp(
-      this.arcCharges + amount,
-      0,
-      this.maximumArcCharges,
-    );
-    this.#notifyChange();
+    this.#increaseCapacity("arcCharge", amount);
   }
 
   /**
-   * Übernimmt Bosswerte nur, wenn sich die Anzeige wirklich geändert hat.
+   * Übernimmt Bosswerte nur bei einer sichtbaren Änderung.
    * @param {Readonly<object>} snapshot
    * @returns {boolean}
    */
@@ -239,18 +218,12 @@ export class RunStats {
     return true;
   }
 
-  /**
-   * Liefert eine unveränderliche Momentaufnahme für das HUD.
-   * @returns {Readonly<object>}
-   */
+  /** @returns {Readonly<object>} Unveränderliche Momentaufnahme für das HUD. */
   getSnapshot() {
     return Object.freeze({
-      energy: this.energy,
-      maximumEnergy: this.maximumEnergy,
-      ammo: this.ammo,
-      maximumAmmo: this.maximumAmmo,
-      arcCharges: this.arcCharges,
-      gears: this.gears,
+      energy: this.energy, maximumEnergy: this.maximumEnergy,
+      ammo: this.ammo, maximumAmmo: this.maximumAmmo,
+      arcCharges: this.arcCharges, gears: this.gears,
       heightMeters: this.heightMeters,
       score: this.#score.value, combo: this.#score.getComboSnapshot(),
       elapsedSeconds: Math.floor(this.#score.elapsedSeconds),
@@ -258,68 +231,16 @@ export class RunStats {
     });
   }
 
-  /**
-   * Prüft alle Werte, die für einen sicheren Start benötigt werden.
-   * @param {Readonly<object>} config
-   * @param {number} startY
-   */
-  validateConfig(config, startY) {
-    if (this.#hasValidStartNumbers(config, startY)) {
-      this.validateEnergy(config);
-      this.validateAmmo(config);
-      return;
-    }
-    throw new TypeError("Die HUD-Startwerte sind unvollständig oder ungültig.");
+  #increaseCapacity(type, amount) {
+    this.#resources.increaseCapacity(type, amount);
+    this.#notifyChange();
   }
 
-  #hasValidStartNumbers(config, startY) {
-    const values = this.#getStartValues(config, startY);
-    const hasValidNumbers = values.every((value) => {
-      return Number.isFinite(value) && value >= 0;
-    });
-    return hasValidNumbers && config.heightPixelsPerMeter > 0;
-  }
-
-  #getStartValues(config, startY) {
-    return [
-      config?.maximumEnergy,
-      config?.maximumAmmo,
-      config?.maximumArcCharges,
-      config?.startingEnergy,
-      config?.startingAmmo,
-      config?.startingArcCharges,
-      config?.startingGears,
-      config?.startingScore,
-      config?.heightPixelsPerMeter,
-      startY,
-    ];
-  }
-
-  /**
-   * Verhindert einen Energiestart außerhalb der erlaubten Grenzen.
-   * @param {Readonly<object>} config
-   */
-  validateEnergy(config) {
-    const energy = clamp(config.startingEnergy, 0, config.maximumEnergy);
-    if (energy === config.startingEnergy && config.maximumEnergy > 0) return;
-    throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
-  }
-
-  /**
-   * Verhindert einen Munitionsstart außerhalb der Magazingrenze.
-   * @param {Readonly<object>} config
-   */
-  validateAmmo(config) {
-    this.#validateResourceRange(
-      config.startingAmmo,
-      config.maximumAmmo,
-      "Die Startmunition liegt außerhalb der Magazingrenze.",
-    );
-    this.#validateResourceRange(
-      config.startingArcCharges,
-      config.maximumArcCharges,
-      "Die Startladung liegt außerhalb des Ladungsspeichers.",
-    );
+  #validateProgressConfig(config, startY) {
+    this.#validateStartY(startY);
+    const pixelsPerMeter = config?.heightPixelsPerMeter;
+    if (Number.isFinite(pixelsPerMeter) && pixelsPerMeter > 0) return;
+    throw new TypeError("Die Höhenberechnung des Laufs ist ungültig.");
   }
 
   #validateStartY(startY) {
@@ -327,51 +248,10 @@ export class RunStats {
     throw new TypeError("Die Lauf-Starthöhe ist ungültig.");
   }
 
-  #applyPickup(pickup) {
-    const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
-    if (NON_STAT_PICKUP_TYPES.includes(pickup?.type)) return false;
-    if (!statName || !Number.isFinite(pickup.amount) || pickup.amount <= 0) {
-      throw new TypeError("Der eingesammelte Fund ist ungültig.");
-    }
-    const previousValue = this[statName];
-    this[statName] = this.#getPickupValue(statName, pickup.amount);
-    return this[statName] !== previousValue;
-  }
-
-  #getPickupValue(statName, amount) {
-    const capacityName = CAPACITY_BY_STAT[statName];
-    if (capacityName) {
-      return clamp(this[statName] + amount, 0, this[capacityName]);
-    }
-    return this[statName] + amount;
-  }
-
-  #validateResourceSpend(type, amount) {
-    const hasType = SPENDABLE_PICKUP_TYPES.includes(type);
-    if (hasType && Number.isInteger(amount) && amount >= 0) return;
-    throw new TypeError("Der Munitionsverbrauch ist ungültig.");
-  }
-
-  #validateResourceRange(starting, maximum, message) {
-    const hasIntegers = Number.isInteger(starting) && Number.isInteger(maximum);
-    if (hasIntegers && maximum > 0 && starting <= maximum) return;
-    throw new RangeError(message);
-  }
-
-  #validateUpgradeAmount(amount) {
-    if (Number.isFinite(amount) && amount > 0) return;
-    throw new TypeError("Eine Verbesserung muss eine positive Zahl sein.");
-  }
-
   #getBossSignature(snapshot) {
     return [
-      snapshot.name,
-      snapshot.health,
-      snapshot.maximumHealth,
-      snapshot.phase,
-      snapshot.isActive,
-      snapshot.isDead,
-      snapshot.isVisible,
+      snapshot.name, snapshot.health, snapshot.maximumHealth, snapshot.phase,
+      snapshot.isActive, snapshot.isDead, snapshot.isVisible,
     ].join("|");
   }
 
@@ -382,8 +262,7 @@ export class RunStats {
     const flags = [snapshot?.isActive, snapshot?.isDead, snapshot?.isVisible];
     const hasFlags = flags.every((flag) => typeof flag === "boolean");
     const hasHealth = snapshot?.health >= 0 &&
-      snapshot?.maximumHealth > 0 &&
-      snapshot?.health <= snapshot?.maximumHealth;
+      snapshot?.maximumHealth > 0 && snapshot?.health <= snapshot?.maximumHealth;
     const hasPhase = Number.isInteger(snapshot?.phase) && snapshot.phase > 0;
     if (hasNumbers && hasName && hasFlags && hasHealth && hasPhase) return;
     throw new TypeError("Die Bossanzeige enthält ungültige Werte.");
