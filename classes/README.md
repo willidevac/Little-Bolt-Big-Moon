@@ -4,7 +4,7 @@ Alle objektorientierten Bestandteile liegen in diesem Ordner. Jede Klasse
 erhält genau eine Datei mit der Endung `.class.js`.
 
 - `base/` – gemeinsame Zeichen- und Bewegungsgrundlagen
-- `core/` – Spiel, Welt, Entitätsregister und Kamera
+- `core/` – Spiel, Welt, Animationsloop, Entitätsregister und Kamera
 - `entities/` – Charakter, Gegner, Waffen, Projektile und Sammelobjekte
 - `environment/` – Plattformen und Hintergründe
 - `systems/` – Kampfzustände, Laufvorräte, Kollisionen, Upgrades, Score und Audio

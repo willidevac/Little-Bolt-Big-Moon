@@ -10,7 +10,7 @@ Spiel/
 │   └── pages/                 eigenständige Zusatzseiten
 ├── classes/                   alle objektorientierten Klassen
 │   ├── base/                  DrawableObject, MovableObject
-│   ├── core/                  Game, World, EntityRegistry, Camera
+│   ├── core/                  Game, GameLoop, World, EntityRegistry, Camera
 │   ├── entities/              Charakter, Gegner, Waffen, Items
 │   ├── environment/           Plattformen und Hintergründe
 │   ├── systems/               Kampfzustände, Laufvorräte, Kollisionen, Upgrades, Score

@@ -1,5 +1,6 @@
 import { World } from "./world.class.js";
 import { GameCanvas } from "./game-canvas.class.js";
+import { GameLoop } from "./game-loop.class.js";
 import { GameStateMachine, GAME_STATES } from "./game-state-machine.class.js";
 import {
   GameplayEventHub,
@@ -14,6 +15,7 @@ import { createGameCombatSystems } from "../../js/factories/game-combat-systems.
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
  */
 export class Game {
+  #gameLoop;
   #stateMachine;
   #stateListeners;
   /**
@@ -31,21 +33,24 @@ export class Game {
   }
 
   #initializeRuntime(inputTarget) {
-    Object.assign(this, {
-      isInitialized: false, isRunning: false,
-      animationFrameId: null, previousTimestamp: null,
-    });
-    this.boundGameLoop = this.gameLoop.bind(this);
+    this.isInitialized = false;
     this.#stateMachine = new GameStateMachine();
     this.#stateListeners = new Set();
     this.gameplayEvents = new GameplayEventHub();
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
+    this.#gameLoop = new GameLoop(
+      this.config.timing.maximumDeltaTimeMilliseconds,
+      (deltaTimeSeconds) => this.#processFrame(deltaTimeSeconds),
+    );
   }
 
   /** @returns {boolean} Ob das Spiel gerade pausiert ist. */
   get isPaused() { return this.#stateMachine.is(GAME_STATES.PAUSED); }
+
+  /** @returns {boolean} Ob der Animationsloop läuft. */
+  get isRunning() { return this.#gameLoop.isRunning; }
 
   /** @returns {string} Der aktive Spielzustand. */
   get state() { return this.#stateMachine.getState(); }
@@ -113,19 +118,13 @@ export class Game {
 
   /** Startet genau einen neuen Animationsloop. */
   start() {
-    if (this.isRunning) return;
-    this.isRunning = true;
-    this.previousTimestamp = null;
+    if (!this.#gameLoop.start()) return;
     this.gameCanvas.setLoopState("running");
-    this.requestNextFrame();
   }
 
   /** Stoppt den Loop und verwirft seine Zeitbasis. */
   stop() {
-    if (!this.isRunning) return;
-    this.isRunning = false;
-    this.cancelScheduledFrame();
-    this.previousTimestamp = null;
+    if (!this.#gameLoop.stop()) return;
     this.gameCanvas.setLoopState("stopped");
   }
 
@@ -134,7 +133,7 @@ export class Game {
    */
   pause() {
     if (!this.isRunning || !this.#isPlaying()) return false;
-    this.previousTimestamp = null;
+    this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.PAUSED);
     this.gameCanvas.setLoopState("paused");
     return true;
@@ -145,7 +144,7 @@ export class Game {
    */
   resume() {
     if (!this.isRunning || !this.isPaused) return false;
-    this.previousTimestamp = null;
+    this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.PLAYING);
     this.gameCanvas.setLoopState("running");
     return true;
@@ -160,7 +159,7 @@ export class Game {
     if (!this.#stateMachine.is(GAME_STATES.UPGRADING)) return false;
     if (!this.getUpgradeOptions().some(({ id }) => id === upgradeId)) return false;
     this.upgradeFlow.choose(upgradeId);
-    this.previousTimestamp = null;
+    this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.PLAYING);
     this.gameCanvas.setLoopState("running");
     return true;
@@ -241,25 +240,16 @@ export class Game {
     this.weaponSystem.reset();
     this.combatSystem.reset();
     this.upgradeFlow.reset();
-    this.previousTimestamp = null;
+    this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.PLAYING);
     this.gameCanvas.setLoopState("running");
     if (!this.isRunning) this.start();
   }
 
-  /**
-   * Verarbeitet einen Frame und plant genau einen Folgeframe.
-   * @param {DOMHighResTimeStamp} timestamp
-   */
-  gameLoop(timestamp) {
-    if (!this.isRunning) return;
-    this.animationFrameId = null;
-    const deltaTime = this.calculateDeltaTime(timestamp);
-    this.previousTimestamp = timestamp;
+  #processFrame(deltaTime) {
     this.#handleStateInput();
     if (this.#isPlaying()) this.update(deltaTime);
     this.draw();
-    this.requestNextFrame();
   }
 
   /**
@@ -281,31 +271,6 @@ export class Game {
   draw() {
     this.gameCanvas.clear();
     this.world.draw();
-  }
-
-  /**
-   * Begrenzt große Zeitsprünge und liefert Sekunden.
-   * @param {DOMHighResTimeStamp} timestamp
-   * @returns {number}
-   */
-  calculateDeltaTime(timestamp) {
-    if (this.previousTimestamp === null) return 0;
-    const elapsed = Math.max(0, timestamp - this.previousTimestamp);
-    const maximum = this.config.timing.maximumDeltaTimeMilliseconds;
-    return Math.min(elapsed, maximum) / 1000;
-  }
-
-  /** Plant einen Frame nur, wenn noch keiner aussteht. */
-  requestNextFrame() {
-    if (!this.isRunning || this.animationFrameId !== null) return;
-    this.animationFrameId = requestAnimationFrame(this.boundGameLoop);
-  }
-
-  /** Verwirft einen noch nicht ausgeführten Frame. */
-  cancelScheduledFrame() {
-    if (this.animationFrameId === null) return;
-    cancelAnimationFrame(this.animationFrameId);
-    this.animationFrameId = null;
   }
 
   /**
@@ -367,7 +332,7 @@ export class Game {
   #openWaveUpgrade() {
     if (!this.#isPlaying() || !this.upgradeFlow.openFrom(this.world)) return;
     this.keyboard.reset();
-    this.previousTimestamp = null;
+    this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.UPGRADING);
     this.gameCanvas.setLoopState("paused");
   }
