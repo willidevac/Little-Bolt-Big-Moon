@@ -13,11 +13,11 @@ import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
 import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js";
+import { WorldEntityRegistry } from "./world-entity-registry.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
 const FALLBACK_PLATFORM_BOUNDS = Object.freeze({ x: 96, y: 560, width: 512, height: 32 });
-const ENTITY_GROUP_NAMES = Object.freeze(Object.values(WORLD_ENTITY_GROUPS));
 const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
   WORLD_ENTITY_GROUPS.DECORATIONS,
@@ -30,13 +30,10 @@ const UPDATE_ORDER = Object.freeze([
 const NON_PLATFORM_UPDATE_ORDER = Object.freeze(UPDATE_ORDER.slice(1));
 
 /**
- * Verwaltet aktive Spielobjekte und ihren sicheren Frame-Lebenszyklus.
+ * Koordiniert aktive Spielobjekte und die Systeme eines Weltframes.
  */
 export class World {
-  #entityGroups;
-  #pendingAdditions;
-  #pendingRemovals;
-  #isProcessing;
+  #entityRegistry;
   #collisionManager;
   #fallTracker;
   #collectedPickups;
@@ -59,7 +56,7 @@ export class World {
     this.eventReporter = new WorldEventReporter(gameplayEvents);
     this.feedback = new VisualFeedbackSystem(gameplayEvents, () => this.character);
     this.isInitialized = false;
-    this.#initializeCollections();
+    this.#initializeEntityState();
     this.#initializeSimulation(config);
     this.waveManager = new WaveManager(level?.combatZones, level?.enemies, level?.platforms);
     this.bossFight = new BossFightManager(level?.enemies);
@@ -68,11 +65,10 @@ export class World {
     this.#renderer = new WorldRenderer(context, config, level?.sections);
   }
 
-  #initializeCollections() {
-    this.#entityGroups = this.#createGroupMap(Array);
-    this.#pendingAdditions = this.#createGroupMap(Set);
-    this.#pendingRemovals = this.#createGroupMap(Set);
-    this.#isProcessing = false;
+  #initializeEntityState() {
+    this.#entityRegistry = new WorldEntityRegistry(
+      Object.values(WORLD_ENTITY_GROUPS),
+    );
     this.#collectedPickups = [];
     this.#damageEvents = [];
   }
@@ -113,15 +109,7 @@ export class World {
    * @returns {boolean} Ob das Objekt neu vorgemerkt oder eingefügt wurde.
    */
   addEntity(groupName, entity) {
-    this.#validateEntity(groupName, entity);
-    const entities = this.#entityGroups.get(groupName);
-    const additions = this.#pendingAdditions.get(groupName);
-    const removals = this.#pendingRemovals.get(groupName);
-    if (removals.delete(entity)) return true;
-    if (entities.includes(entity) || additions.has(entity)) return false;
-    if (!this.#isProcessing) entities.push(entity);
-    else additions.add(entity);
-    return true;
+    return this.#entityRegistry.add(groupName, entity);
   }
 
   /**
@@ -131,20 +119,12 @@ export class World {
    * @returns {boolean} Ob das Objekt vorhanden oder vorgemerkt war.
    */
   removeEntity(groupName, entity) {
-    this.#validateEntity(groupName, entity);
-    const additions = this.#pendingAdditions.get(groupName);
-    if (additions.delete(entity)) return true;
-    const entities = this.#entityGroups.get(groupName);
-    if (!entities.includes(entity)) return false;
-    if (this.#isProcessing) return this.#queueRemoval(groupName, entity);
-    else entities.splice(entities.indexOf(entity), 1);
-    return true;
+    return this.#entityRegistry.remove(groupName, entity);
   }
 
   /** @returns {ReadonlyArray<object>} Momentaufnahme einer Entitätsgruppe. */
   getEntities(groupName) {
-    this.#validateGroupName(groupName);
-    return Object.freeze([...this.#entityGroups.get(groupName)]);
+    return this.#entityRegistry.getSnapshot(groupName);
   }
 
   /**
@@ -234,16 +214,14 @@ export class World {
   /** Zeichnet alle Entitäten in fester Ebenenreihenfolge. */
   draw() {
     if (!this.isInitialized) return;
-    this.#renderer.draw(this.#entityGroups, this.camera, this);
+    this.#renderer.draw(this.#entityRegistry.getGroupsView(), this.camera, this);
   }
 
   /** Entfernt alle aktiven und vorgemerkten Entitäten. */
   clear() {
     this.#collectedPickups.length = 0;
     this.#damageEvents.length = 0;
-    this.#pendingAdditions.forEach((entities) => entities.clear());
-    if (!this.#isProcessing) this.#entityGroups.forEach((entities) => entities.splice(0));
-    else this.#queueAllEntitiesForRemoval();
+    this.#entityRegistry.clear();
   }
 
   /** Leert und deaktiviert die Welt für einen kontrollierten Neuaufbau. */
@@ -254,13 +232,9 @@ export class World {
     this.isInitialized = false;
   }
 
-  #createGroupMap(CollectionType) {
-    return new Map(ENTITY_GROUP_NAMES.map((name) => [name, new CollectionType()]));
-  }
-
   #ensureFallbackScene() {
-    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
-    const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
+    const characters = this.#getGroup(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     if (characters.length === 0) this.#addFallbackCharacter();
     else this.character = characters[0];
     if (platforms.length === 0) this.#addFallbackPlatform();
@@ -286,7 +260,7 @@ export class World {
   }
 
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
-    const platforms = this.#entityGroups.get(WORLD_ENTITY_GROUPS.PLATFORMS);
+    const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     this.#collisionManager.resolvePlatformLandings(
       movableObjects,
       platforms,
@@ -295,8 +269,8 @@ export class World {
   }
 
   #getGroundMovables() {
-    const characters = this.#entityGroups.get(WORLD_ENTITY_GROUPS.CHARACTERS);
-    const enemies = this.#entityGroups.get(WORLD_ENTITY_GROUPS.ENEMIES);
+    const characters = this.#getGroup(WORLD_ENTITY_GROUPS.CHARACTERS);
+    const enemies = this.#getGroup(WORLD_ENTITY_GROUPS.ENEMIES);
     const groundEnemies = enemies.filter((enemy) => enemy.isAffectedByGravity);
     return [...characters, ...groundEnemies];
   }
@@ -316,7 +290,7 @@ export class World {
 
   #resolveCollectablePickups() {
     if (!this.character) return;
-    const collectables = this.#entityGroups.get(WORLD_ENTITY_GROUPS.COLLECTABLES);
+    const collectables = this.#getGroup(WORLD_ENTITY_GROUPS.COLLECTABLES);
     const overlaps = collectables.filter((collectable) => {
       return collectable.isAvailable !== false &&
         this.#collisionManager.areOverlapping(this.character, collectable);
@@ -333,7 +307,7 @@ export class World {
 
   #resolveHazardHits() {
     if (!this.character) return;
-    const hazards = this.#entityGroups.get(WORLD_ENTITY_GROUPS.HAZARDS);
+    const hazards = this.#getGroup(WORLD_ENTITY_GROUPS.HAZARDS);
     const hazard = hazards.find((candidate) => {
       return this.#collisionManager.areOverlapping(this.character, candidate);
     });
@@ -341,60 +315,10 @@ export class World {
   }
 
   #processEntities(groupOrder, callback) {
-    this.#isProcessing = true;
-    try {
-      groupOrder.forEach((name) => this.#entityGroups.get(name).forEach(callback));
-    } finally {
-      this.#isProcessing = false;
-      this.#applyPendingChanges();
-    }
+    this.#entityRegistry.process(groupOrder, callback);
   }
 
-  #applyPendingChanges() {
-    ENTITY_GROUP_NAMES.forEach((groupName) => {
-      this.#applyRemovals(groupName);
-      this.#applyAdditions(groupName);
-    });
-  }
-
-  #applyRemovals(groupName) {
-    const removals = this.#pendingRemovals.get(groupName);
-    if (removals.size === 0) return;
-    const remaining = this.#entityGroups.get(groupName).filter((entity) => !removals.has(entity));
-    this.#entityGroups.set(groupName, remaining);
-    removals.clear();
-  }
-
-  #applyAdditions(groupName) {
-    const additions = this.#pendingAdditions.get(groupName);
-    if (additions.size === 0) return;
-    this.#entityGroups.get(groupName).push(...additions);
-    additions.clear();
-  }
-
-  #queueAllEntitiesForRemoval() {
-    ENTITY_GROUP_NAMES.forEach((groupName) => {
-      const entities = this.#entityGroups.get(groupName);
-      const removals = this.#pendingRemovals.get(groupName);
-      entities.forEach((entity) => removals.add(entity));
-    });
-  }
-
-  #queueRemoval(groupName, entity) {
-    const removals = this.#pendingRemovals.get(groupName);
-    if (removals.has(entity)) return false;
-    removals.add(entity);
-    return true;
-  }
-
-  #validateEntity(groupName, entity) {
-    this.#validateGroupName(groupName);
-    if (entity && typeof entity === "object") return;
-    throw new TypeError("Eine Entität muss ein Objekt sein.");
-  }
-
-  #validateGroupName(groupName) {
-    if (this.#entityGroups.has(groupName)) return;
-    throw new RangeError(`Unbekannte Entitätsgruppe: ${groupName}`);
+  #getGroup(groupName) {
+    return this.#entityRegistry.getGroupView(groupName);
   }
 }
