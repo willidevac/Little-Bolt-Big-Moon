@@ -88,6 +88,7 @@ function createCharacter() {
     x: 160, y: 149_600, width: 64, height: 64,
     velocityX: 0, velocityY: 0, isAffectedByGravity: true,
     setOnGround() {},
+    setInvulnerability(value) { this.invulnerabilitySecondsRemaining = value; },
   };
 }
 

@@ -24,7 +24,7 @@ export class ReviewFlightController {
     if (this.isEnabled) return false;
     this.isEnabled = true;
     this.character.isAffectedByGravity = false;
-    this.character.invulnerabilitySecondsRemaining = Infinity;
+    this.character.setInvulnerability(Infinity);
     this.#stopCharacter();
     return true;
   }

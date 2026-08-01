@@ -47,6 +47,7 @@ function createCharacter() {
     x: 160, y: 149600, width: 64, height: 64,
     velocityX: 4, velocityY: 8, isAffectedByGravity: true,
     setOnGround(value) { this.isOnGround = value; },
+    setInvulnerability(value) { this.invulnerabilitySecondsRemaining = value; },
   };
 }
 

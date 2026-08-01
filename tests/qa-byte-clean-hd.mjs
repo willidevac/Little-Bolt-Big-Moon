@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 const RUNTIME_FILE = "img/sprites/characters/byte-clean-hd.png";
 const MASTER_FILE = "img/concepts/approvals/byte-clean-hd-production-layout-v1.png";
-const CHARACTER_FILE = "classes/entities/character.class.js";
+const RUNTIME_CONFIG_FILE = "js/config/character-visual-config.js";
 
 verifyFiles();
 verifyPng();
@@ -35,7 +35,7 @@ function verifyManifest() {
 }
 
 function verifyRuntimeConfig() {
-  const source = readFileSync(CHARACTER_FILE, "utf8");
+  const source = readFileSync(RUNTIME_CONFIG_FILE, "utf8");
   assert.match(source, /getAssetPath\("characters", "byte-clean-hd\.png"\)/);
   assert.match(source, /frameWidth: 64,\s+frameHeight: 64/);
   assert.match(source, /const BYTE_RENDER_SCALE = 1;/);
