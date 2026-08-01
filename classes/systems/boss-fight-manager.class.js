@@ -1,5 +1,7 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
+const BOSS_TRACKING_DISTANCE_PIXELS = 960;
+
 const EMPTY_BOSS_SNAPSHOT = Object.freeze({
   name: "Zwischenboss",
   health: 0,
@@ -18,6 +20,7 @@ export class BossFightManager {
   #bosses;
   #finalBoss;
   #activeBoss;
+  #isActiveBossNearTarget;
   #isVictoryQueued;
   #wasVictoryDelivered;
 
@@ -29,6 +32,7 @@ export class BossFightManager {
     this.#bosses = enemies.filter((enemy) => enemy.isBoss);
     this.#finalBoss = this.#bosses.find((boss) => boss.isFinalBoss) ?? null;
     this.#activeBoss = null;
+    this.#isActiveBossNearTarget = false;
     this.#isVictoryQueued = false;
     this.#wasVictoryDelivered = false;
   }
@@ -40,6 +44,7 @@ export class BossFightManager {
   update(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     this.#activeBoss = this.#findNearestActiveBoss(enemies, world.character);
+    this.#isActiveBossNearTarget = this.#isNearActiveBoss(world.character);
     this.#queueFinalVictory(enemies);
   }
 
@@ -50,9 +55,11 @@ export class BossFightManager {
   getSnapshot() {
     if (!this.#activeBoss) return EMPTY_BOSS_SNAPSHOT;
     const snapshot = this.#activeBoss.getBossSnapshot();
+    const isActive = snapshot.isActive && this.#isActiveBossNearTarget;
     return Object.freeze({
       ...snapshot,
-      isVisible: snapshot.isActive && !this.#wasVictoryDelivered,
+      isActive,
+      isVisible: isActive && !this.#wasVictoryDelivered,
     });
   }
 
@@ -85,6 +92,13 @@ export class BossFightManager {
     const targetX = target.x + target.width / 2;
     const targetY = target.y + target.height / 2;
     return (entityX - targetX) ** 2 + (entityY - targetY) ** 2;
+  }
+
+  #isNearActiveBoss(target) {
+    if (!this.#activeBoss) return false;
+    const maximumDistanceSquared = BOSS_TRACKING_DISTANCE_PIXELS ** 2;
+    return this.#getDistanceSquared(this.#activeBoss, target) <=
+      maximumDistanceSquared;
   }
 
   #queueFinalVictory(enemies) {

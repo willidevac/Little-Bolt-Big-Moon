@@ -62,9 +62,11 @@ assert.equal(activeEnemies.includes(firstTwoBosses[1]), true);
 
 const bossFight = new BossFightManager(bosses);
 firstTwoBosses[0].activateBoss();
+world.character.y = 119900;
 bossFight.update(world);
 const firstBossSnapshot = bossFight.getSnapshot();
 assert.equal(firstBossSnapshot.name, "Schrottbrecher");
+assert.equal(firstBossSnapshot.isVisible, true);
 const bossBarAttributes = new Map();
 const bossBarStyles = new Map();
 const hud = {
@@ -86,6 +88,10 @@ assert.equal(hud.elements.bossName.textContent, "Schrottbrecher");
 assert.equal(hud.elements.bossHealth.textContent, "110 / 110");
 assert.equal(bossBarAttributes.get("aria-label"), "Lebensenergie von Schrottbrecher");
 assert.equal(bossBarStyles.get("--boss-health-percent"), "100%");
+world.character.y = 149000;
+bossFight.update(world);
+assert.equal(bossFight.getSnapshot().isVisible, false);
+assert.equal(bossFight.getSnapshot().isActive, false);
 firstTwoBosses[0].receivePlayerHit({ amount: firstTwoBosses[0].maximumHealth });
 activeEnemies.splice(activeEnemies.indexOf(firstTwoBosses[0]), 1);
 bossFight.update(world);
