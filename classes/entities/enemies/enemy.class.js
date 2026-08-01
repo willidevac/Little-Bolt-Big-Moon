@@ -1,16 +1,13 @@
 import { MovableObject } from "../../base/movable-object.class.js";
 import { AnimationController } from "../../systems/animation-controller.class.js";
-
-const STATE_TIMER_PROPERTIES = Object.freeze({
-  hurt: "hurtSecondsRemaining",
-  attack: "attackSecondsRemaining",
-  dead: "deathSecondsRemaining",
-});
+import { EnemyCombatState } from "../../systems/enemy-combat-state.class.js";
 
 /**
- * Gemeinsame Darstellung, Patrouille und Animation normaler Gegner.
+ * Gemeinsame Darstellung, Patrouille und Koordination normaler Gegner.
  */
 export class Enemy extends MovableObject {
+  #combatState;
+
   /**
    * @param {Readonly<object>} enemyData
    * @param {Readonly<object>} visualConfig
@@ -21,7 +18,7 @@ export class Enemy extends MovableObject {
     this.#setVisualSize(visualConfig);
     this.#validateEnemyData(enemyData);
     this.#setEnemyData(enemyData);
-    this.#setCombatData(
+    this.#combatState = new EnemyCombatState(
       combatConfig,
       visualConfig.animations,
       visualConfig.initialAttackState ?? "attack",
@@ -35,6 +32,34 @@ export class Enemy extends MovableObject {
     this.loadSprite(visualConfig.sprite);
     this.setAnimationState(visualConfig.initialState);
   }
+
+  /** @returns {number} Aktuelle Lebenspunkte. */
+  get health() { return this.#combatState.health; }
+
+  /** @returns {number} Maximale Lebenspunkte. */
+  get maximumHealth() { return this.#combatState.maximumHealth; }
+
+  /** @returns {boolean} Ob der Gegner besiegt wurde. */
+  get isDead() { return this.#combatState.isDead; }
+
+  /** @returns {boolean} Ob gerade die Trefferanimation Vorrang hat. */
+  get isHurt() { return this.#combatState.isHurt; }
+
+  /** @returns {boolean} Ob der Gegner aus der Welt entfernt werden darf. */
+  get isReadyForRemoval() { return this.#combatState.isReadyForRemoval; }
+
+  /** @returns {number} Verbleibende Angriffssperre in Sekunden. */
+  get attackCooldownSecondsRemaining() {
+    return this.#combatState.attackCooldownSecondsRemaining;
+  }
+
+  /** @returns {number} Verbleibende Angriffsanimation in Sekunden. */
+  get attackSecondsRemaining() {
+    return this.#combatState.attackSecondsRemaining;
+  }
+
+  /** @returns {number} Dauer der Standardangriffsanimation. */
+  get attackStateSeconds() { return this.#combatState.attackStateSeconds; }
 
   /**
    * Zeichnet Gegner abhängig von ihrer Laufrichtung gespiegelt.
@@ -62,9 +87,7 @@ export class Enemy extends MovableObject {
     context.shadowBlur = 14;
   }
 
-  /**
-   * Hält den Gegner innerhalb seiner Patrouille und dreht ihn an den Kanten um.
-   */
+  /** Hält den Gegner innerhalb seiner Patrouille. */
   stayInsidePatrol() {
     const maximumX = this.patrolMaxX - this.width;
     if (this.x <= this.patrolMinX) this.#turnAt(this.patrolMinX, 1);
@@ -76,37 +99,29 @@ export class Enemy extends MovableObject {
    * Pflegt gesperrte Treffer-, Angriffs- und Todeszustände.
    * @param {number} deltaTimeSeconds
    * @param {string} movementState
-   * @returns {boolean} Ob das normale Bewegungsmuster ausgeführt werden darf.
+   * @returns {boolean}
    */
   updateEnemyState(deltaTimeSeconds, movementState) {
-    this.attackCooldownSecondsRemaining = Math.max(
-      0,
-      this.attackCooldownSecondsRemaining - deltaTimeSeconds,
-    );
-    const lockedState = this.#getLockedState();
-    if (lockedState) return this.#maintainTimedState(
-      lockedState,
-      this.#getTimerProperty(lockedState),
-      deltaTimeSeconds,
-    );
-    this.setAnimationState(movementState);
-    return true;
+    const lockedState = this.#combatState.update(deltaTimeSeconds);
+    if (!lockedState) {
+      this.setAnimationState(movementState);
+      return true;
+    }
+    this.setAnimationState(lockedState);
+    this.updateAnimation(deltaTimeSeconds);
+    return false;
   }
 
   /**
    * Zieht Gegnerleben ab und startet Treffer oder mechanischen Tod.
    * @param {Readonly<{amount:number}>} hit
-   * @returns {boolean} Ob der Gegner den Treffer angenommen hat.
+   * @returns {boolean}
    */
   receivePlayerHit(hit) {
-    if (this.isDead) return false;
-    this.#validateHit(hit);
-    this.health = Math.max(0, this.health - hit.amount);
-    if (this.health === 0) this.#die();
-    else {
-      this.hurtSecondsRemaining = this.hurtStateSeconds;
-      this.setAnimationState("hurt");
-    }
+    const nextState = this.#combatState.receiveHit(hit);
+    if (!nextState) return false;
+    if (nextState === "dead") this.#enterDeathState();
+    else this.setAnimationState(nextState);
     return true;
   }
 
@@ -116,27 +131,21 @@ export class Enemy extends MovableObject {
    * @returns {Readonly<{amount:number,direction:number,source:string}>|null}
    */
   attack(target) {
-    if (!this.#canAttack()) return null;
+    if (!this.#combatState.canAttack) return null;
     this.#validateTarget(target);
-    this.startAttackState(this.defaultAttackState);
+    this.startAttackState(this.#combatState.defaultAttackState);
     const direction = this.#getCenterX(target) < this.#getCenterX(this) ? -1 : 1;
-    return this.#createContactHit(direction);
+    return this.#combatState.createContactHit(this.id, direction);
   }
 
-  /**
-   * Aktiviert einen Zwischenboss genau einmal nach seinem Zonenspawn.
-   * @returns {boolean}
-   */
+  /** @returns {boolean} Ob ein Zwischenboss neu aktiviert wurde. */
   activateBoss() {
     if (!this.isBoss || this.isActive) return false;
     this.isActive = true;
     return true;
   }
 
-  /**
-   * Liefert die gemeinsamen Werte aller Zwischen- und Endbosse.
-   * @returns {Readonly<object>}
-   */
+  /** @returns {Readonly<object>} Gemeinsame sichtbare Bosswerte. */
   getBossSnapshot() {
     return Object.freeze({
       id: this.id,
@@ -156,29 +165,15 @@ export class Enemy extends MovableObject {
    * @returns {boolean}
    */
   startAttackState(animationState) {
-    if (!this.#canAttack()) return false;
     const clip = this.animationController.clips[animationState];
-    this.attackSecondsRemaining = this.#getAnimationDuration(clip);
-    this.attackCooldownSecondsRemaining = this.attackCooldownSeconds;
-    this.attackAnimationState = animationState;
+    if (!this.#combatState.startAttack(animationState, clip)) return false;
     this.setAnimationState(animationState);
     return true;
   }
 
-  /**
-   * Zeigt, ob die Todesanimation beendet und das Objekt entfernbar ist.
-   * @returns {boolean}
-   */
-  get isReadyForRemoval() {
-    return this.isDead && this.deathSecondsRemaining === 0;
-  }
-
-  /**
-   * Zeigt, ob gerade die Trefferanimation Vorrang hat.
-   * @returns {boolean}
-   */
-  get isHurt() {
-    return this.hurtSecondsRemaining > 0;
+  /** @param {number} seconds Neue Angriffssperre in Sekunden. */
+  setAttackCooldown(seconds) {
+    this.#combatState.setAttackCooldown(seconds);
   }
 
   /**
@@ -193,10 +188,7 @@ export class Enemy extends MovableObject {
     return true;
   }
 
-  /**
-   * Aktualisiert den aktuellen Animationsclip zeitbasiert.
-   * @param {number} deltaTimeSeconds
-   */
+  /** @param {number} deltaTimeSeconds Vergangene Framezeit. */
   updateAnimation(deltaTimeSeconds) {
     const frame = this.animationController.update(
       this.animationState,
@@ -229,7 +221,6 @@ export class Enemy extends MovableObject {
     this.facingDirection = this.direction;
     this.team = "enemy";
     this.#setBossData(data);
-    this.isDead = false;
     this.animationState = null;
   }
 
@@ -242,74 +233,7 @@ export class Enemy extends MovableObject {
     this.phase = 1;
   }
 
-  #setCombatData(config, animations, defaultAttackState) {
-    this.#validateCombatConfig(config);
-    if (!animations?.[defaultAttackState]) {
-      throw new RangeError(`Unbekannter Standardangriff: ${defaultAttackState}`);
-    }
-    this.maximumHealth = config.maximumHealth;
-    this.health = this.maximumHealth;
-    this.contactDamage = config.contactDamage;
-    this.attackCooldownSeconds = config.attackCooldownSeconds;
-    this.defaultAttackState = defaultAttackState;
-    this.#setStateDurations(animations, defaultAttackState);
-    this.#resetCombatTimers();
-  }
-
-  #validateCombatConfig(config) {
-    const values = [
-      config?.maximumHealth,
-      config?.contactDamage,
-      config?.attackCooldownSeconds,
-    ];
-    if (!values.every((value) => Number.isFinite(value) && value > 0)) {
-      throw new TypeError("Die Kampfwerte des Gegners sind ungültig.");
-    }
-  }
-
-  #setStateDurations(animations, defaultAttackState) {
-    this.hurtStateSeconds = this.#getAnimationDuration(animations?.hurt);
-    this.attackStateSeconds = this.#getAnimationDuration(
-      animations?.[defaultAttackState],
-    );
-    this.deathStateSeconds = this.#getAnimationDuration(animations?.dead);
-  }
-
-  #resetCombatTimers() {
-    this.hurtSecondsRemaining = 0;
-    this.attackSecondsRemaining = 0;
-    this.deathSecondsRemaining = 0;
-    this.attackCooldownSecondsRemaining = 0;
-    this.attackAnimationState = this.defaultAttackState;
-  }
-
-  #getLockedState() {
-    if (this.isDead) return "dead";
-    if (this.isHurt) return "hurt";
-    if (this.attackSecondsRemaining > 0) return this.attackAnimationState;
-    return null;
-  }
-
-  #getTimerProperty(state) {
-    if (state === this.attackAnimationState) return "attackSecondsRemaining";
-    return STATE_TIMER_PROPERTIES[state];
-  }
-
-  #maintainTimedState(state, timerProperty, deltaTimeSeconds) {
-    this[timerProperty] = Math.max(
-      0,
-      this[timerProperty] - deltaTimeSeconds,
-    );
-    this.setAnimationState(state);
-    this.updateAnimation(deltaTimeSeconds);
-    return false;
-  }
-
-  #die() {
-    this.isDead = true;
-    this.hurtSecondsRemaining = 0;
-    this.attackSecondsRemaining = 0;
-    this.deathSecondsRemaining = this.deathStateSeconds;
+  #enterDeathState() {
     this.isAffectedByGravity = false;
     this.#stopMovement();
     this.setAnimationState("dead");
@@ -322,38 +246,11 @@ export class Enemy extends MovableObject {
     this.accelerationY = 0;
   }
 
-  #getAnimationDuration(clip) {
-    const values = [clip?.frameCount, clip?.frameDurationSeconds];
-    if (!values.every((value) => Number.isFinite(value) && value > 0)) {
-      throw new TypeError("Der Gegner-Kampfzustand hat keine gültige Animation.");
-    }
-    return clip.frameCount * clip.frameDurationSeconds;
-  }
-
   #getCenterX(target) {
     const bounds = typeof target.getCollisionBounds === "function"
       ? target.getCollisionBounds()
       : target;
     return bounds.x + bounds.width / 2;
-  }
-
-  #canAttack() {
-    return !this.isDead &&
-      !this.isHurt &&
-      this.attackCooldownSecondsRemaining === 0;
-  }
-
-  #createContactHit(direction) {
-    return Object.freeze({
-      amount: this.contactDamage,
-      direction,
-      source: this.id,
-    });
-  }
-
-  #validateHit(hit) {
-    if (Number.isFinite(hit?.amount) && hit.amount > 0) return;
-    throw new TypeError("Der Gegnertreffer ist ungültig.");
   }
 
   #validateTarget(target) {
@@ -378,23 +275,20 @@ export class Enemy extends MovableObject {
 
   #hasValidEnemyData(data) {
     const textValues = [data?.id, data?.type];
-    const numberValues = [data?.x, data?.y, data?.patrolMinX, data?.patrolMaxX];
+    const numbers = [data?.x, data?.y, data?.patrolMinX, data?.patrolMaxX];
     const hasText = textValues.every((value) => typeof value === "string" && value);
-    const hasNumbers = numberValues.every((value) => Number.isFinite(value));
+    const hasNumbers = numbers.every((value) => Number.isFinite(value));
     const hasPatrol = data?.patrolMaxX - data?.patrolMinX >= this.width;
     const fitsPatrol = data?.x >= data?.patrolMinX &&
       data?.x + this.width <= data?.patrolMaxX;
-    const direction = data?.startDirection ?? 1;
-    const validDirection = Math.abs(direction) === 1;
-    const validBoss = this.#hasValidBossProfile(data);
+    const validDirection = Math.abs(data?.startDirection ?? 1) === 1;
     return hasText && hasNumbers && hasPatrol && fitsPatrol &&
-      validDirection && validBoss;
+      validDirection && this.#hasValidBossProfile(data);
   }
 
   #hasValidBossProfile(data) {
     if (!data?.isBoss) return !data?.isFinalBoss && !data?.bossName;
-    return typeof data.bossName === "string" &&
-      data.bossName.length > 0 &&
+    return typeof data.bossName === "string" && data.bossName.length > 0 &&
       typeof data.isFinalBoss === "boolean";
   }
 }

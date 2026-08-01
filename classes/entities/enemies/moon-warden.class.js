@@ -250,7 +250,7 @@ export class MoonWarden extends Enemy {
     if (this.#pendingAttack.secondsRemaining > 0) return;
     if (this.#pendingAttack.pattern === "meleeAttack") this.#releaseShockwaves();
     else this.#releaseMoonBolts(this.#pendingAttack.target);
-    this.attackCooldownSecondsRemaining = this.#getPhase().recoverySeconds;
+    this.setAttackCooldown(this.#getPhase().recoverySeconds);
     this.#pendingAttack = null;
   }
 
