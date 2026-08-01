@@ -21,6 +21,29 @@
   }
 }
 
+@media (max-width: 480px) and (orientation: landscape) {
+  .game-shell .utility-buttons {
+    top: 0.35rem;
+  }
+
+  .utility-button {
+    width: 2rem;
+    min-width: 2rem;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .fullscreen-button::before {
+    content: "⛶";
+    font-size: 0.85rem;
+  }
+
+  .sound-button::before {
+    content: "♪";
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 480px) and (orientation: portrait) {
   .portrait-notice {
     grid-template-columns: 1fr;
@@ -29,6 +52,18 @@
 }
 
 @media (max-width: 700px) and (orientation: landscape) {
+  .game-shell:has(.game-hud:not([hidden])) .utility-buttons {
+    top: 0.35rem;
+  }
+
+  .game-hud {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .hud-resources {
+    grid-column: 1 / -1;
+  }
+
   .start-screen,
   .overlay-screen,
   .game-dialog {
