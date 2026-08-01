@@ -59,6 +59,7 @@ async function assertReviewContract() {
   assertHiddenBanner(html, styles);
   assert.match(ui, /requiredVersionClicks/);
   assert.match(ui, /sessionStorage/);
+  assert.match(ui, /filter\(\(\{ isBoss \}\) => !isBoss\)/);
   assert.match(storage, /dataset\.reviewMode === "true"/);
   assert.doesNotMatch(ui, /MOON-REVIEW-150/);
 }

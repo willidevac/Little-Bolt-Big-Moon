@@ -35,6 +35,7 @@ assert.equal(level.sections.length, 15);
 assertGaplessSections(level.sections);
 assertResponsiveCss();
 VIEWPORTS.forEach(assertViewportCoverage);
+assertBiomeTransition();
 
 console.log("QA-003: 320 bis 1440 Pixel und 150.000 Pixel Welt abgedeckt.");
 
@@ -69,18 +70,46 @@ function assertViewportCoverage(viewport) {
 
 function createContext() {
   return {
-    images: [],
+    images: [], gradients: [], fills: [],
     save: ignoreDrawCommand,
     restore: ignoreDrawCommand,
     beginPath: ignoreDrawCommand,
     rect: ignoreDrawCommand,
     clip: ignoreDrawCommand,
-    fillRect: ignoreDrawCommand,
+    fillRect: recordFill,
     strokeRect: ignoreDrawCommand,
+    createLinearGradient: recordGradient,
     drawImage: recordImage,
   };
 }
 
 function recordImage(...parameters) {
   this.images.push(parameters);
+}
+
+function recordFill(...parameters) {
+  this.fills.push(parameters);
+}
+
+function recordGradient(...coordinates) {
+  const gradient = createGradient(coordinates);
+  this.gradients.push(gradient);
+  return gradient;
+}
+
+function createGradient(coordinates) {
+  return {
+    coordinates,
+    stops: [],
+    addColorStop(offset, color) { this.stops.push({ offset, color }); },
+  };
+}
+
+function assertBiomeTransition() {
+  const renderer = new BackgroundRenderer(level.sections, VIEWPORTS[3]);
+  const context = createContext();
+  renderer.draw(context, { y: 119640 });
+  assert.equal(context.gradients.length, 1);
+  assert.equal(context.gradients[0].stops.length, 5);
+  assert.deepEqual(context.fills[0], [0, 264, 1280, 192]);
 }

@@ -118,9 +118,11 @@ export class ReviewModeController {
   }
 
   #showAllEnemies() {
-    this.game.world.level.enemies.forEach((enemy) => {
-      this.game.world.addEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
-    });
+    this.game.world.level.enemies
+      .filter(({ isBoss }) => !isBoss)
+      .forEach((enemy) => {
+        this.game.world.addEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy);
+      });
   }
 
   #matchesAccessCode(value) {
