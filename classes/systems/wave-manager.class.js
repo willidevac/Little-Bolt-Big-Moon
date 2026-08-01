@@ -9,7 +9,7 @@ export class WaveManager {
   #zones;
   #enemiesById;
   #managedEnemyIds;
-  #completedWaveIds;
+  #completedWaves;
   #platformsById;
   #isInitialized;
 
@@ -26,7 +26,7 @@ export class WaveManager {
       platforms.map((platform) => [platform.id, platform]),
     );
     this.#managedEnemyIds = this.#collectManagedEnemyIds();
-    this.#completedWaveIds = [];
+    this.#completedWaves = [];
     this.#isInitialized = false;
     this.#validateEnemyReferences();
     this.#validatePlatformReferences();
@@ -62,12 +62,12 @@ export class WaveManager {
 
   /**
    * Übergibt jeden Abschluss genau einmal an das nächste Spielsystem.
-   * @returns {ReadonlyArray<string>}
+   * @returns {ReadonlyArray<Readonly<object>>}
    */
-  takeCompletedWaveIds() {
-    const completedIds = Object.freeze([...this.#completedWaveIds]);
-    this.#completedWaveIds.length = 0;
-    return completedIds;
+  takeCompletedWaves() {
+    const completed = Object.freeze([...this.#completedWaves]);
+    this.#completedWaves.length = 0;
+    return completed;
   }
 
   /**
@@ -100,9 +100,13 @@ export class WaveManager {
 
   #complete(zone, world) {
     if (!zone.complete()) return;
-    this.#completedWaveIds.push(zone.id);
+    const completion = Object.freeze({
+      id: zone.id,
+      unlockPlatformId: zone.unlockPlatformId,
+    });
+    this.#completedWaves.push(completion);
     this.#unlockProgressionPlatform(zone, world);
-    world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, { id: zone.id });
+    world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, completion);
   }
 
   #lockProgressionPlatforms(world) {

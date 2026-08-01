@@ -27,6 +27,8 @@ breite Ansichten kontrolliert.
 | REV-002 | Die Landschaftsauswahl blieb beim freien Flug auf einem alten Eintrag stehen. | Die Auswahl folgt nun dem aktuellen Landschaftsabschnitt und der Bossarena. |
 | HTML-001 | "index.html" enthielt rund 900 Zeilen und vermischte alle Oberflächen. | Fünf logisch benannte Fragmente und ein kleiner Loader halten den Einstieg kurz. |
 | CODE-001 | Zehn deutsche Kommentare und Fehlermeldungen enthielten alte Zeichencodierungsreste. | Alle betroffenen Texte sind wieder korrektes UTF-8. |
+| GAME-002 | Ein Zwischenboss erschien ohne eindeutige Textmeldung. | Eine priorisierte HUD-Mitteilung nennt den Boss auf Deutsch oder Englisch und bleibt für Screenreader lesbar. |
+| GAME-003 | Der neue Biomweg wurde nach dem Boss still freigegeben. | HUD und barrierefreier Upgrade-Dialog melden jetzt ausdrücklich den geöffneten Aufstieg. |
 
 ## Korrigierte Fundstellen
 

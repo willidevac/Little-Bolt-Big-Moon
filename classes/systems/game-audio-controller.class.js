@@ -9,7 +9,6 @@ const SIMPLE_EFFECTS = Object.freeze({
   [GAMEPLAY_EVENTS.ENEMY_HIT]: "enemyHit",
   [GAMEPLAY_EVENTS.BOSS_ATTACK]: "bossAttack",
   [GAMEPLAY_EVENTS.BOSS_PHASE]: "bossPhase",
-  [GAMEPLAY_EVENTS.WAVE_COMPLETE]: "waveComplete",
 });
 const ATTACK_EFFECTS = Object.freeze({
   repairWrench: "wrench",
@@ -90,6 +89,9 @@ export class GameAudioController {
    * @param {Readonly<{type:string, detail:Readonly<object>}>} event
    */
   handleGameplayEvent(event) {
+    if (event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE) {
+      return this.#completeWave(event.detail);
+    }
     const effect = SIMPLE_EFFECTS[event.type];
     if (effect) return this.audio.playEffect(effect);
     return this.#handleDetailedEvent(event);
@@ -157,6 +159,14 @@ export class GameAudioController {
     this.isBossActive = true;
     this.audio.playEffect("bossPhase");
     if (this.game.state === GAME_STATES.PLAYING) this.audio.playMusic("boss");
+  }
+
+  #completeWave(detail) {
+    const played = this.audio.playEffect("waveComplete");
+    if (!detail.unlockPlatformId) return played;
+    this.isBossActive = false;
+    if (this.game.state === GAME_STATES.PLAYING) this.audio.playMusic("climb");
+    return played;
   }
 
   #validateDependencies(game, audio, eventTarget) {

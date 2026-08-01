@@ -50,7 +50,7 @@ function assertWeaponChangeRendering() {
   const hud = {
     elements: { weapon },
     setText: StatusBar.prototype.setText,
-    pickupFeedback: { show() {} },
+    announcement: { showPickup() {}, showBoss() {}, showPathOpened() {} },
   };
   StatusBar.prototype.handleGameplayEvent.call(hud, {
     type: GAMEPLAY_EVENTS.WEAPON_CHANGED,
@@ -119,7 +119,7 @@ function assertEncounterLifecycle() {
   level.combatZones.forEach((zone) => {
     triggerAndCompleteZone(manager, world, zone, activeEnemies);
   });
-  assert.equal(manager.takeCompletedWaveIds().length, 30);
+  assert.equal(manager.takeCompletedWaves().length, 30);
 }
 
 function createEncounterWorld(activeEnemies) {

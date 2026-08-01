@@ -93,9 +93,10 @@ export class Game {
   }
 
   /** @returns {ReadonlyArray<Readonly<object>>} Aktuelle Verbesserungen. */
-  getUpgradeOptions() {
-    return this.upgradeFlow.getOptions();
-  }
+  getUpgradeOptions() { return this.upgradeFlow.getOptions(); }
+
+  /** Liefert den Auslöser der aktuellen Upgrade-Auswahl. */
+  getUpgradeContext() { return this.upgradeFlow.getContext(); }
 
   /**
    * Initialisiert Spielfläche und Hauptloop höchstens einmal.

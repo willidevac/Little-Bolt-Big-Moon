@@ -1,11 +1,14 @@
 import { UpgradeManager } from "./upgrade-manager.class.js";
 
+const EMPTY_CONTEXT = Object.freeze({ didUnlockPath: false });
+
 /**
  * Verbindet Upgrade-Daten mit den fünf kleinen Effekten eines Laufs.
  */
 export class RunUpgradeFlow {
   #dependencies;
   #manager;
+  #context;
 
   /**
    * @param {Readonly<object>} data
@@ -15,6 +18,7 @@ export class RunUpgradeFlow {
     this.#validateDependencies(dependencies);
     this.#dependencies = dependencies;
     this.#manager = new UpgradeManager(data, this.#createEffects());
+    this.#context = EMPTY_CONTEXT;
   }
 
   /**
@@ -31,10 +35,19 @@ export class RunUpgradeFlow {
    * @returns {boolean}
    */
   openFrom(world) {
-    const completedIds = world.waveManager.takeCompletedWaveIds();
+    const completed = world.waveManager.takeCompletedWaves();
+    const completedIds = completed.map(({ id }) => id);
     this.#dependencies.runStats.applyCombatPhases(completedIds);
     if (completedIds.length === 0) return false;
+    this.#context = Object.freeze({
+      didUnlockPath: completed.some(({ unlockPlatformId }) => unlockPlatformId),
+    });
     return this.#manager.openSelection().length > 0;
+  }
+
+  /** Liefert den Grund für die gerade sichtbare Upgrade-Auswahl. */
+  getContext() {
+    return this.#context;
   }
 
   /**
@@ -51,6 +64,7 @@ export class RunUpgradeFlow {
    */
   reset() {
     this.#manager.reset();
+    this.#context = EMPTY_CONTEXT;
   }
 
   #createEffects() {

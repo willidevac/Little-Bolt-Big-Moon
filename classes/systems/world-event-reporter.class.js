@@ -82,7 +82,7 @@ export class WorldEventReporter {
 
   #reportBoss(boss) {
     if (!this.before.bossActive && boss.isActive) {
-      this.events.emit(GAMEPLAY_EVENTS.BOSS_ACTIVATED);
+      this.events.emit(GAMEPLAY_EVENTS.BOSS_ACTIVATED, { name: boss.name });
     }
     if (this.before.bossActive && boss.phase !== this.before.bossPhase) {
       this.events.emit(GAMEPLAY_EVENTS.BOSS_PHASE, { phase: boss.phase });

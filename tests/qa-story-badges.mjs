@@ -47,7 +47,7 @@ function assertBadgeRewardsDiscovery() {
 async function assertPresentationSupport() {
   const [audio, feedback] = await Promise.all([
     fs.readFile("classes/systems/game-audio-controller.class.js", "utf8"),
-    fs.readFile("classes/ui/pickup-feedback.class.js", "utf8"),
+    fs.readFile("classes/ui/hud-announcement.class.js", "utf8"),
   ]);
   assert.match(audio, /storyBadge:\s*"pickupGear"/);
   assert.match(feedback, /"storyBadge"/);

@@ -168,7 +168,7 @@ function assertBossGateLifecycle() {
   manager.initialize(world);
   assertGatesAreMissing(zones, state.platforms);
   zones.forEach((zone) => defeatZone(manager, world, zone, state));
-  assert.equal(manager.takeCompletedWaveIds().length, zones.length);
+  assert.equal(manager.takeCompletedWaves().length, zones.length);
 }
 
 function getLockedBossZones() {

@@ -8,7 +8,7 @@ import {
 import { World, WORLD_ENTITY_GROUPS } from "../classes/core/world.class.js";
 import { RunStats } from "../classes/systems/run-stats.class.js";
 import { WeaponSystem } from "../classes/systems/weapon-system.class.js";
-import { PickupFeedback } from "../classes/ui/pickup-feedback.class.js";
+import { HudAnnouncement } from "../classes/ui/hud-announcement.class.js";
 
 const input = Object.freeze({
   consumePress: () => false,
@@ -80,11 +80,12 @@ const feedbackElement = {
     remove: (name) => visibleClasses.delete(name),
   },
   offsetWidth: 120,
+  dataset: {},
   textContent: "",
 };
-const feedback = new PickupFeedback(feedbackElement);
-assert.equal(feedback.show({ type: "weapon", amount: 6 }), true);
-assert.equal(feedback.show({ type: "gear", amount: 1 }), false);
+const feedback = new HudAnnouncement(feedbackElement);
+assert.equal(feedback.showPickup({ type: "weapon", amount: 6 }), true);
+assert.equal(feedback.showPickup({ type: "gear", amount: 1 }), false);
 assert.equal(feedbackElement.textContent, "Neue Waffe freigeschaltet!");
 assert.equal(visibleClasses.has("is-visible"), true);
 feedback.destroy();

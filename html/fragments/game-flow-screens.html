@@ -93,11 +93,14 @@
       <section
         class="game-screen overlay-screen upgrade-screen"
         aria-labelledby="upgrade-title"
+        aria-describedby="upgrade-copy"
+        aria-modal="true"
+        role="dialog"
         data-game-screen="upgrading"
         hidden
       >
         <div class="screen-panel screen-panel--upgrade">
-          <p class="screen-panel__eyebrow" data-i18n="upgrade.eyebrow">
+          <p class="screen-panel__eyebrow" data-upgrade-eyebrow>
             Arena geschafft
           </p>
           <h2
@@ -108,7 +111,7 @@
           >
             Wähle eine Verbesserung
           </h2>
-          <p class="screen-panel__copy" data-i18n="upgrade.copy">
+          <p id="upgrade-copy" class="screen-panel__copy" data-upgrade-copy>
             Ein Fundstück darf Byte auf seinem Weg zum Mond stärker machen.
           </p>
           <div

@@ -13,6 +13,8 @@ const SELECTORS = Object.freeze({
   endCopy: "[data-end-copy]",
   endHeight: "[data-end-height]",
   endScore: "[data-end-score]",
+  upgradeEyebrow: "[data-upgrade-eyebrow]",
+  upgradeCopy: "[data-upgrade-copy]",
   upgradeOptions: "[data-upgrade-options]",
   dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
@@ -70,6 +72,8 @@ export class ScreenController {
     this.pauseScreen = getRequiredElement(this.root, SELECTORS.paused);
     this.upgradeScreen = getRequiredElement(this.root, SELECTORS.upgrading);
     this.endScreen = getRequiredElement(this.root, SELECTORS.end);
+    this.upgradeEyebrow = getRequiredElement(this.root, SELECTORS.upgradeEyebrow);
+    this.upgradeCopy = getRequiredElement(this.root, SELECTORS.upgradeCopy);
     this.upgradeOptions = getRequiredElement(this.root, SELECTORS.upgradeOptions);
     this.startButton = getRequiredElement(this.root, SELECTORS.start);
     this.resumeButton = getRequiredElement(this.root, SELECTORS.resume);
@@ -308,11 +312,19 @@ export class ScreenController {
    * Baut die drei Upgrade-Schaltflächen aus sicheren DOM-Knoten neu auf.
    */
   #renderUpgradeOptions() {
+    this.#renderUpgradeContext();
     this.upgradeOptions.replaceChildren(
       ...this.game.getUpgradeOptions().map((upgrade) => {
         return this.upgradeOptionView.create(upgrade);
       }),
     );
+  }
+
+  #renderUpgradeContext() {
+    const context = this.game.getUpgradeContext();
+    const prefix = context.didUnlockPath ? "upgrade.boss" : "upgrade";
+    this.upgradeEyebrow.textContent = translate(`${prefix}.eyebrow`);
+    this.upgradeCopy.textContent = translate(`${prefix}.copy`);
   }
 
   /**

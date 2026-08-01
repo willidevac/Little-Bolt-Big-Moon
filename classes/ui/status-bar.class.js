@@ -1,6 +1,6 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
-import { PickupFeedback } from "./pickup-feedback.class.js";
+import { HudAnnouncement } from "./hud-announcement.class.js";
 import { FallFeedback } from "./fall-feedback.class.js";
 import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
@@ -24,7 +24,7 @@ const VALUE_SELECTORS = Object.freeze({
   combo: "[data-hud-combo]",
   comboValue: "[data-hud-combo-value]",
   weapon: '[data-hud-value="weapon"]',
-  pickupFeedback: "[data-hud-pickup-feedback]",
+  announcement: "[data-hud-announcement]",
   fallFeedback: "[data-hud-fall-feedback]",
   jumpCharge: "[data-hud-jump-charge]",
   jumpChargeBar: "[data-hud-jump-charge-bar]",
@@ -78,6 +78,18 @@ function renderWeaponValue(statusBar, weapon) {
   );
 }
 
+function handleAnnouncement(statusBar, event) {
+  if (event.type === GAMEPLAY_EVENTS.PICKUP) {
+    statusBar.announcement.showPickup(event.detail);
+  }
+  if (event.type === GAMEPLAY_EVENTS.BOSS_ACTIVATED) {
+    const nameKey = BOSS_KEYS[event.detail.name] ?? "boss.default";
+    statusBar.announcement.showBoss(nameKey);
+  }
+  if (event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
+    event.detail.unlockPlatformId) statusBar.announcement.showPathOpened();
+}
+
 /**
  * Überträgt Laufwerte in das barrierefreie HTML-HUD.
  */
@@ -95,7 +107,7 @@ export class StatusBar {
     this.unsubscribeGameplay = null;
     this.unsubscribeLanguage = null;
     this.currentWeapon = null;
-    this.pickupFeedback = new PickupFeedback(this.elements.pickupFeedback);
+    this.announcement = new HudAnnouncement(this.elements.announcement);
     const pixelsPerMeter = this.game.config.hud.heightPixelsPerMeter;
     this.fallFeedback = new FallFeedback(this.elements.fallFeedback, pixelsPerMeter);
   }
@@ -126,7 +138,7 @@ export class StatusBar {
     this.unsubscribeState?.();
     this.unsubscribeGameplay?.();
     this.unsubscribeLanguage?.();
-    this.pickupFeedback.destroy();
+    this.announcement.destroy();
     this.fallFeedback.destroy();
     this.unsubscribeHud = null;
     this.unsubscribeState = null;
@@ -163,13 +175,11 @@ export class StatusBar {
     );
   }
 
-  /** Verbindet Gameplay-Ereignisse mit Waffen- und Fundanzeige. */
+  /** Verbindet Gameplay-Ereignisse mit HUD-Werten und kurzen Meldungen. */
   handleGameplayEvent(event) {
+    handleAnnouncement(this, event);
     if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
       renderWeaponValue(this, event.detail);
-    }
-    if (event.type === GAMEPLAY_EVENTS.PICKUP) {
-      this.pickupFeedback.show(event.detail);
     }
     if (event.type === GAMEPLAY_EVENTS.PLAYER_FALL) {
       this.fallFeedback.show(event.detail);
