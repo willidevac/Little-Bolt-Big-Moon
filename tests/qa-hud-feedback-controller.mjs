@@ -50,8 +50,12 @@ dispatch(controller, GAMEPLAY_EVENTS.BOSS_ACTIVATED, { name: "Mondwächter" });
 assert.equal(elements.announcement.dataset.kind, "boss");
 assert.match(elements.announcement.textContent, /Mondwächter/);
 
-dispatch(controller, GAMEPLAY_EVENTS.WAVE_COMPLETE, { unlockPlatformId: "exit" });
-assert.equal(elements.announcement.dataset.kind, "path");
+dispatch(controller, GAMEPLAY_EVENTS.WAVE_COMPLETE, {
+  id: "scrapyard-biome-boss",
+  unlockPlatformId: "exit",
+});
+assert.equal(elements.announcement.dataset.kind, "biome");
+assert.match(elements.announcement.textContent, /Fabrik erreicht/);
 
 dispatch(controller, GAMEPLAY_EVENTS.PLAYER_FALL, {
   lossPixels: 360,

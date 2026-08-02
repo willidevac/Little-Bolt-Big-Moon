@@ -234,6 +234,17 @@
   --announcement-duration: 3.6s;
 }
 
+.hud-announcement[data-kind="biome"] {
+  --announcement-duration: 4.2s;
+  border-color: var(--color-orange);
+  color: var(--color-cream);
+  box-shadow:
+    0.2rem 0.2rem 0 var(--color-shadow),
+    0 0 1rem rgb(48 220 224 / 24%);
+  font-size: clamp(0.65rem, 1.6vw, 1.05rem);
+  letter-spacing: 0.035em;
+}
+
 .hud-announcement.is-visible {
   animation: hud-announcement var(--announcement-duration) ease-out both;
 }

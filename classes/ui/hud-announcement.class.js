@@ -3,6 +3,7 @@ import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 const PICKUP_DURATION_MILLISECONDS = 2400;
 const BOSS_DURATION_MILLISECONDS = 3200;
 const PATH_DURATION_MILLISECONDS = 3600;
+const BIOME_DURATION_MILLISECONDS = 4200;
 const PICKUP_TYPES = Object.freeze([
   "gear", "energy", "arcCharge", "storyBadge",
 ]);
@@ -40,6 +41,16 @@ export class HudAnnouncement {
   /** Announces a path upward unlocked after a boss fight. */
   showPathOpened() {
     return this.#show({ kind: "path" }, 4, PATH_DURATION_MILLISECONDS);
+  }
+
+  /** Announces the newly reached biome after an intermediate boss. */
+  showBiomeReached(nameKey) {
+    if (typeof nameKey !== "string" || !nameKey) {
+      throw new TypeError("The biome name for the HUD announcement is missing.");
+    }
+    return this.#show(
+      { kind: "biome", nameKey }, 4, BIOME_DURATION_MILLISECONDS,
+    );
   }
 
   /** Completely clears the message and its timer. */
@@ -84,6 +95,11 @@ export class HudAnnouncement {
 
   #getMessage(message) {
     if (message.kind === "boss") return this.#getBossMessage(message.nameKey);
+    if (message.kind === "biome") {
+      return translate("combat.biomeReached", {
+        biome: translate(message.nameKey),
+      });
+    }
     if (message.kind === "path") return translate("combat.pathOpened");
     return this.#getPickupMessage(message.pickup);
   }

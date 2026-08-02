@@ -1,5 +1,7 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 import { getBossTranslationKey } from "../../js/config/boss-translation-keys.js";
+import { getBiomeArrivalTranslationKey } from
+  "../../js/config/biome-arrival-config.js";
 import { translate } from "../../js/i18n/localization.js";
 import { FallFeedback } from "./fall-feedback.class.js";
 import { HudAnnouncement } from "./hud-announcement.class.js";
@@ -49,9 +51,11 @@ export class HudFeedbackController {
 
   #handlePathOpened(event) {
     const pathOpened = event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
-      event.detail.unlockPlatformId;
+      event.detail?.unlockPlatformId;
     if (!pathOpened) return false;
-    this.announcement.showPathOpened();
+    const biomeKey = getBiomeArrivalTranslationKey(event.detail.id);
+    if (biomeKey) this.announcement.showBiomeReached(biomeKey);
+    else this.announcement.showPathOpened();
     return true;
   }
 
