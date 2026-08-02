@@ -1,6 +1,11 @@
 import { DrawableObject } from "../../base/drawable-object.class.js";
 import { AnimationController } from "../../systems/animation-controller.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
+import { getGroundedSpriteY } from "../../effects/grounded-sprite-position.js";
+import {
+  WORLD_OBJECT_INDICATOR_TYPES,
+  WorldObjectIndicator,
+} from "../../effects/world-object-indicator.class.js";
 
 const COLLECTABLE_SPRITE_CONFIG = Object.freeze({
   source: getAssetPath("items", "collectables-clean-hd.png"),
@@ -40,6 +45,11 @@ const ARC_CANNON_COLLISION_BOX = Object.freeze({
   width: 72,
   height: 44,
 });
+const STANDARD_GROUND_OFFSETS = Object.freeze([
+  4, 3, 4, 4, 17, 17, 17, 17, 21, 4, 3, 3, 3, 3, 3,
+]);
+const ARC_CHARGE_GROUND_OFFSETS = Object.freeze([12]);
+const ARC_CANNON_GROUND_OFFSETS = Object.freeze([10]);
 
 export const COLLECTABLE_TYPES = Object.freeze({
   GEAR: "gear",
@@ -65,16 +75,19 @@ const STANDARD_VISUAL = Object.freeze({
   sprite: COLLECTABLE_SPRITE_CONFIG,
   renderScale: COLLECTABLE_RENDER_SCALE,
   collisionBox: COLLECTABLE_COLLISION_BOX,
+  groundOffsets: STANDARD_GROUND_OFFSETS,
 });
 const ARC_CHARGE_VISUAL = Object.freeze({
   sprite: ARC_CHARGE_SPRITE_CONFIG,
   renderScale: 1,
   collisionBox: ARC_CHARGE_COLLISION_BOX,
+  groundOffsets: ARC_CHARGE_GROUND_OFFSETS,
 });
 const ARC_CANNON_VISUAL = Object.freeze({
   sprite: ARC_CANNON_SPRITE_CONFIG,
   renderScale: 1,
   collisionBox: ARC_CANNON_COLLISION_BOX,
+  groundOffsets: ARC_CANNON_GROUND_OFFSETS,
 });
 
 function createClip(startFrame, frameCount) {
@@ -98,6 +111,9 @@ export class CollectableObject extends DrawableObject {
     this.#validateData(collectableData);
     this.#applyData(collectableData);
     this.#applyVisual(this.#getVisual(collectableData));
+    this.indicator = new WorldObjectIndicator(
+      WORLD_OBJECT_INDICATOR_TYPES.PICKUP,
+    );
     this.animationController = new AnimationController(ANIMATION_CLIPS);
     this.setFrameIndex(this.animationController.setState(this.animationState));
   }
@@ -122,6 +138,16 @@ export class CollectableObject extends DrawableObject {
       deltaTimeSeconds,
     );
     this.setFrameIndex(frame);
+    this.indicator.update(deltaTimeSeconds);
+  }
+
+  /** Draws the grounded sprite with the shared helpful-item marker. */
+  draw(context) {
+    context.save();
+    this.indicator.drawGroundMarker(context, this);
+    this.indicator.applyGlow(context);
+    this.drawCurrentFrame(context, this.x, this.#getDrawY(), this.width, this.height);
+    context.restore();
   }
 
   /**
@@ -153,6 +179,7 @@ export class CollectableObject extends DrawableObject {
   #applyVisual(visual) {
     this.width = visual.sprite.frameWidth * visual.renderScale;
     this.height = visual.sprite.frameHeight * visual.renderScale;
+    this.groundOffsets = visual.groundOffsets;
     this.setCollisionBox(visual.collisionBox);
     this.loadSprite(visual.sprite);
   }
@@ -174,5 +201,9 @@ export class CollectableObject extends DrawableObject {
   #getBadgeVisual(data) {
     this.animationState = data.badgePart === "left" ? "badgeLeft" : "badgeRight";
     return STANDARD_VISUAL;
+  }
+
+  #getDrawY() {
+    return getGroundedSpriteY(this, this.groundOffsets);
   }
 }

@@ -1,6 +1,11 @@
 import { DrawableObject } from "../base/drawable-object.class.js";
 import { AnimationController } from "../systems/animation-controller.class.js";
 import { getAssetPath } from "../../js/config/asset-paths.js";
+import { getGroundedSpriteY } from "../effects/grounded-sprite-position.js";
+import {
+  WORLD_OBJECT_INDICATOR_TYPES,
+  WorldObjectIndicator,
+} from "../effects/world-object-indicator.class.js";
 
 const DAMAGE_ZONE_SPRITE_CONFIG = Object.freeze({
   source: getAssetPath("tilesets", "scrapyard-hazards-clean-hd.png"),
@@ -15,6 +20,9 @@ const DAMAGE_ZONE_COLLISION_BOX = Object.freeze({
   width: 32,
   height: 48,
 });
+const DAMAGE_ZONE_GROUND_OFFSETS = Object.freeze([
+  16, 16, 16, 16, 16, 16, 16, 14, 14, 14, 14, 14, 13, 13, 13, 13,
+]);
 const ELECTRIC_ANIMATION = Object.freeze({
   electric: Object.freeze({
     startFrame: 4,
@@ -34,14 +42,25 @@ export class DamageZone extends DrawableObject {
   constructor(zoneData) {
     super();
     this.#validateData(zoneData);
+    this.#applyData(zoneData);
+    this.#initializeVisual();
+  }
+
+  #applyData(zoneData) {
     this.id = zoneData.id;
     this.damage = zoneData.damage;
     this.x = zoneData.x;
     this.y = zoneData.y;
+  }
+
+  #initializeVisual() {
     this.width = DAMAGE_ZONE_SPRITE_CONFIG.frameWidth * DAMAGE_ZONE_RENDER_SCALE;
     this.height = DAMAGE_ZONE_SPRITE_CONFIG.frameHeight * DAMAGE_ZONE_RENDER_SCALE;
     this.setCollisionBox(DAMAGE_ZONE_COLLISION_BOX);
     this.animationController = new AnimationController(ELECTRIC_ANIMATION);
+    this.indicator = new WorldObjectIndicator(
+      WORLD_OBJECT_INDICATOR_TYPES.DANGER,
+    );
     this.loadSprite(DAMAGE_ZONE_SPRITE_CONFIG);
     this.setFrameIndex(this.animationController.setState("electric"));
   }
@@ -53,6 +72,16 @@ export class DamageZone extends DrawableObject {
   update(deltaTimeSeconds) {
     const frame = this.animationController.update("electric", deltaTimeSeconds);
     this.setFrameIndex(frame);
+    this.indicator.update(deltaTimeSeconds);
+  }
+
+  /** Draws the grounded hazard with the shared danger marker. */
+  draw(context) {
+    context.save();
+    this.indicator.drawGroundMarker(context, this);
+    this.indicator.applyGlow(context);
+    this.drawCurrentFrame(context, this.x, this.#getDrawY(), this.width, this.height);
+    context.restore();
   }
 
   /**
@@ -65,6 +94,10 @@ export class DamageZone extends DrawableObject {
     const zoneCenterX = this.x + this.width / 2;
     const direction = targetCenterX < zoneCenterX ? -1 : 1;
     return Object.freeze({ amount: this.damage, direction });
+  }
+
+  #getDrawY() {
+    return getGroundedSpriteY(this, DAMAGE_ZONE_GROUND_OFFSETS);
   }
 
   #validateData(data) {
