@@ -3,19 +3,17 @@ import { clamp } from "../../js/utils/math.js";
 const STAT_BY_PICKUP_TYPE = Object.freeze({
   gear: "gears",
   energy: "energy",
-  ammo: "ammo",
   arcCharge: "arcCharges",
 });
 const CAPACITY_BY_STAT = Object.freeze({
   energy: "maximumEnergy",
-  ammo: "maximumAmmo",
   arcCharges: "maximumArcCharges",
 });
-const SPENDABLE_TYPES = Object.freeze(["ammo", "arcCharge"]);
+const SPENDABLE_TYPES = Object.freeze(["arcCharge"]);
 const NON_RESOURCE_TYPES = Object.freeze(["weapon", "storyBadge"]);
 
 /**
- * Manages energy, gears, and ammunition for a single run.
+ * Manages energy, gears, and limited arc charges for a single run.
  */
 export class RunResources {
   #config;
@@ -35,12 +33,6 @@ export class RunResources {
   /** @returns {number} Maximum energy. */
   get maximumEnergy() { return this.#capacities.maximumEnergy; }
 
-  /** @returns {number} Remaining bolts. */
-  get ammo() { return this.#values.ammo; }
-
-  /** @returns {number} Maximum bolts. */
-  get maximumAmmo() { return this.#capacities.maximumAmmo; }
-
   /** @returns {number} Remaining arc charges. */
   get arcCharges() { return this.#values.arcCharges; }
 
@@ -54,11 +46,10 @@ export class RunResources {
   reset() {
     this.#capacities = {
       maximumEnergy: this.#config.maximumEnergy,
-      maximumAmmo: this.#config.maximumAmmo,
       maximumArcCharges: this.#config.maximumArcCharges,
     };
     this.#values = {
-      energy: this.#config.startingEnergy, ammo: this.#config.startingAmmo,
+      energy: this.#config.startingEnergy,
       arcCharges: this.#config.startingArcCharges,
       gears: this.#config.startingGears,
     };
@@ -94,7 +85,7 @@ export class RunResources {
   }
 
   /**
-   * Atomically spends an available ammunition type.
+   * Atomically spends an available limited weapon resource.
    * @param {string} type
    * @param {number} amount
    * @returns {boolean} Whether enough ammunition was available.
@@ -108,7 +99,7 @@ export class RunResources {
   }
 
   /**
-   * Returns a weapon resource without exposing mutable access.
+   * Returns a limited weapon resource without exposing mutable access.
    * @param {string} type
    * @returns {number}
    */
@@ -121,7 +112,7 @@ export class RunResources {
 
   /**
    * Increases a resource capacity and immediately fills the new space.
-   * @param {"energy"|"ammo"|"arcCharge"} type
+   * @param {"energy"|"arcCharge"} type
    * @param {number} amount
    */
   increaseCapacity(type, amount) {
@@ -138,7 +129,6 @@ export class RunResources {
   getSnapshot() {
     return Object.freeze({
       energy: this.energy, maximumEnergy: this.maximumEnergy,
-      ammo: this.ammo, maximumAmmo: this.maximumAmmo,
       arcCharges: this.arcCharges,
       maximumArcCharges: this.maximumArcCharges,
       gears: this.gears,
@@ -173,7 +163,7 @@ export class RunResources {
       throw new TypeError("Die Vorrats-Startwerte sind unvollständig oder ungültig.");
     }
     this.#validateEnergy(config);
-    this.#validateAmmunition(config);
+    this.#validateArcCharges(config);
   }
 
   #validateEnergy(config) {
@@ -181,11 +171,7 @@ export class RunResources {
     throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
   }
 
-  #validateAmmunition(config) {
-    this.#validateRange(
-      config.startingAmmo, config.maximumAmmo,
-      "Die Startmunition liegt außerhalb der Magazingrenze.",
-    );
+  #validateArcCharges(config) {
     this.#validateRange(
       config.startingArcCharges, config.maximumArcCharges,
       "Die Startladung liegt außerhalb des Ladungsspeichers.",

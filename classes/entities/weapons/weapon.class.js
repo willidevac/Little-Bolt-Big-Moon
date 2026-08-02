@@ -1,5 +1,5 @@
 const WEAPON_TYPES = Object.freeze(["melee", "projectile"]);
-const AMMO_TYPES = Object.freeze(["ammo", "arcCharge"]);
+const AMMO_TYPES = Object.freeze(["arcCharge"]);
 const PROJECTILE_KINDS = Object.freeze(["bolt", "arc"]);
 const COOLDOWN_EPSILON_SECONDS = 1e-9;
 
@@ -36,12 +36,13 @@ export class Weapon {
   }
 
   /**
-   * Checks the cooldown and available ammunition.
-   * @param {number} availableAmmo
+   * Checks the cooldown and ammunition only when the weapon consumes it.
+   * @param {number|null} [availableAmmo=null]
    * @returns {boolean}
    */
-  canAttack(availableAmmo) {
-    const hasAmmo = Number.isInteger(availableAmmo) && availableAmmo >= this.ammoCost;
+  canAttack(availableAmmo = null) {
+    const hasAmmo = this.ammoCost === 0 ||
+      (Number.isInteger(availableAmmo) && availableAmmo >= this.ammoCost);
     return this.cooldownSecondsRemaining === 0 && hasAmmo;
   }
 
@@ -140,12 +141,15 @@ export class Weapon {
 
   #isValidConfig(config) {
     const hasAmmo = Number.isInteger(config?.ammoCost) && config.ammoCost >= 0;
+    const hasAmmoType = config?.ammoCost === 0
+      ? config.ammoType === null
+      : AMMO_TYPES.includes(config?.ammoType);
     return (
       this.#hasValidText(config) &&
       this.#hasValidNumbers(config) &&
       hasAmmo &&
       WEAPON_TYPES.includes(config.type) &&
-      AMMO_TYPES.includes(config.ammoType) &&
+      hasAmmoType &&
       this.#hasValidProjectileKind(config)
     );
   }

@@ -58,7 +58,7 @@
   outline-offset: 4px;
 }
 
-@media (max-height: 430px) and (orientation: landscape) {
+@container game-shell (max-width: 765px) {
   .screen-panel--settings .screen-panel__copy,
   .screen-panel--settings .screen-panel__hint {
     display: none;

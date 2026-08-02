@@ -52,11 +52,17 @@ function assertResponsiveCss() {
   assert.match(layoutCss, /overflow:\s*hidden/);
   assert.match(layoutCss, /1440px/);
   assert.match(layoutCss, /aspect-ratio:\s*16\s*\/\s*9/);
+  assert.match(layoutCss, /--app-viewport-height:\s*100svh/);
+  assert.match(layoutCss, /safe-area-inset-left/);
+  assertCompactInterfaceCss();
+}
+
+function assertCompactInterfaceCss() {
   assert.match(responsiveCss, /max-width:\s*1024px[\s\S]*orientation:\s*portrait/);
-  assert.match(touchCss, /max-width:\s*1024px[\s\S]*orientation:\s*landscape/);
+  assert.match(touchCss, /@container game-shell \(max-width:\s*1066px\)/);
   assert.match(
     hudCss,
-    /max-width:\s*1024px[\s\S]*max-height:\s*600px[\s\S]*orientation:\s*landscape/,
+    /@container game-shell \(max-width:\s*1066px\)/,
   );
   assert.match(hudCss, /min-height:\s*1\.85rem/);
   assert.match(touchCss, /width:\s*clamp\(2\.75rem, 9vw, 4rem\)/);

@@ -86,8 +86,7 @@ function assertResponsiveLayout() {
   assert.match(layoutCss, /overflow:\s*hidden/);
   assert.match(responsiveCss, /orientation:\s*portrait/);
   assert.match(responsiveCss, /\.portrait-notice/);
-  assert.match(touchCss, /max-width:\s*1024px/);
-  assert.match(touchCss, /orientation:\s*landscape/);
+  assert.match(touchCss, /@container game-shell \(max-width:\s*1066px\)/);
 }
 
 function assertStaticInterface() {

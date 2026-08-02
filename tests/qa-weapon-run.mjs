@@ -63,7 +63,7 @@ assert.equal(weapons.getCurrentWeapon().id, "boltThrower");
 assert.equal(weapons.getCurrentWeapon().isCombatUnlocked, true);
 assert.equal(changedWeapons.at(-1).id, "boltThrower");
 assert.equal(changedWeapons.at(-1).isCombatUnlocked, true);
-assert.equal(stats.ammo, 6);
+assert.equal(weapons.getCurrentWeapon().ammoCost, 0);
 assert.equal(stats.applyPickups(collected), true);
 assert.equal(
   world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES).includes(pickup),
@@ -72,7 +72,7 @@ assert.equal(
 
 world.update(0);
 assert.deepEqual(world.takeCollectedPickups(), []);
-assert.equal(stats.ammo, 6);
+assert.equal(Object.hasOwn(stats.getSnapshot(), "ammo"), false);
 assert.equal(weapons.switchWeapon().id, "repairWrench");
 assert.equal(weapons.switchWeapon().id, "boltThrower");
 
@@ -80,7 +80,7 @@ stats.reset(level.playerStart.y);
 weapons.reset();
 assert.equal(weapons.getCurrentWeapon().id, "repairWrench");
 assert.equal(weapons.getCurrentWeapon().isCombatUnlocked, false);
-assert.equal(stats.ammo, 0);
+assert.equal(Object.hasOwn(stats.getSnapshot(), "ammo"), false);
 
 const visibleClasses = new Set();
 const feedbackElement = {

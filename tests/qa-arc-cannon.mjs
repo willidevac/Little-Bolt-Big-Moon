@@ -23,16 +23,20 @@ const character = {
 };
 
 assert.equal(weapons.unlockWeapon("boltThrower", 6), true);
+const firstBolt = weapons.attack(character);
+weapons.update(1, character);
+const secondBolt = weapons.attack(character);
+assert.equal(firstBolt.weaponId, "boltThrower");
+assert.equal(secondBolt.weaponId, "boltThrower");
+assert.equal(firstBolt.ammoCost, 0);
 assert.equal(weapons.unlockWeapon("arcCannon", 3), true);
 assert.equal(weapons.getCurrentWeapon().id, "arcCannon");
-assert.equal(stats.ammo, 6);
 assert.equal(stats.arcCharges, 3);
 
 const attack = weapons.attack(character);
 assert.equal(attack.projectileKind, "arc");
 assert.equal(attack.damage, 42);
 assert.equal(stats.arcCharges, 2);
-assert.equal(stats.ammo, 6);
 assert.equal(weapons.attack(character), null);
 
 const projectileSystem = new ProjectileSystem(

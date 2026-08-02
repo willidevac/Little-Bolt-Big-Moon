@@ -4,7 +4,7 @@ const PICKUP_DURATION_MILLISECONDS = 2400;
 const BOSS_DURATION_MILLISECONDS = 3200;
 const PATH_DURATION_MILLISECONDS = 3600;
 const PICKUP_TYPES = Object.freeze([
-  "gear", "energy", "ammo", "arcCharge", "storyBadge",
+  "gear", "energy", "arcCharge", "storyBadge",
 ]);
 
 /** Briefly displays important gameplay messages above the world accessibly. */

@@ -59,9 +59,8 @@ export class WeaponSystem {
   attack(character) {
     if (!this.isCombatUnlocked) return null;
     const weapon = this.#getAvailableWeapons()[this.currentWeaponIndex];
-    const availableAmmo = this.runStats.getResourceAmount(weapon.ammoType);
-    if (!character?.canAttack || !weapon.canAttack(availableAmmo)) return null;
-    if (!this.runStats.spendResource(weapon.ammoType, weapon.ammoCost)) return null;
+    if (!character?.canAttack || !this.#canAttack(weapon)) return null;
+    if (!this.#spendAmmunition(weapon)) return null;
     const attack = weapon.attack(character);
     character.startAttack(attack.animationState, attack.animationDurationSeconds);
     return attack;
@@ -145,10 +144,21 @@ export class WeaponSystem {
   }
 
   #grantStarterAmmo(weapon, amount) {
+    if (weapon.ammoCost === 0) return;
     this.runStats.applyPickups([{
       type: weapon.ammoType,
       amount,
     }]);
+  }
+
+  #canAttack(weapon) {
+    if (weapon.ammoCost === 0) return weapon.canAttack();
+    return weapon.canAttack(this.runStats.getResourceAmount(weapon.ammoType));
+  }
+
+  #spendAmmunition(weapon) {
+    if (weapon.ammoCost === 0) return true;
+    return this.runStats.spendResource(weapon.ammoType, weapon.ammoCost);
   }
 
   #validateStarterAmmo(starterAmmo) {

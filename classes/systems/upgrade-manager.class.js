@@ -1,7 +1,7 @@
 const REQUIRED_UPGRADE_IDS = Object.freeze([
   "maximumEnergy",
   "wrenchDamage",
-  "ammoCapacity",
+  "arcChargeCapacity",
   "knockbackResistance",
   "jumpControl",
 ]);

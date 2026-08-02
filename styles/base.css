@@ -44,6 +44,34 @@ button {
   cursor: pointer;
 }
 
+.game-shell,
+.game-shell * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.game-shell :where(button, [role="button"]) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-shell canvas,
+.game-shell img {
+  -webkit-user-drag: none;
+}
+
+.game-shell input,
+.game-shell textarea,
+.game-shell select,
+.game-shell [contenteditable="true"],
+.game-shell .legal-section,
+.game-shell .legal-section * {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

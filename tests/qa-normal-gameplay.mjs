@@ -118,21 +118,17 @@ function assertBossSupplies() {
   const hitCounts = bosses.map((boss) => {
     return getBossHitCount(boss.maximumHealth, weapons);
   });
-  assert.deepEqual(hitCounts, [7, 9, 9, 12, 20]);
-  assert.equal(getBossAmmo().length, bosses.length);
+  assert.deepEqual(hitCounts, [7, 9, 9, 12, 23]);
+  assert.equal(getBossEnergy().length, bosses.length);
 }
 
 function getBossHitCount(health, weapons) {
-  const boltDamage = GAME_CONFIG.hud.maximumAmmo * weapons.boltThrower.damage;
-  const usedBoltDamage = Math.min(health, boltDamage);
-  const boltHits = Math.ceil(usedBoltDamage / weapons.boltThrower.damage);
-  const remaining = Math.max(0, health - usedBoltDamage);
-  return boltHits + Math.ceil(remaining / weapons.repairWrench.damage);
+  return Math.ceil(health / weapons.boltThrower.damage);
 }
 
-function getBossAmmo() {
+function getBossEnergy() {
   return level.collectables.filter((item) => {
-    return item.type === "ammo" && item.id.includes("boss-ammo");
+    return item.type === "energy" && item.id.includes("boss-energy");
   });
 }
 

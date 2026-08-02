@@ -187,6 +187,17 @@ async function assertStaticTouchMarkup() {
   assert.ok(actions.some((match) => match[1] === "fast"));
   assert.match(html, /<nav[\s\S]*?data-touch-controls[\s\S]*?<\/nav>/);
   assert.doesNotMatch(source, /createElement/);
+  await assertSafariTouchCss();
+}
+
+async function assertSafariTouchCss() {
+  const baseCss = await fs.readFile("styles/base.css", "utf8");
+  const touchCss = await fs.readFile("styles/touch-controls.css", "utf8");
+  assert.match(baseCss, /\.game-shell \*[\s\S]*?-webkit-user-select:\s*none/);
+  assert.match(baseCss, /-webkit-touch-callout:\s*none/);
+  assert.match(baseCss, /-webkit-tap-highlight-color:\s*transparent/);
+  assert.match(baseCss, /\.legal-section \*[\s\S]*?user-select:\s*text/);
+  assert.match(touchCss, /touch-action:\s*none/);
 }
 
 function createPointer(target, pointerId, pointerType = "touch", button = 0) {

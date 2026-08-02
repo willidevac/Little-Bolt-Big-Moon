@@ -38,7 +38,7 @@ async function assertResponsiveContract() {
   assert.match(html, /data-fullscreen-toggle/);
   assert.match(html, /data-fullscreen-toggle[\s\S]*?aria-pressed="false"|aria-pressed="false"[\s\S]*?data-fullscreen-toggle/);
   assert.match(screens, /\.utility-buttons[\s\S]+display:\s*flex/);
-  assert.match(responsive, /max-width:\s*700px[\s\S]+\.utility-button/);
+  assert.match(responsive, /max-width:\s*1066px[\s\S]+\.utility-button/);
 }
 
 function createFullscreenRoot(documentTarget) {

@@ -21,20 +21,21 @@ assert.deepEqual(
 );
 
 const expectedSupplies = [
-  "scrapyard-boss-ammo",
-  "pressworks-boss-ammo",
-  "launch-tower-boss-ammo",
-  "space-station-boss-ammo",
-  "moon-boss-ammo",
+  "scrapyard-boss-energy",
+  "pressworks-boss-energy",
+  "launch-tower-boss-energy",
+  "space-station-boss-energy",
+  "moon-boss-energy",
 ];
 expectedSupplies.forEach((id) => {
-  const ammo = level.collectables.find((item) => item.id === id);
+  const energy = level.collectables.find((item) => item.id === id);
   const support = level.platforms.find((platform) => {
-    return platform.y === ammo.y + ammo.height &&
-      ammo.x < platform.x + platform.width &&
-      ammo.x + ammo.width > platform.x;
+    return platform.y === energy.y + energy.height &&
+      energy.x < platform.x + platform.width &&
+      energy.x + energy.width > platform.x;
   });
-  assert.equal(ammo.amount, GAME_CONFIG.hud.maximumAmmo);
+  assert.equal(energy.type, "energy");
+  assert.equal(energy.amount, 25);
   assert.ok(support, `${id} braucht eine erreichbare Plattform.`);
 });
 

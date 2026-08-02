@@ -29,12 +29,6 @@ export class RunStats {
   /** @returns {number} Maximum energy. */
   get maximumEnergy() { return this.#resources.maximumEnergy; }
 
-  /** @returns {number} Remaining bolts. */
-  get ammo() { return this.#resources.ammo; }
-
-  /** @returns {number} Maximum bolts. */
-  get maximumAmmo() { return this.#resources.maximumAmmo; }
-
   /** @returns {number} Remaining arc charges. */
   get arcCharges() { return this.#resources.arcCharges; }
 
@@ -159,15 +153,6 @@ export class RunStats {
   }
 
   /**
-   * Spends bolts only when the requested amount is available.
-   * @param {number} amount
-   * @returns {boolean}
-   */
-  spendAmmo(amount) {
-    return this.spendResource("ammo", amount);
-  }
-
-  /**
    * Spends exactly the ammunition type used by the active weapon.
    * @param {string} type
    * @param {number} amount
@@ -191,11 +176,6 @@ export class RunStats {
   /** @param {number} amount Battery capacity increase. */
   increaseMaximumEnergy(amount) {
     this.#increaseCapacity("energy", amount);
-  }
-
-  /** @param {number} amount Bolt magazine capacity increase. */
-  increaseAmmoCapacity(amount) {
-    this.#increaseCapacity("ammo", amount);
   }
 
   /** @param {number} amount Arc-charge storage increase. */
@@ -222,7 +202,6 @@ export class RunStats {
   getSnapshot() {
     return Object.freeze({
       energy: this.energy, maximumEnergy: this.maximumEnergy,
-      ammo: this.ammo, maximumAmmo: this.maximumAmmo,
       arcCharges: this.arcCharges, gears: this.gears,
       heightMeters: this.heightMeters,
       score: this.#score.value, combo: this.#score.getComboSnapshot(),

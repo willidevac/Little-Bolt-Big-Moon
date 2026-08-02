@@ -32,7 +32,7 @@ assertEncounterDistribution();
 assertEncounterLifecycle();
 assertElitePresentation();
 assertBossBalance();
-assertAmmoDistribution();
+assertInfiniteBoltSupplies();
 
 console.log(
   "TRACKING: HUD, Welt, Begegnungen, Elitegegner und Bossbalance bestanden.",
@@ -165,32 +165,34 @@ function createDrawContext() {
 
 function assertBossBalance() {
   assert.equal(bosses.length, 5);
-  bosses.forEach((boss) => {
-    const hits = getMixedHitCount(boss.maximumHealth);
+  bosses.forEach((boss, index) => {
+    const availableArcCharges = index >= 3 ? 3 : 0;
+    const hits = getMixedHitCount(boss.maximumHealth, availableArcCharges);
     assert.ok(hits <= 20, `${boss.bossName} braucht zu viele Treffer.`);
   });
 }
 
-function getMixedHitCount(health) {
+function getMixedHitCount(health, availableArcCharges) {
   const weapons = GAME_CONFIG.weapons.definitions;
-  const boltHits = Math.min(
-    GAME_CONFIG.hud.maximumAmmo,
-    Math.ceil(health / weapons.boltThrower.damage),
+  const arcHits = Math.min(
+    availableArcCharges,
+    Math.ceil(health / weapons.arcCannon.damage),
   );
-  const remaining = Math.max(0, health - boltHits * weapons.boltThrower.damage);
-  return boltHits + Math.ceil(remaining / weapons.repairWrench.damage);
+  const remaining = Math.max(0, health - arcHits * weapons.arcCannon.damage);
+  return arcHits + Math.ceil(remaining / weapons.boltThrower.damage);
 }
 
-function assertAmmoDistribution() {
+function assertInfiniteBoltSupplies() {
   const ammo = level.collectables.filter((item) => item.type === "ammo");
+  assert.equal(ammo.length, 0);
   BIOME_PREFIXES.forEach((prefix) => {
-    assert.ok(ammo.some((item) => item.id.startsWith(prefix)));
+    assert.ok(level.collectables.some((item) => {
+      return item.type === "gear" &&
+        item.id.startsWith(prefix) && item.id.endsWith("gear-02");
+    }));
   });
-  const bossAmmo = ammo.filter((item) => item.id.includes("boss-ammo"));
-  assert.equal(bossAmmo.length, bosses.length);
-  assert.ok(bossAmmo.every(isFullMagazine));
-}
-
-function isFullMagazine(item) {
-  return item.amount === GAME_CONFIG.hud.maximumAmmo;
+  const bossEnergy = level.collectables.filter((item) => {
+    return item.type === "energy" && item.id.includes("boss-energy");
+  });
+  assert.equal(bossEnergy.length, bosses.length);
 }

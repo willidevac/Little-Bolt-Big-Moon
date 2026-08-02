@@ -102,7 +102,7 @@
   }
 }
 
-@media (max-width: 700px) and (orientation: landscape) {
+@container game-shell (max-width: 1066px) {
   .screen-panel--upgrade {
     padding: 0.45rem;
   }

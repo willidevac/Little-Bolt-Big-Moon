@@ -7,7 +7,6 @@ import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 const VALUE_SELECTORS = Object.freeze({
   energy: '[data-hud-value="energy"]',
-  ammo: '[data-hud-value="ammo"]',
   arcCharges: '[data-hud-value="arcCharges"]',
   gears: '[data-hud-value="gears"]',
   heightMeters: '[data-hud-value="height"]',
@@ -130,7 +129,6 @@ export class StatusBar {
    */
   render(data) {
     this.renderEnergy(data.energy, data.maximumEnergy);
-    this.setText(this.elements.ammo, data.ammo);
     this.setText(this.elements.arcCharges, data.arcCharges);
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);

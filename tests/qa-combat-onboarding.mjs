@@ -12,7 +12,7 @@ import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 
 const INTRO_PLATFORM_ID =
   "scrapyard-machine-graveyard-schrott-zickzack-3-1";
-const AMMO_PLATFORM_ID =
+const SUPPORT_PLATFORM_ID =
   "scrapyard-machine-graveyard-schrott-zickzack-3-5";
 
 const level = createLevelOne(GAME_CONFIG.enemies);
@@ -24,11 +24,11 @@ console.log("FB-006: Sprung-Einstieg vor Kampfeinführung bestanden.");
 
 function assertLevelOrder(levelData) {
   const pickup = levelData.collectables.find(({ type }) => type === "weapon");
-  const ammunition = findById(levelData.collectables, "scrapyard-ammo-01");
+  const supportGear = findById(levelData.collectables, "scrapyard-gear-02");
   const crawler = findById(levelData.enemies, "scrapyard-crawler-01");
   const firstZone = levelData.combatZones[0];
   assert.equal(pickup.anchorPlatformId, INTRO_PLATFORM_ID);
-  assert.equal(ammunition.anchorPlatformId, AMMO_PLATFORM_ID);
+  assert.equal(supportGear.anchorPlatformId, SUPPORT_PLATFORM_ID);
   assert.ok(levelData.playerStart.y - pickup.y > 1_000);
   assert.ok(crawler.y < pickup.y);
   assert.ok(firstZone.enemyIds.includes(crawler.id));
@@ -42,7 +42,7 @@ async function assertInterfaceStartsLocked() {
     fs.readFile("styles/touch-controls.css", "utf8"),
   ]);
   assert.match(markup, /data-game-hud[\s\S]*?data-combat-locked="true"/);
-  assert.equal((markup.match(/data-hud-combat/g) ?? []).length, 3);
+  assert.equal((markup.match(/data-hud-combat/g) ?? []).length, 2);
   assert.equal((markup.match(/data-combat-control/g) ?? []).length, 2);
   assert.match(hudCss, /data-combat-locked="true"/);
   assert.match(touchCss, /\.touch-control\[hidden\]/);
@@ -87,7 +87,7 @@ function assertCombatStartsLocked(runtime) {
 
 function unlockCombat(runtime) {
   runtime.events.emit(GAMEPLAY_EVENTS.PICKUP, {
-    type: "weapon", weaponId: "boltThrower", amount: 6,
+    type: "weapon", weaponId: "boltThrower", amount: 1,
   });
   runtime.pressed.add("attack");
 }

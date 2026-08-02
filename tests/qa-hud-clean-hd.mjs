@@ -15,6 +15,7 @@ const ICON_NAMES = Object.freeze([
   "weapon",
   "pause",
 ]);
+const VISIBLE_ICON_NAMES = ICON_NAMES.filter((name) => name !== "ammo");
 
 verifyFiles();
 verifyPng();
@@ -47,7 +48,7 @@ function verifyManifest() {
 
 function verifyMarkup() {
   const html = readAppMarkupSync();
-  ICON_NAMES.forEach((name) => {
+  VISIBLE_ICON_NAMES.forEach((name) => {
     assert.match(html, new RegExp(`data-hud-icon="${name}"[^>]+aria-hidden="true"`));
   });
   const hudStart = html.indexOf("data-game-hud");
@@ -64,8 +65,7 @@ function verifyStyles() {
     assert.match(styles, new RegExp(`data-hud-icon="${name}"`));
   });
   assert.match(styles, /--hud-edge: #eadbb8/);
-  assert.match(styles, /max-width: 1024px/);
-  assert.match(styles, /max-height: 600px/);
+  assert.match(styles, /@container game-shell \(max-width: 1066px\)/);
 }
 
 function verifyCredits() {

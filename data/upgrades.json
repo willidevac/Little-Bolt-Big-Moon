@@ -39,10 +39,10 @@
       "rarity": "common"
     },
     {
-      "id": "ammoCapacity",
-      "name": "Größeres Magazin",
-      "description": "Byte erhält 4 Bolzenplätze und einen Platz für Lichtbogen-Ladungen. Beide werden sofort gefüllt.",
-      "value": 4,
+      "id": "arcChargeCapacity",
+      "name": "Größerer Lichtbogenspeicher",
+      "description": "Byte erhält einen zusätzlichen Platz für Lichtbogen-Ladungen. Der neue Platz wird sofort gefüllt.",
+      "value": 1,
       "maxLevel": 5,
       "iconFrame": 2,
       "rarity": "rare"

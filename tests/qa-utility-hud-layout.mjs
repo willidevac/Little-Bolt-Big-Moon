@@ -22,13 +22,13 @@ assert.match(
   responsive,
   /@container game-shell \(max-width:\s*1066px\)/,
 );
-assert.match(responsive, /\.game-shell \.utility-buttons\s*{[\s\S]*?top:\s*max\(0\.35rem/);
+assert.match(responsive, /\.game-shell \.utility-buttons\s*{[\s\S]*?top:\s*0\.35rem/);
 assert.match(responsive, /grid-template-columns:\s*minmax\(0, 1fr\) auto/);
 assert.match(responsive, /\.hud-resources\s*{\s*grid-column:\s*1 \/ -1/);
 assert.match(responsive, /max-width:\s*1066px[\s\S]*?\.utility-button/);
 assert.match(
   responsive,
-  /data-screen-state="home"[\s\S]*?padding-top:\s*max\(3\.25rem/,
+  /data-screen-state="home"[\s\S]*?padding-top:\s*3\.25rem/,
 );
 assert.match(layout, /container-name:\s*game-shell/);
 assert.match(layout, /container-type:\s*inline-size/);

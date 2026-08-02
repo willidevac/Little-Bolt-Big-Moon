@@ -358,7 +358,7 @@
   line-height: 1;
 }
 
-@media (max-width: 1024px) and (max-height: 600px) and (orientation: landscape) {
+@container game-shell (max-width: 1066px) {
   .game-hud {
     gap: 0.3rem;
     padding: 0.35rem;

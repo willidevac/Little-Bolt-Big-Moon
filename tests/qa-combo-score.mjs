@@ -83,8 +83,7 @@ async function assertHudContract() {
   const status = await fs.readFile("classes/ui/status-bar.class.js", "utf8");
   assert.match(html, /data-hud-combo[\s\S]+aria-live="polite"/);
   assert.match(styles, /\.hud-combo/);
-  assert.match(styles, /max-width: 1024px/);
-  assert.match(styles, /max-height: 600px/);
+  assert.match(styles, /@container game-shell \(max-width: 1066px\)/);
   assert.match(status, /renderCombo\(data\.combo\)/);
   assert.ok(TRANSLATION_CATALOG.de["hud.comboStatus"]);
   assert.ok(TRANSLATION_CATALOG.en["hud.comboStatus"]);

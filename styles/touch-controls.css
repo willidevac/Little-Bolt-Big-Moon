@@ -9,6 +9,7 @@
   justify-content: space-between;
   padding: clamp(0.4rem, 2vw, 0.8rem);
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
 }
@@ -54,7 +55,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1024px) and (orientation: landscape) {
+@container game-shell (max-width: 1066px) {
   .touch-controls:not([hidden]) {
     display: flex;
   }
@@ -82,7 +83,7 @@
   }
 }
 
-@media (max-height: 360px) and (orientation: landscape) {
+@container game-shell (max-width: 640px) {
   .touch-control {
     width: 2.75rem;
     height: 2.75rem;

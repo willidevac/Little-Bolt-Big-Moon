@@ -126,7 +126,7 @@ function assertUpgradeContext(world) {
 function createDependencies(appliedPhases) {
   return {
     runStats: {
-      increaseMaximumEnergy() {}, increaseAmmoCapacity() {},
+      increaseMaximumEnergy() {},
       increaseArcChargeCapacity() {},
       applyCombatPhases: (ids) => appliedPhases.push(...ids),
     },
