@@ -1,4 +1,6 @@
 import { Enemy } from "./enemy.class.js";
+import { MoonWardenAttackController } from
+  "../../systems/moon-warden-attack-controller.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
 
 const VISUAL_CONFIG = Object.freeze({
@@ -56,7 +58,6 @@ const VISUAL_CONFIG = Object.freeze({
     }),
   }),
 });
-const ATTACK_PATTERNS = Object.freeze(["meleeAttack", "rangedAttack"]);
 const PHASES = Object.freeze([
   Object.freeze({
     minimumHealthRatio: 2 / 3,
@@ -74,19 +75,11 @@ const PHASES = Object.freeze([
     recoverySeconds: 0.85,
   }),
 ]);
-const RANGED_SPREAD_RADIANS = Object.freeze({
-  1: Object.freeze([0]),
-  2: Object.freeze([-0.1, 0.1]),
-  3: Object.freeze([-0.18, 0, 0.18]),
-});
-
 /**
  * Endboss mit wechselnden Schockwellen, Mondbolzen und drei Kampfphasen.
  */
 export class MoonWarden extends Enemy {
-  #attackEvents;
-  #pendingAttack;
-  #nextAttackIndex;
+  #attackController;
 
   /**
    * @param {Readonly<object>} enemyData
@@ -94,16 +87,14 @@ export class MoonWarden extends Enemy {
    */
   constructor(enemyData, config) {
     super(enemyData, VISUAL_CONFIG, config);
-    this.#validateBossConfig(config);
+    this.#validateMovementConfig(config);
     this.bossConfig = config;
     this.isBoss = true;
     this.bossName = enemyData.bossName ?? "Mondwächter";
     this.isFinalBoss = enemyData.isFinalBoss ?? true;
     this.isActive = false;
     this.phase = 1;
-    this.#attackEvents = [];
-    this.#pendingAttack = null;
-    this.#nextAttackIndex = 0;
+    this.#attackController = new MoonWardenAttackController(this.id, config);
   }
 
   /** Zeichnet vor jedem Angriff eine eindeutige, weltgebundene Warnung. */
@@ -113,15 +104,16 @@ export class MoonWarden extends Enemy {
   }
 
   #drawAttackTelegraph(context) {
-    if (!this.#pendingAttack) return;
-    const progress = 1 - this.#pendingAttack.secondsRemaining /
+    const pendingAttack = this.#attackController.getPendingSnapshot();
+    if (!pendingAttack) return;
+    const progress = 1 - pendingAttack.secondsRemaining /
       this.bossConfig.attackReleaseSeconds;
     context.save();
     context.globalAlpha = 0.45 + progress * 0.45;
     context.lineWidth = 4 + progress * 4;
-    if (this.#pendingAttack.pattern === "meleeAttack") {
+    if (pendingAttack.pattern === "meleeAttack") {
       this.#drawShockwaveWarning(context, progress);
-    } else this.#drawMoonBoltWarning(context);
+    } else this.#drawMoonBoltWarning(context, pendingAttack.target);
     context.restore();
   }
 
@@ -137,8 +129,7 @@ export class MoonWarden extends Enemy {
     context.stroke();
   }
 
-  #drawMoonBoltWarning(context) {
-    const target = this.#pendingAttack.target;
+  #drawMoonBoltWarning(context, target) {
     const origin = this.#getRangedOrigin(target);
     context.strokeStyle = "#65efff";
     context.setLineDash([12, 8]);
@@ -195,7 +186,7 @@ export class MoonWarden extends Enemy {
   receivePlayerHit(hit) {
     const accepted = super.receivePlayerHit(hit);
     if (!accepted) return false;
-    if (this.isDead) this.#pendingAttack = null;
+    if (this.isDead) this.#attackController.clear();
     this.#updatePhase();
     return true;
   }
@@ -205,9 +196,7 @@ export class MoonWarden extends Enemy {
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   takeAttackEvents() {
-    const events = Object.freeze([...this.#attackEvents]);
-    this.#attackEvents.length = 0;
-    return events;
+    return this.#attackController.takeEvents();
   }
 
   /** Aktiviert den Mondwächter erst in erreichbarer Nähe. */
@@ -233,68 +222,22 @@ export class MoonWarden extends Enemy {
   }
 
   #beginNextAttack(target) {
-    const pattern = ATTACK_PATTERNS[this.#nextAttackIndex];
+    const pattern = this.#attackController.nextPattern;
     if (!this.startAttackState(pattern)) return;
     this.velocityX = 0;
-    this.#pendingAttack = {
-      pattern,
-      target: this.#getCenter(target),
-      secondsRemaining: this.bossConfig.attackReleaseSeconds,
-    };
-    this.#nextAttackIndex = (this.#nextAttackIndex + 1) % ATTACK_PATTERNS.length;
+    this.#attackController.begin(this.#getCenter(target));
   }
 
   #updatePendingAttack(deltaTimeSeconds, target) {
-    if (!this.#pendingAttack || this.isHurt || this.isDead || !target) return;
-    this.#pendingAttack.secondsRemaining -= deltaTimeSeconds;
-    if (this.#pendingAttack.secondsRemaining > 0) return;
-    if (this.#pendingAttack.pattern === "meleeAttack") this.#releaseShockwaves();
-    else this.#releaseMoonBolts(this.#pendingAttack.target);
+    if (!this.#attackController.hasPendingAttack ||
+      this.isHurt || this.isDead || !target) return;
+    const pendingAttack = this.#attackController.getPendingSnapshot();
+    const rangedOrigin = this.#getRangedOrigin(pendingAttack.target);
+    const released = this.#attackController.update(
+      deltaTimeSeconds, this.phase, this.getCollisionBounds(), rangedOrigin,
+    );
+    if (!released) return;
     this.setAttackCooldown(this.#getPhase().recoverySeconds);
-    this.#pendingAttack = null;
-  }
-
-  #releaseShockwaves() {
-    const bounds = this.getCollisionBounds();
-    const originY = bounds.y + bounds.height;
-    this.#attackEvents.push(
-      this.#createEvent("shockwave", -1, 0, bounds.x, originY),
-      this.#createEvent("shockwave", 1, 0, bounds.x + bounds.width, originY),
-    );
-  }
-
-  #releaseMoonBolts(targetCenter) {
-    const origin = this.#getRangedOrigin(targetCenter);
-    const baseAngle = Math.atan2(
-      targetCenter.y - origin.y,
-      targetCenter.x - origin.x,
-    );
-    RANGED_SPREAD_RADIANS[this.phase].forEach((spread) => {
-      this.#releaseMoonBolt(origin, baseAngle + spread);
-    });
-  }
-
-  #releaseMoonBolt(origin, angle) {
-    this.#attackEvents.push(this.#createEvent(
-      "moonBolt",
-      Math.cos(angle),
-      Math.sin(angle),
-      origin.x,
-      origin.y,
-    ));
-  }
-
-  #createEvent(kind, directionX, directionY, originX, originY) {
-    const damage = kind === "shockwave"
-      ? this.bossConfig.shockwaveDamage
-      : this.bossConfig.moonBoltDamage;
-    return Object.freeze({
-      kind,
-      source: this.id,
-      damage,
-      origin: Object.freeze({ x: originX, y: originY }),
-      direction: Object.freeze({ x: directionX, y: directionY }),
-    });
   }
 
   #getRangedOrigin(targetCenter) {
@@ -333,14 +276,11 @@ export class MoonWarden extends Enemy {
     });
   }
 
-  #validateBossConfig(config) {
+  #validateMovementConfig(config) {
     const values = [
       config?.speedPixelsPerSecond,
       config?.activationDistancePixels,
       config?.movementStopDistancePixels,
-      config?.attackReleaseSeconds,
-      config?.shockwaveDamage,
-      config?.moonBoltDamage,
     ];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
     throw new TypeError("Die Mondwächter-Konfiguration ist unvollständig.");

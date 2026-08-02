@@ -13,7 +13,7 @@ Spiel/
 │   ├── core/                  Game, GameLoop, World, EntityRegistry, Camera
 │   ├── entities/              Charakter, Gegner, Waffen, Items
 │   ├── environment/           Plattformen und Hintergründe
-│   ├── systems/               Kampfzustände, Laufvorräte, Routen, Kollisionen, Score
+│   ├── systems/               Kampfzustände, Bossangriffe, Laufvorräte, Routen, Score
 │   ├── input/                 Tastatur und Touch
 │   └── ui/                    Canvas-Statusanzeigen
 ├── js/
