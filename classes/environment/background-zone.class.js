@@ -31,6 +31,23 @@ export class BackgroundZone {
     this.#drawLayers(context, camera, viewport, visible);
   }
 
+  /**
+   * Draws the complete panorama with an opacity for biome crossfades.
+   * @param {CanvasRenderingContext2D} context
+   * @param {{y:number}} camera
+   * @param {Readonly<{width:number, height:number}>} viewport
+   * @param {number} opacity
+   */
+  drawBlended(context, camera, viewport, opacity) {
+    if (!Number.isFinite(opacity) || opacity <= 0) return;
+    context.save();
+    context.globalAlpha = Math.min(opacity, 1);
+    this.layers.forEach((layer) => {
+      layer.drawForZone(context, this, camera, viewport);
+    });
+    context.restore();
+  }
+
   #getVisibleBounds(camera, viewport) {
     const visibleTop = Math.max(
       0,

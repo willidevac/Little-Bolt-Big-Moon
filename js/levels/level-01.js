@@ -18,6 +18,10 @@ import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js"
 import { PlatformRouteBuilder } from "../../classes/systems/platform-route-builder.class.js";
 import { EnvironmentArchitectureBuilder } from
   "../../classes/systems/environment-architecture-builder.class.js";
+import { BiomeTransitionArchitectureBuilder } from
+  "../../classes/systems/biome-transition-architecture-builder.class.js";
+import { ArchitectureAtlasLibrary } from
+  "../../classes/environment/architecture-atlas-library.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 import { STORY_PROP_CONFIGS } from "../config/story-prop-config.js";
 
@@ -116,10 +120,14 @@ function createLevelEntities(enemyConfig, platformData) {
 }
 
 function createStructures(platformData) {
-  return new EnvironmentArchitectureBuilder(levelData.width).build(
-    levelData.sections,
-    platformData,
-  );
+  const atlasLibrary = new ArchitectureAtlasLibrary();
+  const rooms = new EnvironmentArchitectureBuilder(
+    levelData.width, atlasLibrary,
+  ).build(levelData.sections, platformData);
+  const gates = new BiomeTransitionArchitectureBuilder(
+    levelData.width, atlasLibrary,
+  ).build(levelData.sections);
+  return Object.freeze([...rooms, ...gates]);
 }
 
 function createEnemies(enemyConfig) {

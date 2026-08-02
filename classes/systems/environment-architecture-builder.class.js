@@ -1,11 +1,7 @@
 import { EnvironmentStructure } from
   "../environment/environment-structure.class.js";
-import { StructureSpriteAtlas } from
-  "../environment/structure-sprite-atlas.class.js";
-import {
-  createArchitectureAtlasConfig,
-  getArchitectureFrames,
-} from "../../js/config/environment-architecture-config.js";
+import { ArchitectureAtlasLibrary } from
+  "../environment/architecture-atlas-library.class.js";
 import { getLandmarkLayout } from
   "../../js/config/environment-landmark-config.js";
 import { PLATFORM_WIDTHS } from "../../js/config/platform-route-rules.js";
@@ -30,13 +26,19 @@ const WALL_COLLIDER_WIDTH = 36;
 
 /** Builds varied architecture from the authored platform-room metadata. */
 export class EnvironmentArchitectureBuilder {
-  /** @param {number} worldWidth */
-  constructor(worldWidth) {
+  /**
+   * @param {number} worldWidth
+   * @param {ArchitectureAtlasLibrary} [atlasLibrary]
+   */
+  constructor(worldWidth, atlasLibrary = new ArchitectureAtlasLibrary()) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("The architecture builder needs a positive world width.");
     }
+    if (typeof atlasLibrary?.get !== "function") {
+      throw new TypeError("The architecture builder needs an atlas library.");
+    }
     this.worldWidth = worldWidth;
-    this.atlases = new Map();
+    this.atlasLibrary = atlasLibrary;
   }
 
   /**
@@ -374,15 +376,7 @@ export class EnvironmentArchitectureBuilder {
   }
 
   #getArchitecture(biomeId, variantId) {
-    const key = `${biomeId}-${variantId}`;
-    if (!this.atlases.has(key)) {
-      const config = createArchitectureAtlasConfig(biomeId, variantId);
-      this.atlases.set(key, Object.freeze({
-        atlas: new StructureSpriteAtlas(config),
-        frames: getArchitectureFrames(biomeId, variantId),
-      }));
-    }
-    return this.atlases.get(key);
+    return this.atlasLibrary.get(biomeId, variantId);
   }
 
   #validateCollections(sections, platforms) {

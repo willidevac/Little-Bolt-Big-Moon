@@ -1,13 +1,6 @@
 import { BackgroundZone } from "../environment/background-zone.class.js";
 
-const TRANSITION_HALF_HEIGHT_PIXELS = 96;
-const TRANSITION_STOPS = Object.freeze([
-  Object.freeze([0, "rgba(8, 13, 22, 0)"]),
-  Object.freeze([0.42, "rgba(8, 13, 22, 0.42)"]),
-  Object.freeze([0.5, "rgba(8, 13, 22, 0.72)"]),
-  Object.freeze([0.58, "rgba(8, 13, 22, 0.42)"]),
-  Object.freeze([1, "rgba(8, 13, 22, 0)"]),
-]);
+const TRANSITION_HALF_HEIGHT_PIXELS = 600;
 
 /**
  * Draws individual room panoramas and shared parallax zones.
@@ -32,42 +25,32 @@ export class BackgroundRenderer {
    * @param {{y:number}} camera
    */
   draw(context, camera) {
-    this.zones.forEach((zone) => {
-      zone.draw(context, camera, this.viewport);
-    });
-    this.#drawTransitions(context, camera);
+    const transition = this.#getActiveTransition(camera);
+    if (transition) return this.#drawTransition(context, camera, transition);
+    this.zones.forEach((zone) => zone.draw(context, camera, this.viewport));
   }
 
-  #drawTransitions(context, camera) {
-    this.zones.slice(0, -1).forEach((zone) => {
-      this.#drawTransition(context, zone.topY - camera.y);
-    });
+  #drawTransition(context, camera, transition) {
+    const { lowerZone, upperZone, progress } = transition;
+    lowerZone.drawBlended(context, camera, this.viewport, 1 - progress);
+    upperZone.drawBlended(context, camera, this.viewport, progress);
   }
 
-  #drawTransition(context, screenY) {
+  #getActiveTransition(camera) {
+    const centerY = camera.y + this.viewport.height / 2;
+    const lowerZone = this.zones.slice(0, -1).find((zone) => {
+      return Math.abs(centerY - zone.topY) < TRANSITION_HALF_HEIGHT_PIXELS;
+    });
+    if (!lowerZone) return null;
+    const upperZone = this.zones[this.zones.indexOf(lowerZone) + 1];
+    const progress = this.#getTransitionProgress(centerY, lowerZone.topY);
+    return Object.freeze({ lowerZone, upperZone, progress });
+  }
+
+  #getTransitionProgress(centerY, boundaryY) {
     const halfHeight = TRANSITION_HALF_HEIGHT_PIXELS;
-    if (!this.#isTransitionVisible(screenY, halfHeight)) return;
-    const gradient = context.createLinearGradient(
-      0, screenY - halfHeight, 0, screenY + halfHeight,
-    );
-    TRANSITION_STOPS.forEach(([offset, color]) => {
-      gradient.addColorStop(offset, color);
-    });
-    this.#fillTransition(context, gradient, screenY, halfHeight);
-  }
-
-  #fillTransition(context, gradient, screenY, halfHeight) {
-    context.save();
-    context.fillStyle = gradient;
-    context.fillRect(
-      0, screenY - halfHeight, this.viewport.width, halfHeight * 2,
-    );
-    context.restore();
-  }
-
-  #isTransitionVisible(screenY, halfHeight) {
-    return screenY + halfHeight > 0 &&
-      screenY - halfHeight < this.viewport.height;
+    const distanceFromLowerEdge = boundaryY + halfHeight - centerY;
+    return Math.min(Math.max(distanceFromLowerEdge / (halfHeight * 2), 0), 1);
   }
 
   #createSectionZones(sections) {
