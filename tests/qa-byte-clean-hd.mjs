@@ -39,7 +39,11 @@ function verifyRuntimeConfig() {
   assert.match(source, /getAssetPath\("characters", "byte-clean-hd\.png"\)/);
   assert.match(source, /frameWidth: 64,\s+frameHeight: 64/);
   assert.match(source, /const BYTE_RENDER_SCALE = 1;/);
-  assert.match(source, /offsetX: 12,\s+offsetY: 6,\s+width: 40,\s+height: 58/);
+  assert.match(source, /BYTE_GROUND_CONTACT_OFFSET_Y = 55/);
+  assert.match(source, new RegExp(
+    "offsetX: 12,\\s+offsetY: 6,\\s+width: 40,\\s+" +
+    "height: BYTE_GROUND_CONTACT_OFFSET_Y - 6",
+  ));
   assert.match(source, /offsetX: 16, offsetY: 50, width: 32, height: 14/);
 }
 

@@ -15,7 +15,7 @@
       "topY": 140000,
       "bottomY": 150000,
       "route": {
-        "floorX": 64,
+        "floorX": 0,
         "verticalGaps": [100, 104, 108, 104],
         "horizontalPositions": [160, 352, 544, 736, 928, 704, 480, 256, 128, 320, 512, 704, 896, 608, 320],
         "catchEvery": 7,
@@ -2324,7 +2324,7 @@
   },
   "platformTypes": {
     "floor": {
-      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
+      "tileFrames": [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
     },
     "path": {
       "tileFrames": [0, 2, 3]

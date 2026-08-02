@@ -1,5 +1,7 @@
 import { getAssetPath } from "./asset-paths.js";
 
+export const BYTE_GROUND_CONTACT_OFFSET_Y = 55;
+
 export const BYTE_SPRITE_CONFIG = Object.freeze({
   source: getAssetPath("characters", "byte-clean-hd.png"),
   frameWidth: 64,
@@ -11,7 +13,7 @@ export const BYTE_HURTBOX = Object.freeze({
   offsetX: 12,
   offsetY: 6,
   width: 40,
-  height: 58,
+  height: BYTE_GROUND_CONTACT_OFFSET_Y - 6,
 });
 export const BYTE_STOMP_BOX = Object.freeze({
   offsetX: 16, offsetY: 50, width: 32, height: 14,
