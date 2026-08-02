@@ -25,37 +25,37 @@
           {
             "id": "federprobe",
             "steps": [
-              { "x": 176, "gapY": 80, "type": "path" },
-              { "x": 320, "gapY": 96, "type": "narrow" },
-              { "x": 544, "gapY": 112, "type": "path" },
-              { "x": 768, "gapY": 128, "type": "narrow" },
-              { "x": 944, "gapY": 144, "type": "path" }
+              { "x": 64, "gapY": 80, "type": "catch" },
+              { "x": 160, "gapY": 96, "type": "narrow" },
+              { "x": 352, "gapY": 112, "type": "path" },
+              { "x": 608, "gapY": 128, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "catch" }
             ]
           },
           {
             "id": "erste-kante",
             "steps": [
-              { "x": 768, "gapY": 120, "type": "path" },
-              { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 352, "gapY": 136, "type": "path" },
-              { "x": 512, "gapY": 144, "type": "path" },
-              { "x": 736, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 120, "type": "catch" },
+              { "x": 1024, "gapY": 128, "type": "path" },
+              { "x": 832, "gapY": 136, "type": "path" },
+              { "x": 704, "gapY": 144, "type": "path" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ],
             "shortcut": [
               {
                 "stepIndex": 1,
-                "x": 864,
+                "x": 640,
                 "type": "narrow"
               },
               {
                 "stepIndex": 2,
-                "x": 736,
+                "x": 448,
                 "type": "narrow",
                 "rewardId": "scrapyard-gear-01"
               },
               {
                 "stepIndex": 3,
-                "x": 736,
+                "x": 512,
                 "type": "narrow"
               }
             ]
@@ -63,121 +63,121 @@
           {
             "id": "schrott-zickzack",
             "steps": [
-              { "x": 928, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 448, "gapY": 140, "type": "path" },
-              { "x": 192, "gapY": 148, "type": "narrow" },
-              { "x": 416, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 124, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 288, "gapY": 140, "type": "path" },
+              { "x": 608, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "pressenweg",
             "steps": [
-              { "x": 640, "gapY": 128, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 672, "gapY": 144, "type": "path" },
-              { "x": 416, "gapY": 152, "type": "narrow" },
-              { "x": 160, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "kranarme",
             "steps": [
-              { "x": 384, "gapY": 112, "type": "path" },
-              { "x": 544, "gapY": 128, "type": "narrow" },
-              { "x": 864, "gapY": 136, "type": "path" },
-              { "x": 672, "gapY": 144, "type": "narrow" },
-              { "x": 448, "gapY": 160, "type": "path" }
+              { "x": 320, "gapY": 112, "type": "catch" },
+              { "x": 64, "gapY": 128, "type": "narrow" },
+              { "x": 192, "gapY": 136, "type": "path" },
+              { "x": 512, "gapY": 144, "type": "narrow" },
+              { "x": 512, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "rostschlucht",
             "steps": [
-              { "x": 224, "gapY": 136, "type": "path" },
-              { "x": 384, "gapY": 140, "type": "narrow" },
-              { "x": 704, "gapY": 144, "type": "path" },
-              { "x": 960, "gapY": 148, "type": "narrow" },
-              { "x": 704, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 136, "type": "catch" },
+              { "x": 64, "gapY": 140, "type": "narrow" },
+              { "x": 288, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "halbe-hohe",
             "steps": [
-              { "x": 480, "gapY": 120, "type": "path" },
-              { "x": 384, "gapY": 136, "type": "narrow" },
-              { "x": 512, "gapY": 140, "type": "path" },
-              { "x": 768, "gapY": 144, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "catch" }
+              { "x": 704, "gapY": 120, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 140, "type": "path" },
+              { "x": 576, "gapY": 144, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "schmale-zahne",
             "steps": [
-              { "x": 832, "gapY": 128, "type": "path" },
-              { "x": 736, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "path" },
-              { "x": 128, "gapY": 152, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 704, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "magnetbogen",
             "steps": [
-              { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 672, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 160, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 960, "gapY": 136, "type": "narrow" },
+              { "x": 768, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "gegenlauf",
             "steps": [
-              { "x": 384, "gapY": 128, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 768, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "kippende-linie",
             "steps": [
-              { "x": 128, "gapY": 124, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 140, "type": "path" },
+              { "x": 576, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "schornstein",
             "steps": [
-              { "x": 864, "gapY": 128, "type": "path" },
-              { "x": 768, "gapY": 136, "type": "narrow" },
-              { "x": 384, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
-              { "x": 416, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 64, "gapY": 144, "type": "path" },
+              { "x": 288, "gapY": 152, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "letzter-schrott",
             "steps": [
-              { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
+              { "x": 320, "gapY": 124, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
               { "x": 704, "gapY": 140, "type": "path" },
-              { "x": 448, "gapY": 148, "type": "narrow" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 1088, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "tor-zum-presswerk",
             "steps": [
-              { "x": 416, "gapY": 96, "type": "path" },
-              { "x": 576, "gapY": 112, "type": "narrow" },
-              { "x": 864, "gapY": 120, "type": "path" },
-              { "x": 608, "gapY": 128, "type": "narrow" },
-              { "x": 352, "gapY": 144, "type": "path" }
+              { "x": 704, "gapY": 96, "type": "catch" },
+              { "x": 1088, "gapY": 112, "type": "narrow" },
+              { "x": 768, "gapY": 120, "type": "path" },
+              { "x": 448, "gapY": 128, "type": "narrow" },
+              { "x": 64, "gapY": 144, "type": "catch" }
             ]
           }
         ]
@@ -2591,7 +2591,7 @@
   "enemies": [
     {
       "id": "scrapyard-patrol-crawler-01", "type": "scrapCrawler",
-      "x": 400, "y": 142876, "patrolMinX": 352, "patrolMaxX": 544
+      "x": 800, "y": 142876, "patrolMinX": 736, "patrolMaxX": 1120
     },
     {
       "id": "scrapyard-patrol-drone-01", "type": "droneGuard",
@@ -3072,7 +3072,7 @@
       "id": "scrapyard-spikes-01",
       "type": "retractableSpikes",
       "damage": 15,
-      "x": 832,
+      "x": 288,
       "phaseOffsetSeconds": 0.45,
       "anchorPlatformId": "scrapyard-machine-graveyard-rostschlucht-6-3"
     },
@@ -3252,7 +3252,7 @@
       "id": "scrapyard-gear-01",
       "type": "gear",
       "amount": 1,
-      "x": 768,
+      "x": 480,
       "y": 148832,
       "anchorPlatformId": "scrapyard-machine-graveyard-erste-kante-shortcut-2"
     },
@@ -3260,7 +3260,7 @@
       "id": "scrapyard-gear-02",
       "type": "gear",
       "amount": 1,
-      "x": 480,
+      "x": 768,
       "y": 147836,
       "anchorPlatformId": "scrapyard-machine-graveyard-schrott-zickzack-3-5"
     },
@@ -3277,7 +3277,7 @@
       "type": "weapon",
       "weaponId": "boltThrower",
       "amount": 1,
-      "x": 800,
+      "x": 256,
       "y": 148412,
       "anchorPlatformId": "scrapyard-machine-graveyard-schrott-zickzack-3-1"
     },
@@ -3471,7 +3471,7 @@
       "type": "storyBadge",
       "badgePart": "left",
       "amount": 1,
-      "x": 768,
+      "x": 544,
       "y": 148688,
       "anchorPlatformId": "scrapyard-machine-graveyard-erste-kante-shortcut-3"
     },
