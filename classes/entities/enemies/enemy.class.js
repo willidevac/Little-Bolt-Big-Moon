@@ -1,6 +1,7 @@
 import { MovableObject } from "../../base/movable-object.class.js";
 import { AnimationController } from "../../systems/animation-controller.class.js";
 import { EnemyCombatState } from "../../systems/enemy-combat-state.class.js";
+import { getGroundedSpriteY } from "../../effects/grounded-sprite-position.js";
 
 /**
  * Shared rendering, patrol, and coordination for regular enemies.
@@ -67,9 +68,16 @@ export class Enemy extends MovableObject {
    */
   draw(context) {
     context.save();
+    this.#applyGroundOffset(context);
     this.#applyEliteGlow(context);
     this.#drawFacingDirection(context);
     context.restore();
+  }
+
+  #applyGroundOffset(context) {
+    if (!this.groundOffsets) return;
+    const drawY = getGroundedSpriteY(this, this.groundOffsets);
+    context.translate(0, drawY - this.y);
   }
 
   #drawFacingDirection(context) {
@@ -208,6 +216,19 @@ export class Enemy extends MovableObject {
     }
     this.width = config.sprite.frameWidth * config.renderScale;
     this.height = config.sprite.frameHeight * config.renderScale;
+    this.groundOffsets = this.#getGroundOffsets(config);
+  }
+
+  #getGroundOffsets(config) {
+    if (config.groundOffsets === undefined) return null;
+    const offsets = config.groundOffsets;
+    const hasEveryFrame = Array.isArray(offsets) &&
+      offsets.length === config.sprite.frameCount;
+    const hasValidValues = hasEveryFrame && offsets.every((offset) => {
+      return Number.isFinite(offset) && offset >= 0;
+    });
+    if (hasValidValues) return offsets;
+    throw new TypeError("Die BodenabstÃ¤nde der Gegnerdarstellung sind ungÃ¼ltig.");
   }
 
   #setEnemyData(data) {

@@ -148,6 +148,7 @@ export class ScreenController {
    * @param {boolean} [moveFocus=true]
    */
   render(state, moveFocus = true) {
+    this.root.dataset.screenState = state;
     this.#setScreenVisibility(state);
     if (state === GAME_STATES.UPGRADING) this.#renderUpgradeOptions();
     if (this.#hasVisibleScreen()) {

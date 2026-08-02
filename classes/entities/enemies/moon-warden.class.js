@@ -2,6 +2,7 @@ import { Enemy } from "./enemy.class.js";
 import { MoonWardenAttackController } from
   "../../systems/moon-warden-attack-controller.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
+import { MOON_WARDEN_GROUND_OFFSETS } from "./enemy-ground-offsets.js";
 
 const VISUAL_CONFIG = Object.freeze({
   sprite: Object.freeze({
@@ -11,6 +12,7 @@ const VISUAL_CONFIG = Object.freeze({
     frameCount: 26,
   }),
   renderScale: 1,
+  groundOffsets: MOON_WARDEN_GROUND_OFFSETS,
   collisionBox: Object.freeze({
     offsetX: 24,
     offsetY: 16,
@@ -66,12 +68,12 @@ const PHASES = Object.freeze([
   }),
   Object.freeze({
     minimumHealthRatio: 1 / 3,
-    speedMultiplier: 1.25,
+    speedMultiplier: 1.35,
     recoverySeconds: 1.1,
   }),
   Object.freeze({
     minimumHealthRatio: 0,
-    speedMultiplier: 1.5,
+    speedMultiplier: 1.7,
     recoverySeconds: 0.85,
   }),
 ]);
@@ -101,6 +103,15 @@ export class MoonWarden extends Enemy {
   draw(context) {
     this.#drawAttackTelegraph(context);
     super.draw(context);
+  }
+
+  /** Starts every boss fight with a short visible pursuit instead of an attack. */
+  activateBoss() {
+    const activated = super.activateBoss();
+    if (activated) {
+      this.setAttackCooldown(this.bossConfig.initialPursuitSeconds);
+    }
+    return activated;
   }
 
   #drawAttackTelegraph(context) {
@@ -150,16 +161,14 @@ export class MoonWarden extends Enemy {
     this.#tryActivate(target);
     this.#updatePhase();
     if (!this.#canAct(deltaTimeSeconds, target)) return;
-    if (this.attackCooldownSecondsRemaining > 0) return this.#recover(deltaTimeSeconds, world);
+    if (this.attackCooldownSecondsRemaining > 0) {
+      return this.#pursueDuringRecovery(deltaTimeSeconds, world);
+    }
     if (this.#tryBeginAttack(target)) return;
-    this.#moveToward(target);
-    super.update(deltaTimeSeconds, world);
-    this.stayInsidePatrol();
-    this.updateAnimation(deltaTimeSeconds);
   }
 
-  #recover(deltaTimeSeconds, world) {
-    this.velocityX = 0;
+  #pursueDuringRecovery(deltaTimeSeconds, world) {
+    this.#moveToward(world.character);
     super.update(deltaTimeSeconds, world);
     this.stayInsidePatrol();
     this.updateAnimation(deltaTimeSeconds);
@@ -281,6 +290,7 @@ export class MoonWarden extends Enemy {
       config?.speedPixelsPerSecond,
       config?.activationDistancePixels,
       config?.movementStopDistancePixels,
+      config?.initialPursuitSeconds,
     ];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
     throw new TypeError("Die Mondwächter-Konfiguration ist unvollständig.");

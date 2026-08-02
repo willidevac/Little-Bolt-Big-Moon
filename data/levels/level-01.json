@@ -3011,8 +3011,8 @@
       "isFinalBoss": true,
       "x": 640,
       "y": 600,
-      "patrolMinX": 384,
-      "patrolMaxX": 896,
+      "patrolMinX": 64,
+      "patrolMaxX": 1216,
       "startDirection": -1
     }
   ],

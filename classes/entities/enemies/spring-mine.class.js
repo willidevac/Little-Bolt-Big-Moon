@@ -1,5 +1,6 @@
 import { Enemy } from "./enemy.class.js";
 import { getAssetPath } from "../../../js/config/asset-paths.js";
+import { SCRAP_CRAWLER_GROUND_OFFSETS } from "./enemy-ground-offsets.js";
 
 const FULL_CIRCLE_RADIANS = Math.PI * 2;
 const MOVEMENT_PHASES = Object.freeze({
@@ -15,6 +16,7 @@ const VISUAL_CONFIG = Object.freeze({
     frameCount: 13,
   }),
   renderScale: 1,
+  groundOffsets: SCRAP_CRAWLER_GROUND_OFFSETS,
   collisionBox: Object.freeze({
     offsetX: 12,
     offsetY: 16,

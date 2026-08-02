@@ -4,6 +4,11 @@ import fs from "node:fs/promises";
 const screens = await fs.readFile("styles/screens.css", "utf8");
 const hud = await fs.readFile("styles/hud.css", "utf8");
 const responsive = await fs.readFile("styles/responsive.css", "utf8");
+const layout = await fs.readFile("styles/layout.css", "utf8");
+const screenController = await fs.readFile(
+  "classes/ui/screen-controller.class.js", "utf8",
+);
+const index = await fs.readFile("index.html", "utf8");
 
 assert.match(screens, /\.utility-buttons\s*{[\s\S]*?position:\s*absolute/);
 assert.match(
@@ -15,15 +20,23 @@ assert.match(hud, /\.hud-combo\[hidden\]\s*{\s*display:\s*none/);
 assert.match(hud, /\.hud-energy\s*{[\s\S]*?align-self:\s*start/);
 assert.match(
   responsive,
-  /max-width:\s*1024px[\s\S]*?max-height:\s*600px/,
+  /@container game-shell \(max-width:\s*1066px\)/,
 );
 assert.match(responsive, /\.game-shell \.utility-buttons\s*{[\s\S]*?top:\s*max\(0\.35rem/);
 assert.match(responsive, /grid-template-columns:\s*minmax\(0, 1fr\) auto/);
 assert.match(responsive, /\.hud-resources\s*{\s*grid-column:\s*1 \/ -1/);
-assert.match(responsive, /max-height:\s*600px[\s\S]*?\.utility-button/);
+assert.match(responsive, /max-width:\s*1066px[\s\S]*?\.utility-button/);
 assert.match(
   responsive,
-  /max-width:\s*1024px[\s\S]*?\.game-shell \.utility-buttons/,
+  /data-screen-state="home"[\s\S]*?padding-top:\s*max\(3\.25rem/,
+);
+assert.match(layout, /container-name:\s*game-shell/);
+assert.match(layout, /container-type:\s*inline-size/);
+assert.match(screenController, /dataset\.screenState\s*=\s*state/);
+assert.match(index, /data-screen-state="home"/);
+assert.match(
+  responsive,
+  /start-screen__menu[\s\S]*?max-height:\s*100%[\s\S]*?overflow-y:\s*auto/,
 );
 assert.match(responsive, /\.fullscreen-button::before[\s\S]*?content:\s*"⛶"/);
 
