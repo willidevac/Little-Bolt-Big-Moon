@@ -708,121 +708,121 @@
           {
             "id": "schmelzwerk-einlass",
             "steps": [
-              { "x": 224, "gapY": 152, "type": "path" },
-              { "x": 384, "gapY": 156, "type": "falling" },
-              { "x": 672, "gapY": 164, "type": "path" },
-              { "x": 896, "gapY": 172, "type": "falling" },
-              { "x": 672, "gapY": 176, "type": "path" }
+              { "x": 320, "gapY": 152, "type": "catch" },
+              { "x": 512, "gapY": 156, "type": "falling" },
+              { "x": 704, "gapY": 164, "type": "path" },
+              { "x": 1024, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "glutpendel",
             "steps": [
-              { "x": 448, "gapY": 156, "type": "path" },
-              { "x": 352, "gapY": 164, "type": "falling" },
-              { "x": 480, "gapY": 172, "type": "path" },
-              { "x": 736, "gapY": 176, "type": "falling" },
-              { "x": 960, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 156, "type": "catch" },
+              { "x": 1024, "gapY": 164, "type": "falling" },
+              { "x": 768, "gapY": 172, "type": "path" },
+              { "x": 448, "gapY": 176, "type": "falling" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "schlackezickzack",
             "steps": [
-              { "x": 704, "gapY": 164, "type": "path" },
-              { "x": 608, "gapY": 172, "type": "falling" },
-              { "x": 224, "gapY": 176, "type": "path" },
-              { "x": 416, "gapY": 152, "type": "falling" },
-              { "x": 672, "gapY": 156, "type": "path" }
+              { "x": 64, "gapY": 164, "type": "catch" },
+              { "x": 64, "gapY": 172, "type": "falling" },
+              { "x": 352, "gapY": 176, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 156, "type": "catch" }
             ]
           },
           {
             "id": "ofenwende",
             "steps": [
-              { "x": 896, "gapY": 172, "type": "path" },
-              { "x": 736, "gapY": 176, "type": "falling" },
-              { "x": 384, "gapY": 152, "type": "path" },
-              { "x": 160, "gapY": 156, "type": "falling" },
-              { "x": 416, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 172, "type": "catch" },
+              { "x": 1024, "gapY": 176, "type": "falling" },
+              { "x": 832, "gapY": 152, "type": "path" },
+              { "x": 576, "gapY": 156, "type": "falling" },
+              { "x": 64, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "hitzebogen",
             "steps": [
-              { "x": 672, "gapY": 176, "type": "path" },
-              { "x": 832, "gapY": 152, "type": "falling" },
-              { "x": 704, "gapY": 156, "type": "path" },
-              { "x": 448, "gapY": 164, "type": "falling" },
-              { "x": 192, "gapY": 172, "type": "path" }
+              { "x": 64, "gapY": 176, "type": "catch" },
+              { "x": 64, "gapY": 152, "type": "falling" },
+              { "x": 64, "gapY": 156, "type": "path" },
+              { "x": 288, "gapY": 164, "type": "falling" },
+              { "x": 320, "gapY": 172, "type": "catch" }
             ]
           },
           {
             "id": "giessrinne",
             "steps": [
-              { "x": 416, "gapY": 152, "type": "path" },
-              { "x": 576, "gapY": 164, "type": "falling" },
-              { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 608, "gapY": 156, "type": "falling" },
-              { "x": 352, "gapY": 172, "type": "path" }
+              { "x": 320, "gapY": 152, "type": "catch" },
+              { "x": 512, "gapY": 164, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 1024, "gapY": 156, "type": "path" },
+              { "x": 704, "gapY": 172, "type": "catch" }
             ]
           },
           {
             "id": "kuehlbruch",
             "steps": [
-              { "x": 128, "gapY": 156, "type": "path" },
-              { "x": 288, "gapY": 172, "type": "falling" },
-              { "x": 576, "gapY": 152, "type": "path" },
-              { "x": 832, "gapY": 176, "type": "falling" },
-              { "x": 608, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 156, "type": "catch" },
+              { "x": 1024, "gapY": 172, "type": "falling" },
+              { "x": 768, "gapY": 152, "type": "path" },
+              { "x": 448, "gapY": 176, "type": "falling" },
+              { "x": 64, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "ofenrachen",
             "steps": [
-              { "x": 864, "gapY": 164, "type": "path" },
-              { "x": 704, "gapY": 176, "type": "falling" },
-              { "x": 384, "gapY": 156, "type": "path" },
-              { "x": 160, "gapY": 172, "type": "falling" },
-              { "x": 416, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 164, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "falling" },
+              { "x": 352, "gapY": 156, "type": "path" },
+              { "x": 608, "gapY": 172, "type": "falling" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "schlackekreuz",
             "steps": [
-              { "x": 672, "gapY": 172, "type": "path" },
-              { "x": 832, "gapY": 156, "type": "falling" },
-              { "x": 704, "gapY": 176, "type": "path" },
-              { "x": 448, "gapY": 152, "type": "falling" },
-              { "x": 192, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 172, "type": "catch" },
+              { "x": 1024, "gapY": 156, "type": "falling" },
+              { "x": 768, "gapY": 176, "type": "path" },
+              { "x": 512, "gapY": 152, "type": "falling" },
+              { "x": 320, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "gluttakt",
             "steps": [
-              { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 576, "gapY": 152, "type": "falling" },
-              { "x": 864, "gapY": 164, "type": "path" },
-              { "x": 608, "gapY": 172, "type": "falling" },
-              { "x": 352, "gapY": 156, "type": "path" }
+              { "x": 320, "gapY": 176, "type": "catch" },
+              { "x": 320, "gapY": 152, "type": "falling" },
+              { "x": 128, "gapY": 164, "type": "path" },
+              { "x": 64, "gapY": 172, "type": "falling" },
+              { "x": 64, "gapY": 156, "type": "catch" }
             ]
           },
           {
             "id": "hochofenkranz",
             "steps": [
-              { "x": 128, "gapY": 152, "type": "path" },
-              { "x": 288, "gapY": 176, "type": "falling" },
-              { "x": 576, "gapY": 172, "type": "path" },
-              { "x": 832, "gapY": 164, "type": "falling" },
-              { "x": 608, "gapY": 156, "type": "path" }
+              { "x": 64, "gapY": 152, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "falling" },
+              { "x": 352, "gapY": 172, "type": "path" },
+              { "x": 608, "gapY": 164, "type": "falling" },
+              { "x": 704, "gapY": 156, "type": "catch" }
             ]
           },
           {
             "id": "tor-zum-energiekern",
             "steps": [
-              { "x": 864, "gapY": 156, "type": "path" },
-              { "x": 704, "gapY": 172, "type": "falling" },
-              { "x": 384, "gapY": 152, "type": "path" },
-              { "x": 160, "gapY": 176, "type": "falling" },
-              { "x": 416, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 156, "type": "catch" },
+              { "x": 1024, "gapY": 172, "type": "falling" },
+              { "x": 768, "gapY": 152, "type": "path" },
+              { "x": 512, "gapY": 176, "type": "falling" },
+              { "x": 320, "gapY": 164, "type": "catch" }
             ]
           }
         ]
@@ -2615,7 +2615,7 @@
     },
     {
       "id": "factory-patrol-crawler-01", "type": "scrapCrawler",
-      "x": 496, "y": 109024, "patrolMinX": 448, "patrolMaxX": 640
+      "x": 800, "y": 108688, "patrolMinX": 768, "patrolMaxX": 960
     },
     {
       "id": "factory-patrol-drone-01", "type": "droneGuard",
@@ -2772,10 +2772,10 @@
       "id": "factory-elite-crawler-01",
       "type": "scrapCrawler",
       "isElite": true,
-      "x": 384,
-      "y": 105080,
-      "patrolMinX": 352,
-      "patrolMaxX": 544,
+      "x": 1056,
+      "y": 105252,
+      "patrolMinX": 1024,
+      "patrolMaxX": 1216,
       "combat": {
         "speedPixelsPerSecond": 85,
         "maximumHealth": 95,
@@ -3117,7 +3117,7 @@
       "id": "smelter-spikes-01",
       "type": "retractableSpikes",
       "damage": 15,
-      "x": 224,
+      "x": 352,
       "phaseOffsetSeconds": 0.9,
       "anchorPlatformId": "factory-smelter-schlackezickzack-3-3"
     },
@@ -3125,7 +3125,7 @@
       "id": "smelter-pulse-gate-01",
       "type": "pulseGate",
       "damage": 25,
-      "x": 992,
+      "x": 128,
       "phaseOffsetSeconds": 1.1,
       "anchorPlatformId": "factory-smelter-gluttakt-10-3"
     },

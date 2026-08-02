@@ -6,18 +6,18 @@ import { verifyRoomLayout } from "./helpers/room-layout-qa.mjs";
 const level = JSON.parse(
   await readFile(new URL("../data/levels/level-01.json", import.meta.url), "utf8"),
 );
-const section = level.sections.find(({ id }) => id === "factory-assembly");
+const section = level.sections.find(({ id }) => id === "factory-smelter");
 const rooms = section.route.rooms;
 const route = new PlatformRouteBuilder(level.width).build(level.sections);
-const platforms = route.filter(({ id }) => id.startsWith("factory-assembly-"));
+const platforms = route.filter(({ id }) => id.startsWith("factory-smelter-"));
 
 verifyRoomLayout({
   worldWidth: level.width,
   rooms,
   platforms,
-  expectedRoomCount: 14,
-  minimumBothWalls: 8,
-  challenge: Object.freeze({ type: "falling", count: 29 }),
+  expectedRoomCount: 12,
+  minimumBothWalls: 6,
+  challenge: Object.freeze({ type: "falling", count: 23 }),
 });
 
-console.log("MAP-003: Die Montagehalle besteht aus 14 Maschinenr\u00e4umen.");
+console.log("MAP-004: Das Schmelzwerk besteht aus 12 Ofenkammern.");
