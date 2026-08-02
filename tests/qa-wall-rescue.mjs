@@ -11,7 +11,9 @@ const level = JSON.parse(
   await readFile(new URL("../data/levels/level-01.json", import.meta.url), "utf8"),
 );
 const route = new PlatformRouteBuilder(level.width).build(level.sections);
-const catches = route.filter(({ type }) => type === "catch")
+const rescuePlatforms = route.filter(({ type }) => {
+  return type === "catch" || type === "transition";
+})
   .sort((first, second) => second.y - first.y);
 
 assertRegularRescues();
@@ -21,17 +23,18 @@ assertRiskPlatformsRemainUntouched();
 console.log("FB-004: Wandrettung und verteilte Auffangplattformen bestanden.");
 
 function assertRegularRescues() {
-  const heights = [level.height, ...catches.map(({ y }) => y), 0];
+  const heights = [level.height, ...rescuePlatforms.map(({ y }) => y), 0];
   const gaps = heights.slice(1).map((height, index) => heights[index] - height);
-  assert.ok(catches.length >= 90);
+  assert.ok(rescuePlatforms.length >= 90);
   assert.ok(Math.max(...gaps) <= MAXIMUM_RESCUE_GAP_Y);
-  assert.ok(getBiomeCatchCounts().every((count) => count >= 10));
+  assert.ok(getBiomeRescueCounts().every((count) => count >= 10));
 }
 
 function assertRescuesStayInsideWorld() {
-  catches.forEach(({ x }) => {
-    assert.ok(x >= SIDE_PADDING);
-    assert.ok(x + PLATFORM_WIDTHS.catch <= level.width - SIDE_PADDING);
+  rescuePlatforms.forEach(({ x, type }) => {
+    const padding = type === "transition" ? 0 : SIDE_PADDING;
+    assert.ok(x >= padding);
+    assert.ok(x + PLATFORM_WIDTHS[type] <= level.width - padding);
   });
 }
 
@@ -46,10 +49,12 @@ function assertRiskPlatformsRemainUntouched() {
   });
 }
 
-function getBiomeCatchCounts() {
+function getBiomeRescueCounts() {
   const biomes = new Set(level.sections.map(({ tileset }) => tileset));
   return [...biomes].map((tileset) => {
-    return catches.filter((platform) => platform.tileset === tileset).length;
+    return rescuePlatforms.filter((platform) => {
+      return platform.tileset === tileset;
+    }).length;
   });
 }
 

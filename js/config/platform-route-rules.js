@@ -11,6 +11,7 @@ export const FALLING_PLATFORM_DROP_PIXELS = 900;
 export const FALLING_PLATFORM_RESPAWN_SECONDS = 3;
 export const PLATFORM_WIDTHS = Object.freeze({
   floor: 1280,
+  transition: 1280,
   path: 192,
   narrow: 128,
   moving: 192,

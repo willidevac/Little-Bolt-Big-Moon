@@ -64,15 +64,22 @@ function getHorizontalSteps(section) {
   });
 }
 
-levelData.sections.slice(0, -1).forEach((section) => {
+levelData.sections.slice(0, -1).forEach(assertSectionBoundary);
+
+function assertSectionBoundary(section) {
+  const sectionIndex = levelData.sections.indexOf(section);
+  const nextSection = levelData.sections[sectionIndex + 1];
   const boundaryPlatforms = mainRoute.filter((platform) => {
     return Math.abs(platform.y - section.topY) <= 128;
   });
-  const catchPlatforms = boundaryPlatforms.filter((platform) => {
-    return platform.type === "catch" && !platform.roomId;
+  const stablePlatforms = boundaryPlatforms.filter((platform) => {
+    return ["catch", "transition"].includes(platform.type) && !platform.roomId;
   });
-  assert.equal(catchPlatforms.length, 1);
-});
+  assert.equal(stablePlatforms.length, 1);
+  const expectedType = section.tileset === nextSection.tileset
+    ? "catch" : "transition";
+  assert.equal(stablePlatforms[0].type, expectedType);
+}
 
 const completeRoute = [...mainRoute].sort((first, second) => second.y - first.y);
 const completeGaps = completeRoute.slice(1).map((platform, index) => {
@@ -82,6 +89,7 @@ assert.ok(completeGaps.every((gap) => gap >= 64 && gap <= 180));
 
 const platformWidths = {
   floor: levelData.platformTypes.floor.tileFrames.length * 64,
+  transition: levelData.platformTypes.transition.tileFrames.length * 64,
   path: levelData.platformTypes.path.tileFrames.length * 64,
   narrow: levelData.platformTypes.narrow.tileFrames.length * 64,
   moving: levelData.platformTypes.moving.tileFrames.length * 64,

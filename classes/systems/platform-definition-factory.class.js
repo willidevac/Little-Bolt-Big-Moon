@@ -33,7 +33,9 @@ export class PlatformDefinitionFactory {
     const type = this.#getPlatformType(route, routeIndex, flags);
     const plannedX = this.#getPlannedX(route, routeIndex, type, options);
     const x = this.#getReachableX(plannedX, type, options.previousPlatform);
-    const platform = this.#createPlatformData(section, routeIndex, type, x, y);
+    const platform = this.#createPlatformData(
+      section, routeIndex, type, x, y, options.idType,
+    );
     this.#addPlatformBehavior(platform, route);
     return Object.freeze(platform);
   }
@@ -96,9 +98,11 @@ export class PlatformDefinitionFactory {
    * @returns {Readonly<object>}
    */
   createBoundary(section, routeIndex, y, previousPlatform, nextSection) {
-    const forcedX = this.#getBoundaryX(previousPlatform, nextSection);
+    const isTransition = this.#isBiomeTransition(section, nextSection);
+    const type = isTransition ? "transition" : "catch";
+    const forcedX = this.#getBoundaryX(previousPlatform, nextSection, type);
     return this.create(section, routeIndex, y, {
-      isEdge: true, forcedX, previousPlatform,
+      isEdge: true, isTransition, forcedX, previousPlatform, idType: "catch",
     });
   }
 
@@ -153,7 +157,8 @@ export class PlatformDefinitionFactory {
     return 0;
   }
 
-  #getBoundaryX(previousPlatform, nextSection) {
+  #getBoundaryX(previousPlatform, nextSection, type) {
+    if (type === "transition") return 0;
     const previousCenterX = this.#getPlatformCenterX(previousPlatform);
     const nextCenterX = nextSection
       ? nextSection.route.horizontalPositions[0] + PLATFORM_WIDTHS.path / 2
@@ -166,15 +171,21 @@ export class PlatformDefinitionFactory {
     );
   }
 
+  #isBiomeTransition(section, nextSection) {
+    return Boolean(nextSection && section.tileset !== nextSection.tileset);
+  }
+
   #getPlatformFlags(route, routeIndex, options) {
     return {
       isFloor: options.isFloor ?? false,
+      isTransition: options.isTransition ?? false,
       isCatch: (options.isEdge ?? false) || routeIndex % route.catchEvery === 0,
     };
   }
 
   #getPlatformType(route, routeIndex, flags) {
     if (flags.isFloor) return "floor";
+    if (flags.isTransition) return "transition";
     if (flags.isCatch) return "catch";
     if (this.#matchesFrequency(route.movingEvery, routeIndex)) return "moving";
     if (this.#matchesFrequency(route.narrowEvery, routeIndex)) return "narrow";
@@ -199,9 +210,9 @@ export class PlatformDefinitionFactory {
     return this.#clamp(plannedX, minimumX, maximumX);
   }
 
-  #createPlatformData(section, routeIndex, type, x, y) {
+  #createPlatformData(section, routeIndex, type, x, y, idType = type) {
     return {
-      id: `${section.id}-${type}-${String(routeIndex).padStart(3, "0")}`,
+      id: `${section.id}-${idType}-${String(routeIndex).padStart(3, "0")}`,
       x, y, type, tileset: section.tileset,
     };
   }

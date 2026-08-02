@@ -37,16 +37,26 @@ function assertAuthoredBehaviors() {
 }
 
 function assertBoundaryAndReachability() {
+  const { boundary, transition } = createBoundaries();
+  assert.equal(boundary.type, "catch");
+  assert.ok(boundary.x >= 64 && boundary.x <= level.width - 64 - 512);
+  assert.equal(transition.type, "transition");
+  assert.equal(transition.x, 0);
+  assert.throws(() => factory.assertAuthoredJump(
+    { x: 1_000, type: "path" }, { x: 0, type: "path" },
+  ), RangeError);
+}
+
+function createBoundaries() {
   const section = level.sections[0];
   const floor = factory.create(section, 0, level.height - 160, { isFloor: true });
   const boundary = factory.createBoundary(
     section, 99, section.topY + 64, floor, level.sections[1],
   );
-  assert.equal(boundary.type, "catch");
-  assert.ok(boundary.x >= 64 && boundary.x <= level.width - 64 - 512);
-  assert.throws(() => factory.assertAuthoredJump(
-    { x: 1_000, type: "path" }, { x: 0, type: "path" },
-  ), RangeError);
+  const transition = factory.createBoundary(
+    level.sections[2], 99, 120064, boundary, level.sections[3],
+  );
+  return { boundary, transition };
 }
 
 function createAuthoredPlatform(type) {
