@@ -33,10 +33,13 @@ export class CharacterMovementController {
    * @returns {boolean} Whether Byte touched a world boundary.
    */
   keepInsideWorld(worldWidth, config) {
-    const maximumX = worldWidth - this.#character.width;
-    const direction = this.#getBoundaryDirection(maximumX);
+    this.#validateWorldBounds(worldWidth, config);
+    const minimumX = config.wallInsetPixels;
+    const maximumX = worldWidth - minimumX - this.#character.width;
+    const direction = this.#getBoundaryDirection(minimumX, maximumX);
     if (direction === 0) return false;
-    this.#character.x = clamp(this.#character.x, 0, maximumX);
+    this.#character.x = clamp(this.#character.x, minimumX, maximumX);
+    if (!this.#isMovingOutward(direction)) return true;
     if (this.#character.isOnGround) this.#character.velocityX = 0;
     else this.#applyWallBounce(direction, config);
     return true;
@@ -71,15 +74,28 @@ export class CharacterMovementController {
     this.#character.facingDirection = direction;
   }
 
-  #getBoundaryDirection(maximumX) {
+  #getBoundaryDirection(minimumX, maximumX) {
     const velocity = this.#character.velocityX;
-    const hitsLeft = this.#character.x < 0 ||
-      (this.#character.x === 0 && velocity < 0);
+    const hitsLeft = this.#character.x < minimumX ||
+      (this.#character.x === minimumX && velocity < 0);
     const hitsRight = this.#character.x > maximumX ||
       (this.#character.x === maximumX && velocity > 0);
     if (hitsLeft) return 1;
     if (hitsRight) return -1;
     return 0;
+  }
+
+  #isMovingOutward(inwardDirection) {
+    return this.#character.velocityX * inwardDirection < 0;
+  }
+
+  #validateWorldBounds(worldWidth, config) {
+    const inset = config?.wallInsetPixels;
+    const hasWidth = Number.isFinite(worldWidth) && worldWidth > this.#character.width;
+    const hasInset = Number.isFinite(inset) && inset >= 0 &&
+      inset * 2 + this.#character.width < worldWidth;
+    if (hasWidth && hasInset) return;
+    throw new RangeError("The visible wall boundaries are invalid.");
   }
 
   #validateWallBounceConfig(config) {

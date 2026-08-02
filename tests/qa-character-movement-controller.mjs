@@ -8,6 +8,7 @@ const config = Object.freeze({
   horizontalAccelerationPixelsPerSecondSquared: 1800,
   horizontalBrakingPixelsPerSecondSquared: 2400,
   maximumHorizontalSpeedPixelsPerSecond: 300,
+  wallInsetPixels: 48,
   wallBounceHorizontalRetention: 0.65,
   minimumWallBounceSpeedPixelsPerSecond: 180,
 });
@@ -30,10 +31,10 @@ assert.equal(character.facingDirection, -1);
 movement.updateFacingDirection(createInput(false, false));
 assert.equal(character.facingDirection, -1);
 
-assertGroundBoundary(movement, character, -20, 0);
-assertGroundBoundary(movement, character, 980, 936);
-assertAirborneWallBounce(movement, character, -20, -300, 0, 195);
-assertAirborneWallBounce(movement, character, 980, 200, 936, -180);
+assertGroundBoundary(movement, character, -20, -200, 48);
+assertGroundBoundary(movement, character, 980, 200, 888);
+assertAirborneWallBounce(movement, character, -20, -300, 48, 195);
+assertAirborneWallBounce(movement, character, 980, 200, 888, -180);
 assertCharacterIntegration();
 
 console.log("CLEAN-011: Bytes Bodenbewegung ist getrennt und geprüft.");
@@ -48,11 +49,11 @@ function createInput(left, right) {
   return { left, right };
 }
 
-function assertGroundBoundary(movementController, target, startX, expectedX) {
+function assertGroundBoundary(controller, target, startX, speed, expectedX) {
   target.x = startX;
-  target.velocityX = 200;
+  target.velocityX = speed;
   target.isOnGround = true;
-  movementController.keepInsideWorld(1000, config);
+  controller.keepInsideWorld(1000, config);
   assert.equal(target.x, expectedX);
   assert.equal(target.velocityX, 0);
 }
@@ -73,7 +74,7 @@ function assertCharacterIntegration() {
     input: createPlayableInput(),
   });
   assert.equal(target.velocityX, 180);
-  assert.equal(target.x, 18);
+  assert.equal(target.x, 48);
 }
 
 function createPlayableInput() {

@@ -36,6 +36,7 @@ const CHARACTER_CONFIG = Object.freeze({
   maximumJumpSpeedPixelsPerSecond: 920,
   minimumJumpHorizontalSpeedPixelsPerSecond: 150,
   maximumJumpHorizontalSpeedPixelsPerSecond: 480,
+  wallInsetPixels: 48,
   wallBounceHorizontalRetention: 0.65,
   minimumWallBounceSpeedPixelsPerSecond: 180,
   movementStateThresholdPixelsPerSecond: 1,
