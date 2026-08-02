@@ -204,141 +204,141 @@
           {
             "id": "presswerk-eingang",
             "steps": [
-              { "x": 320, "gapY": 96, "type": "path" },
-              { "x": 480, "gapY": 112, "type": "narrow" },
-              { "x": 768, "gapY": 120, "type": "path" },
-              { "x": 928, "gapY": 128, "type": "narrow" },
-              { "x": 704, "gapY": 144, "type": "path" }
+              { "x": 64, "gapY": 144, "type": "catch" },
+              { "x": 160, "gapY": 112, "type": "narrow" },
+              { "x": 352, "gapY": 120, "type": "path" },
+              { "x": 608, "gapY": 128, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "catch" }
             ]
           },
           {
             "id": "erste-fallplatte",
             "steps": [
-              { "x": 480, "gapY": 112, "type": "path" },
-              { "x": 384, "gapY": 128, "type": "narrow" },
-              { "x": 512, "gapY": 136, "type": "path" },
-              { "x": 736, "gapY": 144, "type": "narrow" },
-              { "x": 960, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 112, "type": "catch" },
+              { "x": 1088, "gapY": 128, "type": "narrow" },
+              { "x": 832, "gapY": 136, "type": "path" },
+              { "x": 576, "gapY": 144, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "kolben-zickzack",
             "steps": [
-              { "x": 704, "gapY": 124, "type": "path" },
-              { "x": 608, "gapY": 136, "type": "narrow" },
-              { "x": 224, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 672, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 124, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 288, "gapY": 140, "type": "path" },
+              { "x": 608, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "stempelkammer",
             "steps": [
-              { "x": 896, "gapY": 128, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
-              { "x": 416, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "kettenwechsel",
             "steps": [
-              { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 704, "gapY": 140, "type": "path" },
-              { "x": 448, "gapY": 148, "type": "narrow" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 124, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 140, "type": "path" },
+              { "x": 768, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "druckwelle",
             "steps": [
-              { "x": 416, "gapY": 128, "type": "path" },
-              { "x": 576, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "wartungssteg",
             "steps": [
-              { "x": 128, "gapY": 120, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 144, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "catch" }
+              { "x": 64, "gapY": 120, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 64, "gapY": 140, "type": "path" },
+              { "x": 288, "gapY": 144, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "doppelkolben",
             "steps": [
-              { "x": 832, "gapY": 128, "type": "path" },
-              { "x": 736, "gapY": 136, "type": "narrow" },
-              { "x": 352, "gapY": 144, "type": "path" },
-              { "x": 128, "gapY": 152, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "path" }
+              { "x": 320, "gapY": 128, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "path" },
+              { "x": 1088, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "ofenbruecke",
             "steps": [
-              { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 672, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 160, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 960, "gapY": 136, "type": "narrow" },
+              { "x": 768, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "pressen-takt",
             "steps": [
-              { "x": 384, "gapY": 128, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 768, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "schmale-presse",
             "steps": [
-              { "x": 128, "gapY": 124, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 140, "type": "path" },
+              { "x": 576, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "gegenpressung",
             "steps": [
-              { "x": 864, "gapY": 128, "type": "path" },
-              { "x": 768, "gapY": 136, "type": "narrow" },
-              { "x": 384, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
-              { "x": 416, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 288, "gapY": 144, "type": "path" },
+              { "x": 608, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "letzte-verdichtung",
             "steps": [
-              { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 704, "gapY": 144, "type": "path" },
-              { "x": 448, "gapY": 152, "type": "narrow" },
-              { "x": 192, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "tor-zum-funkturm",
             "steps": [
-              { "x": 416, "gapY": 136, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "narrow" },
-              { "x": 864, "gapY": 148, "type": "path" },
+              { "x": 64, "gapY": 136, "type": "catch" },
+              { "x": 64, "gapY": 144, "type": "narrow" },
+              { "x": 288, "gapY": 148, "type": "path" },
               { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           }
         ]
@@ -364,141 +364,141 @@
           {
             "id": "funkturm-fuss",
             "steps": [
-              { "x": 256, "gapY": 96, "type": "path" },
-              { "x": 416, "gapY": 112, "type": "narrow" },
-              { "x": 704, "gapY": 120, "type": "path" },
-              { "x": 928, "gapY": 128, "type": "narrow" },
-              { "x": 704, "gapY": 144, "type": "path" }
+              { "x": 704, "gapY": 144, "type": "catch" },
+              { "x": 1088, "gapY": 112, "type": "narrow" },
+              { "x": 768, "gapY": 120, "type": "path" },
+              { "x": 448, "gapY": 128, "type": "narrow" },
+              { "x": 64, "gapY": 144, "type": "catch" }
             ]
           },
           {
             "id": "erste-antenne",
             "steps": [
-              { "x": 480, "gapY": 112, "type": "path" },
-              { "x": 384, "gapY": 128, "type": "narrow" },
-              { "x": 512, "gapY": 136, "type": "path" },
-              { "x": 736, "gapY": 144, "type": "narrow" },
-              { "x": 960, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 112, "type": "catch" },
+              { "x": 64, "gapY": 128, "type": "narrow" },
+              { "x": 64, "gapY": 136, "type": "path" },
+              { "x": 288, "gapY": 144, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "pendelleitung",
             "steps": [
-              { "x": 704, "gapY": 124, "type": "path" },
-              { "x": 608, "gapY": 136, "type": "narrow" },
-              { "x": 224, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 672, "gapY": 152, "type": "path" }
+              { "x": 320, "gapY": 124, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 1088, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "kabelschacht",
             "steps": [
-              { "x": 896, "gapY": 128, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 416, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
-              { "x": 416, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "signalbogen",
             "steps": [
-              { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
-              { "x": 704, "gapY": 140, "type": "path" },
-              { "x": 448, "gapY": 148, "type": "narrow" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 124, "type": "catch" },
+              { "x": 160, "gapY": 136, "type": "narrow" },
+              { "x": 352, "gapY": 140, "type": "path" },
+              { "x": 608, "gapY": 148, "type": "narrow" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "schwingkreis",
             "steps": [
-              { "x": 416, "gapY": 128, "type": "path" },
-              { "x": 576, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 960, "gapY": 136, "type": "narrow" },
+              { "x": 768, "gapY": 144, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "wartungsbalkon",
             "steps": [
-              { "x": 128, "gapY": 120, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 144, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "catch" }
+              { "x": 64, "gapY": 120, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 64, "gapY": 140, "type": "path" },
+              { "x": 288, "gapY": 144, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "doppelschwinger",
             "steps": [
-              { "x": 832, "gapY": 128, "type": "path" },
-              { "x": 736, "gapY": 136, "type": "narrow" },
-              { "x": 352, "gapY": 144, "type": "path" },
-              { "x": 128, "gapY": 152, "type": "narrow" },
-              { "x": 384, "gapY": 160, "type": "path" }
+              { "x": 320, "gapY": 128, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
+              { "x": 704, "gapY": 144, "type": "path" },
+              { "x": 1088, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "frequenzsprung",
             "steps": [
-              { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "narrow" },
-              { "x": 672, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "narrow" },
-              { "x": 160, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 1088, "gapY": 136, "type": "narrow" },
+              { "x": 832, "gapY": 140, "type": "path" },
+              { "x": 576, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "kreuzsignal",
             "steps": [
-              { "x": 384, "gapY": 128, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "narrow" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 384, "gapY": 144, "type": "path" },
+              { "x": 768, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "antennenkranz",
             "steps": [
-              { "x": 128, "gapY": 124, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "narrow" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "narrow" },
-              { "x": 608, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 960, "gapY": 136, "type": "narrow" },
+              { "x": 768, "gapY": 140, "type": "path" },
+              { "x": 448, "gapY": 148, "type": "narrow" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "phasendreher",
             "steps": [
-              { "x": 864, "gapY": 128, "type": "path" },
-              { "x": 768, "gapY": 136, "type": "narrow" },
-              { "x": 384, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "narrow" },
-              { "x": 416, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "narrow" },
+              { "x": 64, "gapY": 144, "type": "path" },
+              { "x": 288, "gapY": 152, "type": "narrow" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "sendespitze",
             "steps": [
-              { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "narrow" },
+              { "x": 320, "gapY": 128, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "narrow" },
               { "x": 704, "gapY": 144, "type": "path" },
-              { "x": 448, "gapY": 152, "type": "narrow" },
-              { "x": 192, "gapY": 160, "type": "path" }
+              { "x": 1088, "gapY": 152, "type": "narrow" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "tor-zur-fabrik",
             "steps": [
-              { "x": 416, "gapY": 136, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "narrow" },
-              { "x": 864, "gapY": 148, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "narrow" },
-              { "x": 352, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 136, "type": "catch" },
+              { "x": 1088, "gapY": 144, "type": "narrow" },
+              { "x": 832, "gapY": 148, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "narrow" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           }
         ]
@@ -2599,7 +2599,7 @@
     },
     {
       "id": "scrapyard-patrol-spring-mine-01", "type": "springMine",
-      "x": 560, "y": 129024, "patrolMinX": 512, "patrolMaxX": 704
+      "x": 96, "y": 128976, "patrolMinX": 64, "patrolMaxX": 256
     },
     {
       "id": "scrapyard-patrol-drone-02", "type": "droneGuard",
@@ -2607,7 +2607,7 @@
     },
     {
       "id": "scrapyard-patrol-crawler-03", "type": "scrapCrawler",
-      "x": 720, "y": 124060, "patrolMinX": 672, "patrolMaxX": 864
+      "x": 832, "y": 124012, "patrolMinX": 832, "patrolMaxX": 928
     },
     {
       "id": "scrapyard-patrol-drone-03", "type": "droneGuard",
@@ -2739,9 +2739,9 @@
       "type": "scrapCrawler",
       "isElite": true,
       "x": 512,
-      "y": 135180,
-      "patrolMinX": 384,
-      "patrolMaxX": 896,
+      "y": 135132,
+      "patrolMinX": 320,
+      "patrolMaxX": 736,
       "startDirection": -1,
       "combat": {
         "speedPixelsPerSecond": 75,
@@ -3080,21 +3080,21 @@
       "id": "pressworks-spikes-01",
       "type": "retractableSpikes",
       "damage": 15,
-      "x": 800,
+      "x": 928,
       "anchorPlatformId": "scrapyard-pressworks-kolben-zickzack-3-5"
     },
     {
       "id": "pressworks-shock-01",
       "type": "shockPad",
       "damage": 20,
-      "x": 992,
+      "x": 832,
       "anchorPlatformId": "scrapyard-pressworks-druckwelle-6-3"
     },
     {
       "id": "signal-tower-shock-01",
       "type": "shockPad",
       "damage": 20,
-      "x": 800,
+      "x": 928,
       "anchorPlatformId": "scrapyard-signal-tower-pendelleitung-3-5"
     },
     {

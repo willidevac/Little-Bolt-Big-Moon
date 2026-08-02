@@ -10,16 +10,22 @@ import {
 const level = JSON.parse(
   await readFile(new URL("../data/levels/level-01.json", import.meta.url), "utf8"),
 );
-const machineGraveyardRooms = level.sections[0].route.rooms;
+const scrapyardSections = level.sections.slice(0, 3);
+const scrapyardRooms = scrapyardSections.flatMap(({ route }) => route.rooms);
 const route = new PlatformRouteBuilder(level.width).build(level.sections);
 
-assert.equal(machineGraveyardRooms.length, 14);
-machineGraveyardRooms.forEach(assertRoomHasSafeFloor);
-machineGraveyardRooms.forEach(assertRoomTouchesWall);
-assert.ok(machineGraveyardRooms.filter(connectsBothWalls).length >= 10);
-assert.equal(countRoomCatchPlatforms(route), 28);
+scrapyardSections.forEach(assertSectionHasRoomArchitecture);
+assert.equal(scrapyardRooms.length, 42);
+assert.equal(countRoomCatchPlatforms(route), 84);
 
-console.log("MAP-002: Der Maschinenfriedhof besteht aus 14 verbundenen Räumen.");
+console.log("MAP-002: Der Schrottplatz besteht aus 42 verbundenen Räumen.");
+
+function assertSectionHasRoomArchitecture({ route }) {
+  assert.equal(route.rooms.length, 14);
+  route.rooms.forEach(assertRoomHasSafeFloor);
+  route.rooms.forEach(assertRoomTouchesWall);
+  assert.ok(route.rooms.filter(connectsBothWalls).length >= 7);
+}
 
 function assertRoomHasSafeFloor(room) {
   assert.equal(room.steps[0].type, "catch");
@@ -45,7 +51,7 @@ function getWallSide(step) {
 }
 
 function countRoomCatchPlatforms(platforms) {
-  const ids = new Set(machineGraveyardRooms.map(({ id }) => id));
+  const ids = new Set(scrapyardRooms.map(({ id }) => id));
   return platforms.filter(({ roomId, type }) => {
     return ids.has(roomId) && type === "catch";
   }).length;

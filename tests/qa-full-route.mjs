@@ -69,7 +69,7 @@ levelData.sections.slice(0, -1).forEach((section) => {
     return Math.abs(platform.y - section.topY) <= 128;
   });
   const catchPlatforms = boundaryPlatforms.filter((platform) => {
-    return platform.type === "catch";
+    return platform.type === "catch" && !platform.roomId;
   });
   assert.equal(catchPlatforms.length, 1);
 });
