@@ -41,10 +41,12 @@ function assertFall(startY, landingY, severity) {
 
 async function assertAccessibleHudContract() {
   const html = await readAppMarkup();
-  const status = await fs.readFile("classes/ui/status-bar.class.js", "utf8");
+  const feedback = await fs.readFile(
+    "classes/ui/hud-feedback-controller.class.js", "utf8",
+  );
   assert.match(html, /data-hud-fall-feedback[\s\S]*?<\/output>/);
   assert.match(html, /hud-fall-feedback[\s\S]+aria-live="polite"/);
-  assert.match(status, /GAMEPLAY_EVENTS\.PLAYER_FALL/);
+  assert.match(feedback, /GAMEPLAY_EVENTS\.PLAYER_FALL/);
   assert.equal(GAMEPLAY_EVENTS.PLAYER_FALL, "playerFall");
   ["normal", "hard", "severe"].forEach(assertTranslationPair);
 }
