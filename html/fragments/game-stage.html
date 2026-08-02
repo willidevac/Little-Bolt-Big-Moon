@@ -136,14 +136,42 @@
 
         <div class="hud-panel hud-height">
           <span class="hud-symbol" data-hud-icon="height" aria-hidden="true"></span>
-          <span class="hud-label" data-i18n="hud.height">Höhe</span>
-          <output
-            class="hud-number"
-            aria-label="Höhe in Metern"
-            data-i18n-aria-label="hud.heightMeters"
-          >
-            <span data-hud-value="height">0</span> m
-          </output>
+          <div class="hud-height__body">
+            <div class="hud-height__summary">
+              <span class="hud-label" data-i18n="hud.height">Höhe</span>
+              <output
+                class="hud-number"
+                aria-label="Höhe in Metern"
+                data-i18n-aria-label="hud.heightMeters"
+              >
+                <span data-hud-value="height">0</span> m
+              </output>
+            </div>
+            <div class="hud-journey">
+              <span class="hud-journey__place" data-hud-journey-place>
+                Schrottplatz
+              </span>
+              <span class="hud-journey__target" data-i18n="hud.journeyTarget">
+                Ziel: Mond
+              </span>
+              <div
+                class="hud-journey__track"
+                role="progressbar"
+                aria-label="Reisefortschritt"
+                data-i18n-aria-label="hud.journey"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-hud-journey-progress
+              >
+                <span class="hud-journey__fill"></span>
+                <span class="hud-journey__milestones" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="hud-score-group">

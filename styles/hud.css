@@ -81,6 +81,65 @@
   grid-column: 2;
   grid-row: 1;
   align-self: start;
+  min-width: clamp(12rem, 24vw, 18rem);
+}
+
+.hud-height__body {
+  display: grid;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.hud-height__summary,
+.hud-journey {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.hud-journey {
+  position: relative;
+  flex-wrap: wrap;
+  color: #c6b899;
+  font-size: clamp(0.45rem, 0.6vw, 0.58rem);
+  text-transform: uppercase;
+}
+
+.hud-journey__place {
+  color: var(--color-cyan);
+}
+
+.hud-journey__track {
+  --journey-progress: 0%;
+  position: relative;
+  width: 100%;
+  height: 0.3rem;
+  margin: 0.1rem 0;
+  background: #02070d;
+}
+
+.hud-journey__fill {
+  display: block;
+  width: var(--journey-progress);
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-orange), var(--color-cyan));
+  transition: width 180ms ease-out;
+}
+
+.hud-journey__milestones {
+  position: absolute;
+  inset: 50% 0 auto;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.hud-journey__milestones > span {
+  width: 0.34rem;
+  height: 0.34rem;
+  border: 1px solid var(--color-cream);
+  border-radius: 50%;
+  background: #07111a;
 }
 
 .hud-score-group {
@@ -380,6 +439,28 @@
     width: clamp(3.2rem, 16vw, 5.5rem);
     height: 0.45rem;
     padding: 1px;
+  }
+
+  .hud-height {
+    min-width: clamp(7.5rem, 30vw, 11rem);
+  }
+
+  .hud-height__body {
+    gap: 0.12rem;
+  }
+
+  .hud-journey {
+    gap: 0.2rem;
+    font-size: 0.4rem;
+  }
+
+  .hud-journey__target {
+    display: none;
+  }
+
+  .hud-journey__track {
+    height: 0.2rem;
+    margin: 0;
   }
 
   .hud-score,

@@ -1,6 +1,7 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 import { HudFeedbackController } from "./hud-feedback-controller.class.js";
+import { JourneyProgress } from "./journey-progress.class.js";
 import { getBossTranslationKey } from "../../js/config/boss-translation-keys.js";
 import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
@@ -10,6 +11,8 @@ const VALUE_SELECTORS = Object.freeze({
   arcCharges: '[data-hud-value="arcCharges"]',
   gears: '[data-hud-value="gears"]',
   heightMeters: '[data-hud-value="height"]',
+  journeyPlace: "[data-hud-journey-place]",
+  journeyProgress: "[data-hud-journey-progress]",
   score: '[data-hud-value="score"]',
   combo: "[data-hud-combo]",
   comboValue: "[data-hud-combo-value]",
@@ -69,6 +72,11 @@ function renderWeaponValue(statusBar, weapon) {
   );
 }
 
+function getBiomeTranslationKey(biomeId) {
+  const suffix = biomeId.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+  return `biome.${suffix}`;
+}
+
 /**
  * Transfers run values into the accessible HTML HUD.
  */
@@ -88,6 +96,7 @@ export class StatusBar {
     this.currentWeapon = null;
     const pixelsPerMeter = this.game.config.hud.heightPixelsPerMeter;
     this.feedback = new HudFeedbackController(this.elements, pixelsPerMeter);
+    this.journey = this.#createJourney(pixelsPerMeter);
   }
 
   /**
@@ -106,6 +115,14 @@ export class StatusBar {
     this.renderWeapon(this.game.weaponSystem.getCurrentWeapon());
     this.renderState(this.game.state);
     return this;
+  }
+
+  #createJourney(pixelsPerMeter) {
+    return new JourneyProgress(
+      this.game.world.level.sections,
+      this.game.world.level.playerStart.y,
+      pixelsPerMeter,
+    );
   }
 
   /**
@@ -132,6 +149,7 @@ export class StatusBar {
     this.setText(this.elements.arcCharges, data.arcCharges);
     this.setText(this.elements.gears, data.gears);
     this.setText(this.elements.heightMeters, data.heightMeters);
+    this.renderJourney(data.heightMeters);
     this.setText(this.elements.score, formatScore(data.score));
     this.renderCombo(data.combo);
     this.renderBoss(data.boss);
@@ -201,6 +219,19 @@ export class StatusBar {
       "aria-valuetext",
       translate("value.of", { value: energy, maximum: maximumEnergy }),
     );
+  }
+
+  /** Displays the reached biome and overall route percentage. */
+  renderJourney(heightMeters) {
+    const journey = this.journey.getSnapshot(heightMeters);
+    const biome = translate(getBiomeTranslationKey(journey.biomeId));
+    const progress = this.elements.journeyProgress;
+    this.setText(this.elements.journeyPlace, biome);
+    progress.style.setProperty("--journey-progress", `${journey.percentage}%`);
+    progress.setAttribute("aria-valuenow", String(journey.percentage));
+    progress.setAttribute("aria-valuetext", translate("hud.journeyProgress", {
+      biome, percentage: journey.percentage,
+    }));
   }
 
   /**
