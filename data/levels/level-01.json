@@ -527,21 +527,21 @@
           {
             "id": "fabrikschleuse",
             "steps": [
-              { "x": 256, "gapY": 96, "type": "path" },
-              { "x": 416, "gapY": 112, "type": "falling" },
-              { "x": 704, "gapY": 120, "type": "path" },
-              { "x": 928, "gapY": 128, "type": "falling" },
-              { "x": 704, "gapY": 144, "type": "path" }
+              { "x": 64, "gapY": 144, "type": "catch" },
+              { "x": 64, "gapY": 112, "type": "falling" },
+              { "x": 384, "gapY": 120, "type": "path" },
+              { "x": 768, "gapY": 128, "type": "falling" },
+              { "x": 704, "gapY": 144, "type": "catch" }
             ]
           },
           {
             "id": "zahnradlager",
             "steps": [
-              { "x": 480, "gapY": 112, "type": "path" },
-              { "x": 320, "gapY": 128, "type": "path" },
-              { "x": 512, "gapY": 136, "type": "path" },
-              { "x": 384, "gapY": 124, "type": "path" },
-              { "x": 640, "gapY": 172, "type": "path" }
+              { "x": 704, "gapY": 112, "type": "catch" },
+              { "x": 896, "gapY": 128, "type": "path" },
+              { "x": 896, "gapY": 136, "type": "path" },
+              { "x": 896, "gapY": 124, "type": "path" },
+              { "x": 704, "gapY": 172, "type": "catch" }
             ],
             "shortcut": [
               {
@@ -565,121 +565,121 @@
           {
             "id": "krabblerhalle",
             "steps": [
-              { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 480, "gapY": 128, "type": "falling" },
-              { "x": 320, "gapY": 128, "type": "path" },
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 1024, "gapY": 128, "type": "falling" },
+              { "x": 832, "gapY": 128, "type": "path" },
               { "x": 576, "gapY": 144, "type": "falling" },
-              { "x": 800, "gapY": 176, "type": "path" }
+              { "x": 64, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "energiegang",
             "steps": [
-              { "x": 800, "gapY": 128, "type": "path" },
-              { "x": 640, "gapY": 128, "type": "falling" },
-              { "x": 320, "gapY": 136, "type": "path" },
-              { "x": 160, "gapY": 136, "type": "path" },
-              { "x": 416, "gapY": 176, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 128, "type": "falling" },
+              { "x": 352, "gapY": 136, "type": "path" },
+              { "x": 608, "gapY": 136, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "foerderkreuz",
             "steps": [
-              { "x": 672, "gapY": 124, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "falling" },
-              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 704, "gapY": 124, "type": "catch" },
+              { "x": 1024, "gapY": 136, "type": "falling" },
+              { "x": 768, "gapY": 140, "type": "path" },
               { "x": 448, "gapY": 148, "type": "falling" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "munitionsband",
             "steps": [
-              { "x": 416, "gapY": 128, "type": "path" },
-              { "x": 576, "gapY": 128, "type": "falling" },
-              { "x": 416, "gapY": 132, "type": "path" },
-              { "x": 384, "gapY": 136, "type": "path" },
-              { "x": 160, "gapY": 176, "type": "path" }
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 128, "type": "falling" },
+              { "x": 64, "gapY": 132, "type": "path" },
+              { "x": 288, "gapY": 136, "type": "falling" },
+              { "x": 320, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "sicherheitssteg",
             "steps": [
-              { "x": 384, "gapY": 120, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "falling" },
-              { "x": 832, "gapY": 140, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "falling" },
-              { "x": 384, "gapY": 160, "type": "catch" }
+              { "x": 320, "gapY": 120, "type": "catch" },
+              { "x": 512, "gapY": 136, "type": "falling" },
+              { "x": 704, "gapY": 140, "type": "path" },
+              { "x": 1024, "gapY": 144, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "getriebemix",
             "steps": [
-              { "x": 832, "gapY": 128, "type": "path" },
-              { "x": 672, "gapY": 136, "type": "falling" },
-              { "x": 352, "gapY": 144, "type": "path" },
-              { "x": 128, "gapY": 152, "type": "falling" },
-              { "x": 384, "gapY": 172, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1024, "gapY": 136, "type": "falling" },
+              { "x": 832, "gapY": 144, "type": "path" },
+              { "x": 576, "gapY": 152, "type": "falling" },
+              { "x": 64, "gapY": 172, "type": "catch" }
             ]
           },
           {
             "id": "heisser-wechsel",
             "steps": [
-              { "x": 640, "gapY": 124, "type": "path" },
-              { "x": 800, "gapY": 136, "type": "falling" },
-              { "x": 672, "gapY": 140, "type": "path" },
-              { "x": 416, "gapY": 148, "type": "falling" },
-              { "x": 160, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 124, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "falling" },
+              { "x": 384, "gapY": 140, "type": "path" },
+              { "x": 768, "gapY": 148, "type": "falling" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "taktkammer",
             "steps": [
-              { "x": 384, "gapY": 128, "type": "path" },
-              { "x": 544, "gapY": 136, "type": "falling" },
-              { "x": 864, "gapY": 144, "type": "path" },
-              { "x": 608, "gapY": 152, "type": "falling" },
-              { "x": 352, "gapY": 172, "type": "path" }
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1024, "gapY": 136, "type": "falling" },
+              { "x": 768, "gapY": 144, "type": "path" },
+              { "x": 512, "gapY": 152, "type": "falling" },
+              { "x": 320, "gapY": 172, "type": "catch" }
             ]
           },
           {
             "id": "montagezangen",
             "steps": [
-              { "x": 128, "gapY": 124, "type": "path" },
-              { "x": 288, "gapY": 136, "type": "falling" },
-              { "x": 576, "gapY": 140, "type": "path" },
-              { "x": 832, "gapY": 148, "type": "falling" },
-              { "x": 608, "gapY": 152, "type": "path" }
+              { "x": 320, "gapY": 124, "type": "catch" },
+              { "x": 320, "gapY": 136, "type": "falling" },
+              { "x": 128, "gapY": 140, "type": "path" },
+              { "x": 64, "gapY": 148, "type": "falling" },
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "gegenfoerderung",
             "steps": [
-              { "x": 864, "gapY": 128, "type": "path" },
-              { "x": 704, "gapY": 136, "type": "falling" },
+              { "x": 64, "gapY": 128, "type": "catch" },
+              { "x": 64, "gapY": 136, "type": "falling" },
               { "x": 384, "gapY": 144, "type": "path" },
-              { "x": 160, "gapY": 152, "type": "falling" },
-              { "x": 416, "gapY": 172, "type": "path" }
+              { "x": 768, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 172, "type": "catch" }
             ]
           },
           {
             "id": "montagespitze",
             "steps": [
-              { "x": 672, "gapY": 128, "type": "path" },
-              { "x": 832, "gapY": 136, "type": "falling" },
-              { "x": 704, "gapY": 144, "type": "path" },
+              { "x": 704, "gapY": 128, "type": "catch" },
+              { "x": 1024, "gapY": 136, "type": "falling" },
+              { "x": 768, "gapY": 144, "type": "path" },
               { "x": 448, "gapY": 152, "type": "falling" },
-              { "x": 192, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "tor-zum-schmelzwerk",
             "steps": [
-              { "x": 416, "gapY": 136, "type": "path" },
-              { "x": 576, "gapY": 144, "type": "falling" },
-              { "x": 864, "gapY": 148, "type": "path" },
+              { "x": 64, "gapY": 136, "type": "catch" },
+              { "x": 64, "gapY": 144, "type": "falling" },
+              { "x": 352, "gapY": 148, "type": "path" },
               { "x": 608, "gapY": 152, "type": "falling" },
-              { "x": 352, "gapY": 168, "type": "path" }
+              { "x": 320, "gapY": 168, "type": "catch" }
             ]
           }
         ]
@@ -2729,10 +2729,10 @@
     {
       "id": "factory-crawler-01",
       "type": "scrapCrawler",
-      "x": 416,
-      "y": 114492,
-      "patrolMinX": 384,
-      "patrolMaxX": 576
+      "x": 864,
+      "y": 114768,
+      "patrolMinX": 832,
+      "patrolMaxX": 1024
     },
     {
       "id": "scrapyard-elite-crawler-01",
@@ -3027,8 +3027,8 @@
     {
       "id": "story-factory-duo-poster",
       "type": "factoryDuoPoster",
-      "x": 832,
-      "y": 117772,
+      "x": 384,
+      "y": 117724,
       "anchorPlatformId": "factory-assembly-energiegang-4-1"
     },
     {
@@ -3109,7 +3109,7 @@
       "id": "assembly-pulse-gate-01",
       "type": "pulseGate",
       "damage": 25,
-      "x": 704,
+      "x": 128,
       "phaseOffsetSeconds": 0.55,
       "anchorPlatformId": "factory-assembly-montagezangen-11-3"
     },
@@ -3294,15 +3294,15 @@
       "type": "gear",
       "amount": 1,
       "x": 768,
-      "y": 119024,
+      "y": 118976,
       "anchorPlatformId": "factory-assembly-zahnradlager-shortcut-2"
     },
     {
       "id": "factory-energy-01",
       "type": "energy",
       "amount": 20,
-      "x": 192,
-      "y": 117500,
+      "x": 672,
+      "y": 117452,
       "anchorPlatformId": "factory-assembly-energiegang-4-4"
     },
     {
@@ -3310,7 +3310,7 @@
       "type": "gear",
       "amount": 1,
       "x": 416,
-      "y": 116100,
+      "y": 116052,
       "anchorPlatformId": "factory-assembly-munitionsband-6-4"
     },
     {
@@ -3481,7 +3481,7 @@
       "badgePart": "right",
       "amount": 1,
       "x": 640,
-      "y": 118900,
+      "y": 118852,
       "anchorPlatformId": "factory-assembly-zahnradlager-shortcut-3"
     },
     {
