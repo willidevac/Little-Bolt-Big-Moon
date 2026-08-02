@@ -20,6 +20,7 @@ export class WorldSceneBuilder {
    * @returns {Character|object}
    */
   build(world) {
+    this.#addLevelEntities(world, WORLD_ENTITY_GROUPS.STRUCTURES, "structures");
     this.#addLevelEntities(world, WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
     this.#addLevelEntities(world, WORLD_ENTITY_GROUPS.DECORATIONS, "storyProps");
     world.waveManager.initialize(world);

@@ -8,6 +8,8 @@ import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
 import { PlatformMotionSystem } from "../systems/platform-motion-system.class.js";
 import { VisualFeedbackSystem } from "../systems/visual-feedback-system.class.js";
 import { WorldRenderer } from "../systems/world-renderer.class.js";
+import { StructureCollisionSystem } from
+  "../systems/structure-collision-system.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
 import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js";
@@ -38,6 +40,7 @@ export class World {
   #projectileSystem;
   #enemyCombatSystem;
   #platformMotionSystem;
+  #structureCollisionSystem;
   #renderer;
   #sceneBuilder;
 
@@ -84,6 +87,7 @@ export class World {
       this.#collisionManager,
     );
     this.#platformMotionSystem = new PlatformMotionSystem();
+    this.#structureCollisionSystem = new StructureCollisionSystem(config.physics);
   }
 
   /** @returns {boolean} Whether the world was newly activated. */
@@ -145,6 +149,7 @@ export class World {
     this.#damageEvents.push(...this.#projectileSystem.resolve(this));
     this.#resolveEnemyCombat(deltaTimeSeconds);
     this.#collisionManager.resetGroundStates(movableObjects);
+    this.#resolveStructureCollisions(deltaTimeSeconds);
     this.#resolvePlatformLandings(movableObjects, deltaTimeSeconds);
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
@@ -232,6 +237,17 @@ export class World {
       movableObjects,
       platforms,
       deltaTimeSeconds,
+    );
+  }
+
+  #resolveStructureCollisions(deltaTimeSeconds) {
+    if (!this.character) return;
+    const structures = this.#getGroup(WORLD_ENTITY_GROUPS.STRUCTURES);
+    this.#structureCollisionSystem.resolve(
+      this.character,
+      structures,
+      deltaTimeSeconds,
+      this.config.character,
     );
   }
 

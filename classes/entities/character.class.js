@@ -196,6 +196,11 @@ export class Character extends MovableObject {
     });
   }
 
+  /** Reflects a collision with a solid environment wall. */
+  handleWallImpact(direction, config) {
+    this.#movementController.reflectWallImpact(direction, config);
+  }
+
   /**
    * Extends coyote time and the jump buffer for the current run.
    * @param {number} amountSeconds

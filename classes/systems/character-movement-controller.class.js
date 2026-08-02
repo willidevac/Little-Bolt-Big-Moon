@@ -41,8 +41,30 @@ export class CharacterMovementController {
     this.#character.x = clamp(this.#character.x, minimumX, maximumX);
     if (!this.#isMovingOutward(direction)) return true;
     if (this.#character.isOnGround) this.#character.velocityX = 0;
-    else this.#applyWallBounce(direction, config);
+    else this.reflectWallImpact(direction, config);
     return true;
+  }
+
+  /** Reflects an airborne horizontal impact back into playable space. */
+  reflectWallImpact(direction, config) {
+    if (direction !== -1 && direction !== 1) {
+      throw new RangeError("A wall-impact direction must be -1 or 1.");
+    }
+    this.#validateWallBounceConfig(config);
+    if (this.#character.isOnGround) return this.#stopWallMovement();
+    const speed = this.#getWallBounceSpeed(config);
+    this.#character.velocityX = direction * speed;
+    this.#character.facingDirection = direction;
+  }
+
+  #stopWallMovement() {
+    this.#character.velocityX = 0;
+  }
+
+  #getWallBounceSpeed(config) {
+    const retainedSpeed = Math.abs(this.#character.velocityX) *
+      config.wallBounceHorizontalRetention;
+    return Math.max(config.minimumWallBounceSpeedPixelsPerSecond, retainedSpeed);
   }
 
   #accelerate(deltaTimeSeconds, direction, config) {
@@ -62,16 +84,6 @@ export class CharacterMovementController {
       return;
     }
     this.#character.velocityX -= Math.sign(this.#character.velocityX) * braking;
-  }
-
-  #applyWallBounce(direction, config) {
-    this.#validateWallBounceConfig(config);
-    const retainedSpeed = Math.abs(this.#character.velocityX) *
-      config.wallBounceHorizontalRetention;
-    const speed = Math.max(config.minimumWallBounceSpeedPixelsPerSecond,
-      retainedSpeed);
-    this.#character.velocityX = direction * speed;
-    this.#character.facingDirection = direction;
   }
 
   #getBoundaryDirection(minimumX, maximumX) {

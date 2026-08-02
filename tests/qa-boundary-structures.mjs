@@ -1,50 +1,33 @@
 import assert from "node:assert/strict";
-import { BoundaryStructureRenderer } from
-  "../classes/systems/boundary-structure-renderer.class.js";
+import fs from "node:fs/promises";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 import { createLevelOne } from "../js/levels/level-01.js";
 
 const level = createLevelOne(GAME_CONFIG.enemies);
-const renderer = new BoundaryStructureRenderer(level.sections, GAME_CONFIG);
+const structures = level.structures;
+const sources = new Set(structures.map(({ atlas }) => atlas.config.source));
+const roles = new Set(structures.map(({ role }) => role));
+const collidable = structures.filter((structure) => {
+  return structure.getCollisionBoundsList().length > 0;
+});
+const rendererSource = await fs.readFile(
+  "classes/systems/world-renderer.class.js",
+  "utf8",
+);
 
-assertBiomeWalls(149_000, ["#35251f", "#c86f32", "#efad58"]);
-assertBiomeWalls(1_000, ["#393c45", "#e2cfaa", "#7de1df"]);
-assert.throws(() => new BoundaryStructureRenderer([], GAME_CONFIG), TypeError);
+assert.ok(structures.length >= 200);
+assert.equal(new Set(structures.map(({ id }) => id)).size, structures.length);
+assert.equal(sources.size, 10);
+assert.deepEqual([...roles].sort(), [
+  "arch", "corner", "facade", "ledge", "overhead", "tower", "wall",
+]);
+assert.ok(collidable.length >= 80);
+assert.ok(structures.every(staysInsideWorld));
+assert.doesNotMatch(rendererSource, /BoundaryStructureRenderer|fillRect\(/);
 
-console.log("FB-005: Sichtbare Biome-Wände stimmen mit der Abprallkante überein.");
+console.log("ENV-001: 90 Clean-HD architecture parts create varied rooms.");
 
-function assertBiomeWalls(cameraY, colors) {
-  const context = createContext();
-  renderer.draw(context, { y: cameraY });
-  assertWallBody(context.fills, 0, cameraY, colors[0]);
-  assertWallBody(context.fills, 1_232, cameraY, colors[0]);
-  colors.forEach((color) => assert.ok(context.fills.some((fill) => {
-    return fill.color === color;
-  })));
-  assert.ok(context.fills.every(staysInsideWall));
-}
-
-function assertWallBody(fills, x, y, color) {
-  assert.ok(fills.some((fill) => {
-    return fill.x === x && fill.y === y && fill.width === 48 &&
-      fill.height === 720 && fill.color === color;
-  }));
-}
-
-function staysInsideWall(fill) {
-  return fill.x + fill.width <= 48 || fill.x >= 1_232;
-}
-
-function createContext() {
-  return {
-    fills: [], currentFill: "", currentStroke: "",
-    save() {}, restore() {}, beginPath() {}, rect() {}, clip() {},
-    fillRect(x, y, width, height) {
-      this.fills.push({ x, y, width, height, color: this.currentFill });
-    },
-    strokeRect() {},
-    set fillStyle(value) { this.currentFill = value; },
-    set strokeStyle(value) { this.currentStroke = value; },
-    set lineWidth(value) { this.currentLineWidth = value; },
-  };
+function staysInsideWorld(structure) {
+  return structure.x >= 0 && structure.x + structure.width <= level.width &&
+    structure.y >= 0 && structure.y + structure.height <= level.height;
 }

@@ -16,6 +16,8 @@ import { DroneGuard } from "../../classes/entities/enemies/drone-guard.class.js"
 import { SpringMine } from "../../classes/entities/enemies/spring-mine.class.js";
 import { MoonWarden } from "../../classes/entities/enemies/moon-warden.class.js";
 import { PlatformRouteBuilder } from "../../classes/systems/platform-route-builder.class.js";
+import { EnvironmentArchitectureBuilder } from
+  "../../classes/systems/environment-architecture-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 import { STORY_PROP_CONFIGS } from "../config/story-prop-config.js";
 
@@ -103,6 +105,7 @@ function createLevelData(enemyConfig, platformData) {
 function createLevelEntities(enemyConfig, platformData) {
   const platforms = platformData.map(createPlatform);
   return {
+    structures: createStructures(platformData),
     platforms: Object.freeze(platforms),
     collectables: Object.freeze(createCollectables(platforms)),
     storyProps: Object.freeze(createStoryProps(platforms)),
@@ -110,6 +113,13 @@ function createLevelEntities(enemyConfig, platformData) {
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
     enemies: Object.freeze(createEnemies(enemyConfig)),
   };
+}
+
+function createStructures(platformData) {
+  return new EnvironmentArchitectureBuilder(levelData.width).build(
+    levelData.sections,
+    platformData,
+  );
 }
 
 function createEnemies(enemyConfig) {

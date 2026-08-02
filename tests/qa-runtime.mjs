@@ -126,6 +126,14 @@ function addLevelAssets(assets) {
   levelData.sections.forEach((section) => {
     addSectionBackgrounds(assets, section);
     assets.add(resolveAsset("tilesets", `${section.tileset}-tiles.png`));
+    assets.add(resolveAsset(
+      "tilesets",
+      `${section.tileset}-architecture-clean-hd.png`,
+    ));
+    assets.add(resolveAsset(
+      "tilesets",
+      `${section.tileset}-architecture-alt-clean-hd.png`,
+    ));
   });
 }
 

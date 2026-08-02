@@ -1704,6 +1704,106 @@
       "created": "2026-08-02",
       "modifications": "The approved production board defines varied machinery walls, a room facade, a transition arch, overhead architecture and matching ledges without artificial canvas bars.",
       "licenseId": "openai-generated-output"
+    },
+    {
+      "id": "scrapyard-clean-hd-architecture-runtime-v1",
+      "file": "img/tilesets/scrapyard-architecture-clean-hd.png",
+      "role": "runtime-scrapyard-architecture-base-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD scrapyard architecture reference",
+      "created": "2026-08-02",
+      "modifications": "A flat chroma-key production pass was converted locally to an alpha PNG.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-clean-hd-architecture-alt-v1",
+      "file": "img/tilesets/scrapyard-architecture-alt-clean-hd.png",
+      "role": "runtime-scrapyard-architecture-alternate-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved scrapyard architecture and background references",
+      "created": "2026-08-02",
+      "modifications": "Nine alternate room, shaft, crane and rescue modules were chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-clean-hd-architecture-runtime-v1",
+      "file": "img/tilesets/factory-architecture-clean-hd.png",
+      "role": "runtime-factory-architecture-base-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD factory references",
+      "created": "2026-08-02",
+      "modifications": "The production sheet was chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "factory-clean-hd-architecture-alt-v1",
+      "file": "img/tilesets/factory-architecture-alt-clean-hd.png",
+      "role": "runtime-factory-architecture-alternate-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD factory references",
+      "created": "2026-08-02",
+      "modifications": "Nine alternate assembly, furnace, lift and bridge modules were chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-clean-hd-architecture-runtime-v1",
+      "file": "img/tilesets/launch-tower-architecture-clean-hd.png",
+      "role": "runtime-launch-tower-architecture-base-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD launch-tower references",
+      "created": "2026-08-02",
+      "modifications": "The production sheet was chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "launch-tower-clean-hd-architecture-alt-v1",
+      "file": "img/tilesets/launch-tower-architecture-alt-clean-hd.png",
+      "role": "runtime-launch-tower-architecture-alternate-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD launch-tower references",
+      "created": "2026-08-02",
+      "modifications": "Nine alternate elevator, control, fuel and maintenance modules were chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-clean-hd-architecture-runtime-v1",
+      "file": "img/tilesets/space-station-architecture-clean-hd.png",
+      "role": "runtime-space-station-architecture-base-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD space-station references",
+      "created": "2026-08-02",
+      "modifications": "The production sheet was chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "space-station-clean-hd-architecture-alt-v1",
+      "file": "img/tilesets/space-station-architecture-alt-clean-hd.png",
+      "role": "runtime-space-station-architecture-alternate-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD space-station references",
+      "created": "2026-08-02",
+      "modifications": "Nine alternate lift, research, reactor and conduit modules were chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-architecture-runtime-v1",
+      "file": "img/tilesets/moon-architecture-clean-hd.png",
+      "role": "runtime-moon-architecture-base-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon references",
+      "created": "2026-08-02",
+      "modifications": "The production sheet was chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-clean-hd-architecture-alt-v1",
+      "file": "img/tilesets/moon-architecture-alt-clean-hd.png",
+      "role": "runtime-moon-architecture-alternate-atlas",
+      "status": "present",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon references",
+      "created": "2026-08-02",
+      "modifications": "Nine alternate lift-ruin, archive, collapsed-machine and bridge modules were chroma-keyed to alpha locally.",
+      "licenseId": "openai-assisted-project-art"
     }
   ]
 }

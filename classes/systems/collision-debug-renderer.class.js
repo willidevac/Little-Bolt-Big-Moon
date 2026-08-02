@@ -28,6 +28,12 @@ export class CollisionDebugRenderer {
   }
 
   #drawEntity(context, entity) {
+    if (typeof entity.getCollisionBoundsList === "function") {
+      entity.getCollisionBoundsList().forEach((bounds) => {
+        this.#strokeBounds(context, bounds, HURTBOX_COLOR);
+      });
+      return;
+    }
     if (typeof entity.getCollisionBounds !== "function") return;
     this.#strokeBounds(context, entity.getCollisionBounds(), HURTBOX_COLOR);
     if (typeof entity.getStompBounds !== "function") return;

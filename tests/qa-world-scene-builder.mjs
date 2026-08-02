@@ -8,6 +8,10 @@ const world = createWorld();
 const character = new WorldSceneBuilder(level).build(world);
 
 assert.deepEqual(
+  world.getEntities(WORLD_ENTITY_GROUPS.STRUCTURES),
+  level.structures,
+);
+assert.deepEqual(
   world.getEntities(WORLD_ENTITY_GROUPS.PLATFORMS),
   level.platforms,
 );
@@ -32,6 +36,7 @@ console.log("CLEAN-013: Der Weltaufbau ist getrennt und vollständig.");
 
 function createLevel() {
   return {
+    structures: [{ id: "structure" }],
     platforms: [{ id: "platform" }], storyProps: [{ id: "story" }],
     collectables: [{ id: "pickup" }], hazards: [{ id: "hazard" }],
     playerStart: { x: 320, y: 640 },

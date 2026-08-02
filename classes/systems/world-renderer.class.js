@@ -1,11 +1,10 @@
 import { BackgroundRenderer } from "./background-renderer.class.js";
-import { BoundaryStructureRenderer } from
-  "./boundary-structure-renderer.class.js";
 import { CollisionDebugRenderer } from "./collision-debug-renderer.class.js";
 import { JumpChargeIndicator } from "../effects/jump-charge-indicator.class.js";
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 const DRAW_ORDER = Object.freeze([
+  WORLD_ENTITY_GROUPS.STRUCTURES,
   WORLD_ENTITY_GROUPS.DECORATIONS,
   WORLD_ENTITY_GROUPS.PLATFORMS,
   WORLD_ENTITY_GROUPS.HAZARDS,
@@ -27,7 +26,6 @@ export class WorldRenderer {
     this.context = context;
     this.viewport = config.canvas;
     this.background = new BackgroundRenderer(sections, config.canvas);
-    this.boundaryStructures = new BoundaryStructureRenderer(sections, config);
     this.collisionDebug = new CollisionDebugRenderer(config.debug);
     this.jumpChargeIndicator = new JumpChargeIndicator(config.canvas);
   }
@@ -38,7 +36,6 @@ export class WorldRenderer {
     this.context.save();
     this.context.translate(-camera.x, -camera.y);
     try {
-      this.boundaryStructures.draw(this.context, camera);
       this.#drawEntities(entityGroups, camera, world);
       world.feedback.draw(this.context);
       this.jumpChargeIndicator.draw(this.context, world.character, camera);
