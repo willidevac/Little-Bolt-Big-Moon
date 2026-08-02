@@ -122,6 +122,7 @@
           },
           {
             "id": "magnetbogen",
+            "landmark": "bridge",
             "steps": [
               { "x": 704, "gapY": 124, "type": "catch" },
               { "x": 960, "gapY": 136, "type": "narrow" },
@@ -283,6 +284,7 @@
           },
           {
             "id": "ofenbruecke",
+            "landmark": "gate",
             "steps": [
               { "x": 704, "gapY": 124, "type": "catch" },
               { "x": 960, "gapY": 136, "type": "narrow" },
@@ -423,6 +425,7 @@
           },
           {
             "id": "wartungsbalkon",
+            "landmark": "shaft",
             "steps": [
               { "x": 64, "gapY": 120, "type": "catch" },
               { "x": 64, "gapY": 136, "type": "narrow" },
@@ -574,6 +577,7 @@
           },
           {
             "id": "energiegang",
+            "landmark": "chamber",
             "steps": [
               { "x": 64, "gapY": 128, "type": "catch" },
               { "x": 64, "gapY": 128, "type": "falling" },
@@ -777,6 +781,7 @@
           },
           {
             "id": "ofenrachen",
+            "landmark": "gate",
             "steps": [
               { "x": 64, "gapY": 164, "type": "catch" },
               { "x": 64, "gapY": 176, "type": "falling" },
@@ -890,6 +895,7 @@
           },
           {
             "id": "generatorbogen",
+            "landmark": "shaft",
             "steps": [
               { "x": 320, "gapY": 176, "type": "catch" },
               { "x": 512, "gapY": 152, "type": "falling" },
@@ -1031,6 +1037,7 @@
           },
           {
             "id": "wartungslift",
+            "landmark": "shaft",
             "steps": [
               { "x": 704, "gapY": 164, "type": "catch" },
               { "x": 1024, "gapY": 168, "type": "moving" },
@@ -1194,6 +1201,7 @@
           },
           {
             "id": "offene-servicearme",
+            "landmark": "bridge",
             "steps": [
               { "x": 64, "gapY": 176, "type": "catch" },
               { "x": 64, "gapY": 152, "type": "moving" },
@@ -1347,6 +1355,7 @@
           },
           {
             "id": "countdownbruecke",
+            "landmark": "gate",
             "steps": [
               { "x": 448, "gapY": 152, "type": "path" },
               { "x": 288, "gapY": 164, "type": "moving" },
@@ -1508,6 +1517,7 @@
           },
           {
             "id": "wartungsnabe",
+            "landmark": "chamber",
             "steps": [
               { "x": 672, "gapY": 148, "type": "path" },
               { "x": 832, "gapY": 168, "type": "moving" },
@@ -1661,6 +1671,7 @@
           },
           {
             "id": "testzellen",
+            "landmark": "chamber",
             "steps": [
               { "x": 672, "gapY": 160, "type": "path" },
               { "x": 832, "gapY": 172, "type": "moving" },
@@ -1794,6 +1805,7 @@
           },
           {
             "id": "kommandozentrum",
+            "landmark": "bridge",
             "steps": [
               { "x": 416, "gapY": 148, "type": "path" },
               { "x": 576, "gapY": 168, "type": "moving" },
@@ -1955,6 +1967,7 @@
           },
           {
             "id": "roverwrack",
+            "landmark": "ruin",
             "steps": [
               { "x": 416, "gapY": 148, "type": "path" },
               { "x": 320, "gapY": 168, "type": "narrow" },
@@ -2088,6 +2101,7 @@
           },
           {
             "id": "satellitenkapelle",
+            "landmark": "ruin",
             "steps": [
               { "x": 480, "gapY": 172, "type": "path" },
               { "x": 384, "gapY": 148, "type": "narrow" },
@@ -2231,6 +2245,7 @@
           },
           {
             "id": "versorgungskammer",
+            "landmark": "chamber",
             "steps": [
               { "x": 192, "gapY": 180, "type": "path" },
               { "x": 352, "gapY": 172, "type": "narrow" },

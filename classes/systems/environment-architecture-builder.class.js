@@ -6,6 +6,8 @@ import {
   createArchitectureAtlasConfig,
   getArchitectureFrames,
 } from "../../js/config/environment-architecture-config.js";
+import { getLandmarkLayout } from
+  "../../js/config/environment-landmark-config.js";
 
 const MODULE_PATTERNS = Object.freeze([
   Object.freeze(["wall", "facade", "overhead", "tower", "arch", "corner"]),
@@ -86,7 +88,69 @@ export class EnvironmentArchitectureBuilder {
     const roomData = this.#createRoomData(
       roomIndex, roomCount, sectionIndex, platforms,
     );
+    if (room.landmark) {
+      return this.#createLandmarkStructures(
+        section, room, architecture, roomData,
+      );
+    }
     return this.#createRoomStructures(section, room, architecture, roomData);
+  }
+
+  #createLandmarkStructures(section, room, architecture, roomData) {
+    const layout = getLandmarkLayout(room.landmark);
+    return layout.map((frameId, index) => {
+      const data = this.#createLandmarkData(
+        section.id, room.id, frameId, index, architecture.frames, roomData,
+      );
+      return new EnvironmentStructure(data, architecture.atlas);
+    });
+  }
+
+  #createLandmarkData(sectionId, roomId, frameId, index, frames, roomData) {
+    const role = this.#getFrameRole(frameId);
+    const frame = frames[frameId];
+    const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
+    const position = this.#getLandmarkPosition(frameId, roomData, size);
+    const collisionBoxes = this.#getLandmarkCollisions(frameId, size);
+    return this.#createData({
+      id: `${sectionId}-${roomId}-landmark-${index + 1}`,
+      role, frame, ...position, ...size, collisionBoxes,
+    });
+  }
+
+  #getLandmarkPosition(frameId, roomData, size) {
+    if (frameId === "ledge") {
+      return this.#getLedgePosition(roomData.side, roomData.bounds, size);
+    }
+    const x = this.#getLandmarkX(frameId, roomData.side, size.width);
+    const y = this.#getLandmarkY(frameId, roomData.bounds, size.height);
+    return Object.freeze({ x, y });
+  }
+
+  #getLandmarkX(frameId, side, width) {
+    if (frameId.startsWith("left")) return 0;
+    if (frameId.startsWith("right")) return this.worldWidth - width;
+    if (frameId === "tower") {
+      return side === "left" ? 0 : this.worldWidth - width;
+    }
+    return Math.round((this.worldWidth - width) / 2);
+  }
+
+  #getLandmarkY(frameId, bounds, height) {
+    if (frameId === "overhead") return bounds.top - 24;
+    const bottomOffset = frameId === "facade" || frameId === "arch" ? 48 : 56;
+    return bounds.bottom + bottomOffset - height;
+  }
+
+  #getLandmarkCollisions(frameId, size) {
+    if (frameId === "leftWall") {
+      return [this.#createSideCollision("left", size)];
+    }
+    if (frameId === "rightWall") {
+      return [this.#createSideCollision("right", size)];
+    }
+    if (frameId === "ledge") return [this.#createLedgeCollision(size)];
+    return [];
   }
 
   #createRoomData(roomIndex, roomCount, sectionIndex, platforms) {
@@ -216,6 +280,12 @@ export class EnvironmentArchitectureBuilder {
     if (frameId === "leftWall" || frameId === "rightWall") return "wall";
     if (frameId === "tower") return "tower";
     return "corner";
+  }
+
+  #getFrameRole(frameId) {
+    if (frameId.endsWith("Wall")) return "wall";
+    if (frameId.endsWith("Corner")) return "corner";
+    return frameId;
   }
 
   #getRenderSize(frame, scale) {
