@@ -37,6 +37,10 @@
   font-size: clamp(0.8rem, 2.5vw, 1.2rem);
 }
 
+.touch-control[hidden] {
+  display: none;
+}
+
 .touch-control.is-pressed {
   border-color: var(--color-cyan);
   color: #06141e;

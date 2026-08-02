@@ -64,7 +64,8 @@ function verifyStyles() {
     assert.match(styles, new RegExp(`data-hud-icon="${name}"`));
   });
   assert.match(styles, /--hud-edge: #eadbb8/);
-  assert.match(styles, /@media \(max-width: 700px\) and \(orientation: landscape\)/);
+  assert.match(styles, /max-width: 1024px/);
+  assert.match(styles, /max-height: 600px/);
 }
 
 function verifyCredits() {

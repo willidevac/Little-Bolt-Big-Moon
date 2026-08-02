@@ -30,13 +30,14 @@ const weapons = new WeaponSystem(
 const changedWeapons = [];
 events.on((event) => {
   if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
-    changedWeapons.push(event.detail.id);
+    changedWeapons.push(event.detail);
   }
 });
 const world = new World({}, GAME_CONFIG, input, level, events);
 world.initialize();
 
 assert.equal(weapons.getCurrentWeapon().id, "repairWrench");
+assert.equal(weapons.getCurrentWeapon().isCombatUnlocked, false);
 assert.equal(weapons.switchWeapon().id, "repairWrench");
 
 const pickup = world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES)
@@ -44,6 +45,11 @@ const pickup = world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES)
 assert.ok(pickup);
 assert.equal(pickup.frameIndex, 9);
 assert.equal(pickup.getPickup().weaponId, "boltThrower");
+assert.equal(
+  pickup.anchorPlatformId,
+  "scrapyard-machine-graveyard-schrott-zickzack-3-1",
+);
+assert.ok(level.playerStart.y - pickup.y > 1_000);
 
 world.character.x = pickup.x;
 world.character.y = pickup.y;
@@ -54,7 +60,9 @@ assert.equal(collected.length, 1);
 assert.equal(collected[0].id, pickup.id);
 assert.equal(collected[0].weaponId, "boltThrower");
 assert.equal(weapons.getCurrentWeapon().id, "boltThrower");
-assert.equal(changedWeapons.at(-1), "boltThrower");
+assert.equal(weapons.getCurrentWeapon().isCombatUnlocked, true);
+assert.equal(changedWeapons.at(-1).id, "boltThrower");
+assert.equal(changedWeapons.at(-1).isCombatUnlocked, true);
 assert.equal(stats.ammo, 6);
 assert.equal(stats.applyPickups(collected), true);
 assert.equal(
@@ -71,6 +79,7 @@ assert.equal(weapons.switchWeapon().id, "boltThrower");
 stats.reset(level.playerStart.y);
 weapons.reset();
 assert.equal(weapons.getCurrentWeapon().id, "repairWrench");
+assert.equal(weapons.getCurrentWeapon().isCombatUnlocked, false);
 assert.equal(stats.ammo, 0);
 
 const visibleClasses = new Set();
@@ -86,7 +95,10 @@ const feedbackElement = {
 const feedback = new HudAnnouncement(feedbackElement);
 assert.equal(feedback.showPickup({ type: "weapon", amount: 6 }), true);
 assert.equal(feedback.showPickup({ type: "gear", amount: 1 }), false);
-assert.equal(feedbackElement.textContent, "Neue Waffe freigeschaltet!");
+assert.equal(
+  feedbackElement.textContent,
+  "Kampfsystem aktiv: Angriff und Waffenwechsel freigeschaltet!",
+);
 assert.equal(visibleClasses.has("is-visible"), true);
 feedback.destroy();
 

@@ -32,8 +32,11 @@ export class WeaponSystem {
    */
   update(deltaTimeSeconds, character) {
     this.weapons.forEach((weapon) => weapon.update(deltaTimeSeconds));
-    if (this.input.consumePress("weaponSwitch")) this.switchWeapon();
-    if (!this.input.consumePress("attack")) return null;
+    const wantsToSwitch = this.input.consumePress("weaponSwitch");
+    const wantsToAttack = this.input.consumePress("attack");
+    if (!this.isCombatUnlocked) return null;
+    if (wantsToSwitch) this.switchWeapon();
+    if (!wantsToAttack) return null;
     return this.attack(character);
   }
 
@@ -42,6 +45,7 @@ export class WeaponSystem {
    * @returns {Readonly<object>}
    */
   switchWeapon() {
+    if (!this.isCombatUnlocked) return this.getCurrentWeapon();
     const weapons = this.#getAvailableWeapons();
     this.currentWeaponIndex = (this.currentWeaponIndex + 1) % weapons.length;
     return this.#emitWeaponChange(weapons[this.currentWeaponIndex]);
@@ -53,6 +57,7 @@ export class WeaponSystem {
    * @returns {Readonly<object>|null}
    */
   attack(character) {
+    if (!this.isCombatUnlocked) return null;
     const weapon = this.#getAvailableWeapons()[this.currentWeaponIndex];
     const availableAmmo = this.runStats.getResourceAmount(weapon.ammoType);
     if (!character?.canAttack || !weapon.canAttack(availableAmmo)) return null;
@@ -66,13 +71,15 @@ export class WeaponSystem {
   reset() {
     this.unlockedWeaponIds = new Set(this.startingWeaponIds);
     this.currentWeaponIndex = 0;
+    this.isCombatUnlocked = false;
     this.weapons.forEach((weapon) => weapon.reset());
     this.#emitWeaponChange(this.#getAvailableWeapons()[0]);
   }
 
   /** @returns {Readonly<object>} The selected available weapon. */
   getCurrentWeapon() {
-    return this.#getAvailableWeapons()[this.currentWeaponIndex].getSnapshot();
+    const weapon = this.#getAvailableWeapons()[this.currentWeaponIndex];
+    return this.#createSnapshot(weapon);
   }
 
   /**
@@ -86,10 +93,8 @@ export class WeaponSystem {
     this.#validateStarterAmmo(starterAmmo);
     if (this.unlockedWeaponIds.has(weaponId)) return false;
     this.unlockedWeaponIds.add(weaponId);
-    this.runStats.applyPickups([{
-      type: weapon.ammoType,
-      amount: starterAmmo,
-    }]);
+    this.#grantStarterAmmo(weapon, starterAmmo);
+    this.isCombatUnlocked = true;
     const availableWeapons = this.#getAvailableWeapons();
     this.currentWeaponIndex = availableWeapons.indexOf(weapon);
     this.#emitWeaponChange(weapon);
@@ -127,9 +132,23 @@ export class WeaponSystem {
   }
 
   #emitWeaponChange(weapon) {
-    const snapshot = weapon.getSnapshot();
+    const snapshot = this.#createSnapshot(weapon);
     this.gameplayEvents.emit(GAMEPLAY_EVENTS.WEAPON_CHANGED, snapshot);
     return snapshot;
+  }
+
+  #createSnapshot(weapon) {
+    return Object.freeze({
+      ...weapon.getSnapshot(),
+      isCombatUnlocked: this.isCombatUnlocked,
+    });
+  }
+
+  #grantStarterAmmo(weapon, amount) {
+    this.runStats.applyPickups([{
+      type: weapon.ammoType,
+      amount,
+    }]);
   }
 
   #validateStarterAmmo(starterAmmo) {

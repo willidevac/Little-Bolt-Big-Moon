@@ -24,6 +24,7 @@ class FakeElement {
     this.listeners = new Map();
     this.classList = new FakeClassList();
     this.hidden = false;
+    this.disabled = false;
     this.parent = null;
   }
 
@@ -91,19 +92,31 @@ const touchElement = createTouchElement(document);
 root.append(touchElement);
 const keyboard = new Keyboard(new EventTarget());
 let stateListener = null;
+let gameplayListener = null;
 const game = {
   keyboard,
   state: "playing",
+  weaponSystem: {
+    getCurrentWeapon: () => ({ id: "repairWrench", isCombatUnlocked: false }),
+  },
   onStateChange(listener) {
     stateListener = listener;
     return () => { stateListener = null; };
   },
+  onGameplayEvent(listener) {
+    gameplayListener = listener;
+    return () => { gameplayListener = null; };
+  },
 };
 const controls = new TouchControls(game, root).initialize();
-const [left, right, jump] = controls.buttons;
+const [left, right, jump, attack, weaponSwitch] = controls.buttons;
 
 assert.equal(controls.buttons.length, 5);
 assert.equal(controls.element.hidden, false);
+assert.equal(attack.hidden, true);
+assert.equal(weaponSwitch.disabled, true);
+controls.handlePointerDown(createPointer(attack, 7));
+assert.equal(keyboard.attack, false);
 controls.handlePointerDown(createPointer(left, 1));
 controls.handlePointerDown(createPointer(jump, 2));
 assert.equal(keyboard.left, true);
@@ -120,6 +133,19 @@ assert.equal(controls.element.hidden, true);
 assert.equal(jump.getAttribute("aria-pressed"), "false");
 assert.equal(blocksDefault(controls, jump), true);
 assert.equal(blocksDefault(controls, root), false);
+gameplayListener({
+  type: "weaponChanged",
+  detail: { id: "boltThrower", isCombatUnlocked: true },
+});
+assert.equal(attack.hidden, false);
+assert.equal(weaponSwitch.disabled, false);
+controls.handlePointerDown(createPointer(attack, 7));
+assert.equal(keyboard.attack, true);
+gameplayListener({
+  type: "weaponChanged",
+  detail: { id: "repairWrench", isCombatUnlocked: false },
+});
+assert.equal(keyboard.attack, false);
 controls.destroy();
 
 assertKeyboardPath(keyboard);
@@ -144,6 +170,9 @@ function createTouchElement(ownerDocument) {
   ["left", "right", "jump", "attack", "weaponSwitch"].forEach((action) => {
     const button = new FakeElement("button", ownerDocument);
     button.dataset.inputAction = action;
+    if (["attack", "weaponSwitch"].includes(action)) {
+      button.dataset.combatControl = "";
+    }
     controls.append(button);
   });
   return controls;

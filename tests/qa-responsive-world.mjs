@@ -12,6 +12,7 @@ const VIEWPORTS = Object.freeze([
 const layoutCss = await fs.readFile("styles/layout.css", "utf8");
 const responsiveCss = await fs.readFile("styles/responsive.css", "utf8");
 const touchCss = await fs.readFile("styles/touch-controls.css", "utf8");
+const hudCss = await fs.readFile("styles/hud.css", "utf8");
 const ignoreDrawCommand = () => {};
 globalThis.Image = class FakeImage {
   constructor() {
@@ -53,6 +54,12 @@ function assertResponsiveCss() {
   assert.match(layoutCss, /aspect-ratio:\s*16\s*\/\s*9/);
   assert.match(responsiveCss, /max-width:\s*1024px[\s\S]*orientation:\s*portrait/);
   assert.match(touchCss, /max-width:\s*1024px[\s\S]*orientation:\s*landscape/);
+  assert.match(
+    hudCss,
+    /max-width:\s*1024px[\s\S]*max-height:\s*600px[\s\S]*orientation:\s*landscape/,
+  );
+  assert.match(hudCss, /min-height:\s*1\.85rem/);
+  assert.match(touchCss, /width:\s*clamp\(2\.75rem, 9vw, 4rem\)/);
 }
 
 function assertViewportCoverage(viewport) {

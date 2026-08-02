@@ -11,17 +11,19 @@ assert.match(
   /\.hud-score-group\s*{[\s\S]*?transform:\s*translateY\(clamp\(3rem/,
 );
 assert.doesNotMatch(hud, /\.hud-score-group\s*{[\s\S]*?margin-right/);
+assert.match(hud, /\.hud-combo\[hidden\]\s*{\s*display:\s*none/);
+assert.match(hud, /\.hud-energy\s*{[\s\S]*?align-self:\s*start/);
 assert.match(
   responsive,
-  /\.game-shell:has\(\.game-hud:not\(\[hidden\]\)\) \.utility-buttons/,
+  /max-width:\s*1024px[\s\S]*?max-height:\s*600px/,
 );
-assert.match(responsive, /\.utility-buttons\s*{\s*top:\s*0\.35rem/);
+assert.match(responsive, /\.game-shell \.utility-buttons\s*{[\s\S]*?top:\s*max\(0\.35rem/);
 assert.match(responsive, /grid-template-columns:\s*minmax\(0, 1fr\) auto/);
 assert.match(responsive, /\.hud-resources\s*{\s*grid-column:\s*1 \/ -1/);
-assert.match(responsive, /max-width:\s*480px[\s\S]*?\.utility-button/);
+assert.match(responsive, /max-height:\s*600px[\s\S]*?\.utility-button/);
 assert.match(
   responsive,
-  /max-width:\s*480px[\s\S]*?\.game-shell \.utility-buttons\s*{\s*top:\s*0\.35rem/,
+  /max-width:\s*1024px[\s\S]*?\.game-shell \.utility-buttons/,
 );
 assert.match(responsive, /\.fullscreen-button::before[\s\S]*?content:\s*"⛶"/);
 

@@ -63,6 +63,7 @@ function renderBossBar(statusBar, boss, bossName) {
 
 function renderWeaponValue(statusBar, weapon) {
   statusBar.currentWeapon = weapon;
+  statusBar.root.dataset.combatLocked = String(!weapon.isCombatUnlocked);
   statusBar.setText(
     statusBar.elements.weapon,
     translate(`weapon.${weapon.id}`),

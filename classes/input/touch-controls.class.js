@@ -1,4 +1,5 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
+import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 const TOUCH_CONTROLS_SELECTOR = "[data-touch-controls]";
 const REQUIRED_ACTIONS = Object.freeze([
@@ -32,10 +33,13 @@ export class TouchControls {
     this.input = game.keyboard;
     this.root = root;
     this.#activePointers = new Map();
-    this.element = this.#getElement(root);
-    this.buttons = [...this.element.querySelectorAll("button[data-input-action]")];
-    this.#validateButtons();
-    this.unsubscribe = null;
+    this.#collectElements(root);
+    this.unsubscribeState = null;
+    this.unsubscribeGameplay = null;
+    this.#bindHandlers();
+  }
+
+  #bindHandlers() {
     this.boundPointerDown = this.handlePointerDown.bind(this);
     this.boundPointerEnd = this.handlePointerEnd.bind(this);
     this.boundBlockDefault = this.blockControlDefault.bind(this);
@@ -46,14 +50,10 @@ export class TouchControls {
    * @returns {TouchControls}
    */
   initialize() {
-    if (this.unsubscribe) return this;
-    this.element.addEventListener("pointerdown", this.boundPointerDown);
-    POINTER_END_EVENTS.forEach((type) => {
-      this.element.addEventListener(type, this.boundPointerEnd);
-    });
-    this.element.addEventListener("contextmenu", this.boundBlockDefault);
-    this.element.addEventListener("selectstart", this.boundBlockDefault);
-    this.unsubscribe = this.game.onStateChange((state) => this.render(state));
+    if (this.unsubscribeState) return this;
+    this.#addElementListeners();
+    this.#subscribeToGame();
+    this.renderCombat(this.game.weaponSystem.getCurrentWeapon());
     this.render(this.game.state);
     return this;
   }
@@ -68,8 +68,10 @@ export class TouchControls {
     });
     this.element.removeEventListener("contextmenu", this.boundBlockDefault);
     this.element.removeEventListener("selectstart", this.boundBlockDefault);
-    this.unsubscribe?.();
-    this.unsubscribe = null;
+    this.unsubscribeState?.();
+    this.unsubscribeGameplay?.();
+    this.unsubscribeState = null;
+    this.unsubscribeGameplay = null;
     this.#releaseAllPointers();
   }
 
@@ -79,7 +81,8 @@ export class TouchControls {
    */
   handlePointerDown(event) {
     const button = this.#getButton(event.target);
-    if (!button || (event.pointerType === "mouse" && event.button !== 0)) return;
+    if (!button || button.disabled ||
+      (event.pointerType === "mouse" && event.button !== 0)) return;
     event.preventDefault();
     this.#releasePointer(event.pointerId);
     const action = button.dataset.inputAction;
@@ -117,6 +120,26 @@ export class TouchControls {
     if (!isPlaying) this.#releaseAllPointers();
   }
 
+  /** Shows combat controls only after Byte finds the first weapon. */
+  handleGameplayEvent(event) {
+    if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
+      this.renderCombat(event.detail);
+    }
+  }
+
+  /**
+   * Keeps unavailable combat buttons out of sight and keyboard focus.
+   * @param {Readonly<object>} weapon
+   */
+  renderCombat(weapon) {
+    const isUnlocked = Boolean(weapon?.isCombatUnlocked);
+    this.combatButtons.forEach((button) => {
+      button.hidden = !isUnlocked;
+      button.disabled = !isUnlocked;
+    });
+    if (!isUnlocked) this.#releaseCombatPointers();
+  }
+
   #releasePointer(pointerId) {
     const pointer = this.#activePointers.get(pointerId);
     if (!pointer) return;
@@ -128,9 +151,40 @@ export class TouchControls {
     this.#setButtonPressed(pointer.button, remainsPressed);
   }
 
+  #collectElements(root) {
+    this.element = this.#getElement(root);
+    this.buttons = [...this.element.querySelectorAll("button[data-input-action]")];
+    this.combatButtons = this.buttons.filter(({ dataset }) => {
+      return dataset.combatControl !== undefined;
+    });
+    this.#validateButtons();
+  }
+
+  #addElementListeners() {
+    this.element.addEventListener("pointerdown", this.boundPointerDown);
+    POINTER_END_EVENTS.forEach((type) => {
+      this.element.addEventListener(type, this.boundPointerEnd);
+    });
+    this.element.addEventListener("contextmenu", this.boundBlockDefault);
+    this.element.addEventListener("selectstart", this.boundBlockDefault);
+  }
+
+  #subscribeToGame() {
+    this.unsubscribeState = this.game.onStateChange((state) => this.render(state));
+    this.unsubscribeGameplay = this.game.onGameplayEvent((event) => {
+      this.handleGameplayEvent(event);
+    });
+  }
+
   #releaseAllPointers() {
     [...this.#activePointers.keys()].forEach((pointerId) => {
       this.#releasePointer(pointerId);
+    });
+  }
+
+  #releaseCombatPointers() {
+    [...this.#activePointers.entries()].forEach(([pointerId, { button }]) => {
+      if (this.combatButtons.includes(button)) this.#releasePointer(pointerId);
     });
   }
 
@@ -176,8 +230,11 @@ export class TouchControls {
 
   #validateDependencies(game, root) {
     const hasGame = typeof game?.onStateChange === "function";
+    const hasGameplay = typeof game?.onGameplayEvent === "function";
     const hasInput = typeof game?.keyboard?.setAction === "function";
-    if (hasGame && hasInput && root instanceof HTMLElement) return;
+    const hasWeapon = typeof game?.weaponSystem?.getCurrentWeapon === "function";
+    if (hasGame && hasGameplay && hasInput && hasWeapon &&
+      root instanceof HTMLElement) return;
     throw new TypeError("TouchControls benötigt Spiel, Eingabe und HTML-Wurzel.");
   }
 }

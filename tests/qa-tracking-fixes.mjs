@@ -48,15 +48,16 @@ async function assertWeaponHud() {
 function assertWeaponChangeRendering() {
   const weapon = { textContent: "" };
   const hud = {
-    elements: { weapon },
+    root: { dataset: {} }, elements: { weapon },
     setText: StatusBar.prototype.setText,
     announcement: { showPickup() {}, showBoss() {}, showPathOpened() {} },
   };
-  StatusBar.prototype.handleGameplayEvent.call(hud, {
-    type: GAMEPLAY_EVENTS.WEAPON_CHANGED,
-    detail: { id: "boltThrower", name: "Bolzenwerfer" },
-  });
+  const event = { type: GAMEPLAY_EVENTS.WEAPON_CHANGED,
+    detail: { id: "boltThrower", isCombatUnlocked: true },
+  };
+  StatusBar.prototype.handleGameplayEvent.call(hud, event);
   assert.equal(weapon.textContent, "Bolzenwerfer");
+  assert.equal(hud.root.dataset.combatLocked, "false");
 }
 
 async function assertBackgroundAssets() {

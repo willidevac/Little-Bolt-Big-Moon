@@ -14,6 +14,10 @@
   display: none;
 }
 
+.game-hud[data-combat-locked="true"] [data-hud-combat] {
+  display: none;
+}
+
 .hud-panel,
 .hud-pause-button {
   --hud-edge: #eadbb8;
@@ -43,6 +47,7 @@
 .hud-energy {
   grid-column: 1;
   grid-row: 1;
+  align-self: start;
   justify-self: start;
 }
 
@@ -75,6 +80,7 @@
 .hud-height {
   grid-column: 2;
   grid-row: 1;
+  align-self: start;
 }
 
 .hud-score-group {
@@ -83,6 +89,7 @@
   grid-row: 1;
   grid-template-columns: auto auto;
   gap: 0.5rem;
+  align-self: start;
   justify-self: end;
   transform: translateY(clamp(3rem, 5vw, 4.2rem));
 }
@@ -97,6 +104,10 @@
   grid-column: 1;
   grid-row: 2;
   border-color: var(--color-orange);
+}
+
+.hud-combo[hidden] {
+  display: none;
 }
 
 .hud-combo__value {
@@ -347,7 +358,7 @@
   line-height: 1;
 }
 
-@media (max-width: 700px) and (orientation: landscape) {
+@media (max-width: 1024px) and (max-height: 600px) and (orientation: landscape) {
   .game-hud {
     gap: 0.3rem;
     padding: 0.35rem;

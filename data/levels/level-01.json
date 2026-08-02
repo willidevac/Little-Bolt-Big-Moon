@@ -2712,10 +2712,10 @@
     {
       "id": "scrapyard-crawler-01",
       "type": "scrapCrawler",
-      "x": 992,
-      "y": 149776,
-      "patrolMinX": 896,
-      "patrolMaxX": 1216,
+      "x": 672,
+      "y": 147708,
+      "patrolMinX": 640,
+      "patrolMaxX": 832,
       "startDirection": -1
     },
     {
@@ -3082,8 +3082,8 @@
       "type": "ammo",
       "amount": 4,
       "x": 480,
-      "y": 149776,
-      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
+      "y": 147836,
+      "anchorPlatformId": "scrapyard-machine-graveyard-schrott-zickzack-3-5"
     },
     {
       "id": "scrapyard-energy-01",
@@ -3098,9 +3098,9 @@
       "type": "weapon",
       "weaponId": "boltThrower",
       "amount": 6,
-      "x": 224,
-      "y": 149776,
-      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
+      "x": 800,
+      "y": 148412,
+      "anchorPlatformId": "scrapyard-machine-graveyard-schrott-zickzack-3-1"
     },
     {
       "id": "scrapyard-boss-ammo",

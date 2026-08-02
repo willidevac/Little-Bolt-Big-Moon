@@ -105,6 +105,7 @@
         aria-label="Spielstatus"
         data-i18n-aria-label="hud.label"
         data-game-hud
+        data-combat-locked="true"
         hidden
       >
         <div class="hud-panel hud-energy">
@@ -190,7 +191,7 @@
           aria-label="Ressourcen"
           data-i18n-aria-label="hud.resources"
         >
-          <div class="hud-panel hud-resource">
+          <div class="hud-panel hud-resource" data-hud-combat>
             <span class="hud-symbol" data-hud-icon="ammo" aria-hidden="true"></span>
             <span class="hud-label" data-i18n="hud.ammo">Munition</span>
             <output
@@ -202,7 +203,7 @@
               0
             </output>
           </div>
-          <div class="hud-panel hud-resource">
+          <div class="hud-panel hud-resource" data-hud-combat>
             <span class="hud-symbol" data-hud-icon="arcCharge" aria-hidden="true"></span>
             <span class="hud-label" data-i18n="hud.arcCharges">Ladungen</span>
             <output
@@ -226,7 +227,10 @@
               0
             </output>
           </div>
-          <div class="hud-panel hud-resource hud-resource--weapon">
+          <div
+            class="hud-panel hud-resource hud-resource--weapon"
+            data-hud-combat
+          >
             <span class="hud-symbol" data-hud-icon="weapon" aria-hidden="true"></span>
             <span class="hud-label" data-i18n="hud.weapon">Waffe</span>
             <output
@@ -354,6 +358,9 @@
             data-i18n-aria-label="touch.attack"
             aria-pressed="false"
             data-input-action="attack"
+            data-combat-control
+            disabled
+            hidden
           >
             F
           </button>
@@ -364,6 +371,9 @@
             data-i18n-aria-label="touch.switchWeapon"
             aria-pressed="false"
             data-input-action="weaponSwitch"
+            data-combat-control
+            disabled
+            hidden
           >
             Q
           </button>
