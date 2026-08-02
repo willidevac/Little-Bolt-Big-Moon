@@ -12,13 +12,26 @@ const PICKUP_FRAMES = Object.freeze({
   badgeLeft: Object.freeze([[13, 3]]),
   badgeRight: Object.freeze([[14, 3]]),
 });
-const HAZARD_FRAMES = Object.freeze([[4, 16], [5, 16], [6, 16], [7, 14]]);
+const HAZARD_FRAMES = Object.freeze({
+  shockPad: Object.freeze([[4, 16], [5, 16], [6, 16], [7, 14]]),
+  retractableSpikes: Object.freeze([[0, 16], [1, 16], [2, 16], [3, 16]]),
+  pulseGate: Object.freeze([[12, 13], [13, 13], [14, 13], [15, 13]]),
+});
+const STORY_PROP_FRAMES = Object.freeze({
+  emptyLumaCradle: Object.freeze([[0, 14]]),
+  factoryDuoPoster: Object.freeze([[0, 0]]),
+  lumaCargoCrate: Object.freeze([[0, 0]]),
+  lumaBadgeHalf: Object.freeze([[14, 3]]),
+  blueSignalBeacon: Object.freeze([[0, 0], [1, 0], [2, 0], [3, 0]]),
+  poweredOffLuma: Object.freeze([[0, 8]]),
+});
 const level = createLevelOne(GAME_CONFIG.enemies);
 
 level.collectables.forEach(assertGroundedPickup);
 level.hazards.forEach(assertGroundedDanger);
+level.storyProps.forEach(assertGroundedStoryProp);
 
-console.log("FB-003: Funde und Gefahren sind geerdet und klar markiert.");
+console.log("FB-003: Funde, Gefahren und Storyobjekte stehen fest am Boden.");
 
 function assertGroundedPickup(item) {
   PICKUP_FRAMES[item.animationState].forEach(([frame, gap]) => {
@@ -27,15 +40,22 @@ function assertGroundedPickup(item) {
 }
 
 function assertGroundedDanger(hazard) {
-  HAZARD_FRAMES.forEach(([frame, gap]) => {
-    assertFrameContact(hazard, frame, gap, hazard.y + hazard.height, "#ff5b3d");
+  HAZARD_FRAMES[hazard.type].forEach(([frame, gap]) => {
+    assertFrameContact(hazard, frame, gap, hazard.anchorPlatform.y, "#ff5b3d");
   });
 }
 
-function assertFrameContact(object, frame, gap, groundY, color) {
+function assertGroundedStoryProp(prop) {
+  STORY_PROP_FRAMES[prop.type].forEach(([frame, gap]) => {
+    assertFrameContact(prop, frame, gap, prop.anchorPlatform.y);
+  });
+}
+
+function assertFrameContact(object, frame, gap, groundY, color = null) {
   object.setFrameIndex(frame);
   const draw = captureDraw(object);
-  assert.equal(draw.shadowColor, color);
+  assert.equal(object.y + object.height, groundY);
+  if (color) assert.equal(draw.shadowColor, color);
   assert.equal(draw.y + object.height - gap, groundY);
 }
 

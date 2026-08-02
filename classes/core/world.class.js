@@ -276,9 +276,11 @@ export class World {
     if (!this.character) return;
     const hazards = this.#getGroup(WORLD_ENTITY_GROUPS.HAZARDS);
     const hazard = hazards.find((candidate) => {
-      return this.#collisionManager.areOverlapping(this.character, candidate);
+      return candidate.isDangerous &&
+        this.#collisionManager.areOverlapping(this.character, candidate);
     });
-    if (hazard) this.#damageEvents.push(hazard.createHit(this.character));
+    const hit = hazard?.createHit(this.character);
+    if (hit) this.#damageEvents.push(hit);
   }
 
   #processEntities(groupOrder, callback) {

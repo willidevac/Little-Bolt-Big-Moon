@@ -47,11 +47,14 @@ function verifyPlatformConfig() {
 
 function verifyHazardConfig() {
   const source = readFileSync("classes/environment/damage-zone.class.js", "utf8");
+  const config = readFileSync("js/config/hazard-config.js", "utf8");
   assert.match(source, /"scrapyard-hazards-clean-hd\.png"/);
   assert.match(source, /frameWidth: 64,\s+frameHeight: 64,\s+frameCount: 16/);
   assert.match(source, /const DAMAGE_ZONE_RENDER_SCALE = 1/);
-  assert.match(source, /offsetX: 16,\s+offsetY: 10,\s+width: 32,\s+height: 48/);
-  assert.match(source, /startFrame: 4,\s+frameCount: 4/);
+  assert.match(config, /createCollisionBox\(16, 10, 32, 48\)/);
+  assert.match(config, /createClip\(0, 0\.45\)/);
+  assert.match(config, /createClip\(4, 0\.12\)/);
+  assert.match(config, /createClip\(12, 0\.55\)/);
 }
 
 function verifyCredits() {

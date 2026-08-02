@@ -1,5 +1,6 @@
 import { DrawableObject } from "../base/drawable-object.class.js";
 import { AnimationController } from "../systems/animation-controller.class.js";
+import { getGroundedSpriteY } from "../effects/grounded-sprite-position.js";
 
 const ANIMATION_STATE = "active";
 
@@ -19,6 +20,7 @@ export class StoryProp extends DrawableObject {
     Object.assign(this, data);
     this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
     this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
+    this.groundOffsets = visualConfig.groundOffsets;
     this.#anchorTo(anchorPlatform);
     this.loadSprite(visualConfig.sprite);
     this.animationController = this.#createAnimation(visualConfig.animation);
@@ -30,12 +32,26 @@ export class StoryProp extends DrawableObject {
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
-    if (!this.animationController) return;
-    const frame = this.animationController.update(
-      ANIMATION_STATE,
-      deltaTimeSeconds,
-    );
-    this.setFrameIndex(frame);
+    if (this.animationController) {
+      const frame = this.animationController.update(
+        ANIMATION_STATE,
+        deltaTimeSeconds,
+      );
+      this.setFrameIndex(frame);
+    }
+    const movement = this.anchorPlatform.getFrameDisplacement();
+    this.x += movement.x;
+    this.y += movement.y;
+  }
+
+  /** @returns {boolean} Whether the supporting platform is currently visible. */
+  get isAvailable() { return this.anchorPlatform.isCollidable !== false; }
+
+  /** Draws the visible bottom edge directly on the supporting platform. */
+  draw(context) {
+    if (!this.isAvailable) return;
+    const drawY = getGroundedSpriteY(this, this.groundOffsets);
+    this.drawCurrentFrame(context, this.x, drawY, this.width, this.height);
   }
 
   #createAnimation(animation) {
@@ -62,17 +78,20 @@ export class StoryProp extends DrawableObject {
     const hasScale = Number.isFinite(config?.renderScale) &&
       config.renderScale > 0;
     const hasFrame = this.#hasValidFrame(config);
-    if (hasSprite && hasScale && hasFrame) return;
+    const hasGroundOffsets = this.#hasValidGroundOffsets(config);
+    if (hasSprite && hasScale && hasFrame && hasGroundOffsets) return;
     throw new TypeError("Die Storyobjektdarstellung ist ungültig.");
   }
 
   #anchorTo(platform) {
     const matches = this.anchorPlatformId === platform?.id;
+    const hasMovement = typeof platform?.getFrameDisplacement === "function";
     const fits = this.x >= platform?.x &&
       this.x + this.width <= platform?.x + platform?.width;
-    if (!matches || !fits) {
+    if (!matches || !hasMovement || !fits) {
       throw new TypeError("Das Storyobjekt braucht eine passende Plattform.");
     }
+    this.anchorPlatform = platform;
     this.y = platform.y - this.height;
   }
 
@@ -91,6 +110,14 @@ export class StoryProp extends DrawableObject {
     return Number.isInteger(config?.frameIndex) &&
       config.frameIndex >= 0 &&
       config.frameIndex < config?.sprite?.frameCount;
+  }
+
+  #hasValidGroundOffsets(config) {
+    return Array.isArray(config?.groundOffsets) &&
+      config.groundOffsets.length === config?.sprite?.frameCount &&
+      config.groundOffsets.every((offset) => {
+        return Number.isFinite(offset) && offset >= 0;
+      });
   }
 
   #isText(value) {

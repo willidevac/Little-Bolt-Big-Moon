@@ -11,7 +11,7 @@ verifyPlatformConfig();
 verifyLevelHazards();
 verifyCredits();
 
-console.log("ART-018: 32 Clean-HD-Fabriktiles ohne neue Gefahr bestanden.");
+console.log("ART-018: Fabriktiles und verteilte Fallen bestanden.");
 
 function verifyFilesAndPng() {
   assert.equal(existsSync(RUNTIME_FILE), true);
@@ -42,8 +42,11 @@ function verifyPlatformConfig() {
 
 function verifyLevelHazards() {
   const hazards = readJson("data/levels/level-01.json").hazards;
-  assert.equal(hazards.length, 1);
+  assert.equal(hazards.length, 24);
   assert.equal(hazards[0].id, "scrapyard-electric-01");
+  assert.deepEqual(new Set(hazards.map(({ type }) => type)), new Set([
+    "shockPad", "retractableSpikes", "pulseGate",
+  ]));
 }
 
 function verifyCredits() {

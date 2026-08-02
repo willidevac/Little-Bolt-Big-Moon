@@ -106,7 +106,7 @@ function createLevelEntities(enemyConfig, platformData) {
     platforms: Object.freeze(platforms),
     collectables: Object.freeze(createCollectables(platforms)),
     storyProps: Object.freeze(createStoryProps(platforms)),
-    hazards: Object.freeze(levelData.hazards.map(createHazard)),
+    hazards: Object.freeze(createHazards(platforms)),
     combatZones: Object.freeze(levelData.combatZones.map(createCombatZone)),
     enemies: Object.freeze(createEnemies(enemyConfig)),
   };
@@ -166,8 +166,13 @@ function findPlatform(platforms, platformId) {
   return platforms.find(({ id }) => id === platformId);
 }
 
-function createHazard(hazardData) {
-  return new DamageZone(hazardData);
+function createHazards(platforms) {
+  return levelData.hazards.map((data) => createHazard(data, platforms));
+}
+
+function createHazard(hazardData, platforms) {
+  const anchor = findPlatform(platforms, hazardData.anchorPlatformId);
+  return new DamageZone(hazardData, anchor);
 }
 
 function createPlatform(platformData) {

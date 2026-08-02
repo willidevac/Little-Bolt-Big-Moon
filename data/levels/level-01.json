@@ -3063,9 +3063,188 @@
   "hazards": [
     {
       "id": "scrapyard-electric-01",
+      "type": "shockPad",
       "damage": 20,
       "x": 672,
-      "y": 149776
+      "anchorPlatformId": "scrapyard-machine-graveyard-floor-000"
+    },
+    {
+      "id": "scrapyard-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 832,
+      "phaseOffsetSeconds": 0.45,
+      "anchorPlatformId": "scrapyard-machine-graveyard-rostschlucht-6-3"
+    },
+    {
+      "id": "pressworks-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 800,
+      "anchorPlatformId": "scrapyard-pressworks-kolben-zickzack-3-5"
+    },
+    {
+      "id": "pressworks-shock-01",
+      "type": "shockPad",
+      "damage": 20,
+      "x": 992,
+      "anchorPlatformId": "scrapyard-pressworks-druckwelle-6-3"
+    },
+    {
+      "id": "signal-tower-shock-01",
+      "type": "shockPad",
+      "damage": 20,
+      "x": 800,
+      "anchorPlatformId": "scrapyard-signal-tower-pendelleitung-3-5"
+    },
+    {
+      "id": "assembly-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 928,
+      "phaseOffsetSeconds": 0.45,
+      "anchorPlatformId": "factory-assembly-krabblerhalle-3-1"
+    },
+    {
+      "id": "assembly-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 704,
+      "phaseOffsetSeconds": 0.55,
+      "anchorPlatformId": "factory-assembly-montagezangen-11-3"
+    },
+    {
+      "id": "smelter-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 224,
+      "phaseOffsetSeconds": 0.9,
+      "anchorPlatformId": "factory-smelter-schlackezickzack-3-3"
+    },
+    {
+      "id": "smelter-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 992,
+      "phaseOffsetSeconds": 1.1,
+      "anchorPlatformId": "factory-smelter-gluttakt-10-3"
+    },
+    {
+      "id": "energy-core-shock-01",
+      "type": "shockPad",
+      "damage": 20,
+      "x": 544,
+      "anchorPlatformId": "factory-energy-core-leiterkreis-3-3"
+    },
+    {
+      "id": "energy-core-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 192,
+      "phaseOffsetSeconds": 1.65,
+      "anchorPlatformId": "factory-energy-core-ueberladung-10-3"
+    },
+    {
+      "id": "supply-shafts-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 672,
+      "phaseOffsetSeconds": 0.45,
+      "anchorPlatformId": "launch-tower-supply-shafts-wartungslift-3-1"
+    },
+    {
+      "id": "outer-hull-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 704,
+      "phaseOffsetSeconds": 0.55,
+      "anchorPlatformId": "launch-tower-outer-hull-offene-servicearme-5-5"
+    },
+    {
+      "id": "launch-platform-shock-01",
+      "type": "shockPad",
+      "damage": 20,
+      "x": 672,
+      "anchorPlatformId": "launch-tower-launch-platform-startschienen-3-3"
+    },
+    {
+      "id": "launch-platform-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 608,
+      "phaseOffsetSeconds": 1.1,
+      "anchorPlatformId": "launch-tower-launch-platform-windabweiser-8-1"
+    },
+    {
+      "id": "cargo-ring-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 672,
+      "phaseOffsetSeconds": 0.9,
+      "anchorPlatformId": "space-station-cargo-ring-ringstreben-3-1"
+    },
+    {
+      "id": "research-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 480,
+      "phaseOffsetSeconds": 0.55,
+      "anchorPlatformId": "space-station-research-laserbruecke-3-1"
+    },
+    {
+      "id": "research-pulse-gate-02",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 192,
+      "phaseOffsetSeconds": 1.65,
+      "anchorPlatformId": "space-station-research-testzellen-7-5"
+    },
+    {
+      "id": "command-deck-shock-01",
+      "type": "shockPad",
+      "damage": 20,
+      "x": 64,
+      "anchorPlatformId": "space-station-command-kommunikationsschienen-3-1"
+    },
+    {
+      "id": "command-deck-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 544,
+      "phaseOffsetSeconds": 1.1,
+      "anchorPlatformId": "space-station-command-notschacht-9-5"
+    },
+    {
+      "id": "crater-field-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 512,
+      "phaseOffsetSeconds": 0.45,
+      "anchorPlatformId": "moon-crater-field-stiller-grat-7-1"
+    },
+    {
+      "id": "moon-ruins-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 480,
+      "phaseOffsetSeconds": 1.65,
+      "anchorPlatformId": "moon-ruins-echoschacht-3-5"
+    },
+    {
+      "id": "fortress-spikes-01",
+      "type": "retractableSpikes",
+      "damage": 15,
+      "x": 384,
+      "phaseOffsetSeconds": 0.9,
+      "anchorPlatformId": "moon-warden-fortress-zersplitterter-damm-3-1"
+    },
+    {
+      "id": "fortress-pulse-gate-01",
+      "type": "pulseGate",
+      "damage": 25,
+      "x": 832,
+      "phaseOffsetSeconds": 0.55,
+      "anchorPlatformId": "moon-warden-fortress-verteidigungskamm-8-1"
     }
   ],
   "collectables": [
