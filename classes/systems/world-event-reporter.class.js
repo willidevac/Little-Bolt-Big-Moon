@@ -25,7 +25,7 @@ export class WorldEventReporter {
       isOnGround: Boolean(character?.isOnGround),
       velocityY: character?.velocityY ?? 0,
       jumpChargePercent: character?.jumpChargePercent ?? 0,
-      isJumpCharging: Boolean(character?.jumpController?.isCharging),
+      isJumpCharging: Boolean(character?.isChargingJump),
       bossActive: boss.isActive,
       bossPhase: boss.phase,
     });
@@ -73,7 +73,7 @@ export class WorldEventReporter {
 
   #reportJumpCharge(character) {
     const percent = character.jumpChargePercent;
-    const isCharging = character.jumpController.isCharging;
+    const isCharging = character.isChargingJump;
     const unchanged = percent === this.before.jumpChargePercent &&
       isCharging === this.before.isJumpCharging;
     if (unchanged) return;

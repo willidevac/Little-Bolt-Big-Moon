@@ -368,7 +368,7 @@ function createCharacterState(isOnGround, velocityY) {
     isOnGround,
     velocityY,
     jumpChargePercent: 0,
-    jumpController: { isCharging: false },
+    isChargingJump: false,
   };
 }
 

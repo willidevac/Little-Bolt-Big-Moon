@@ -257,13 +257,12 @@
         ></output>
 
         <div
-          class="hud-panel hud-jump-charge"
+          class="visually-hidden"
           data-hud-jump-charge
           hidden
         >
           <span class="hud-label" data-i18n="hud.jumpPower">Sprungkraft</span>
           <div
-            class="hud-jump-charge__bar"
             role="progressbar"
             aria-label="Geladene Sprungkraft"
             data-i18n-aria-label="hud.chargedJump"
@@ -271,9 +270,7 @@
             aria-valuemax="100"
             aria-valuenow="0"
             data-hud-jump-charge-bar
-          >
-            <span class="hud-jump-charge__fill"></span>
-          </div>
+          ></div>
           <output class="hud-number" data-hud-jump-charge-value>0%</output>
         </div>
 

@@ -70,6 +70,9 @@ export class Character extends MovableObject {
     return this.#hitState.invulnerabilitySecondsRemaining;
   }
 
+  /** @returns {boolean} Whether Byte is currently charging a jump. */
+  get isChargingJump() { return this.jumpController.isCharging; }
+
   /**
    * Draws Byte mirrored when he is facing left.
    * @param {CanvasRenderingContext2D} context

@@ -46,7 +46,7 @@ function createStillCharacter() {
     isOnGround: true,
     velocityY: 0,
     jumpChargePercent: 0,
-    jumpController: { isCharging: false },
+    isChargingJump: false,
   };
 }
 

@@ -18,11 +18,9 @@ class FakeClassList {
 
 function createElement() {
   const attributes = new Map();
-  const properties = new Map();
   return {
-    attributes, properties, classList: new FakeClassList(), dataset: {},
+    attributes, classList: new FakeClassList(), dataset: {},
     hidden: true, textContent: "", offsetWidth: 100,
-    style: { setProperty: (name, value) => properties.set(name, value) },
     setAttribute: (name, value) => attributes.set(name, value),
   };
 }
@@ -68,7 +66,6 @@ dispatch(controller, GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE, {
 });
 assert.equal(elements.jumpCharge.hidden, false);
 assert.equal(elements.jumpChargeValue.textContent, "100%");
-assert.equal(elements.jumpChargeBar.properties.get("--jump-charge-percent"), "100%");
 assert.equal(elements.jumpChargeBar.attributes.get("aria-valuenow"), "100");
 
 controller.destroy();

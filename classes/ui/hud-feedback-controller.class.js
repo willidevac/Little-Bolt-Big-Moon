@@ -58,9 +58,6 @@ export class HudFeedbackController {
   #renderJumpCharge(charge) {
     const percent = Math.max(0, Math.min(100, charge.percent));
     this.elements.jumpCharge.hidden = !charge.isCharging;
-    this.elements.jumpChargeBar.style.setProperty(
-      "--jump-charge-percent", `${percent}%`,
-    );
     this.elements.jumpChargeBar.setAttribute("aria-valuenow", String(percent));
     this.#renderJumpChargeText(percent);
   }

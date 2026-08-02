@@ -1,5 +1,6 @@
 import { BackgroundRenderer } from "./background-renderer.class.js";
 import { CollisionDebugRenderer } from "./collision-debug-renderer.class.js";
+import { JumpChargeIndicator } from "../effects/jump-charge-indicator.class.js";
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 const DRAW_ORDER = Object.freeze([
@@ -25,6 +26,7 @@ export class WorldRenderer {
     this.viewport = config.canvas;
     this.background = new BackgroundRenderer(sections, config.canvas);
     this.collisionDebug = new CollisionDebugRenderer(config.debug);
+    this.jumpChargeIndicator = new JumpChargeIndicator(config.canvas);
   }
 
   /** Draws the background and game objects in their fixed order. */
@@ -35,6 +37,7 @@ export class WorldRenderer {
     try {
       this.#drawEntities(entityGroups, camera, world);
       world.feedback.draw(this.context);
+      this.jumpChargeIndicator.draw(this.context, world.character, camera);
       this.collisionDebug.draw(this.context, entityGroups);
     } finally {
       this.context.restore();
