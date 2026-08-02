@@ -851,121 +851,121 @@
           {
             "id": "kernschleuse",
             "steps": [
-              { "x": 288, "gapY": 152, "type": "path" },
-              { "x": 448, "gapY": 160, "type": "falling" },
-              { "x": 800, "gapY": 164, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "falling" },
-              { "x": 320, "gapY": 176, "type": "path" }
+              { "x": 320, "gapY": 152, "type": "catch" },
+              { "x": 512, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 164, "type": "path" },
+              { "x": 1024, "gapY": 168, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "erster-puls",
             "steps": [
-              { "x": 96, "gapY": 160, "type": "path" },
-              { "x": 256, "gapY": 164, "type": "falling" },
-              { "x": 576, "gapY": 168, "type": "path" },
-              { "x": 832, "gapY": 176, "type": "falling" },
-              { "x": 608, "gapY": 152, "type": "path" }
+              { "x": 704, "gapY": 160, "type": "catch" },
+              { "x": 1024, "gapY": 164, "type": "falling" },
+              { "x": 768, "gapY": 168, "type": "path" },
+              { "x": 512, "gapY": 176, "type": "falling" },
+              { "x": 320, "gapY": 152, "type": "catch" }
             ]
           },
           {
             "id": "leiterkreis",
             "steps": [
-              { "x": 384, "gapY": 164, "type": "path" },
-              { "x": 224, "gapY": 168, "type": "falling" },
-              { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 672, "gapY": 152, "type": "falling" },
-              { "x": 896, "gapY": 160, "type": "path" }
+              { "x": 320, "gapY": 164, "type": "catch" },
+              { "x": 320, "gapY": 168, "type": "falling" },
+              { "x": 128, "gapY": 176, "type": "path" },
+              { "x": 64, "gapY": 152, "type": "falling" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "spannungswechsel",
             "steps": [
-              { "x": 640, "gapY": 168, "type": "path" },
-              { "x": 480, "gapY": 176, "type": "falling" },
-              { "x": 128, "gapY": 152, "type": "path" },
-              { "x": 352, "gapY": 160, "type": "falling" },
-              { "x": 608, "gapY": 164, "type": "path" }
+              { "x": 64, "gapY": 168, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "falling" },
+              { "x": 64, "gapY": 152, "type": "path" },
+              { "x": 288, "gapY": 160, "type": "falling" },
+              { "x": 320, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "generatorbogen",
             "steps": [
-              { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 704, "gapY": 152, "type": "falling" },
-              { "x": 384, "gapY": 160, "type": "path" },
-              { "x": 160, "gapY": 164, "type": "falling" },
-              { "x": 416, "gapY": 168, "type": "path" }
+              { "x": 320, "gapY": 176, "type": "catch" },
+              { "x": 512, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 160, "type": "path" },
+              { "x": 1024, "gapY": 164, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "blaue-ader",
             "steps": [
-              { "x": 672, "gapY": 152, "type": "path" },
-              { "x": 832, "gapY": 164, "type": "falling" },
-              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 704, "gapY": 152, "type": "catch" },
+              { "x": 1024, "gapY": 164, "type": "falling" },
+              { "x": 768, "gapY": 176, "type": "path" },
               { "x": 448, "gapY": 160, "type": "falling" },
-              { "x": 192, "gapY": 168, "type": "path" }
+              { "x": 64, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "magnettakt",
             "steps": [
-              { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "falling" },
-              { "x": 864, "gapY": 152, "type": "path" },
+              { "x": 64, "gapY": 160, "type": "catch" },
+              { "x": 64, "gapY": 168, "type": "falling" },
+              { "x": 352, "gapY": 152, "type": "path" },
               { "x": 608, "gapY": 176, "type": "falling" },
-              { "x": 352, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "stromkreuz",
             "steps": [
-              { "x": 128, "gapY": 168, "type": "path" },
-              { "x": 288, "gapY": 152, "type": "falling" },
-              { "x": 608, "gapY": 164, "type": "path" },
-              { "x": 864, "gapY": 176, "type": "falling" },
-              { "x": 640, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 168, "type": "catch" },
+              { "x": 1024, "gapY": 152, "type": "falling" },
+              { "x": 768, "gapY": 164, "type": "path" },
+              { "x": 512, "gapY": 176, "type": "falling" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "kernpendel",
             "steps": [
-              { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 256, "gapY": 160, "type": "falling" },
-              { "x": 384, "gapY": 168, "type": "path" },
-              { "x": 640, "gapY": 152, "type": "falling" },
-              { "x": 896, "gapY": 164, "type": "path" }
+              { "x": 320, "gapY": 176, "type": "catch" },
+              { "x": 320, "gapY": 160, "type": "falling" },
+              { "x": 128, "gapY": 168, "type": "path" },
+              { "x": 64, "gapY": 152, "type": "falling" },
+              { "x": 64, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "ueberladung",
             "steps": [
-              { "x": 672, "gapY": 152, "type": "path" },
-              { "x": 512, "gapY": 176, "type": "falling" },
-              { "x": 192, "gapY": 164, "type": "path" },
-              { "x": 416, "gapY": 168, "type": "falling" },
-              { "x": 672, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 152, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "falling" },
+              { "x": 64, "gapY": 164, "type": "path" },
+              { "x": 288, "gapY": 168, "type": "falling" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "reaktorkranz",
             "steps": [
-              { "x": 928, "gapY": 164, "type": "path" },
-              { "x": 768, "gapY": 152, "type": "falling" },
-              { "x": 448, "gapY": 176, "type": "path" },
-              { "x": 224, "gapY": 160, "type": "falling" },
-              { "x": 480, "gapY": 168, "type": "path" }
+              { "x": 320, "gapY": 164, "type": "catch" },
+              { "x": 512, "gapY": 152, "type": "falling" },
+              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 1024, "gapY": 160, "type": "falling" },
+              { "x": 704, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "ausgang-zum-startturm",
             "steps": [
-              { "x": 736, "gapY": 168, "type": "path" },
-              { "x": 896, "gapY": 164, "type": "falling" },
-              { "x": 704, "gapY": 160, "type": "path" },
+              { "x": 704, "gapY": 168, "type": "catch" },
+              { "x": 1024, "gapY": 164, "type": "falling" },
+              { "x": 768, "gapY": 160, "type": "path" },
               { "x": 448, "gapY": 176, "type": "falling" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 152, "type": "catch" }
             ]
           }
         ]
@@ -2623,7 +2623,7 @@
     },
     {
       "id": "factory-patrol-spring-mine-01", "type": "springMine",
-      "x": 144, "y": 99020, "patrolMinX": 96, "patrolMaxX": 288
+      "x": 800, "y": 98688, "patrolMinX": 768, "patrolMaxX": 960
     },
     {
       "id": "factory-patrol-drone-02", "type": "droneGuard",
@@ -2631,7 +2631,7 @@
     },
     {
       "id": "factory-patrol-crawler-03", "type": "scrapCrawler",
-      "x": 176, "y": 94092, "patrolMinX": 128, "patrolMaxX": 320
+      "x": 800, "y": 93776, "patrolMinX": 768, "patrolMaxX": 960
     },
     {
       "id": "factory-patrol-drone-03", "type": "droneGuard",
@@ -3133,7 +3133,7 @@
       "id": "energy-core-shock-01",
       "type": "shockPad",
       "damage": 20,
-      "x": 544,
+      "x": 128,
       "anchorPlatformId": "factory-energy-core-leiterkreis-3-3"
     },
     {
