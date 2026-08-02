@@ -2,6 +2,8 @@ import { MovableObject } from "../base/movable-object.class.js";
 import { AnimationController } from "../systems/animation-controller.class.js";
 import { CharacterAttackState } from "../systems/character-attack-state.class.js";
 import { CharacterHitState } from "../systems/character-hit-state.class.js";
+import { CharacterMovementController } from
+  "../systems/character-movement-controller.class.js";
 import { PrecisionJumpController } from "../systems/precision-jump-controller.class.js";
 import {
   BYTE_ANIMATION_CLIPS,
@@ -11,7 +13,6 @@ import {
   BYTE_STOMP_BOX,
   CHARACTER_STATES,
 } from "../../js/config/character-visual-config.js";
-import { clamp } from "../../js/utils/math.js";
 import { resolveCharacterState } from "../../js/utils/character-state.js";
 
 const NEUTRAL_INPUT = Object.freeze({ left: false, right: false, jump: false });
@@ -50,6 +51,7 @@ export class Character extends MovableObject {
     this.jumpController = new PrecisionJumpController();
     this.attackState = new CharacterAttackState();
     this.#hitState = new CharacterHitState();
+    this.movementController = new CharacterMovementController(this);
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
   }
 
@@ -105,7 +107,7 @@ export class Character extends MovableObject {
     if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, config);
     this.#updateJumpCharge(config);
     super.update(deltaTimeSeconds, world);
-    this.#keepInsideWorld(world.config.world.width);
+    this.movementController.keepInsideWorld(world.config.world.width);
     this.#changeState(resolveCharacterState(this, config, CHARACTER_STATES));
     this.#updateAnimation(deltaTimeSeconds);
   }
@@ -223,13 +225,15 @@ export class Character extends MovableObject {
   }
 
   #handleControls(deltaTimeSeconds, input, config) {
-    if (this.isOnGround) this.#updateFacingDirection(input);
+    if (this.isOnGround) this.movementController.updateFacingDirection(input);
     const launch = this.jumpController.update(
       deltaTimeSeconds, input, this.isOnGround, config,
     );
     if (launch) return this.#launch(launch);
     if (this.jumpController.isCharging) return this.#stopGroundMovement();
-    if (this.isOnGround) this.#applyHorizontalMovement(deltaTimeSeconds, input, config);
+    if (this.isOnGround) {
+      this.movementController.updateGroundMovement(deltaTimeSeconds, input, config);
+    }
   }
 
   #prepareHurtState() {
@@ -257,37 +261,6 @@ export class Character extends MovableObject {
     this.velocityX = 0;
   }
 
-  #updateFacingDirection(input) {
-    const direction = Number(input.right) - Number(input.left);
-    if (direction !== 0) this.facingDirection = direction;
-  }
-
-  #applyHorizontalMovement(deltaTimeSeconds, input, config) {
-    const direction = Number(input.right) - Number(input.left);
-    if (direction === 0) return this.#applyHorizontalBraking(deltaTimeSeconds, config);
-    this.facingDirection = direction;
-    this.#accelerateHorizontally(deltaTimeSeconds, direction, config);
-  }
-
-  #accelerateHorizontally(deltaTimeSeconds, direction, config) {
-    const acceleration = config.horizontalAccelerationPixelsPerSecondSquared;
-    const maximumSpeed = config.maximumHorizontalSpeedPixelsPerSecond;
-    this.velocityX = clamp(
-      this.velocityX + direction * acceleration * deltaTimeSeconds,
-      -maximumSpeed,
-      maximumSpeed,
-    );
-  }
-
-  #applyHorizontalBraking(deltaTimeSeconds, config) {
-    const braking = config.horizontalBrakingPixelsPerSecondSquared * deltaTimeSeconds;
-    if (Math.abs(this.velocityX) <= braking) {
-      this.velocityX = 0;
-      return;
-    }
-    this.velocityX -= Math.sign(this.velocityX) * braking;
-  }
-
   #updateInactivity(deltaTimeSeconds, input, config) {
     if (this.#hasActivity(input, config)) {
       this.inactivitySeconds = 0;
@@ -306,12 +279,6 @@ export class Character extends MovableObject {
   #updateJumpCharge(config) {
     const ratio = this.jumpController.getChargeRatio(config);
     this.jumpChargePercent = Math.round(ratio * 100);
-  }
-
-  #keepInsideWorld(worldWidth) {
-    const previousX = this.x;
-    this.x = clamp(this.x, 0, worldWidth - this.width);
-    if (this.x !== previousX) this.velocityX = 0;
   }
 
   #changeState(nextState) {
