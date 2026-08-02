@@ -2,7 +2,7 @@ import { RunResources } from "./run-resources.class.js";
 import { RunScore } from "./run-score.class.js";
 
 /**
- * Bündelt Fortschritt, Vorräte und Wertung eines Laufs für das HUD.
+ * Groups a run's progress, resources, and score for the HUD.
  */
 export class RunStats {
   #listeners;
@@ -23,29 +23,29 @@ export class RunStats {
     this.reset(startY);
   }
 
-  /** @returns {number} Verbleibende Energie. */
+  /** @returns {number} Remaining energy. */
   get energy() { return this.#resources.energy; }
 
-  /** @returns {number} Höchstmögliche Energie. */
+  /** @returns {number} Maximum energy. */
   get maximumEnergy() { return this.#resources.maximumEnergy; }
 
-  /** @returns {number} Verbleibende Bolzen. */
+  /** @returns {number} Remaining bolts. */
   get ammo() { return this.#resources.ammo; }
 
-  /** @returns {number} Höchstmögliche Bolzen. */
+  /** @returns {number} Maximum bolts. */
   get maximumAmmo() { return this.#resources.maximumAmmo; }
 
-  /** @returns {number} Verbleibende Lichtbogenladungen. */
+  /** @returns {number} Remaining arc charges. */
   get arcCharges() { return this.#resources.arcCharges; }
 
-  /** @returns {number} Höchstmögliche Lichtbogenladungen. */
+  /** @returns {number} Maximum arc charges. */
   get maximumArcCharges() { return this.#resources.maximumArcCharges; }
 
-  /** @returns {number} Gesammelte Zahnräder. */
+  /** @returns {number} Collected gears. */
   get gears() { return this.#resources.gears; }
 
   /**
-   * Setzt alle Laufwerte auf ihren konfigurierten Anfang zurück.
+   * Resets all run values to their configured starting state.
    * @param {number} [startY=this.startY]
    */
   reset(startY = this.startY) {
@@ -58,7 +58,7 @@ export class RunStats {
   }
 
   /**
-   * Registriert eine Anzeige und liefert ihre Abmeldefunktion.
+   * Registers a view and returns its unsubscribe function.
    * @param {(snapshot: Readonly<object>) => void} listener
    * @returns {() => void}
    */
@@ -71,9 +71,9 @@ export class RunStats {
   }
 
   /**
-   * Berechnet die aktuelle Höhe aus Bytes Weltposition.
+   * Calculates the current height from Byte's world position.
    * @param {number} characterY
-   * @returns {boolean} Ob sich die angezeigten Meter geändert haben.
+   * @returns {boolean} Whether the displayed meters changed.
    */
   updateHeight(characterY) {
     if (!Number.isFinite(characterY)) return false;
@@ -87,7 +87,7 @@ export class RunStats {
   }
 
   /**
-   * Zählt nur tatsächliche Spielzeit und informiert das HUD nicht jeden Frame.
+   * Counts only actual play time and avoids notifying the HUD every frame.
    * @param {number} deltaTimeSeconds
    * @param {number} [heightLossPixels=0]
    */
@@ -98,9 +98,9 @@ export class RunStats {
   }
 
   /**
-   * Rechnet neue Funde auf Wertung und Vorräte.
+   * Applies new pickups to the score and resources.
    * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
-   * @returns {boolean} Ob sich mindestens ein sichtbarer Wert geändert hat.
+   * @returns {boolean} Whether at least one visible value changed.
    */
   applyPickups(pickups) {
     const scoreChanged = this.#score.addPickups(pickups);
@@ -111,7 +111,7 @@ export class RunStats {
   }
 
   /**
-   * Bewertet jeden besiegten Gegner anhand seiner ID genau einmal.
+   * Scores every defeated enemy exactly once based on its ID.
    * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
    * @returns {boolean}
    */
@@ -122,7 +122,7 @@ export class RunStats {
   }
 
   /**
-   * Bewertet jede abgeschlossene Kampfphase genau einmal.
+   * Scores every completed combat phase exactly once.
    * @param {ReadonlyArray<string>} phaseIds
    * @returns {boolean}
    */
@@ -133,7 +133,7 @@ export class RunStats {
   }
 
   /**
-   * Ergänzt am Laufende Restenergie und bei Sieg den Zeitbonus genau einmal.
+   * Adds remaining energy and the victory time bonus exactly once at run end.
    * @param {boolean} isVictory
    * @returns {boolean}
    */
@@ -145,7 +145,7 @@ export class RunStats {
   }
 
   /**
-   * Zieht Trefferenergie ab und liefert den verbleibenden Wert.
+   * Reduces energy after a hit and returns the remaining value.
    * @param {number} amount
    * @returns {number}
    */
@@ -159,7 +159,7 @@ export class RunStats {
   }
 
   /**
-   * Verbraucht Bolzen nur, wenn die angeforderte Menge vorhanden ist.
+   * Spends bolts only when the requested amount is available.
    * @param {number} amount
    * @returns {boolean}
    */
@@ -168,7 +168,7 @@ export class RunStats {
   }
 
   /**
-   * Verbraucht genau die Munitionsart der aktiven Waffe.
+   * Spends exactly the ammunition type used by the active weapon.
    * @param {string} type
    * @param {number} amount
    * @returns {boolean}
@@ -180,7 +180,7 @@ export class RunStats {
   }
 
   /**
-   * Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff.
+   * Returns a weapon resource without exposing mutable access.
    * @param {string} type
    * @returns {number}
    */
@@ -188,23 +188,23 @@ export class RunStats {
     return this.#resources.getAmount(type);
   }
 
-  /** @param {number} amount Vergrößerung der Batterie. */
+  /** @param {number} amount Battery capacity increase. */
   increaseMaximumEnergy(amount) {
     this.#increaseCapacity("energy", amount);
   }
 
-  /** @param {number} amount Vergrößerung des Bolzenmagazins. */
+  /** @param {number} amount Bolt magazine capacity increase. */
   increaseAmmoCapacity(amount) {
     this.#increaseCapacity("ammo", amount);
   }
 
-  /** @param {number} amount Vergrößerung des Ladungsspeichers. */
+  /** @param {number} amount Arc-charge storage increase. */
   increaseArcChargeCapacity(amount) {
     this.#increaseCapacity("arcCharge", amount);
   }
 
   /**
-   * Übernimmt Bosswerte nur bei einer sichtbaren Änderung.
+   * Applies boss values only when a visible change occurs.
    * @param {Readonly<object>} snapshot
    * @returns {boolean}
    */
@@ -218,7 +218,7 @@ export class RunStats {
     return true;
   }
 
-  /** @returns {Readonly<object>} Unveränderliche Momentaufnahme für das HUD. */
+  /** @returns {Readonly<object>} Immutable snapshot for the HUD. */
   getSnapshot() {
     return Object.freeze({
       energy: this.energy, maximumEnergy: this.maximumEnergy,

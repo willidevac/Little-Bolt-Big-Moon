@@ -6,7 +6,7 @@ const RANGED_SPREAD_RADIANS = Object.freeze({
 });
 
 /**
- * Plant MoonWarden-Angriffe und erzeugt ihre Projektilereignisse.
+ * Schedules Moon Warden attacks and creates their projectile events.
  */
 export class MoonWardenAttackController {
   #attackEvents;
@@ -16,8 +16,8 @@ export class MoonWardenAttackController {
   #source;
 
   /**
-   * @param {string} source Eindeutige Boss-ID.
-   * @param {Readonly<object>} config Angriffswerte des Bosses.
+   * @param {string} source Unique boss ID.
+   * @param {Readonly<object>} config Boss attack values.
    */
   constructor(source, config) {
     this.#validateConfig(source, config);
@@ -28,14 +28,14 @@ export class MoonWardenAttackController {
     this.#nextAttackIndex = 0;
   }
 
-  /** @returns {string} Name des nächsten Angriffsmusters. */
+  /** @returns {string} Name of the next attack pattern. */
   get nextPattern() { return ATTACK_PATTERNS[this.#nextAttackIndex]; }
 
-  /** @returns {boolean} Ob gerade ein Angriff vorbereitet wird. */
+  /** @returns {boolean} Whether an attack is currently being prepared. */
   get hasPendingAttack() { return this.#pendingAttack !== null; }
 
   /**
-   * Beginnt das nächste Angriffsmuster gegen eine feste Zielposition.
+   * Begins the next attack pattern against a fixed target position.
    * @param {Readonly<{x:number,y:number}>} target
    * @returns {Readonly<object>}
    */
@@ -51,7 +51,7 @@ export class MoonWardenAttackController {
     return this.getPendingSnapshot();
   }
 
-  /** @returns {Readonly<object>|null} Sichtbare Angriffsvorbereitung. */
+  /** @returns {Readonly<object>|null} Visible attack preparation. */
   getPendingSnapshot() {
     if (!this.#pendingAttack) return null;
     return Object.freeze({
@@ -62,12 +62,12 @@ export class MoonWardenAttackController {
   }
 
   /**
-   * Zählt die Warnzeit herunter und erzeugt fällige Angriffe.
+   * Counts down the warning time and creates attacks when they are due.
    * @param {number} deltaTimeSeconds
    * @param {number} phase
    * @param {Readonly<object>} bounds
    * @param {Readonly<{x:number,y:number}>} rangedOrigin
-   * @returns {boolean} Ob der Angriff freigegeben wurde.
+   * @returns {boolean} Whether the attack was released.
    */
   update(deltaTimeSeconds, phase, bounds, rangedOrigin) {
     if (!this.#pendingAttack) return false;
@@ -81,12 +81,12 @@ export class MoonWardenAttackController {
     return true;
   }
 
-  /** Entfernt eine unterbrochene Angriffsvorbereitung. */
+  /** Removes an interrupted attack preparation. */
   clear() {
     this.#pendingAttack = null;
   }
 
-  /** @returns {ReadonlyArray<Readonly<object>>} Noch nicht abgeholte Angriffe. */
+  /** @returns {ReadonlyArray<Readonly<object>>} Attacks not yet consumed. */
   takeEvents() {
     const events = Object.freeze([...this.#attackEvents]);
     this.#attackEvents.length = 0;

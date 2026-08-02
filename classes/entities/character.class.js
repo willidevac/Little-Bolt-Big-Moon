@@ -23,13 +23,13 @@ const ACTIVITY_ACTIONS = Object.freeze(
 export { CHARACTER_STATES } from "../../js/config/character-visual-config.js";
 
 /**
- * Spielbarer Hauptcharakter Byte.
+ * Playable main character Byte.
  */
 export class Character extends MovableObject {
   #hitState;
   #movementController;
 
-  /** Erstellt Byte in seinem neutralen Startzustand. */
+  /** Creates Byte in his neutral starting state. */
   constructor() {
     super();
     this.width = BYTE_SPRITE_CONFIG.frameWidth * BYTE_RENDER_SCALE;
@@ -56,22 +56,22 @@ export class Character extends MovableObject {
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
   }
 
-  /** @returns {boolean} Ob Byte verletzt ist. */
+  /** @returns {boolean} Whether Byte is hurt. */
   get isHurt() { return this.#hitState.isHurt; }
 
-  /** @returns {boolean} Ob Byte ausgeschaltet ist. */
+  /** @returns {boolean} Whether Byte is disabled. */
   get isDead() { return this.#hitState.isDead; }
 
-  /** @returns {number} Verbleibende Verletzungsdauer. */
+  /** @returns {number} Remaining hurt duration. */
   get hurtSecondsRemaining() { return this.#hitState.hurtSecondsRemaining; }
 
-  /** @returns {number} Verbleibende Schutzdauer. */
+  /** @returns {number} Remaining invulnerability duration. */
   get invulnerabilitySecondsRemaining() {
     return this.#hitState.invulnerabilitySecondsRemaining;
   }
 
   /**
-   * Zeichnet Byte nach links gespiegelt, wenn er nach links schaut.
+   * Draws Byte mirrored when he is facing left.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
@@ -94,7 +94,7 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Übersetzt Eingaben in Bewegung und führt danach die gemeinsame Physik aus.
+   * Translates input into movement and then applies the shared physics.
    * @param {number} deltaTimeSeconds
    * @param {import("../core/world.class.js").World} world
    */
@@ -119,8 +119,8 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Sperrt normale Steuerung, bis der spätere Kampfcode den Treffer beendet.
-   * @returns {boolean} Ob der Trefferzustand neu begonnen hat.
+   * Locks normal controls until the combat code finishes the hit reaction.
+   * @returns {boolean} Whether the hit state started anew.
    */
   enterHurtState() {
     if (!this.#hitState.enterHurt()) return false;
@@ -129,10 +129,10 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Startet Rückstoß, Trefferanimation und die kurze Schutzzeit.
+   * Starts knockback, the hurt animation, and brief invulnerability.
    * @param {number} direction
    * @param {Readonly<object>} combatConfig
-   * @returns {boolean} Ob Byte den Treffer angenommen hat.
+   * @returns {boolean} Whether Byte accepted the hit.
    */
   receiveHit(direction, combatConfig) {
     this.#validateKnockback(direction, combatConfig);
@@ -147,20 +147,20 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Zeigt, ob Byte gerade keinen weiteren Treffer annehmen darf.
+   * Indicates whether Byte is currently unable to accept another hit.
    * @returns {boolean}
    */
   get isInvulnerable() {
     return this.#hitState.isInvulnerable;
   }
 
-  /** @param {number} seconds Endliche oder dauerhafte Schutzzeit. */
+  /** @param {number} seconds Finite or permanent invulnerability duration. */
   setInvulnerability(seconds) {
     this.#hitState.setInvulnerability(seconds);
   }
 
   /**
-   * Zeigt, ob Byte gerade einen neuen Angriff beginnen darf.
+   * Indicates whether Byte may currently begin a new attack.
    * @returns {boolean}
    */
   get canAttack() {
@@ -168,7 +168,7 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Startet ausschließlich die zur Waffe passende Animation.
+   * Starts only the animation associated with the weapon.
    * @param {"melee"|"shoot"} animationState
    * @param {number} durationSeconds
    * @returns {boolean}
@@ -181,7 +181,7 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Liefert Bytes kleine Fußfläche für Treffer ausschließlich von oben.
+   * Returns Byte's small foot area used exclusively for hits from above.
    * @returns {Readonly<{x:number, y:number, width:number, height:number}>}
    */
   getStompBounds() {
@@ -194,7 +194,7 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Verlängert Coyote Time und Jump Buffer für den aktuellen Lauf.
+   * Extends coyote time and the jump buffer for the current run.
    * @param {number} amountSeconds
    */
   increaseJumpControl(amountSeconds) {
@@ -205,16 +205,16 @@ export class Character extends MovableObject {
   }
 
   /**
-   * Gibt Byte nach einem Treffer wieder für normale Zustände frei.
-   * @returns {boolean} Ob der Trefferzustand beendet wurde.
+   * Releases Byte back to normal states after a hit.
+   * @returns {boolean} Whether the hit state ended.
    */
   leaveHurtState() {
     return this.#hitState.leaveHurt();
   }
 
   /**
-   * Schaltet Byte dauerhaft aus und stoppt seine Bewegung.
-   * @returns {boolean} Ob Byte neu ausgeschaltet wurde.
+   * Permanently disables Byte and stops his movement.
+   * @returns {boolean} Whether Byte was newly disabled.
    */
   die() {
     if (!this.#hitState.die()) return false;

@@ -15,42 +15,42 @@ const SPENDABLE_TYPES = Object.freeze(["ammo", "arcCharge"]);
 const NON_RESOURCE_TYPES = Object.freeze(["weapon", "storyBadge"]);
 
 /**
- * Verwaltet Energie, Zahnräder und Munition eines einzelnen Laufs.
+ * Manages energy, gears, and ammunition for a single run.
  */
 export class RunResources {
   #config;
   #values;
   #capacities;
 
-  /** @param {Readonly<object>} config Konfigurierte Start- und Höchstwerte. */
+  /** @param {Readonly<object>} config Configured starting values and limits. */
   constructor(config) {
     this.#validateConfig(config);
     this.#config = config;
     this.reset();
   }
 
-  /** @returns {number} Verbleibende Energie. */
+  /** @returns {number} Remaining energy. */
   get energy() { return this.#values.energy; }
 
-  /** @returns {number} Höchstmögliche Energie. */
+  /** @returns {number} Maximum energy. */
   get maximumEnergy() { return this.#capacities.maximumEnergy; }
 
-  /** @returns {number} Verbleibende Bolzen. */
+  /** @returns {number} Remaining bolts. */
   get ammo() { return this.#values.ammo; }
 
-  /** @returns {number} Höchstmögliche Bolzen. */
+  /** @returns {number} Maximum bolts. */
   get maximumAmmo() { return this.#capacities.maximumAmmo; }
 
-  /** @returns {number} Verbleibende Lichtbogenladungen. */
+  /** @returns {number} Remaining arc charges. */
   get arcCharges() { return this.#values.arcCharges; }
 
-  /** @returns {number} Höchstmögliche Lichtbogenladungen. */
+  /** @returns {number} Maximum arc charges. */
   get maximumArcCharges() { return this.#capacities.maximumArcCharges; }
 
-  /** @returns {number} Gesammelte Zahnräder. */
+  /** @returns {number} Collected gears. */
   get gears() { return this.#values.gears; }
 
-  /** Setzt alle Vorräte auf ihre konfigurierten Startwerte zurück. */
+  /** Resets all resources to their configured starting values. */
   reset() {
     this.#capacities = {
       maximumEnergy: this.#config.maximumEnergy,
@@ -65,9 +65,9 @@ export class RunResources {
   }
 
   /**
-   * Rechnet neue Funde gesammelt auf die passenden Vorräte.
+   * Applies new pickups to their matching resources as a batch.
    * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
-   * @returns {boolean} Ob sich mindestens ein Vorrat geändert hat.
+   * @returns {boolean} Whether at least one resource changed.
    */
   applyPickups(pickups) {
     if (!Array.isArray(pickups)) {
@@ -79,7 +79,7 @@ export class RunResources {
   }
 
   /**
-   * Zieht Energie ab und liefert den verbleibenden Wert.
+   * Reduces energy and returns the remaining value.
    * @param {number} amount
    * @returns {number}
    */
@@ -94,10 +94,10 @@ export class RunResources {
   }
 
   /**
-   * Verbraucht eine vorhandene Munitionsart atomar.
+   * Atomically spends an available ammunition type.
    * @param {string} type
    * @param {number} amount
-   * @returns {boolean} Ob genügend Munition vorhanden war.
+   * @returns {boolean} Whether enough ammunition was available.
    */
   spend(type, amount) {
     this.#validateSpend(type, amount);
@@ -108,7 +108,7 @@ export class RunResources {
   }
 
   /**
-   * Liefert den Vorrat einer Waffe ohne veränderbaren Zugriff.
+   * Returns a weapon resource without exposing mutable access.
    * @param {string} type
    * @returns {number}
    */
@@ -120,7 +120,7 @@ export class RunResources {
   }
 
   /**
-   * Vergrößert einen Vorrat und füllt den neuen Platz sofort.
+   * Increases a resource capacity and immediately fills the new space.
    * @param {"energy"|"ammo"|"arcCharge"} type
    * @param {number} amount
    */
@@ -134,7 +134,7 @@ export class RunResources {
     );
   }
 
-  /** @returns {Readonly<object>} Unveränderliche HUD-Werte. */
+  /** @returns {Readonly<object>} Immutable HUD values. */
   getSnapshot() {
     return Object.freeze({
       energy: this.energy, maximumEnergy: this.maximumEnergy,

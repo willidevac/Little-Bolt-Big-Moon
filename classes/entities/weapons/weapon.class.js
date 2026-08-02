@@ -4,7 +4,7 @@ const PROJECTILE_KINDS = Object.freeze(["bolt", "arc"]);
 const COOLDOWN_EPSILON_SECONDS = 1e-9;
 
 /**
- * Gemeinsame Werte, Cooldown und Angriffsdaten aller Waffen.
+ * Shared values, cooldown, and attack data for all weapons.
  */
 export class Weapon {
   #startingDamage;
@@ -21,7 +21,7 @@ export class Weapon {
   }
 
   /**
-   * Verkürzt den Cooldown zeitbasiert.
+   * Reduces the cooldown over time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -36,7 +36,7 @@ export class Weapon {
   }
 
   /**
-   * Prüft Cooldown und vorhandene Munition.
+   * Checks the cooldown and available ammunition.
    * @param {number} availableAmmo
    * @returns {boolean}
    */
@@ -46,7 +46,7 @@ export class Weapon {
   }
 
   /**
-   * Erzeugt ein unveränderliches Angriffspaket für spätere Trefferprüfungen.
+   * Creates an immutable attack payload for later hit checks.
    * @param {Readonly<object>} character
    * @returns {Readonly<object>|null}
    */
@@ -58,7 +58,7 @@ export class Weapon {
   }
 
   /**
-   * Setzt ausschließlich den zeitlichen Waffenzustand zurück.
+   * Resets only the weapon's time-based state.
    */
   reset() {
     this.damage = this.#startingDamage;
@@ -67,7 +67,7 @@ export class Weapon {
   }
 
   /**
-   * Erhöht den Schaden und die sichtbare Waffenstufe.
+   * Increases damage and the visible weapon level.
    * @param {number} amount
    * @returns {Readonly<object>}
    */
@@ -81,7 +81,7 @@ export class Weapon {
   }
 
   /**
-   * Liefert die sichtbaren Waffendaten ohne veränderbaren internen Zustand.
+   * Returns visible weapon data without exposing mutable internal state.
    * @returns {Readonly<object>}
    */
   getSnapshot() {

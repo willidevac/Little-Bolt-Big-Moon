@@ -16,7 +16,7 @@ import { createRunResetController } from
   "../../js/factories/run-reset-controller.js";
 
 /**
- * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
+ * Entry point for game initialization and lifecycle management.
  */
 export class Game {
   #gameLoop;
@@ -55,38 +55,38 @@ export class Game {
     );
   }
 
-  /** @returns {boolean} Ob das Spiel gerade pausiert ist. */
+  /** @returns {boolean} Whether the game is currently paused. */
   get isPaused() { return this.#stateMachine.is(GAME_STATES.PAUSED); }
 
-  /** @returns {boolean} Ob der Animationsloop läuft. */
+  /** @returns {boolean} Whether the animation loop is running. */
   get isRunning() { return this.#gameLoop.isRunning; }
 
-  /** @returns {string} Der aktive Spielzustand. */
+  /** @returns {string} The active game state. */
   get state() { return this.#stateMachine.getState(); }
 
-  /** @returns {number} Bytes aktueller Höhenverlust in Weltpixeln. */
+  /** @returns {number} Byte's current height loss in world pixels. */
   get heightLossPixels() { return this.world.getHeightLossPixels(); }
 
   /**
-   * Informiert einen Beobachter über spätere Zustandswechsel.
+   * Notifies an observer about future state changes.
    * @param {(state: string) => void} listener
-   * @returns {() => void} Funktion zum Abmelden.
+   * @returns {() => void} Unsubscribe function.
    */
   onStateChange(listener) {
     return this.#stateMachine.onChange(listener);
   }
 
   /**
-   * Informiert einen Beobachter über sichtbare Änderungen der Laufwerte.
+   * Notifies an observer about visible changes to the run values.
    * @param {(snapshot: Readonly<object>) => void} listener
-   * @returns {() => void} Funktion zum Abmelden.
+   * @returns {() => void} Unsubscribe function.
    */
   onHudChange(listener) {
     return this.runStats.onChange(listener);
   }
 
   /**
-   * Informiert einen Beobachter über einmalige Gameplay-Ereignisse.
+   * Notifies an observer about one-time gameplay events.
    * @param {(event: Readonly<object>) => void} listener
    * @returns {() => void}
    */
@@ -95,21 +95,21 @@ export class Game {
   }
 
   /**
-   * Liefert die aktuellen Laufwerte als unveränderliche Momentaufnahme.
+   * Returns the current run values as an immutable snapshot.
    * @returns {Readonly<object>}
    */
   getHudSnapshot() {
     return this.runStats.getSnapshot();
   }
 
-  /** @returns {ReadonlyArray<Readonly<object>>} Aktuelle Verbesserungen. */
+  /** @returns {ReadonlyArray<Readonly<object>>} Current upgrades. */
   getUpgradeOptions() { return this.upgradeFlow.getOptions(); }
 
-  /** Liefert den Auslöser der aktuellen Upgrade-Auswahl. */
+  /** Returns the trigger for the current upgrade selection. */
   getUpgradeContext() { return this.upgradeFlow.getContext(); }
 
   /**
-   * Initialisiert Spielfläche und Hauptloop höchstens einmal.
+   * Initializes the game surface and main loop at most once.
    */
   initialize() {
     if (this.isInitialized) return;
@@ -121,20 +121,20 @@ export class Game {
     this.start();
   }
 
-  /** Startet genau einen neuen Animationsloop. */
+  /** Starts exactly one new animation loop. */
   start() {
     if (!this.#gameLoop.start()) return;
     this.gameCanvas.setLoopState("running");
   }
 
-  /** Stoppt den Loop und verwirft seine Zeitbasis. */
+  /** Stops the loop and discards its time base. */
   stop() {
     if (!this.#gameLoop.stop()) return;
     this.gameCanvas.setLoopState("stopped");
   }
 
   /**
-   * Pausiert Updates, ohne einen zweiten Loop zu erzeugen.
+   * Pauses updates without creating a second loop.
    */
   pause() {
     if (!this.isRunning || !this.#isPlaying()) return false;
@@ -145,7 +145,7 @@ export class Game {
   }
 
   /**
-   * Setzt den bestehenden Loop mit frischer Zeitbasis fort.
+   * Resumes the existing loop with a fresh time base.
    */
   resume() {
     if (!this.isRunning || !this.isPaused) return false;
@@ -156,7 +156,7 @@ export class Game {
   }
 
   /**
-   * Übernimmt eine angebotene Verbesserung und setzt den Lauf fort.
+   * Applies an offered upgrade and resumes the run.
    * @param {string} upgradeId
    * @returns {boolean}
    */
@@ -171,8 +171,8 @@ export class Game {
   }
 
   /**
-   * Wechselt zwischen Pause und laufendem Spiel.
-   * @returns {boolean} Aktueller Pausenzustand.
+   * Toggles between paused and active gameplay.
+   * @returns {boolean} Current pause state.
    */
   togglePause() {
     if (this.isPaused) this.resume();
@@ -181,8 +181,8 @@ export class Game {
   }
 
   /**
-   * Wechselt aus dem Home-Zustand ins Spiel.
-   * @returns {boolean} Ob sich der Zustand geändert hat.
+   * Transitions from the home state into gameplay.
+   * @returns {boolean} Whether the state changed.
    */
   play() {
     if (!this.#stateMachine.is(GAME_STATES.HOME)) return false;
@@ -192,21 +192,21 @@ export class Game {
   }
 
   /**
-   * Friert die Welt nach einem Sieg ein.
+   * Freezes the world after a victory.
    * @returns {boolean}
    */
   win() { return this.#finishGame(GAME_STATES.WON); }
 
   /**
-   * Friert die Welt nach einer Niederlage ein.
+   * Freezes the world after a defeat.
    * @returns {boolean}
    */
   lose() { return this.#finishGame(GAME_STATES.LOST); }
 
   /**
-   * Verarbeitet einen Treffer über Energie, Rückstoß und möglichen Tod.
+   * Processes a hit through energy loss, knockback, and possible death.
    * @param {Readonly<{amount:number, direction:number}>} hit
-   * @returns {boolean} Ob Byte den Treffer angenommen hat.
+   * @returns {boolean} Whether Byte accepted the hit.
    */
   takeDamage(hit) {
     if (!this.#isPlaying()) return false;
@@ -222,7 +222,7 @@ export class Game {
   }
 
   /**
-   * Kehrt in den Home-Zustand zurück.
+   * Returns to the home state.
    * @returns {boolean}
    */
   goHome() {
@@ -234,7 +234,7 @@ export class Game {
   }
 
   /**
-   * Erzeugt ohne Seitenreload eine vollständig frische Spielwelt.
+   * Creates a completely fresh game world without reloading the page.
    */
   reset() {
     this.#runResetController.restart(this.world);
@@ -251,7 +251,7 @@ export class Game {
   }
 
   /**
-   * Aktualisiert alle Spielsysteme zeitbasiert.
+   * Updates all game systems over time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -265,14 +265,14 @@ export class Game {
     this.#openWaveUpgrade();
   }
 
-  /** Zeichnet den aktuellen Spielzustand. */
+  /** Draws the current game state. */
   draw() {
     this.gameCanvas.clear();
     this.world.draw();
   }
 
   /**
-   * Erstellt eine neue Welt mit denselben festen Abhängigkeiten.
+   * Creates a new world with the same fixed dependencies.
    * @returns {World}
    */
   #createWorld() {
@@ -286,7 +286,7 @@ export class Game {
   }
 
   /**
-   * Erstellt frische Laufwerte passend zum aktuellen Levelstart.
+   * Creates fresh run values for the current level start.
    * @returns {RunStats}
    */
   #createRunStats() {
@@ -295,7 +295,7 @@ export class Game {
   }
 
   /**
-   * Wechselt den Zustand und spiegelt ihn am Canvas.
+   * Changes the state and mirrors it on the canvas.
    * @param {string} nextState
    * @returns {boolean}
    */
@@ -307,7 +307,7 @@ export class Game {
     this.canvas.dataset.gameState = state;
   }
 
-  /** Verarbeitet zustandsübergreifende Eingaben. */
+  /** Processes input that applies across game states. */
   #handleStateInput() {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
@@ -320,13 +320,13 @@ export class Game {
     this.gameCanvas.setLoopState("paused");
   }
 
-  /** @returns {boolean} Ob die Welt aktualisiert werden darf. */
+  /** @returns {boolean} Whether the world may be updated. */
   #isPlaying() {
     return this.#stateMachine.is(GAME_STATES.PLAYING);
   }
 
   /**
-   * Setzt einen Endzustand nur aus dem laufenden Spiel.
+   * Sets an end state only from active gameplay.
    * @param {string} endState
    * @returns {boolean}
    */

@@ -10,7 +10,7 @@ const TRANSITION_STOPS = Object.freeze([
 ]);
 
 /**
- * Zeichnet einzelne Raum-Panoramen und gemeinsame Parallax-Zonen.
+ * Draws individual room panoramas and shared parallax zones.
  */
 export class BackgroundRenderer {
   /**

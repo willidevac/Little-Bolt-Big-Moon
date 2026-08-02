@@ -3,7 +3,7 @@ import { MovableObject } from "../../base/movable-object.class.js";
 const LIFETIME_EPSILON_SECONDS = 1e-9;
 
 /**
- * Gemeinsame Bewegung, Animation und Flugstreifenprüfung aller Projektile.
+ * Shared movement, animation, and swept-path checks for all projectiles.
  */
 export class Projectile extends MovableObject {
   /**
@@ -22,7 +22,7 @@ export class Projectile extends MovableObject {
   }
 
   /**
-   * Bewegt und animiert das Projektil unabhängig von der Bildrate.
+   * Moves and animates the projectile independently of the frame rate.
    * @param {number} deltaTimeSeconds
    * @param {import("../../core/world.class.js").World} world
    */
@@ -37,7 +37,7 @@ export class Projectile extends MovableObject {
   }
 
   /**
-   * Spiegelt ein nach links fliegendes Projektil.
+   * Mirrors a projectile that is flying to the left.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
@@ -50,7 +50,7 @@ export class Projectile extends MovableObject {
   }
 
   /**
-   * Liefert den vollständigen Flugstreifen seit dem letzten Frame.
+   * Returns the complete swept path since the previous frame.
    * @returns {Readonly<{x:number,y:number,width:number,height:number}>}
    */
   getTravelBounds() {
@@ -67,7 +67,7 @@ export class Projectile extends MovableObject {
   }
 
   /**
-   * Erzeugt ein unveränderliches Trefferpaket.
+   * Creates an immutable hit payload.
    * @returns {Readonly<{amount:number,direction:number,source:string}>}
    */
   createHit() {
@@ -79,7 +79,7 @@ export class Projectile extends MovableObject {
   }
 
   /**
-   * Markiert das Projektil genau einmal zum Entfernen.
+   * Marks the projectile for removal exactly once.
    * @returns {boolean}
    */
   expire() {

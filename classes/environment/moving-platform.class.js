@@ -1,7 +1,7 @@
 import { Platform } from "./platform.class.js";
 
 /**
- * Bewegt eine Plattform gleichmäßig zwischen zwei waagerechten Grenzen.
+ * Moves a platform evenly between two horizontal boundaries.
  */
 export class MovingPlatform extends Platform {
   /**

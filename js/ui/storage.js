@@ -6,7 +6,7 @@ let storageController = null;
 let gameStorage = null;
 
 /**
- * Liefert den Browserspeicher, falls der Browser seinen Zugriff erlaubt.
+ * Returns browser storage when the browser permits access.
  * @returns {Storage|null}
  */
 function getBrowserStorage() {
@@ -18,7 +18,7 @@ function getBrowserStorage() {
 }
 
 /**
- * Erstellt genau einen gemeinsamen Speicher für Rekorde und Einstellungen.
+ * Creates exactly one shared storage instance for records and settings.
  * @returns {GameStorage}
  */
 export function getGameStorage() {
@@ -29,7 +29,7 @@ export function getGameStorage() {
 }
 
 /**
- * Verbindet lokale Rekorde und Einstellungen genau einmal mit dem Spiel.
+ * Connects local records and settings to the game exactly once.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @param {import("../../classes/systems/game-audio-controller.class.js").GameAudioController} audio
  * @param {HTMLElement} [root=document.body]

@@ -13,7 +13,7 @@ const DRAW_ORDER = Object.freeze([
 ]);
 const CULLING_PADDING = 128;
 
-/** Zeichnet den sichtbaren Ausschnitt der Spielwelt. */
+/** Draws the visible section of the game world. */
 export class WorldRenderer {
   /**
    * @param {CanvasRenderingContext2D} context
@@ -27,7 +27,7 @@ export class WorldRenderer {
     this.collisionDebug = new CollisionDebugRenderer(config.debug);
   }
 
-  /** Zeichnet Hintergrund und Spielobjekte in ihrer festen Reihenfolge. */
+  /** Draws the background and game objects in their fixed order. */
   draw(entityGroups, camera, world) {
     this.background.draw(this.context, camera);
     this.context.save();

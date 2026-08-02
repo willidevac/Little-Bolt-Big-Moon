@@ -1,4 +1,4 @@
-/** Überträgt neue Weltwerte vollständig und genau einmal in die Laufstatistik. */
+/** Transfers new world values completely and exactly once into the run stats. */
 export class RunStatsSynchronizer {
   #runStats;
 
@@ -8,7 +8,7 @@ export class RunStatsSynchronizer {
   }
 
   /**
-   * Synchronisiert Zeit, Höhe, Funde, Gegner und den aktiven Boss.
+   * Synchronizes time, height, pickups, enemies, and the active boss.
    * @param {number} deltaTimeSeconds
    * @param {import("../core/world.class.js").World} world
    */

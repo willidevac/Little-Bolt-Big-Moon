@@ -1,5 +1,5 @@
 /**
- * Verwaltet Verletzung, Schutzzeit und Tod des spielbaren Charakters.
+ * Manages hurt state, invulnerability, and death for the playable character.
  */
 export class CharacterHitState {
   #hurtSecondsRemaining;
@@ -7,29 +7,29 @@ export class CharacterHitState {
   #isDead;
   #isHurt;
 
-  /** Erstellt einen unverletzten und verwundbaren Startzustand. */
+  /** Creates an unharmed and vulnerable starting state. */
   constructor() {
     this.#reset();
   }
 
-  /** @returns {boolean} Ob der Charakter verletzt ist. */
+  /** @returns {boolean} Whether the character is hurt. */
   get isHurt() { return this.#isHurt; }
 
-  /** @returns {boolean} Ob der Charakter ausgeschaltet ist. */
+  /** @returns {boolean} Whether the character is disabled. */
   get isDead() { return this.#isDead; }
 
-  /** @returns {boolean} Ob ein weiterer Treffer blockiert wird. */
+  /** @returns {boolean} Whether another hit is blocked. */
   get isInvulnerable() { return this.#invulnerabilitySecondsRemaining > 0; }
 
-  /** @returns {number} Verbleibende Verletzungsdauer. */
+  /** @returns {number} Remaining hurt duration. */
   get hurtSecondsRemaining() { return this.#hurtSecondsRemaining; }
 
-  /** @returns {number} Verbleibende Schutzdauer. */
+  /** @returns {number} Remaining invulnerability duration. */
   get invulnerabilitySecondsRemaining() {
     return this.#invulnerabilitySecondsRemaining;
   }
 
-  /** @returns {boolean} Ob ein neuer Verletzungszustand begonnen hat. */
+  /** @returns {boolean} Whether a new hurt state started. */
   enterHurt() {
     if (this.#isDead || this.#isHurt) return false;
     this.#isHurt = true;
@@ -37,10 +37,10 @@ export class CharacterHitState {
   }
 
   /**
-   * Startet Verletzung und Schutzzeit nach einem gültigen Treffer.
+   * Starts the hurt state and invulnerability after a valid hit.
    * @param {number} hurtSeconds
    * @param {number} invulnerabilitySeconds
-   * @returns {boolean} Ob der Treffer angenommen wurde.
+   * @returns {boolean} Whether the hit was accepted.
    */
   receiveHit(hurtSeconds, invulnerabilitySeconds) {
     this.#validateDurations(hurtSeconds, invulnerabilitySeconds);
@@ -51,14 +51,14 @@ export class CharacterHitState {
     return true;
   }
 
-  /** @returns {boolean} Ob der Verletzungszustand beendet wurde. */
+  /** @returns {boolean} Whether the hurt state ended. */
   leaveHurt() {
     if (!this.#isHurt || this.#isDead) return false;
     this.#isHurt = false;
     return true;
   }
 
-  /** @returns {boolean} Ob der Todeszustand neu begonnen hat. */
+  /** @returns {boolean} Whether the death state started anew. */
   die() {
     if (this.#isDead) return false;
     this.#isDead = true;
@@ -69,7 +69,7 @@ export class CharacterHitState {
   }
 
   /**
-   * Aktualisiert Verletzungs- und Schutzzeit.
+   * Updates the hurt and invulnerability timers.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -84,7 +84,7 @@ export class CharacterHitState {
   }
 
   /**
-   * Setzt eine endliche oder dauerhafte Schutzzeit.
+   * Sets a finite or permanent invulnerability duration.
    * @param {number} seconds
    */
   setInvulnerability(seconds) {

@@ -4,7 +4,7 @@ import {
 } from "../core/gameplay-event-hub.class.js";
 
 /**
- * Verbindet Waffenwechsel, Angriffseingabe und Munitionsverbrauch.
+ * Connects weapon switching, attack input, and ammunition consumption.
  */
 export class WeaponSystem {
   /**
@@ -25,7 +25,7 @@ export class WeaponSystem {
   }
 
   /**
-   * Aktualisiert Cooldowns und verarbeitet neue Tastenanschläge.
+   * Updates cooldowns and processes new key presses.
    * @param {number} deltaTimeSeconds
    * @param {import("../entities/character.class.js").Character} character
    * @returns {Readonly<object>|null}
@@ -38,7 +38,7 @@ export class WeaponSystem {
   }
 
   /**
-   * Wechselt zyklisch zur nächsten verfügbaren Waffe.
+   * Cycles to the next available weapon.
    * @returns {Readonly<object>}
    */
   switchWeapon() {
@@ -48,7 +48,7 @@ export class WeaponSystem {
   }
 
   /**
-   * Führt einen erlaubten Angriff aus und startet Bytes Animation.
+   * Executes an allowed attack and starts Byte's animation.
    * @param {import("../entities/character.class.js").Character} character
    * @returns {Readonly<object>|null}
    */
@@ -62,7 +62,7 @@ export class WeaponSystem {
     return attack;
   }
 
-  /** Stellt Startwaffe, Freischaltungen und Cooldowns wieder her. */
+  /** Restores the starting weapon, unlocks, and cooldowns. */
   reset() {
     this.unlockedWeaponIds = new Set(this.startingWeaponIds);
     this.currentWeaponIndex = 0;
@@ -70,13 +70,13 @@ export class WeaponSystem {
     this.#emitWeaponChange(this.#getAvailableWeapons()[0]);
   }
 
-  /** @returns {Readonly<object>} Die ausgewählte verfügbare Waffe. */
+  /** @returns {Readonly<object>} The selected available weapon. */
   getCurrentWeapon() {
     return this.#getAvailableWeapons()[this.currentWeaponIndex].getSnapshot();
   }
 
   /**
-   * Schaltet genau eine bekannte Waffe frei und wählt sie sofort aus.
+   * Unlocks exactly one known weapon and selects it immediately.
    * @param {string} weaponId
    * @param {number} starterAmmo
    * @returns {boolean}
@@ -97,7 +97,7 @@ export class WeaponSystem {
   }
 
   /**
-   * Verstärkt genau eine bekannte Waffe.
+   * Upgrades exactly one known weapon.
    * @param {string} weaponId
    * @param {number} amount
    * @returns {Readonly<object>}

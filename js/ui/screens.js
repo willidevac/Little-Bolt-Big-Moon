@@ -5,7 +5,7 @@ let screenController = null;
 let storySequenceController = null;
 
 /**
- * Initialisiert die Bildschirmsteuerung genau einmal.
+ * Initializes screen control exactly once.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @returns {ScreenController}
  */

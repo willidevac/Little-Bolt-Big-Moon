@@ -16,7 +16,7 @@ const SELECTORS = Object.freeze({
   biome: "[data-review-biome]",
 });
 
-/** Schaltet den versteckten, nicht wertbaren Mentor-Review-Modus frei. */
+/** Unlocks the hidden, unscored mentor review mode. */
 export class ReviewModeController {
   /**
    * @param {import("../core/game.class.js").Game} game
@@ -58,7 +58,7 @@ export class ReviewModeController {
     this.biomeControl = this.#getElement(SELECTORS.biome);
   }
 
-  /** Verbindet die versteckte Freischaltung genau einmal. */
+  /** Binds the hidden unlock flow exactly once. */
   initialize() {
     this.version.textContent = this.config.versionLabel;
     this.version.addEventListener("click", this.boundVersionClick);
@@ -73,7 +73,7 @@ export class ReviewModeController {
     return this;
   }
 
-  /** Zählt Aktivierungen der unauffälligen Versionsnummer. */
+  /** Counts activations of the unobtrusive version number. */
   handleVersionClick() {
     this.versionClicks += 1;
     if (this.versionClicks < this.config.requiredVersionClicks) return;
@@ -97,7 +97,7 @@ export class ReviewModeController {
     this.code.select();
   }
 
-  /** Beginnt einen nicht wertbaren Review-Lauf. */
+  /** Begins an unscored review run. */
   start() {
     if (this.flight) return false;
     this.game.reset();
@@ -108,7 +108,7 @@ export class ReviewModeController {
     return true;
   }
 
-  /** Beendet den Modus und kehrt ohne Seitenreload ins Hauptmenü zurück. */
+  /** Ends the mode and returns to the main menu without reloading the page. */
   exit() {
     this.storage?.removeItem(this.config.storageKey);
     delete this.root.dataset.reviewMode;
@@ -118,12 +118,12 @@ export class ReviewModeController {
     this.game.goHome();
   }
 
-  /** Springt über die Auswahl direkt an den Beginn einer Landschaft. */
+  /** Jumps directly to the beginning of a selected biome. */
   handleBiomeChange() {
     this.flight?.teleportTo(Number(this.biomeControl.value));
   }
 
-  /** Verbindet den Review-Flug nach einem Neustart mit der frischen Welt. */
+  /** Reconnects review flight to the fresh world after a restart. */
   handleStateChange(state) {
     if (!this.#isActive() || state !== GAME_STATES.PLAYING) return;
     if (this.flight?.character === this.game.world.character) return;
@@ -131,7 +131,7 @@ export class ReviewModeController {
     this.syncBiomeControl();
   }
 
-  /** Hält die sichtbare Landschaftsauswahl beim freien Flug aktuell. */
+  /** Keeps the visible biome selection current during free flight. */
   syncBiomeControl() {
     if (!this.#isActive()) return;
     this.biomeControl.value = String(this.#getCurrentTargetIndex());

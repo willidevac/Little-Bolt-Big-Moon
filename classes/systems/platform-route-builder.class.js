@@ -9,7 +9,7 @@ import {
 } from "../../js/config/platform-route-rules.js";
 
 /**
- * Baut aus kleinen Gebietsrezepten eine feste, vollständig erreichbare Route.
+ * Builds a fixed, fully reachable route from small area recipes.
  */
 export class PlatformRouteBuilder {
   /** @param {number} worldWidth */

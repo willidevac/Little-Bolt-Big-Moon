@@ -2,7 +2,7 @@ import { RunResetController } from
   "../../classes/systems/run-reset-controller.class.js";
 
 /**
- * Verdrahtet den Run-Neustart mit den festen Systemen eines Spiels.
+ * Connects run reset to a game's fixed systems.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @param {() => import("../../classes/core/world.class.js").World} createWorld
  * @returns {RunResetController}

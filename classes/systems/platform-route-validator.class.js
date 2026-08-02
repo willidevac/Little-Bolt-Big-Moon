@@ -14,7 +14,7 @@ const MINIMUM_ROOMS_PER_BIOME = 5;
 const MINIMUM_ROOM_STEPS = 3;
 const MAXIMUM_ROOM_STEPS = 6;
 
-/** Prüft Gebietsrezepte, bevor daraus Plattformen entstehen. */
+/** Validates area recipes before platforms are created from them. */
 export class PlatformRouteValidator {
   /** @param {number} worldWidth */
   constructor(worldWidth) {

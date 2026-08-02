@@ -2,7 +2,7 @@ const HURTBOX_COLOR = "#ff4d6d";
 const STOMP_BOX_COLOR = "#35d5d3";
 
 /**
- * Zeichnet präzise Kollisionsflächen nur im aktivierten Debugmodus.
+ * Draws precise collision areas only when debug mode is enabled.
  */
 export class CollisionDebugRenderer {
   /**
@@ -13,7 +13,7 @@ export class CollisionDebugRenderer {
   }
 
   /**
-   * Zeichnet Körper- und Stompflächen aller sichtbaren Weltobjekte.
+   * Draws body and stomp areas for all visible world objects.
    * @param {CanvasRenderingContext2D} context
    * @param {ReadonlyMap<string, ReadonlyArray<object>>} entityGroups
    */

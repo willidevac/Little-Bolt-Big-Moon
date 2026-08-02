@@ -25,7 +25,7 @@ const ELECTRIC_ANIMATION = Object.freeze({
 });
 
 /**
- * Eine sichtbare Umweltgefahr, die bei Berührung einen Treffer erzeugt.
+ * A visible environmental hazard that creates a hit on contact.
  */
 export class DamageZone extends DrawableObject {
   /**
@@ -47,7 +47,7 @@ export class DamageZone extends DrawableObject {
   }
 
   /**
-   * Animiert die elektrische Gefahr zeitbasiert.
+   * Animates the electrical hazard over time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -56,7 +56,7 @@ export class DamageZone extends DrawableObject {
   }
 
   /**
-   * Erzeugt einen Treffer, der Byte von der Gefahrenmitte wegstößt.
+   * Creates a hit that knocks Byte away from the center of the hazard.
    * @param {Readonly<object>} target
    * @returns {Readonly<{amount:number, direction:number}>}
    */

@@ -4,7 +4,7 @@ import { AnimationController } from "../systems/animation-controller.class.js";
 const ANIMATION_STATE = "active";
 
 /**
- * Zeigt einen nicht kollidierenden Hinweis der wortlosen Umweltgeschichte.
+ * Displays a non-colliding clue for the wordless environmental story.
  */
 export class StoryProp extends DrawableObject {
   /**
@@ -26,7 +26,7 @@ export class StoryProp extends DrawableObject {
   }
 
   /**
-   * Bewegt ausschließlich vorhandene Hinweisanimationen zeitbasiert weiter.
+   * Advances only existing clue animations over time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {

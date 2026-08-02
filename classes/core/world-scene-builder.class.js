@@ -7,15 +7,15 @@ const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
   x: 96, y: 560, width: 512, height: 32,
 });
 
-/** Befüllt eine neue Welt mit Levelobjekten und einer sicheren Startszene. */
+/** Populates a new world with level objects and a safe starting scene. */
 export class WorldSceneBuilder {
-  /** @param {Readonly<object>|null} level */
+  /** @param {Readonly<object>|null} level Level definition to populate. */
   constructor(level) {
     this.level = level;
   }
 
   /**
-   * Fügt alle Startobjekte in der benötigten Reihenfolge ein.
+   * Adds all starting objects in the required order.
    * @param {import("./world.class.js").World} world
    * @returns {Character|object}
    */

@@ -5,7 +5,7 @@ export const COMBAT_ZONE_STATES = Object.freeze({
 });
 
 /**
- * Unsichtbarer Auslöser für eine überspringbare Gegnergruppe.
+ * Invisible trigger for an optional enemy encounter.
  */
 export class CombatZone {
   #state;
@@ -26,7 +26,7 @@ export class CombatZone {
   }
 
   /**
-   * Startet die Begegnung höchstens einmal.
+   * Starts the encounter at most once.
    * @returns {boolean}
    */
   activate() {
@@ -36,7 +36,7 @@ export class CombatZone {
   }
 
   /**
-   * Schließt die aktive Begegnung dauerhaft ab.
+   * Permanently completes the active encounter.
    * @returns {boolean}
    */
   complete() {
@@ -46,7 +46,7 @@ export class CombatZone {
   }
 
   /**
-   * Prüft, ob die Mitte eines Ziels den wartenden Bereich betreten hat.
+   * Checks whether the center of a target entered the waiting area.
    * @param {Readonly<object>} target
    * @returns {boolean}
    */
@@ -61,7 +61,7 @@ export class CombatZone {
   }
 
   /**
-   * Liefert einen unveränderlichen Stand für Tests und Upgrade-Auslösung.
+   * Returns an immutable state for tests and upgrade triggers.
    * @returns {Readonly<object>}
    */
   getSnapshot() {
@@ -74,7 +74,7 @@ export class CombatZone {
   }
 
   /**
-   * Liefert den aktuellen Zustand ohne Änderungszugriff.
+   * Returns the current state without mutation access.
    * @returns {string}
    */
   get state() {

@@ -3,7 +3,7 @@ import { StatusBar } from "../../classes/ui/status-bar.class.js";
 let statusBar = null;
 
 /**
- * Initialisiert das Spiel-HUD genau einmal.
+ * Initializes the game HUD exactly once.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @returns {StatusBar}
  */

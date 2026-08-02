@@ -35,7 +35,7 @@ const ALLOWED_TRANSITIONS = Object.freeze({
 });
 
 /**
- * Bewacht den aktuellen Spielzustand und erlaubt nur sinnvolle Wechsel.
+ * Guards the current game state and permits only valid transitions.
  */
 export class GameStateMachine {
   #currentState;
@@ -51,7 +51,7 @@ export class GameStateMachine {
   }
 
   /**
-   * Prüft, ob ein bestimmter Zustand aktiv ist.
+   * Checks whether a specific state is active.
    * @param {string} state
    * @returns {boolean}
    */
@@ -60,7 +60,7 @@ export class GameStateMachine {
   }
 
   /**
-   * Informiert einen Beobachter über spätere Zustandswechsel.
+   * Notifies an observer about future state changes.
    * @param {(state:string) => void} listener
    * @returns {() => void}
    */
@@ -73,9 +73,9 @@ export class GameStateMachine {
   }
 
   /**
-   * Wechselt in einen erlaubten Zustand.
+   * Transitions to an allowed state.
    * @param {string} nextState
-   * @returns {boolean} Ob sich der Zustand geändert hat.
+   * @returns {boolean} Whether the state changed.
    */
   transitionTo(nextState) {
     this.#validateState(nextState);
@@ -87,7 +87,7 @@ export class GameStateMachine {
   }
 
   /**
-   * Liefert den aktuellen Zustand.
+   * Returns the current state.
    * @returns {string}
    */
   getState() {
@@ -99,7 +99,7 @@ export class GameStateMachine {
   }
 
   /**
-   * Prüft, ob ein Zustand zum Zustandsmodell gehört.
+   * Checks whether a state belongs to the state model.
    * @param {string} state
    */
   #validateState(state) {
@@ -108,7 +108,7 @@ export class GameStateMachine {
   }
 
   /**
-   * Verhindert unlogische Sprünge zwischen Zuständen.
+   * Prevents invalid transitions between states.
    * @param {string} nextState
    */
   #validateTransition(nextState) {

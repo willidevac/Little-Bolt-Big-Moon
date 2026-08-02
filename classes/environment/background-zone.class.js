@@ -3,7 +3,7 @@ import { BackgroundLayer } from "./background-layer.class.js";
 const SEAM_OVERLAP_PIXELS = 4;
 
 /**
- * Verbindet die Parallax-Ebenen eines zusammenhängenden Höhenabschnitts.
+ * Combines the parallax layers of a continuous vertical section.
  */
 export class BackgroundZone {
   /**
@@ -20,7 +20,7 @@ export class BackgroundZone {
   }
 
   /**
-   * Zeichnet nur den sichtbaren Teil und überlappt Nachbarzonen um vier Pixel.
+   * Draws only the visible area and overlaps neighboring zones by four pixels.
    * @param {CanvasRenderingContext2D} context
    * @param {{y:number}} camera
    * @param {Readonly<{width:number, height:number}>} viewport

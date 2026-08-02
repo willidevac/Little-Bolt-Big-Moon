@@ -28,7 +28,7 @@ const END_SCREEN_CONTENT = Object.freeze({
 });
 
 /**
- * Liefert ein benötigtes DOM-Element oder bricht verständlich ab.
+ * Returns a required DOM element or fails with a clear error.
  * @param {ParentNode} root
  * @param {string} selector
  * @returns {HTMLElement}
@@ -40,7 +40,7 @@ function getRequiredElement(root, selector) {
 }
 
 /**
- * Verbindet statische Menüs mit dem zentralen Spielzustand.
+ * Connects static menus to the central game state.
  */
 export class ScreenController {
   /**
@@ -100,7 +100,7 @@ export class ScreenController {
   }
 
   /**
-   * Bindet alle UI-Ereignisse höchstens einmal.
+   * Binds all UI events at most once.
    * @returns {ScreenController}
    */
   initialize() {
@@ -116,7 +116,7 @@ export class ScreenController {
   }
 
   /**
-   * Entfernt die von diesem Controller gesetzten Verbindungen.
+   * Removes the bindings created by this controller.
    */
   destroy() {
     this.dialogController.close(false);
@@ -129,7 +129,7 @@ export class ScreenController {
   }
 
   /**
-   * Führt die Aktion eines angeklickten UI-Buttons aus.
+   * Executes the action of a clicked UI button.
    * @param {MouseEvent} event
    */
   handleClick(event) {
@@ -143,7 +143,7 @@ export class ScreenController {
   }
 
   /**
-   * Zeigt genau den Screen des aktuellen Game States.
+   * Displays exactly the screen for the current game state.
    * @param {string} state
    * @param {boolean} [moveFocus=true]
    */
@@ -176,7 +176,7 @@ export class ScreenController {
   }
 
   /**
-   * Erstellt die zentrale Zuordnung von Button zu Spielaktion.
+   * Creates the central mapping from buttons to game actions.
    * @returns {Readonly<Record<string, () => void>>}
    */
   createActions() {
@@ -194,7 +194,7 @@ export class ScreenController {
     });
   }
 
-  /** Beginnt den Lauf nach der kurzen wortlosen Startsequenz. */
+  /** Begins the run after the short wordless opening sequence. */
   startRun() {
     if (this.storySequences) return this.storySequences.playIntro();
     this.game.reset();
@@ -202,7 +202,7 @@ export class ScreenController {
   }
 
   /**
-   * Fokussiert den wichtigsten Button des sichtbaren Screens.
+   * Focuses the most important button on the visible screen.
    * @param {string} state
    */
   focusScreen(state) {
@@ -225,7 +225,7 @@ export class ScreenController {
   }
 
   /**
-   * Baut die drei Upgrade-Schaltflächen aus sicheren DOM-Knoten neu auf.
+   * Rebuilds the three upgrade buttons from safe DOM nodes.
    */
   #renderUpgradeOptions() {
     this.#renderUpgradeContext();

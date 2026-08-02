@@ -1,5 +1,5 @@
 /**
- * Koordiniert einen Treffer zwischen Quelle, Byte und Laufenergie.
+ * Coordinates a hit between its source, Byte, and the run's energy.
  */
 export class CombatSystem {
   /**
@@ -11,11 +11,11 @@ export class CombatSystem {
   }
 
   /**
-   * Verarbeitet genau einen gültigen Treffer.
+   * Processes exactly one valid hit.
    * @param {Readonly<{amount:number, direction:number}>} hit
    * @param {import("../entities/character.class.js").Character} character
    * @param {import("./run-stats.class.js").RunStats} runStats
-   * @returns {boolean} Ob Byte den Treffer angenommen hat.
+   * @returns {boolean} Whether Byte accepted the hit.
    */
   applyHit(hit, character, runStats) {
     this.#validateHit(hit);
@@ -26,8 +26,8 @@ export class CombatSystem {
   }
 
   /**
-   * Verringert Bytes Rückstoß für den aktuellen Lauf.
-   * @param {number} amount Anteil zwischen null und eins.
+   * Reduces Byte's knockback for the current run.
+   * @param {number} amount Fraction between zero and one.
    */
   increaseKnockbackResistance(amount) {
     if (!Number.isFinite(amount) || amount <= 0 || amount >= 1) {
@@ -37,7 +37,7 @@ export class CombatSystem {
   }
 
   /**
-   * Entfernt alle laufbezogenen Kampfverbesserungen.
+   * Removes all run-specific combat upgrades.
    */
   reset() {
     this.knockbackMultiplier = 1;

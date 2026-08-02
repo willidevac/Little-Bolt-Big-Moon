@@ -7,7 +7,7 @@ const PICKUP_TYPES = Object.freeze([
   "gear", "energy", "ammo", "arcCharge", "storyBadge",
 ]);
 
-/** Zeigt wichtige Spielmeldungen kurz und barrierefrei über der Welt an. */
+/** Briefly displays important gameplay messages above the world accessibly. */
 export class HudAnnouncement {
   /** @param {HTMLElement} element */
   constructor(element) {
@@ -19,7 +19,7 @@ export class HudAnnouncement {
     this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
-  /** Zeigt genau eine verständliche Meldung für einen neuen Fund. */
+  /** Displays exactly one clear message for a new pickup. */
   showPickup(pickup) {
     const priority = pickup?.type === "weapon" ? 2 : 1;
     return this.#show(
@@ -27,7 +27,7 @@ export class HudAnnouncement {
     );
   }
 
-  /** Kündigt einen Boss mit seinem übersetzbaren Namen an. */
+  /** Announces a boss using its translatable name. */
   showBoss(nameKey) {
     if (typeof nameKey !== "string" || !nameKey) {
       throw new TypeError("Der Bossname für die HUD-Mitteilung fehlt.");
@@ -37,12 +37,12 @@ export class HudAnnouncement {
     );
   }
 
-  /** Meldet einen nach dem Bosskampf freigegebenen Aufstieg. */
+  /** Announces a path upward unlocked after a boss fight. */
   showPathOpened() {
     return this.#show({ kind: "path" }, 4, PATH_DURATION_MILLISECONDS);
   }
 
-  /** Leert Meldung und Zeitsteuerung vollständig. */
+  /** Completely clears the message and its timer. */
   clear() {
     clearTimeout(this.timeoutId);
     this.timeoutId = null;
@@ -53,7 +53,7 @@ export class HudAnnouncement {
     this.element.textContent = "";
   }
 
-  /** Stoppt eine noch wartende Meldung. */
+  /** Stops a pending message. */
   destroy() {
     this.clear();
     this.unsubscribeLanguage();

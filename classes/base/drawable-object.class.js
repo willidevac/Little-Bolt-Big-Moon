@@ -5,10 +5,10 @@ const PLACEHOLDER_COLORS = Object.freeze({
 });
 
 /**
- * Gemeinsame Grundlage für alle im Canvas gezeichneten Objekte.
+ * Shared foundation for all objects drawn on the canvas.
  */
 export class DrawableObject {
-  /** Erstellt ein noch unsichtbares, neutrales Zeichenobjekt. */
+  /** Creates a neutral drawable object that is initially invisible. */
   constructor() {
     this.x = 0;
     this.y = 0;
@@ -22,9 +22,9 @@ export class DrawableObject {
   }
 
   /**
-   * Startet das Laden eines konfigurierten Spritesheets.
+   * Starts loading a configured sprite sheet.
    * @param {{source:string, frameWidth:number, frameHeight:number, frameCount:number}} config
-   * @returns {boolean} Ob der Ladevorgang gestartet wurde.
+   * @returns {boolean} Whether the loading process was started.
    */
   loadSprite(config) {
     if (!this.#isValidSpriteConfig(config)) {
@@ -39,7 +39,7 @@ export class DrawableObject {
   }
 
   /**
-   * Wählt einen gültigen Frame aus dem geladenen Spritesheet.
+   * Selects a valid frame from the loaded sprite sheet.
    * @param {number} frameIndex
    */
   setFrameIndex(frameIndex) {
@@ -51,7 +51,7 @@ export class DrawableObject {
   }
 
   /**
-   * Legt eine präzise Kollisionsfläche innerhalb des sichtbaren Bildes fest.
+   * Defines a precise collision area within the visible image.
    * @param {{offsetX:number, offsetY:number, width:number, height:number}} box
    */
   setCollisionBox(box) {
@@ -62,7 +62,7 @@ export class DrawableObject {
   }
 
   /**
-   * Liefert die Kollisionsfläche in absoluten Weltkoordinaten.
+   * Returns the collision area in absolute world coordinates.
    * @returns {Readonly<{x:number, y:number, width:number, height:number}>}
    */
   getCollisionBounds() {
@@ -81,7 +81,7 @@ export class DrawableObject {
   }
 
   /**
-   * Zeichnet den aktuellen Spriteframe oder einen sicheren Platzhalter.
+   * Draws the current sprite frame or a safe placeholder.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
@@ -89,7 +89,7 @@ export class DrawableObject {
   }
 
   /**
-   * Zeichnet den aktuellen Frame in einen frei gewählten Zielbereich.
+   * Draws the current frame into a freely selected destination area.
    * @param {CanvasRenderingContext2D} context
    * @param {number} x
    * @param {number} y

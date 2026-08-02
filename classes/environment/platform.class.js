@@ -1,7 +1,7 @@
 import { DrawableObject } from "../base/drawable-object.class.js";
 
 /**
- * Kollisionsfläche für statische und bewegliche Plattformen.
+ * Collision surface for static and moving platforms.
  */
 export class Platform extends DrawableObject {
   /**
@@ -30,7 +30,7 @@ export class Platform extends DrawableObject {
   }
 
   /**
-   * Speichert die echte Bewegung dieser Plattform im aktuellen Bild.
+   * Stores this platform's actual movement during the current frame.
    * @param {number} x
    * @param {number} y
    */
@@ -51,7 +51,7 @@ export class Platform extends DrawableObject {
   }
 
   /**
-   * Reagiert optional darauf, dass ein bewegliches Objekt gelandet ist.
+   * Optionally reacts when a movable object lands.
    * @returns {boolean}
    */
   onLanded() {
@@ -59,7 +59,7 @@ export class Platform extends DrawableObject {
   }
 
   /**
-   * Zeichnet jedes Plattformfeld ohne das Spritesheet zu verzerren.
+   * Draws every platform tile without distorting the sprite sheet.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {

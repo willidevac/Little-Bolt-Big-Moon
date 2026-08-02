@@ -27,7 +27,7 @@ const UPDATE_ORDER = Object.freeze([
 const NON_PLATFORM_UPDATE_ORDER = Object.freeze(UPDATE_ORDER.slice(1));
 
 /**
- * Koordiniert aktive Spielobjekte und die Systeme eines Weltframes.
+ * Coordinates active game objects and the systems of a world frame.
  */
 export class World {
   #entityRegistry;
@@ -86,7 +86,7 @@ export class World {
     this.#platformMotionSystem = new PlatformMotionSystem();
   }
 
-  /** @returns {boolean} Ob die Welt neu aktiviert wurde. */
+  /** @returns {boolean} Whether the world was newly activated. */
   initialize() {
     if (this.isInitialized) return false;
     this.character = this.#sceneBuilder.build(this);
@@ -97,32 +97,32 @@ export class World {
   }
 
   /**
-   * Fügt ein Spielobjekt einer geprüften Gruppe hinzu.
+   * Adds a game object to a validated group.
    * @param {string} groupName
    * @param {object} entity
-   * @returns {boolean} Ob das Objekt neu vorgemerkt oder eingefügt wurde.
+   * @returns {boolean} Whether the object was newly queued or added.
    */
   addEntity(groupName, entity) {
     return this.#entityRegistry.add(groupName, entity);
   }
 
   /**
-   * Entfernt ein Spielobjekt, ohne laufende Iterationen zu verändern.
+   * Removes a game object without mutating active iterations.
    * @param {string} groupName
    * @param {object} entity
-   * @returns {boolean} Ob das Objekt vorhanden oder vorgemerkt war.
+   * @returns {boolean} Whether the object was active or queued.
    */
   removeEntity(groupName, entity) {
     return this.#entityRegistry.remove(groupName, entity);
   }
 
-  /** @returns {ReadonlyArray<object>} Momentaufnahme einer Entitätsgruppe. */
+  /** @returns {ReadonlyArray<object>} Snapshot of an entity group. */
   getEntities(groupName) {
     return this.#entityRegistry.getSnapshot(groupName);
   }
 
   /**
-   * Aktualisiert alle dafür geeigneten Entitäten in fester Reihenfolge.
+   * Updates all eligible entities in a fixed order.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -160,19 +160,19 @@ export class World {
     this.camera.update(this.character, deltaTimeSeconds);
   }
 
-  /** @returns {number} Die seit dem höchsten Punkt verlorene Höhe. */
+  /** @returns {number} Height lost since reaching the highest point. */
   getHeightLossPixels() {
     return this.#fallTracker.getHeightLossPixels();
   }
 
-  /** @returns {boolean} Ob Byte die untere Todeszone erreicht hat. */
+  /** @returns {boolean} Whether Byte reached the lower death zone. */
   isCharacterInDeathZone() {
     if (!this.character) return false;
     return this.#fallTracker.hasReachedDeathZone(this.character);
   }
 
   /**
-   * Wandelt einen neuen Fernkampfangriff in ein Projektil um.
+   * Converts a new ranged attack into a projectile.
    * @param {Readonly<object>|null} attack
    * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}
    */
@@ -186,39 +186,39 @@ export class World {
     return this.#projectileSystem.spawn(attack, this);
   }
 
-  /** @returns {ReadonlyArray<Readonly<object>>} Alle neuen Funde genau einmal. */
+  /** @returns {ReadonlyArray<Readonly<object>>} All new pickups exactly once. */
   takeCollectedPickups() {
     const pickups = Object.freeze([...this.#collectedPickups]);
     this.#collectedPickups.length = 0;
     return pickups;
   }
 
-  /** Übergibt besiegte Gegner genau einmal an die Laufwertung. */
+  /** Passes defeated enemies to the run score exactly once. */
   takeDefeatedEnemies() {
     return this.#enemyCombatSystem.takeDefeatedEnemies();
   }
 
-  /** @returns {ReadonlyArray<Readonly<object>>} Neue Treffer genau einmal. */
+  /** @returns {ReadonlyArray<Readonly<object>>} New hits exactly once. */
   takeDamageEvents() {
     const events = Object.freeze([...this.#damageEvents]);
     this.#damageEvents.length = 0;
     return events;
   }
 
-  /** Zeichnet alle Entitäten in fester Ebenenreihenfolge. */
+  /** Draws all entities in a fixed layer order. */
   draw() {
     if (!this.isInitialized) return;
     this.#renderer.draw(this.#entityRegistry.getGroupsView(), this.camera, this);
   }
 
-  /** Entfernt alle aktiven und vorgemerkten Entitäten. */
+  /** Removes all active and queued entities. */
   clear() {
     this.#collectedPickups.length = 0;
     this.#damageEvents.length = 0;
     this.#entityRegistry.clear();
   }
 
-  /** Leert und deaktiviert die Welt für einen kontrollierten Neuaufbau. */
+  /** Clears and deactivates the world for a controlled rebuild. */
   destroy() {
     this.clear();
     this.feedback.destroy();

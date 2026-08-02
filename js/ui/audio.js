@@ -7,7 +7,7 @@ import { GAME_CONFIG } from "../config/game-config.js";
 let audioController = null;
 
 /**
- * Erstellt die zentrale Audiosteuerung genau einmal.
+ * Creates the central audio controller exactly once.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @param {EventTarget} [eventTarget=document]
  * @returns {GameAudioController}

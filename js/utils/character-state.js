@@ -1,7 +1,7 @@
 const STATE_TIME_EPSILON_SECONDS = 1e-9;
 
 /**
- * Leitet Bytes sichtbaren Zustand aus Kampf, Sprung und Bewegung ab.
+ * Derives Byte's visible state from combat, jumping, and movement.
  * @param {Readonly<object>} character
  * @param {Readonly<object>} config
  * @param {Readonly<object>} states

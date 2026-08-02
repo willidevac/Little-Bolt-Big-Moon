@@ -1,5 +1,5 @@
 /**
- * Verwaltet Entitätsgruppen und verschiebt Änderungen sicher ans Frameende.
+ * Manages entity groups and safely defers changes until the end of a frame.
  */
 export class WorldEntityRegistry {
   #groupNames;
@@ -21,7 +21,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Fügt eine Entität sofort oder nach der laufenden Verarbeitung hinzu.
+   * Adds an entity immediately or after the current processing pass.
    * @param {string} groupName
    * @param {object} entity
    * @returns {boolean}
@@ -39,7 +39,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Entfernt eine Entität sofort oder nach der laufenden Verarbeitung.
+   * Removes an entity immediately or after the current processing pass.
    * @param {string} groupName
    * @param {object} entity
    * @returns {boolean}
@@ -56,7 +56,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Liefert eine unveränderliche Momentaufnahme einer Entitätsgruppe.
+   * Returns an immutable snapshot of an entity group.
    * @param {string} groupName
    * @returns {ReadonlyArray<object>}
    */
@@ -65,7 +65,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Liefert die nicht zu verändernde Live-Ansicht für den World-Koordinator.
+   * Returns the immutable live view used by the world coordinator.
    * @param {string} groupName
    * @returns {ReadonlyArray<object>}
    */
@@ -74,7 +74,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Liefert die nur lesbare Gruppenansicht für interne Weltsysteme.
+   * Returns the read-only group view for internal world systems.
    * @returns {ReadonlyMap<string, ReadonlyArray<object>>}
    */
   getGroupsView() {
@@ -82,7 +82,7 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Verarbeitet Gruppen in Reihenfolge und übernimmt Änderungen danach.
+   * Processes groups in order and applies deferred changes afterward.
    * @param {ReadonlyArray<string>} groupOrder
    * @param {(entity: object) => void} callback
    */
@@ -97,7 +97,7 @@ export class WorldEntityRegistry {
     }
   }
 
-  /** Entfernt alle vorhandenen und vorgemerkten Entitäten sicher. */
+  /** Safely removes all active and queued entities. */
   clear() {
     this.#pendingAdditions.forEach((entities) => entities.clear());
     if (this.#isProcessing) this.#queueAllEntitiesForRemoval();

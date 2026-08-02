@@ -3,7 +3,7 @@ import { REVIEW_MODE_CONFIG } from "../config/review-mode-config.js";
 
 let reviewModeController = null;
 
-/** Initialisiert den versteckten Mentor-Review-Modus genau einmal. */
+/** Initializes the hidden mentor review mode exactly once. */
 export function initializeReviewMode(game, root = document.querySelector("[data-game-root]")) {
   if (reviewModeController) return reviewModeController;
   if (!(root instanceof HTMLElement)) {

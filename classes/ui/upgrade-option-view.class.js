@@ -1,7 +1,7 @@
 import { translate } from "../../js/i18n/localization.js";
 
 /**
- * Baut eine barrierefreie Upgrade-Karte aus einem unveränderlichen Snapshot.
+ * Builds an accessible upgrade card from an immutable snapshot.
  */
 export class UpgradeOptionView {
   /**
@@ -15,7 +15,7 @@ export class UpgradeOptionView {
   }
 
   /**
-   * Erstellt eine vollständig beschriftete Upgrade-Schaltfläche.
+   * Creates a fully labeled upgrade button.
    * @param {Readonly<object>} upgrade
    * @returns {HTMLButtonElement}
    */

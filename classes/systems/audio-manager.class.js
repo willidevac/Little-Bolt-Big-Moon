@@ -2,7 +2,7 @@ const createBrowserAudio = (source) => new Audio(source);
 const getCurrentTime = () => globalThis.performance?.now() ?? Date.now();
 
 /**
- * Lädt Musik und feste Effektpools und begrenzt deren Wiedergabe.
+ * Loads music and fixed effect pools and limits their playback.
  */
 export class AudioManager {
   #effectPools = new Map();
@@ -28,7 +28,7 @@ export class AudioManager {
   }
 
   /**
-   * Erstellt jeden Track und jede erlaubte Effektstimme genau einmal.
+   * Creates every track and allowed effect voice exactly once.
    * @returns {AudioManager}
    */
   initialize() {
@@ -44,7 +44,7 @@ export class AudioManager {
   }
 
   /**
-   * Erlaubt Wiedergabe erst nach einer echten Nutzerinteraktion.
+   * Allows playback only after a genuine user interaction.
    */
   unlock() {
     if (this.isUnlocked) return;
@@ -53,7 +53,7 @@ export class AudioManager {
   }
 
   /**
-   * Spielt einen Effekt nur innerhalb seines festen Pools und Zeitabstands.
+   * Plays an effect only within its fixed pool and timing interval.
    * @param {string} id
    * @returns {boolean}
    */
@@ -68,7 +68,7 @@ export class AudioManager {
   }
 
   /**
-   * Wählt einen Musiktrack aus und startet ihn, sobald Audio freigegeben ist.
+   * Selects a music track and starts it once audio is unlocked.
    * @param {string} id
    */
   playMusic(id) {
@@ -80,18 +80,18 @@ export class AudioManager {
     if (this.isUnlocked && !this.isMuted) this.resumeMusic();
   }
 
-  /** Pausiert ausschließlich die aktuelle Musik. */
+  /** Pauses only the current music track. */
   pauseMusic() {
     this.#getCurrentMusic()?.pause();
   }
 
-  /** Setzt die ausgewählte Musik ohne Zeitverlust fort. */
+  /** Resumes the selected music without losing its position. */
   resumeMusic() {
     const track = this.#getCurrentMusic();
     if (track && this.isUnlocked && !this.isMuted) this.#play(track);
   }
 
-  /** Stoppt und vergisst den aktuellen Musiktrack. */
+  /** Stops and forgets the current music track. */
   stopMusic() {
     const track = this.#getCurrentMusic();
     if (track) {
@@ -102,7 +102,7 @@ export class AudioManager {
   }
 
   /**
-   * Schaltet alle vorbereiteten Stimmen gemeinsam stumm.
+   * Mutes all prepared voices together.
    * @param {boolean} isMuted
    */
   setMuted(isMuted) {
@@ -114,7 +114,7 @@ export class AudioManager {
   }
 
   /**
-   * Ändert die Musiklautstärke als Wert zwischen null und eins.
+   * Changes the music volume to a value between zero and one.
    * @param {number} volume
    */
   setMusicVolume(volume) {
@@ -125,7 +125,7 @@ export class AudioManager {
   }
 
   /**
-   * Ändert alle Effektlautstärken als Wert zwischen null und eins.
+   * Changes all effect volumes to a value between zero and one.
    * @param {number} volume
    */
   setEffectsVolume(volume) {
@@ -137,7 +137,7 @@ export class AudioManager {
     });
   }
 
-  /** Stoppt alle aktiven Stimmen und leert den Musikzustand. */
+  /** Stops all active voices and clears the music state. */
   destroy() {
     this.#getAllAudio().forEach((audio) => {
       audio.pause();
@@ -191,7 +191,7 @@ export class AudioManager {
     try {
       audio.currentTime = 0;
     } catch {
-      // Ein noch nicht geladener Track startet beim ersten Abspielen ohnehin bei null.
+      // A track that has not loaded yet starts at zero on its first playback anyway.
     }
   }
 

@@ -76,7 +76,7 @@ const PHASES = Object.freeze([
   }),
 ]);
 /**
- * Endboss mit wechselnden Schockwellen, Mondbolzen und drei Kampfphasen.
+ * Final boss with alternating shockwaves, moon bolts, and three combat phases.
  */
 export class MoonWarden extends Enemy {
   #attackController;
@@ -97,7 +97,7 @@ export class MoonWarden extends Enemy {
     this.#attackController = new MoonWardenAttackController(this.id, config);
   }
 
-  /** Zeichnet vor jedem Angriff eine eindeutige, weltgebundene Warnung. */
+  /** Draws a clear world-space warning before every attack. */
   draw(context) {
     this.#drawAttackTelegraph(context);
     super.draw(context);
@@ -140,7 +140,7 @@ export class MoonWarden extends Enemy {
   }
 
   /**
-   * Aktiviert, bewegt und steuert den Boss abhängig von Byte und seiner Phase.
+   * Activates, moves, and controls the boss based on Byte and the current phase.
    * @param {number} deltaTimeSeconds
    * @param {import("../../core/world.class.js").World} world
    */
@@ -179,7 +179,7 @@ export class MoonWarden extends Enemy {
   }
 
   /**
-   * Übernimmt Schaden und aktualisiert die sichtbare Phase sofort.
+   * Applies damage and immediately updates the visible phase.
    * @param {Readonly<{amount:number}>} hit
    * @returns {boolean}
    */
@@ -192,14 +192,14 @@ export class MoonWarden extends Enemy {
   }
 
   /**
-   * Übergibt vorbereitete Bossangriffe genau einmal an das Projektilsystem.
+   * Passes prepared boss attacks to the projectile system exactly once.
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   takeAttackEvents() {
     return this.#attackController.takeEvents();
   }
 
-  /** Aktiviert den Mondwächter erst in erreichbarer Nähe. */
+  /** Activates the Moon Warden only when Byte is within reach. */
   #tryActivate(target) {
     if (this.isActive || !target) return;
     const targetCenter = this.#getCenter(target);

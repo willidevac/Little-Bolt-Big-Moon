@@ -25,7 +25,7 @@ const PICKUP_EFFECTS = Object.freeze({
 });
 
 /**
- * Übersetzt Spielzustände und neutrale Spielereignisse in Audiobefehle.
+ * Translates game states and neutral gameplay events into audio commands.
  */
 export class GameAudioController {
   /**
@@ -44,7 +44,7 @@ export class GameAudioController {
   }
 
   /**
-   * Bindet Nutzerfreigabe, Zustände und Gameplay höchstens einmal.
+   * Binds user activation, states, and gameplay at most once.
    * @returns {GameAudioController}
    */
   initialize() {
@@ -59,7 +59,7 @@ export class GameAudioController {
     return this;
   }
 
-  /** Gibt Audio nach der ersten echten Interaktion frei. */
+  /** Unlocks audio after the first genuine interaction. */
   handleUnlock() {
     this.audio.unlock();
     this.eventTarget.removeEventListener("pointerdown", this.boundUnlock, true);
@@ -67,7 +67,7 @@ export class GameAudioController {
   }
 
   /**
-   * Steuert Musik und Endklänge über den verbindlichen Game State.
+   * Controls music and end sounds through the authoritative game state.
    * @param {string} state
    */
   handleStateChange(state) {
@@ -85,7 +85,7 @@ export class GameAudioController {
   }
 
   /**
-   * Ordnet ein Spielereignis genau einem kontrollierten Effekt zu.
+   * Maps a gameplay event to exactly one controlled effect.
    * @param {Readonly<{type:string, detail:Readonly<object>}>} event
    */
   handleGameplayEvent(event) {
@@ -98,7 +98,7 @@ export class GameAudioController {
   }
 
   /**
-   * Übernimmt die globale Einstellung und setzt Musik nur im Spiel fort.
+   * Applies the global setting and resumes music only during gameplay.
    * @param {boolean} isMuted
    */
   setMuted(isMuted) {
@@ -133,7 +133,7 @@ export class GameAudioController {
       : false;
   }
 
-  /** Entfernt alle Verbindungen und stoppt die vorbereiteten Tracks. */
+  /** Removes all bindings and stops the prepared tracks. */
   destroy() {
     this.eventTarget.removeEventListener("pointerdown", this.boundUnlock, true);
     this.eventTarget.removeEventListener("keydown", this.boundUnlock, true);

@@ -14,7 +14,7 @@ const EMPTY_BOSS_SNAPSHOT = Object.freeze({
 });
 
 /**
- * Beobachtet alle Biome-Bosse und meldet nur nach dem Endboss den Spielsieg.
+ * Tracks every biome boss and reports victory only after the final boss.
  */
 export class BossFightManager {
   #bosses;
@@ -38,7 +38,7 @@ export class BossFightManager {
   }
 
   /**
-   * Wählt den gerade nahen Boss und erkennt den entfernten Endboss.
+   * Selects the nearby boss and detects the removed final boss.
    * @param {import("../core/world.class.js").World} world
    */
   update(world) {
@@ -49,7 +49,7 @@ export class BossFightManager {
   }
 
   /**
-   * Liefert alle Werte für die gemeinsame Bossanzeige.
+   * Returns all values for the shared boss display.
    * @returns {Readonly<object>}
    */
   getSnapshot() {
@@ -64,7 +64,7 @@ export class BossFightManager {
   }
 
   /**
-   * Übergibt das Siegsignal genau einmal an das Spiel.
+   * Passes the victory signal to the game exactly once.
    * @returns {boolean}
    */
   takeVictory() {

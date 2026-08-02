@@ -1,5 +1,5 @@
 /**
- * Übersetzt Weltkoordinaten in die vertikale Canvas-Ansicht.
+ * Translates world coordinates into the vertical canvas view.
  */
 export class Camera {
   /**
@@ -18,7 +18,7 @@ export class Camera {
   }
 
   /**
-   * Setzt die Ansicht an den Start und zeigt ein gültiges Ziel sofort.
+   * Resets the view to the start and immediately shows a valid target.
    * @param {{y:number, height:number}|null} [target=null]
    */
   reset(target = null) {
@@ -30,10 +30,10 @@ export class Camera {
   }
 
   /**
-   * Folgt einem Ziel innerhalb der vertikalen Deadzone zeitbasiert.
+   * Follows a target within the vertical dead zone over time.
    * @param {{y:number, height:number}} target
    * @param {number} deltaTimeSeconds
-   * @returns {boolean} Ob die Kamera bewegt wurde.
+   * @returns {boolean} Whether the camera moved.
    */
   update(target, deltaTimeSeconds) {
     if (!this.#isValidTarget(target) || !this.#isValidDeltaTime(deltaTimeSeconds)) {

@@ -1,7 +1,7 @@
 const FRAGMENT_SELECTOR = "[data-html-fragment]";
 const ROOT_SELECTOR = "[data-fragment-root]";
 
-/** Lädt die statischen Seitenteile, bevor die Spielsteuerung sie verbindet. */
+/** Loads the static page fragments before the game controllers bind them. */
 export async function loadHtmlFragments(root = document) {
   const placeholders = [...root.querySelectorAll(FRAGMENT_SELECTOR)];
   await Promise.all(placeholders.map(loadFragment));

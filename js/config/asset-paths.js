@@ -14,7 +14,7 @@ export const ASSET_PATHS = Object.freeze({
 });
 
 /**
- * Baut einen Assetpfad aus einer bekannten Kategorie und einem Dateinamen.
+ * Builds an asset path from a known category and file name.
  * @param {string} category
  * @param {string} fileName
  * @returns {string}

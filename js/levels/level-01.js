@@ -69,7 +69,7 @@ function createTilesetEntry(tilesetName) {
 }
 
 /**
- * Erzeugt eine neue, unabhängige Instanz des ersten Levelabschnitts.
+ * Creates a new independent instance of the first level section.
  * @param {Readonly<object>} enemyConfig
  * @returns {Readonly<object>}
  */

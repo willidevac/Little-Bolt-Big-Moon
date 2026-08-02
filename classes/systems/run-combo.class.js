@@ -1,5 +1,5 @@
 /**
- * Verwaltet eine zeitlich begrenzte Aktionsserie ohne Wissen über Punktwerte.
+ * Manages a time-limited action chain without knowing score values.
  */
 export class RunCombo {
   /**
@@ -11,7 +11,7 @@ export class RunCombo {
     this.reset();
   }
 
-  /** Beginnt einen Lauf ohne aktive Serie. */
+  /** Begins a run without an active chain. */
   reset() {
     this.count = 0;
     this.multiplier = 1;
@@ -20,7 +20,7 @@ export class RunCombo {
   }
 
   /**
-   * Nimmt eine gültige Aktion auf und liefert ihren Multiplikator.
+   * Records a valid action and returns its multiplier.
    * @returns {number}
    */
   recordActivity() {
@@ -31,10 +31,10 @@ export class RunCombo {
   }
 
   /**
-   * Verarbeitet Leerlauf und Höhenverlust.
+   * Processes idle time and height loss.
    * @param {number} deltaTimeSeconds
    * @param {number} heightLossPixels
-   * @returns {boolean} Ob die sichtbare Serie beendet wurde.
+   * @returns {boolean} Whether the visible chain ended.
    */
   update(deltaTimeSeconds, heightLossPixels) {
     this.#validateUpdate(deltaTimeSeconds, heightLossPixels);
@@ -44,7 +44,7 @@ export class RunCombo {
   }
 
   /**
-   * Beendet eine aktive Serie, beispielsweise nach erlittenem Schaden.
+   * Ends an active chain, for example after taking damage.
    * @returns {boolean}
    */
   break() {
@@ -56,7 +56,7 @@ export class RunCombo {
   }
 
   /**
-   * Liefert den unveränderlichen Zustand für HUD und Tests.
+   * Returns the immutable state for the HUD and tests.
    * @returns {Readonly<object>}
    */
   getSnapshot() {

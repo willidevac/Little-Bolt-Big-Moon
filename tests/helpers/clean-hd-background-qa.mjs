@@ -8,7 +8,7 @@ const LAYER_NAMES = Object.freeze(["far", "mid", "near"]);
 const EXPECTED_RATES = Object.freeze([0.72, 0.86, 1]);
 
 /**
- * Prüft ein dreiteiliges Clean-HD-Hintergrundset vollständig.
+ * Fully validates a three-part Clean HD background set.
  * @param {Readonly<object>} config
  */
 export function verifyCleanHdBackground(config) {

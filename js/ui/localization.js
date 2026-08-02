@@ -3,7 +3,7 @@ import { LocalizationController } from "../../classes/ui/localization-controller
 let localizationController = null;
 
 /**
- * Verbindet die zentrale Übersetzung genau einmal mit der Oberfläche.
+ * Connects the central localization system to the interface exactly once.
  * @param {import("../../classes/systems/game-storage.class.js").GameStorage} storage
  * @param {HTMLElement} [root=document.body]
  * @returns {LocalizationController}

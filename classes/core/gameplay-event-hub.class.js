@@ -19,13 +19,13 @@ export const GAMEPLAY_EVENTS = Object.freeze({
 const KNOWN_EVENTS = new Set(Object.values(GAMEPLAY_EVENTS));
 
 /**
- * Verteilt unveränderliche Spielereignisse ohne Audio- oder UI-Wissen.
+ * Distributes immutable gameplay events without audio or UI knowledge.
  */
 export class GameplayEventHub {
   #listeners = new Set();
 
   /**
-   * Meldet einen Beobachter an und liefert seine Abmeldefunktion.
+   * Registers an observer and returns its unsubscribe function.
    * @param {(event: Readonly<object>) => void} listener
    * @returns {() => void}
    */
@@ -38,7 +38,7 @@ export class GameplayEventHub {
   }
 
   /**
-   * Verteilt ein bekanntes Ereignis mit einer unveränderlichen Detailkopie.
+   * Distributes a known event with an immutable copy of its details.
    * @param {string} type
    * @param {Readonly<object>} [detail={}]
    */

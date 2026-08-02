@@ -3,7 +3,7 @@ import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
- * Aktiviert Begegnungen und öffnet Bossausgänge nach dem Sieg.
+ * Activates encounters and opens boss exits after victory.
  */
 export class WaveManager {
   #zones;
@@ -33,7 +33,7 @@ export class WaveManager {
   }
 
   /**
-   * Fügt nur Gegner ohne Arenazugehörigkeit zum sicheren Startbereich hinzu.
+   * Adds only enemies without an arena assignment to the safe starting area.
    * @param {import("../core/world.class.js").World} world
    * @returns {boolean}
    */
@@ -50,7 +50,7 @@ export class WaveManager {
   }
 
   /**
-   * Schließt aktive Begegnungen und löst die nächste erreichte Zone aus.
+   * Completes active encounters and triggers the next reached zone.
    * @param {import("../core/world.class.js").World} world
    */
   update(world) {
@@ -61,7 +61,7 @@ export class WaveManager {
   }
 
   /**
-   * Übergibt jeden Abschluss genau einmal an das nächste Spielsystem.
+   * Passes each completion to the next game system exactly once.
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   takeCompletedWaves() {
@@ -71,7 +71,7 @@ export class WaveManager {
   }
 
   /**
-   * Liefert den Zustand einer bestimmten Arena.
+   * Returns the state of a specific arena.
    * @param {string} zoneId
    * @returns {Readonly<object>}
    */

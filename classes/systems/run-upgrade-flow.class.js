@@ -3,7 +3,7 @@ import { UpgradeManager } from "./upgrade-manager.class.js";
 const EMPTY_CONTEXT = Object.freeze({ didUnlockPath: false });
 
 /**
- * Verbindet Upgrade-Daten mit den fünf kleinen Effekten eines Laufs.
+ * Connects upgrade data to the five focused effects of a run.
  */
 export class RunUpgradeFlow {
   #dependencies;
@@ -22,7 +22,7 @@ export class RunUpgradeFlow {
   }
 
   /**
-   * Liefert die aktuelle Auswahl.
+   * Returns the current selection.
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   getOptions() {
@@ -30,7 +30,7 @@ export class RunUpgradeFlow {
   }
 
   /**
-   * Öffnet eine Auswahl, sobald die Welt einen Wellenabschluss meldet.
+   * Opens a selection when the world reports a completed wave.
    * @param {import("../core/world.class.js").World} world
    * @returns {boolean}
    */
@@ -45,13 +45,13 @@ export class RunUpgradeFlow {
     return this.#manager.openSelection().length > 0;
   }
 
-  /** Liefert den Grund für die gerade sichtbare Upgrade-Auswahl. */
+  /** Returns the reason for the currently visible upgrade selection. */
   getContext() {
     return this.#context;
   }
 
   /**
-   * Wendet eine angebotene Verbesserung an.
+   * Applies an offered upgrade.
    * @param {string} upgradeId
    * @returns {Readonly<object>}
    */
@@ -60,7 +60,7 @@ export class RunUpgradeFlow {
   }
 
   /**
-   * Beginnt einen Lauf ohne alte Verbesserungsstufen.
+   * Begins a run without previous upgrade levels.
    */
   reset() {
     this.#manager.reset();

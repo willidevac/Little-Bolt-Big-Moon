@@ -33,7 +33,7 @@ const PREVENTED_DEFAULT_CODES = Object.freeze([
 const SUPPORTED_ACTIONS = new Set(Object.values(ACTION_BY_KEY_CODE));
 
 /**
- * Speichert den aktuellen Zustand aller Tastatur- und Touch-Aktionen.
+ * Stores the current state of all keyboard and touch actions.
  */
 export class Keyboard {
   #pressedSources;
@@ -54,8 +54,8 @@ export class Keyboard {
   }
 
   /**
-   * Registriert alle Tastaturereignisse höchstens einmal.
-   * @returns {boolean} Ob die Listener neu registriert wurden.
+   * Registers all keyboard events at most once.
+   * @returns {boolean} Whether the listeners were newly registered.
    */
   bind() {
     if (this.isListening) return false;
@@ -68,8 +68,8 @@ export class Keyboard {
   }
 
   /**
-   * Entfernt die Tastaturereignisse und löscht alle Zustände.
-   * @returns {boolean} Ob registrierte Listener entfernt wurden.
+   * Removes the keyboard events and clears every state.
+   * @returns {boolean} Whether registered listeners were removed.
    */
   unbind() {
     if (!this.isListening) return false;
@@ -82,7 +82,7 @@ export class Keyboard {
   }
 
   /**
-   * Aktiviert den Zustand einer gedrückten Spieltaste.
+   * Activates the state of a pressed game key.
    * @param {KeyboardEvent} event
    */
   handleKeyDown(event) {
@@ -90,7 +90,7 @@ export class Keyboard {
   }
 
   /**
-   * Deaktiviert den Zustand einer losgelassenen Spieltaste.
+   * Deactivates the state of a released game key.
    * @param {KeyboardEvent} event
    */
   handleKeyUp(event) {
@@ -98,7 +98,7 @@ export class Keyboard {
   }
 
   /**
-   * Liefert einen neuen Aktionsdruck genau einmal aus.
+   * Returns a new action press exactly once.
    * @param {string} action
    * @returns {boolean}
    */
@@ -107,7 +107,7 @@ export class Keyboard {
   }
 
   /**
-   * Schaltet eine Aktion für genau eine Tastatur- oder Pointerquelle.
+   * Toggles an action for exactly one keyboard or pointer source.
    * @param {string} action
    * @param {boolean} isPressed
    * @param {string} sourceId
@@ -125,7 +125,7 @@ export class Keyboard {
   }
 
   /**
-   * Setzt alle Eingaben in den neutralen Zustand zurück.
+   * Resets all inputs to their neutral state.
    */
   reset() {
     this.#pressedSources.clear();

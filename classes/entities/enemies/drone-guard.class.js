@@ -47,7 +47,7 @@ const VISUAL_CONFIG = Object.freeze({
 });
 
 /**
- * Fliegender Gegner mit schneller Patrouille und ruhiger Schwebebewegung.
+ * Flying enemy with a fast patrol and gentle hovering motion.
  */
 export class DroneGuard extends Enemy {
   /**
@@ -70,7 +70,7 @@ export class DroneGuard extends Enemy {
   }
 
   /**
-   * Fliegt horizontal und schwebt dabei sinusförmig auf und ab.
+   * Flies horizontally while hovering up and down in a sine wave.
    * @param {number} deltaTimeSeconds
    * @param {import("../../core/world.class.js").World} world
    */

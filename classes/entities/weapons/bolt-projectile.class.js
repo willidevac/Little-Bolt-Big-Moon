@@ -21,7 +21,7 @@ const BOLT_VISUAL_CONFIG = Object.freeze({
 });
 
 /**
- * Spielerbolzen mit der gemeinsamen Projektilbewegung.
+ * Player bolt using the shared projectile movement.
  */
 export class BoltProjectile extends Projectile {
   /**

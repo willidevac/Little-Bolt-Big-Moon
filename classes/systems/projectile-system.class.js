@@ -5,7 +5,7 @@ import { BossProjectile } from "../entities/weapons/boss-projectile.class.js";
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
- * Erzeugt Spielerprojektile, prüft Treffer und entfernt verbrauchte Bolzen.
+ * Creates player projectiles, checks hits, and removes spent bolts.
  */
 export class ProjectileSystem {
   /**
@@ -19,7 +19,7 @@ export class ProjectileSystem {
   }
 
   /**
-   * Wandelt ausschließlich Fernkampfangriffe in ein Weltobjekt um.
+   * Converts only ranged attacks into a world object.
    * @param {Readonly<object>|null} attack
    * @param {import("../core/world.class.js").World} world
    * @returns {import("../entities/weapons/projectile.class.js").Projectile|null}
@@ -39,7 +39,7 @@ export class ProjectileSystem {
   }
 
   /**
-   * Prüft den ersten Gegner auf der Flugstrecke und räumt Bolzen sicher auf.
+   * Checks the first enemy along the flight path and safely removes bolts.
    * @param {import("../core/world.class.js").World} world
    */
   resolve(world) {

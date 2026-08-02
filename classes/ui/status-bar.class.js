@@ -29,7 +29,7 @@ const VALUE_SELECTORS = Object.freeze({
 });
 
 /**
- * Liefert ein benötigtes HUD-Element oder bricht verständlich ab.
+ * Returns a required HUD element or fails with a clear error.
  * @param {ParentNode} root
  * @param {string} selector
  * @returns {HTMLElement}
@@ -70,7 +70,7 @@ function renderWeaponValue(statusBar, weapon) {
 }
 
 /**
- * Überträgt Laufwerte in das barrierefreie HTML-HUD.
+ * Transfers run values into the accessible HTML HUD.
  */
 export class StatusBar {
   /**
@@ -91,7 +91,7 @@ export class StatusBar {
   }
 
   /**
-   * Bindet Werte und Sichtbarkeit höchstens einmal.
+   * Binds values and visibility at most once.
    * @returns {StatusBar}
    */
   initialize() {
@@ -109,7 +109,7 @@ export class StatusBar {
   }
 
   /**
-   * Entfernt alle vom HUD registrierten Beobachter.
+   * Removes all observers registered by the HUD.
    */
   destroy() {
     this.unsubscribeHud?.();
@@ -124,7 +124,7 @@ export class StatusBar {
   }
 
   /**
-   * Zeigt eine neue Momentaufnahme an.
+   * Displays a new snapshot.
    * @param {Readonly<object>} data
    */
   render(data) {
@@ -139,7 +139,7 @@ export class StatusBar {
   }
 
   /**
-   * Zeigt Anzahl und Multiplikator nur während einer aktiven Serie.
+   * Displays the count and multiplier only during an active chain.
    * @param {Readonly<object>} combo
    */
   renderCombo(combo) {
@@ -152,7 +152,7 @@ export class StatusBar {
     );
   }
 
-  /** Verbindet Gameplay-Ereignisse mit HUD-Werten und kurzen Meldungen. */
+  /** Connects gameplay events to HUD values and brief messages. */
   handleGameplayEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
       renderWeaponValue(this, event.detail);
@@ -162,7 +162,7 @@ export class StatusBar {
   }
 
   /**
-   * Zeigt das HUD nur während Lauf und Pause.
+   * Displays the HUD only during gameplay and pause.
    * @param {string} state
    */
   renderState(state) {
@@ -176,7 +176,7 @@ export class StatusBar {
   }
 
   /**
-   * Sammelt alle einmalig benötigten Wertelemente.
+   * Collects all value elements needed once.
    * @returns {Readonly<Record<string, HTMLElement>>}
    */
   getValueElements() {
@@ -188,7 +188,7 @@ export class StatusBar {
   }
 
   /**
-   * Aktualisiert Energietext, Balken und Screenreaderwerte gemeinsam.
+   * Updates energy text, bar, and screen-reader values together.
    * @param {number} energy
    * @param {number} maximumEnergy
    */
@@ -205,7 +205,7 @@ export class StatusBar {
   }
 
   /**
-   * Zeigt den gerade aktiven Biome-Boss mit Namen und exakten Leben.
+   * Displays the active biome boss with its name and exact health.
    * @param {Readonly<object>|null} boss
    */
   renderBoss(boss) {
@@ -217,19 +217,19 @@ export class StatusBar {
     renderBossBar(this, boss, bossName);
   }
 
-  /** Übersetzt unveränderliche HUD-Werte nach einem Sprachwechsel neu. */
+  /** Retranslates immutable HUD values after a language change. */
   renderLanguage() {
     this.render(this.game.getHudSnapshot());
     if (this.currentWeapon) this.renderWeapon(this.currentWeapon);
   }
 
-  /** Zeigt die aktive Waffe über ihre stabile ID an. */
+  /** Displays the active weapon using its stable ID. */
   renderWeapon(weapon) {
     renderWeaponValue(this, weapon);
   }
 
   /**
-   * Verändert den DOM-Text nur bei einem echten neuen Wert.
+   * Changes DOM text only when the value actually changes.
    * @param {HTMLElement} element
    * @param {string|number} value
    */

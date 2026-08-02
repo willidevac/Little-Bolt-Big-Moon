@@ -1,5 +1,5 @@
 /**
- * Misst Höhenverlust und erkennt die Todeszone unterhalb der Welt.
+ * Measures height loss and detects the death zone below the world.
  */
 export class FallTracker {
   #deathZoneY;
@@ -24,7 +24,7 @@ export class FallTracker {
   }
 
   /**
-   * Beginnt die Messung an der aktuellen Position einer Figur neu.
+   * Restarts measurement at a character's current position.
    * @param {{y:number,isOnGround:boolean}} target
    */
   reset(target) {
@@ -39,9 +39,9 @@ export class FallTracker {
   }
 
   /**
-   * Aktualisiert höchste sichere Position und aktuellen Höhenverlust.
+   * Updates the highest safe position and current height loss.
    * @param {{y:number,isOnGround:boolean}} target
-   * @returns {number} Aktuell verlorene Höhe in Weltpixeln.
+   * @returns {number} Current height loss in world pixels.
    */
   update(target) {
     this.#validateTarget(target);
@@ -53,7 +53,7 @@ export class FallTracker {
   }
 
   /**
-   * Prüft, ob eine Figur vollständig unter die sichere Welt gefallen ist.
+   * Checks whether a character has fallen completely below the safe world.
    * @param {{y:number,isOnGround:boolean}} target
    * @returns {boolean}
    */
@@ -63,14 +63,14 @@ export class FallTracker {
   }
 
   /**
-   * Liefert den aktuellen Höhenverlust.
+   * Returns the current height loss.
    * @returns {number}
    */
   getHeightLossPixels() {
     return this.#heightLossPixels;
   }
 
-  /** Liefert einen abgeschlossenen Sturz genau einmal. */
+  /** Returns a completed fall exactly once. */
   takeCompletedFall() {
     const fall = this.#completedFall;
     this.#completedFall = null;

@@ -45,7 +45,7 @@ const VISUAL_CONFIG = Object.freeze({
 });
 
 /**
- * Bodengebundener Gegner, der zwischen zwei Plattformkanten patrouilliert.
+ * Ground-based enemy that patrols between two platform edges.
  */
 export class ScrapCrawler extends Enemy {
   /**
@@ -59,7 +59,7 @@ export class ScrapCrawler extends Enemy {
   }
 
   /**
-   * Läuft mit Schwerkraft auf Plattformen hin und her.
+   * Walks back and forth on platforms while affected by gravity.
    * @param {number} deltaTimeSeconds
    * @param {import("../../core/world.class.js").World} world
    */

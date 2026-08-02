@@ -13,7 +13,7 @@ const WARNING_PULSE_CYCLES_PER_SECOND = 4;
 const WARNING_SHAKE_DISTANCE_PIXELS = 3;
 
 /**
- * Warnt nach Bytes Landung sichtbar und faellt anschliessend nach unten.
+ * Displays a warning after Byte lands and then falls downward.
  */
 export class FallingPlatform extends Platform {
   /**
@@ -35,7 +35,7 @@ export class FallingPlatform extends Platform {
   }
 
   /**
-   * Startet die Warnphase nur bei Bytes erster Landung.
+   * Starts the warning phase only on Byte's first landing.
    * @param {object} movableObject
    * @returns {boolean}
    */
@@ -66,13 +66,13 @@ export class FallingPlatform extends Platform {
     }
   }
 
-  /** Unsichtbare gefallene Plattformen besitzen vorübergehend keine Oberfläche. */
+  /** Hidden fallen platforms temporarily have no collision surface. */
   get isCollidable() {
     return this.state !== FALLING_PLATFORM_STATES.FALLEN;
   }
 
   /**
-   * Zeichnet waehrend der Warnzeit ein deutliches Zittern und Blinken.
+   * Draws a clear shake and flash during the warning period.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {

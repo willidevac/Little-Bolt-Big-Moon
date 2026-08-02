@@ -17,7 +17,7 @@ const POINTER_END_EVENTS = Object.freeze([
 ]);
 
 /**
- * Verbindet statische mobile Steuerbuttons mit mehreren Fingern gleichzeitig.
+ * Connects static mobile control buttons to simultaneous multi-touch input.
  */
 export class TouchControls {
   #activePointers;
@@ -42,7 +42,7 @@ export class TouchControls {
   }
 
   /**
-   * Verbindet Pointer, Schutzereignisse und Spielzustand genau einmal.
+   * Connects pointer events, safety events, and game state exactly once.
    * @returns {TouchControls}
    */
   initialize() {
@@ -59,7 +59,7 @@ export class TouchControls {
   }
 
   /**
-   * Entfernt Listener und löst alle noch gehaltenen Aktionen.
+   * Removes listeners and releases all actions that are still held.
    */
   destroy() {
     this.element.removeEventListener("pointerdown", this.boundPointerDown);
@@ -74,7 +74,7 @@ export class TouchControls {
   }
 
   /**
-   * Aktiviert die Aktion eines neuen Fingers.
+   * Activates the action of a new touch pointer.
    * @param {PointerEvent} event
    */
   handlePointerDown(event) {
@@ -90,7 +90,7 @@ export class TouchControls {
   }
 
   /**
-   * Löst genau den Finger, der beendet oder abgebrochen wurde.
+   * Releases exactly the touch pointer that ended or was canceled.
    * @param {PointerEvent} event
    */
   handlePointerEnd(event) {
@@ -100,7 +100,7 @@ export class TouchControls {
   }
 
   /**
-   * Blockiert Browseraktionen ausschließlich auf den Touchbuttons.
+   * Blocks browser actions exclusively on the touch buttons.
    * @param {Event} event
    */
   blockControlDefault(event) {
@@ -108,7 +108,7 @@ export class TouchControls {
   }
 
   /**
-   * Zeigt die Controls nur während des laufenden Spiels.
+   * Shows the controls only during active gameplay.
    * @param {string} state
    */
   render(state) {

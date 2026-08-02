@@ -1,15 +1,15 @@
 /**
- * Speichert ausschließlich Bytes kurze Angriffsanimation.
+ * Stores only Byte's short attack animation state.
  */
 export class CharacterAttackState {
-  /** Erstellt einen inaktiven Angriffsstatus. */
+  /** Creates an inactive attack state. */
   constructor() {
     this.animationState = null;
     this.secondsRemaining = 0;
   }
 
   /**
-   * Startet eine neue Angriffsanimation, wenn noch keine läuft.
+   * Starts a new attack animation when none is already running.
    * @param {string} animationState
    * @param {number} durationSeconds
    * @returns {boolean}
@@ -23,7 +23,7 @@ export class CharacterAttackState {
   }
 
   /**
-   * Verkürzt die verbleibende Animationszeit.
+   * Reduces the remaining animation time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -33,7 +33,7 @@ export class CharacterAttackState {
   }
 
   /**
-   * Beendet eine laufende Angriffsanimation sofort.
+   * Immediately ends an active attack animation.
    */
   clear() {
     this.animationState = null;
@@ -41,7 +41,7 @@ export class CharacterAttackState {
   }
 
   /**
-   * Zeigt, ob gerade eine Angriffsanimation läuft.
+   * Indicates whether an attack animation is currently running.
    * @returns {boolean}
    */
   get isActive() {

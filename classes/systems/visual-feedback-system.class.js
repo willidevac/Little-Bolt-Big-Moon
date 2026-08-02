@@ -9,9 +9,9 @@ const BURST_BY_EVENT = Object.freeze({
 });
 const MAXIMUM_ACTIVE_BURSTS = 24;
 
-/** Verbindet vorhandene Gameplay-Ereignisse mit kurzen Canvas-Effekten. */
+/** Connects existing gameplay events to short canvas effects. */
 export class VisualFeedbackSystem {
-  /** @param {object} events @param {() => object|null} getTarget */
+  /** @param {object} events Event source. @param {() => object|null} getTarget Target provider. */
   constructor(events, getTarget) {
     if (typeof events?.on !== "function" || typeof getTarget !== "function") {
       throw new TypeError("Dem visuellen Feedback fehlen Ereignisse oder Ziel.");
@@ -21,17 +21,17 @@ export class VisualFeedbackSystem {
     this.unsubscribe = events.on((event) => this.#handleEvent(event));
   }
 
-  /** Aktualisiert und entfernt vollständig verblasste Impulse. */
+  /** Updates bursts and removes those that have fully faded. */
   update(deltaTimeSeconds) {
     this.bursts = this.bursts.filter((burst) => burst.update(deltaTimeSeconds));
   }
 
-  /** Zeichnet alle noch aktiven Impulse in Weltkoordinaten. */
+  /** Draws all active bursts in world coordinates. */
   draw(context) {
     this.bursts.forEach((burst) => burst.draw(context));
   }
 
-  /** Entfernt Effekte und die Verbindung zum Ereignisverteiler. */
+  /** Removes effects and the connection to the event source. */
   destroy() {
     this.unsubscribe();
     this.bursts.length = 0;

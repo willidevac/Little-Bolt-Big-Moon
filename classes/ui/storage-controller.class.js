@@ -12,7 +12,7 @@ const SELECTORS = Object.freeze({
 });
 
 /**
- * Verbindet gespeicherte Rekorde und Einstellungen mit der Oberfläche.
+ * Connects saved records and settings to the interface.
  */
 export class StorageController {
   /**
@@ -44,7 +44,7 @@ export class StorageController {
   }
 
   /**
-   * Bindet die Oberfläche genau einmal an Speicherung und Spielende.
+   * Binds the interface to storage and game completion exactly once.
    * @returns {StorageController}
    */
   initialize() {
@@ -74,7 +74,7 @@ export class StorageController {
   }
 
   /**
-   * Entfernt alle von diesem Controller gesetzten Verbindungen.
+   * Removes all bindings created by this controller.
    */
   destroy() {
     this.muteButton.removeEventListener("click", this.boundMuteClick);
@@ -88,7 +88,7 @@ export class StorageController {
   }
 
   /**
-   * Schaltet den gemerkten Tonstatus um.
+   * Toggles the stored mute state.
    */
   handleMuteClick() {
     const current = this.storage.getSnapshot();
@@ -98,7 +98,7 @@ export class StorageController {
   }
 
   /**
-   * Übernimmt einen Lautstärkeregler sofort und speichert ihn.
+   * Applies a volume control immediately and stores it.
    * @param {Event} event
    */
   handleVolumeInput(event) {
@@ -113,7 +113,7 @@ export class StorageController {
   }
 
   /**
-   * Speichert Rekorde nur nach einem vollständig beendeten Lauf.
+   * Stores records only after a fully completed run.
    * @param {string} state
    */
   handleStateChange(state) {
@@ -125,7 +125,7 @@ export class StorageController {
   }
 
   /**
-   * Zeigt Rekorde und Mute-Status barrierefrei an.
+   * Displays records and mute state accessibly.
    * @param {Readonly<object>} records
    */
   render(records) {

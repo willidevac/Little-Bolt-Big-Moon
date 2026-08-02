@@ -4,7 +4,7 @@ import { RunUpgradeFlow } from "../../classes/systems/run-upgrade-flow.class.js"
 import upgradeData from "../../data/upgrades.json" with { type: "json" };
 
 /**
- * Erstellt die drei voneinander abhängigen Kampfsysteme eines Laufs.
+ * Creates the three interdependent combat systems for a run.
  * @param {Readonly<object>} config
  * @param {Readonly<object>} dependencies
  * @returns {Readonly<object>}

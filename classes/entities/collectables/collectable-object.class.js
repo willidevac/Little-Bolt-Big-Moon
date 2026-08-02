@@ -87,7 +87,7 @@ function createClip(startFrame, frameCount) {
 }
 
 /**
- * Ein animiertes Zahnrad, eine Energiezelle oder ein Munitionsfund.
+ * An animated gear, energy cell, or ammunition pickup.
  */
 export class CollectableObject extends DrawableObject {
   /**
@@ -113,7 +113,7 @@ export class CollectableObject extends DrawableObject {
   }
 
   /**
-   * Wechselt zeitbasiert durch die Frames des gewählten Sammelobjekts.
+   * Advances through the selected collectable's frames over time.
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
@@ -125,7 +125,7 @@ export class CollectableObject extends DrawableObject {
   }
 
   /**
-   * Liefert die sichere Werteänderung für den aktuellen Lauf.
+   * Returns the safe value change for the current run.
    * @returns {Readonly<{type:string, amount:number}>}
    */
   getPickup() {

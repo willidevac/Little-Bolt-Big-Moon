@@ -1,5 +1,5 @@
 /**
- * Verwaltet Leben, Angriffssperren und zeitgesteuerte Gegnerzustände.
+ * Manages health, attack cooldowns, and timed enemy states.
  */
 export class EnemyCombatState {
   #maximumHealth;
@@ -33,45 +33,45 @@ export class EnemyCombatState {
     this.#reset();
   }
 
-  /** @returns {number} Aktuelle Lebenspunkte. */
+  /** @returns {number} Current health. */
   get health() { return this.#health; }
 
-  /** @returns {number} Maximale Lebenspunkte. */
+  /** @returns {number} Maximum health. */
   get maximumHealth() { return this.#maximumHealth; }
 
-  /** @returns {boolean} Ob der Gegner besiegt wurde. */
+  /** @returns {boolean} Whether the enemy was defeated. */
   get isDead() { return this.#isDead; }
 
-  /** @returns {boolean} Ob der Trefferzustand aktiv ist. */
+  /** @returns {boolean} Whether the hurt state is active. */
   get isHurt() { return this.#hurtSecondsRemaining > 0; }
 
-  /** @returns {boolean} Ob die Todesanimation abgeschlossen ist. */
+  /** @returns {boolean} Whether the death animation has finished. */
   get isReadyForRemoval() {
     return this.#isDead && this.#deathSecondsRemaining === 0;
   }
 
-  /** @returns {number} Verbleibende Angriffssperre in Sekunden. */
+  /** @returns {number} Remaining attack cooldown in seconds. */
   get attackCooldownSecondsRemaining() {
     return this.#attackCooldownSecondsRemaining;
   }
 
-  /** @returns {number} Verbleibende Angriffsanimation in Sekunden. */
+  /** @returns {number} Remaining attack animation time in seconds. */
   get attackSecondsRemaining() { return this.#attackSecondsRemaining; }
 
-  /** @returns {number} Dauer des Standardangriffs in Sekunden. */
+  /** @returns {number} Duration of the default attack in seconds. */
   get attackStateSeconds() { return this.#attackStateSeconds; }
 
-  /** @returns {string} Name des Standardangriffs. */
+  /** @returns {string} Name of the default attack. */
   get defaultAttackState() { return this.#defaultAttackState; }
 
-  /** @returns {boolean} Ob ein Angriff beginnen darf. */
+  /** @returns {boolean} Whether an attack may begin. */
   get canAttack() {
     return !this.#isDead && !this.isHurt &&
       this.#attackCooldownSecondsRemaining === 0;
   }
 
   /**
-   * Aktualisiert alle Timer und liefert den gesperrten Animationszustand.
+   * Updates all timers and returns the locked animation state.
    * @param {number} deltaTimeSeconds
    * @returns {string|null}
    */
@@ -87,7 +87,7 @@ export class EnemyCombatState {
   }
 
   /**
-   * Zieht Leben ab und meldet den neuen Treffer- oder Todeszustand.
+   * Reduces health and reports the new hurt or death state.
    * @param {Readonly<{amount:number}>} hit
    * @returns {"hurt"|"dead"|null}
    */
@@ -104,7 +104,7 @@ export class EnemyCombatState {
   }
 
   /**
-   * Startet einen vorhandenen Angriffsclip mit gemeinsamem Cooldown.
+   * Starts an existing attack clip with a shared cooldown.
    * @param {string} animationState
    * @param {Readonly<object>} clip
    * @returns {boolean}
@@ -118,7 +118,7 @@ export class EnemyCombatState {
   }
 
   /**
-   * Ersetzt die Angriffssperre durch eine geprüfte Dauer.
+   * Replaces the attack cooldown with a validated duration.
    * @param {number} seconds
    */
   setAttackCooldown(seconds) {
@@ -129,7 +129,7 @@ export class EnemyCombatState {
   }
 
   /**
-   * Erstellt einen unveränderlichen Kontakttreffer.
+   * Creates an immutable contact hit.
    * @param {string} source
    * @param {number} direction
    * @returns {Readonly<{amount:number,direction:number,source:string}>}

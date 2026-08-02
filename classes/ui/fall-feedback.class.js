@@ -3,9 +3,9 @@ import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 const FEEDBACK_DURATION_MILLISECONDS = 2800;
 const SEVERITIES = Object.freeze(["normal", "hard", "severe"]);
 
-/** Zeigt einen abgeschlossenen Sturz kurz und barrierefrei an. */
+/** Briefly displays a completed fall in an accessible way. */
 export class FallFeedback {
-  /** @param {HTMLElement} element @param {number} pixelsPerMeter */
+  /** @param {HTMLElement} element Output element. @param {number} pixelsPerMeter World scale. */
   constructor(element, pixelsPerMeter) {
     if (!element?.classList) throw new TypeError("Die Sturzanzeige fehlt.");
     if (!Number.isFinite(pixelsPerMeter) || pixelsPerMeter <= 0) {
@@ -18,7 +18,7 @@ export class FallFeedback {
     this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
-  /** Zeigt die verlorene Höhe mit passender Stärke an. */
+  /** Displays the lost height with the appropriate severity. */
   show(fall) {
     this.#validateFall(fall);
     this.currentFall = this.#createVisibleFall(fall);
@@ -31,7 +31,7 @@ export class FallFeedback {
     this.timeoutId = setTimeout(() => this.clear(), FEEDBACK_DURATION_MILLISECONDS);
   }
 
-  /** Leert Meldung und Zeitsteuerung vollständig. */
+  /** Completely clears the message and its timer. */
   clear() {
     clearTimeout(this.timeoutId);
     this.timeoutId = null;
@@ -41,7 +41,7 @@ export class FallFeedback {
     this.element.textContent = "";
   }
 
-  /** Stoppt eine noch wartende Meldung. */
+  /** Stops a pending message. */
   destroy() {
     this.clear();
     this.unsubscribeLanguage();

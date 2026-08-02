@@ -1,5 +1,5 @@
 /**
- * Formatiert Punkte einheitlich für HUD und Endergebnis.
+ * Formats scores consistently for the HUD and end result.
  * @param {number} score
  * @returns {string}
  */
@@ -8,7 +8,7 @@ export function formatScore(score) {
 }
 
 /**
- * Formatiert eine Bestzeit als Minuten und Sekunden oder als leeren Rekord.
+ * Formats a best time as minutes and seconds or as an empty record.
  * @param {number|null} seconds
  * @returns {string}
  */

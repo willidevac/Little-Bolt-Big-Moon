@@ -8,7 +8,7 @@ export const BOSS_TRANSLATION_KEYS = Object.freeze({
 });
 
 /**
- * Liefert für einen sichtbaren Bossnamen den stabilen Übersetzungsschlüssel.
+ * Returns the stable translation key for a visible boss name.
  * @param {string} name
  * @returns {string}
  */

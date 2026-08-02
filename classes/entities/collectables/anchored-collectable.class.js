@@ -1,7 +1,7 @@
 import { CollectableObject } from "./collectable-object.class.js";
 
 /**
- * Hält einen Fund sichtbar und physikalisch auf seiner Plattform.
+ * Keeps a pickup visibly and physically attached to its platform.
  */
 export class AnchoredCollectable extends CollectableObject {
   /**
@@ -16,7 +16,7 @@ export class AnchoredCollectable extends CollectableObject {
     this.y = anchorPlatform.y - this.height;
   }
 
-  /** Folgt auch einer bewegten oder zurückgesetzten Plattform. */
+  /** Also follows a moving or reset platform. */
   update(deltaTimeSeconds) {
     super.update(deltaTimeSeconds);
     const movement = this.anchorPlatform.getFrameDisplacement();
@@ -24,12 +24,12 @@ export class AnchoredCollectable extends CollectableObject {
     this.y += movement.y;
   }
 
-  /** Unsichtbare Fallplattformen verbergen vorübergehend auch ihren Fund. */
+  /** Hidden falling platforms temporarily hide their pickup as well. */
   get isAvailable() {
     return this.anchorPlatform.isCollidable !== false;
   }
 
-  /** Zeichnet den Fund nur zusammen mit seiner tragenden Plattform. */
+  /** Draws the pickup only together with its supporting platform. */
   draw(context) {
     if (this.isAvailable) super.draw(context);
   }

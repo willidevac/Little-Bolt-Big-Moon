@@ -1,5 +1,5 @@
 /**
- * Plant Animationsframes und liefert eine begrenzte vergangene Framezeit.
+ * Schedules animation frames and provides a capped elapsed frame time.
  */
 export class GameLoop {
   #animationFrameId;
@@ -26,10 +26,10 @@ export class GameLoop {
     this.#resetRuntime();
   }
 
-  /** @returns {boolean} Ob der Animationsloop läuft. */
+  /** @returns {boolean} Whether the animation loop is running. */
   get isRunning() { return this.#isRunning; }
 
-  /** @returns {boolean} Ob ein neuer Loop gestartet wurde. */
+  /** @returns {boolean} Whether a new loop was started. */
   start() {
     if (this.#isRunning) return false;
     this.#isRunning = true;
@@ -38,7 +38,7 @@ export class GameLoop {
     return true;
   }
 
-  /** @returns {boolean} Ob ein laufender Loop gestoppt wurde. */
+  /** @returns {boolean} Whether a running loop was stopped. */
   stop() {
     if (!this.#isRunning) return false;
     this.#isRunning = false;
@@ -47,7 +47,7 @@ export class GameLoop {
     return true;
   }
 
-  /** Verwirft die bisherige Zeitbasis für den nächsten Frame. */
+  /** Discards the previous time base for the next frame. */
   resetClock() {
     this.#previousTimestamp = null;
   }

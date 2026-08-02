@@ -1,10 +1,10 @@
 import { DrawableObject } from "./drawable-object.class.js";
 
 /**
- * Grundlage für Objekte mit Geschwindigkeit und Bewegung.
+ * Foundation for objects with velocity and movement.
  */
 export class MovableObject extends DrawableObject {
-  /** Erstellt ein ruhendes Objekt mit aktivierter Schwerkraft. */
+  /** Creates a stationary object with gravity enabled. */
   constructor() {
     super();
     this.velocityX = 0;
@@ -17,7 +17,7 @@ export class MovableObject extends DrawableObject {
   }
 
   /**
-   * Aktualisiert die Bewegung zeitbasiert mit den zentralen Physikwerten.
+   * Updates movement over time using the central physics values.
    * @param {number} deltaTimeSeconds
    * @param {import("../core/world.class.js").World} world
    */
@@ -31,7 +31,7 @@ export class MovableObject extends DrawableObject {
   }
 
   /**
-   * Ändert den Bodenstatus und stoppt eine laufende Fallbewegung.
+   * Changes the grounded state and stops an active falling motion.
    * @param {boolean} isOnGround
    * @param {object|null} [platform=null]
    */
@@ -42,7 +42,7 @@ export class MovableObject extends DrawableObject {
   }
 
   /**
-   * Gibt dem Objekt einen kontrollierten Impuls nach oben.
+   * Applies a controlled upward impulse to the object.
    * @param {number} speedPixelsPerSecond
    */
   applyUpwardImpulse(speedPixelsPerSecond) {

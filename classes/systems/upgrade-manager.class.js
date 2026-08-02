@@ -8,7 +8,7 @@ const REQUIRED_UPGRADE_IDS = Object.freeze([
 const REQUIRED_RARITY_IDS = Object.freeze(["common", "rare", "epic"]);
 
 /**
- * Wählt Laufverbesserungen aus und wendet genau eine gültige Auswahl an.
+ * Selects run upgrades and applies exactly one valid choice.
  */
 export class UpgradeManager {
   #definitions;
@@ -43,7 +43,7 @@ export class UpgradeManager {
   }
 
   /**
-   * Erstellt höchstens drei verschiedene, noch steigerbare Vorschläge.
+   * Creates at most three distinct upgradeable options.
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   openSelection() {
@@ -59,7 +59,7 @@ export class UpgradeManager {
   }
 
   /**
-   * Wendet nur eine aktuell angebotene Verbesserung an.
+   * Applies only an upgrade that is currently offered.
    * @param {string} upgradeId
    * @returns {Readonly<object>}
    */
@@ -74,7 +74,7 @@ export class UpgradeManager {
   }
 
   /**
-   * Liefert die aktuelle Auswahl als unveränderliche Liste.
+   * Returns the current selection as an immutable list.
    * @returns {ReadonlyArray<Readonly<object>>}
    */
   getSelection() {
@@ -82,7 +82,7 @@ export class UpgradeManager {
   }
 
   /**
-   * Setzt alle Verbesserungsstufen für einen frischen Lauf zurück.
+   * Resets all upgrade levels for a fresh run.
    */
   reset() {
     this.#levels = new Map(

@@ -1,5 +1,5 @@
 /**
- * Kapselt die rein technische Einrichtung der Canvas-Zeichenfläche.
+ * Encapsulates the technical setup of the canvas drawing surface.
  */
 export class GameCanvas {
   /**
@@ -16,14 +16,14 @@ export class GameCanvas {
   }
 
   /**
-   * Leert die vollständige Spielfläche.
+   * Clears the entire game surface.
    */
   clear() {
     this.context.clearRect(0, 0, this.element.width, this.element.height);
   }
 
   /**
-   * Spiegelt den Loopzustand für UI und Tests am Canvas.
+   * Mirrors the loop state on the canvas for the UI and tests.
    * @param {"running"|"paused"|"stopped"} state
    */
   setLoopState(state) {

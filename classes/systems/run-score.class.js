@@ -1,7 +1,7 @@
 import { RunCombo } from "./run-combo.class.js";
 
 /**
- * Berechnet die Punktzahl eines Laufs unabhängig von HUD und Spielwelt.
+ * Calculates a run's score independently of the HUD and game world.
  */
 export class RunScore {
   #scoredCombatPhaseIds;
@@ -20,7 +20,7 @@ export class RunScore {
     this.reset();
   }
 
-  /** Beginnt eine vollständig leere Wertung. */
+  /** Begins with a completely empty score state. */
   reset() {
     this.value = this.startingScore;
     this.elapsedSeconds = 0;
@@ -32,10 +32,10 @@ export class RunScore {
   }
 
   /**
-   * Zählt nur aktive Laufzeit.
+   * Counts only active run time.
    * @param {number} deltaTimeSeconds
    * @param {number} [heightLossPixels=0]
-   * @returns {boolean} Ob eine sichtbare Combo beendet wurde.
+   * @returns {boolean} Whether a visible combo ended.
    */
   updateTime(deltaTimeSeconds, heightLossPixels = 0) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds < 0) {
@@ -51,7 +51,7 @@ export class RunScore {
   }
 
   /**
-   * Bewertet Gegner anhand ihrer ID genau einmal.
+   * Scores enemies exactly once based on their ID.
    * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
    * @returns {boolean}
    */
@@ -63,7 +63,7 @@ export class RunScore {
   }
 
   /**
-   * Bewertet jedes echte Sammelobjekt anhand seiner ID genau einmal.
+   * Scores each real collectable exactly once based on its ID.
    * @param {ReadonlyArray<Readonly<object>>} pickups
    * @returns {boolean}
    */
@@ -75,7 +75,7 @@ export class RunScore {
   }
 
   /**
-   * Bewertet jede Kampfphase genau einmal.
+   * Scores each combat phase exactly once.
    * @param {ReadonlyArray<string>} phaseIds
    * @returns {boolean}
    */
@@ -87,7 +87,7 @@ export class RunScore {
   }
 
   /**
-   * Ergänzt Restenergie und bei Sieg gesparte Zeit genau einmal.
+   * Adds remaining energy and saved victory time exactly once.
    * @param {boolean} isVictory
    * @param {number} remainingEnergy
    * @returns {boolean}
@@ -100,12 +100,12 @@ export class RunScore {
     return true;
   }
 
-  /** @returns {boolean} Ob eine laufende Combo beendet wurde. */
+  /** @returns {boolean} Whether an active combo ended. */
   breakCombo() {
     return this.combo.break();
   }
 
-  /** @returns {Readonly<object>} Aktuelle Combo für das HUD. */
+  /** @returns {Readonly<object>} Current combo for the HUD. */
   getComboSnapshot() {
     return this.combo.getSnapshot();
   }

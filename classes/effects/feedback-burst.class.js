@@ -24,9 +24,9 @@ const BURST_CONFIGS = Object.freeze({
   }),
 });
 
-/** Zeichnet einen kurzen, reproduzierbaren Partikelimpuls. */
+/** Draws a short, reproducible particle burst. */
 export class FeedbackBurst {
-  /** @param {string} type @param {Readonly<object>} target */
+  /** @param {string} type Burst type. @param {Readonly<object>} target Effect target. */
   constructor(type, target) {
     this.config = BURST_CONFIGS[type];
     this.#validateTarget(target);
@@ -36,7 +36,7 @@ export class FeedbackBurst {
     this.ageSeconds = 0;
   }
 
-  /** Bewegt den Effekt weiter und meldet, ob er noch sichtbar ist. */
+  /** Advances the effect and reports whether it remains visible. */
   update(deltaTimeSeconds) {
     if (Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0) {
       this.ageSeconds += deltaTimeSeconds;
@@ -44,7 +44,7 @@ export class FeedbackBurst {
     return this.ageSeconds < this.config.duration;
   }
 
-  /** Zeichnet alle Teilchen des aktuellen Impulszeitpunkts. */
+  /** Draws every particle at the current burst time. */
   draw(context) {
     const progress = Math.min(1, this.ageSeconds / this.config.duration);
     context.save();

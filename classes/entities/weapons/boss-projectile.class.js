@@ -37,7 +37,7 @@ const VISUAL_CONFIGS = Object.freeze({
 });
 
 /**
- * Feindliches Schockwellen- oder Mondbolzenprojektil.
+ * Hostile shockwave or moon-bolt projectile.
  */
 export class BossProjectile extends Projectile {
   /**

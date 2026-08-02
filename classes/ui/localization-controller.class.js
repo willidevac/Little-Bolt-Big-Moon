@@ -10,7 +10,7 @@ const TEXT_SELECTOR = "[data-i18n]";
 const LABEL_SELECTOR = "[data-i18n-aria-label]";
 
 /**
- * Übersetzt statische Texte und verbindet die Sprachauswahl mit dem Speicher.
+ * Translates static text and connects language selection to storage.
  */
 export class LocalizationController {
   /**
@@ -27,7 +27,7 @@ export class LocalizationController {
   }
 
   /**
-   * Lädt, übersetzt und bindet die Sprache genau einmal.
+   * Loads, translates, and binds the language exactly once.
    * @returns {LocalizationController}
    */
   initialize() {
@@ -39,21 +39,21 @@ export class LocalizationController {
     return this;
   }
 
-  /** Entfernt Auswahl- und Sprachbeobachter. */
+  /** Removes selection and language observers. */
   destroy() {
     this.control.removeEventListener("change", this.boundChange);
     this.unsubscribe?.();
     this.unsubscribe = null;
   }
 
-  /** Speichert eine neu ausgewählte unterstützte Sprache. */
+  /** Stores a newly selected supported language. */
   handleChange() {
     const records = this.storage.setLanguage(this.control.value);
     setLanguage(records.language);
     this.render();
   }
 
-  /** Übersetzt alle markierten statischen Elemente. */
+  /** Translates all marked static elements. */
   render() {
     const language = getLanguage();
     this.documentElement.lang = language;

@@ -13,7 +13,7 @@ import { loadHtmlFragments } from "./js/ui/html-fragments.js";
 let gameInstance = null;
 
 /**
- * Liefert das verbindliche Canvas des Spiels.
+ * Returns the authoritative game canvas.
  * @returns {HTMLCanvasElement}
  */
 function getGameCanvas() {
@@ -23,7 +23,7 @@ function getGameCanvas() {
 }
 
 /**
- * Übernimmt die feste interne Canvas-Auflösung aus der Konfiguration.
+ * Applies the fixed internal canvas resolution from the configuration.
  * @param {HTMLCanvasElement} canvas
  */
 function configureCanvas(canvas) {
@@ -32,7 +32,7 @@ function configureCanvas(canvas) {
 }
 
 /**
- * Erstellt und initialisiert genau eine Game-Instanz.
+ * Creates and initializes exactly one Game instance.
  * @returns {Game}
  */
 export function initializeGame() {
@@ -45,7 +45,7 @@ export function initializeGame() {
 }
 
 /**
- * Gibt die aktuell verwendete Game-Instanz zurück.
+ * Returns the currently used Game instance.
  * @returns {Game|null}
  */
 export function getGame() {

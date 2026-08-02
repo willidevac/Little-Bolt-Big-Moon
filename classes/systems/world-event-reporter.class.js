@@ -1,7 +1,7 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
 /**
- * Erkennt einmalige Bewegungs- und Bosswechsel zwischen zwei Weltständen.
+ * Detects one-time movement and boss changes between two world states.
  */
 export class WorldEventReporter {
   /**
@@ -16,7 +16,7 @@ export class WorldEventReporter {
   }
 
   /**
-   * Merkt sich den kleinen Zustand vor dem Weltupdate.
+   * Captures the minimal state before the world update.
    * @param {Readonly<object>|null} character
    * @param {Readonly<object>} boss
    */
@@ -32,7 +32,7 @@ export class WorldEventReporter {
   }
 
   /**
-   * Meldet Sprung, Landung, Bossstart und neue Bossphasen.
+   * Reports jumps, landings, boss activation, and new boss phases.
    * @param {Readonly<object>|null} character
    * @param {Readonly<object>} boss
    */
@@ -43,7 +43,7 @@ export class WorldEventReporter {
   }
 
   /**
-   * Übergibt Schaden und meldet genau einen angenommenen Gegnertreffer.
+   * Applies damage and reports exactly one accepted enemy hit.
    * @param {Readonly<object>} enemy
    * @param {Readonly<object>} hit
    * @returns {boolean}

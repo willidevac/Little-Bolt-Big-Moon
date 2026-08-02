@@ -57,7 +57,7 @@ const VISUAL_CONFIG = Object.freeze({
 });
 
 /**
- * Warnt sichtbar und springt danach ohne nachträgliches Lenken auf Byte zu.
+ * Displays a warning and then leaps toward Byte without mid-air steering.
  */
 export class SpringMine extends Enemy {
   /**
@@ -74,7 +74,7 @@ export class SpringMine extends Enemy {
   }
 
   /**
-   * Wartet, warnt und springt in einer vorhersagbaren Flugbahn.
+   * Waits, warns, and leaps along a predictable trajectory.
    * @param {number} deltaTimeSeconds
    * @param {import("../../core/world.class.js").World} world
    */
@@ -87,7 +87,7 @@ export class SpringMine extends Enemy {
     this.#updateMovement(deltaTimeSeconds, world, canAct);
   }
 
-  /** Zeichnet eine klar erkennbare Warnung vor jedem Sprung. */
+  /** Draws a clearly visible warning before every leap. */
   draw(context) {
     context.save();
     context.filter = "hue-rotate(145deg) saturate(1.25)";

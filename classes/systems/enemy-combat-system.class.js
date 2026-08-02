@@ -1,7 +1,7 @@
 import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 /**
- * Verbindet Spielerangriffe, Stomp und Gegnerkontakt ohne eigene Energieverwaltung.
+ * Connects player attacks, stomps, and enemy contact without managing energy.
  */
 export class EnemyCombatSystem {
   #defeatedEnemies;
@@ -18,10 +18,10 @@ export class EnemyCombatSystem {
   }
 
   /**
-   * Übergibt einen Nahkampfangriff an alle tatsächlich berührten Gegner.
+   * Applies a melee attack to every enemy it actually touches.
    * @param {Readonly<object>|null} attack
    * @param {import("../core/world.class.js").World} world
-   * @returns {number} Anzahl getroffener Gegner.
+   * @returns {number} Number of enemies hit.
    */
   resolvePlayerAttack(attack, world) {
     if (attack?.type !== "melee" || !attack.hitbox) return 0;
@@ -32,10 +32,10 @@ export class EnemyCombatSystem {
   }
 
   /**
-   * Prüft Stomp vor schädlichem Seitenkontakt und räumt besiegte Gegner auf.
+   * Checks for a stomp before harmful side contact and cleans up defeated enemies.
    * @param {import("../core/world.class.js").World} world
    * @param {number} deltaTimeSeconds
-   * @returns {Readonly<object>|null} Möglicher Kontakttreffer gegen Byte.
+   * @returns {Readonly<object>|null} Possible contact hit against Byte.
    */
   resolve(world, deltaTimeSeconds) {
     if (!world.character || world.character.isDead) {
@@ -60,7 +60,7 @@ export class EnemyCombatSystem {
   }
 
   /**
-   * Übergibt besiegte Gegner genau einmal an die zentrale Laufwertung.
+   * Passes defeated enemies to the central run score exactly once.
    * @returns {ReadonlyArray<Readonly<{id:string,type:string}>>}
    */
   takeDefeatedEnemies() {

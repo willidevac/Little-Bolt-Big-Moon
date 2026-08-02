@@ -10,7 +10,7 @@ const REDUCED_DURATION_MILLISECONDS = 700;
 const SKIP_KEYS = Object.freeze(["Escape", "Enter", "Space"]);
 
 /**
- * Zeigt kurze, überspringbare Bildsequenzen ohne Abhängigkeit vom Audio.
+ * Displays short, skippable visual sequences without depending on audio.
  */
 export class StorySequenceController {
   /**
@@ -32,7 +32,7 @@ export class StorySequenceController {
   }
 
   /**
-   * Bindet Zustandswechsel und Überspringen höchstens einmal.
+   * Binds state changes and skipping at most once.
    * @returns {StorySequenceController}
    */
   initialize() {
@@ -44,7 +44,7 @@ export class StorySequenceController {
     return this;
   }
 
-  /** Entfernt alle Bindungen und eine eventuell offene Sequenz. */
+  /** Removes all bindings and any active sequence. */
   destroy() {
     this.#finish(false);
     this.skipButton.removeEventListener("click", this.boundSkip);
@@ -56,7 +56,7 @@ export class StorySequenceController {
   }
 
   /**
-   * Zeigt den wortlosen Start und beginnt anschließend einen frischen Lauf.
+   * Displays the wordless opening and then begins a fresh run.
    * @returns {boolean}
    */
   playIntro() {
@@ -64,7 +64,7 @@ export class StorySequenceController {
   }
 
   /**
-   * Beendet die aktive Sequenz sofort.
+   * Immediately ends the active sequence.
    * @returns {boolean}
    */
   skip() {
@@ -74,7 +74,7 @@ export class StorySequenceController {
   }
 
   /**
-   * Überspringt die Sequenz barrierefrei per Tastatur.
+   * Skips the sequence accessibly by keyboard.
    * @param {KeyboardEvent} event
    */
   handleKeydown(event) {
@@ -87,7 +87,7 @@ export class StorySequenceController {
   }
 
   /**
-   * Reagiert auf Sieg und bricht bei einem neuen Lauf sicher ab.
+   * Reacts to victory and safely cancels when a new run starts.
    * @param {string} state
    */
   handleState(state) {

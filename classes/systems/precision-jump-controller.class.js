@@ -1,17 +1,17 @@
 import { clamp } from "../../js/utils/math.js";
 
 /**
- * Lädt einen Sprung am Boden und liefert beim Loslassen seinen festen Impuls.
+ * Charges a jump on the ground and returns its fixed impulse on release.
  */
 export class PrecisionJumpController {
-  /** Erstellt eine leere Sprungladung ohne Richtungswunsch. */
+  /** Creates an empty jump charge without a requested direction. */
   constructor() {
     this.controlBonusSeconds = 0;
     this.reset();
   }
 
   /**
-   * Aktualisiert die Ladung und liefert höchstens einen neuen Sprungimpuls.
+   * Updates the charge and returns at most one new jump impulse.
    * @param {number} deltaTimeSeconds
    * @param {Readonly<object>} input
    * @param {boolean} isOnGround
@@ -27,7 +27,7 @@ export class PrecisionJumpController {
     return this.#release(input, config);
   }
 
-  /** Setzt die aktuelle Eingabefolge zurück. */
+  /** Resets the current input sequence. */
   reset() {
     this.chargeSeconds = 0;
     this.isCharging = false;
@@ -36,7 +36,7 @@ export class PrecisionJumpController {
   }
 
   /**
-   * Verlängert die Ladezeit für feinere Sprungabstufungen.
+   * Extends charge time to provide finer jump increments.
    * @param {number} amountSeconds
    */
   increaseControl(amountSeconds) {

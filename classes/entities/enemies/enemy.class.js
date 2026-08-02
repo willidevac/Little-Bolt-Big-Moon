@@ -3,7 +3,7 @@ import { AnimationController } from "../../systems/animation-controller.class.js
 import { EnemyCombatState } from "../../systems/enemy-combat-state.class.js";
 
 /**
- * Gemeinsame Darstellung, Patrouille und Koordination normaler Gegner.
+ * Shared rendering, patrol, and coordination for regular enemies.
  */
 export class Enemy extends MovableObject {
   #combatState;
@@ -33,36 +33,36 @@ export class Enemy extends MovableObject {
     this.setAnimationState(visualConfig.initialState);
   }
 
-  /** @returns {number} Aktuelle Lebenspunkte. */
+  /** @returns {number} Current health. */
   get health() { return this.#combatState.health; }
 
-  /** @returns {number} Maximale Lebenspunkte. */
+  /** @returns {number} Maximum health. */
   get maximumHealth() { return this.#combatState.maximumHealth; }
 
-  /** @returns {boolean} Ob der Gegner besiegt wurde. */
+  /** @returns {boolean} Whether the enemy was defeated. */
   get isDead() { return this.#combatState.isDead; }
 
-  /** @returns {boolean} Ob gerade die Trefferanimation Vorrang hat. */
+  /** @returns {boolean} Whether the hurt animation currently has priority. */
   get isHurt() { return this.#combatState.isHurt; }
 
-  /** @returns {boolean} Ob der Gegner aus der Welt entfernt werden darf. */
+  /** @returns {boolean} Whether the enemy may be removed from the world. */
   get isReadyForRemoval() { return this.#combatState.isReadyForRemoval; }
 
-  /** @returns {number} Verbleibende Angriffssperre in Sekunden. */
+  /** @returns {number} Remaining attack cooldown in seconds. */
   get attackCooldownSecondsRemaining() {
     return this.#combatState.attackCooldownSecondsRemaining;
   }
 
-  /** @returns {number} Verbleibende Angriffsanimation in Sekunden. */
+  /** @returns {number} Remaining attack animation time in seconds. */
   get attackSecondsRemaining() {
     return this.#combatState.attackSecondsRemaining;
   }
 
-  /** @returns {number} Dauer der Standardangriffsanimation. */
+  /** @returns {number} Duration of the default attack animation. */
   get attackStateSeconds() { return this.#combatState.attackStateSeconds; }
 
   /**
-   * Zeichnet Gegner abhängig von ihrer Laufrichtung gespiegelt.
+   * Draws enemies mirrored according to their movement direction.
    * @param {CanvasRenderingContext2D} context
    */
   draw(context) {
@@ -87,7 +87,7 @@ export class Enemy extends MovableObject {
     context.shadowBlur = 14;
   }
 
-  /** Hält den Gegner innerhalb seiner Patrouille. */
+  /** Keeps the enemy within its patrol range. */
   stayInsidePatrol() {
     const maximumX = this.patrolMaxX - this.width;
     if (this.x <= this.patrolMinX) this.#turnAt(this.patrolMinX, 1);
@@ -96,7 +96,7 @@ export class Enemy extends MovableObject {
   }
 
   /**
-   * Pflegt gesperrte Treffer-, Angriffs- und Todeszustände.
+   * Maintains locked hurt, attack, and death states.
    * @param {number} deltaTimeSeconds
    * @param {string} movementState
    * @returns {boolean}
@@ -113,7 +113,7 @@ export class Enemy extends MovableObject {
   }
 
   /**
-   * Zieht Gegnerleben ab und startet Treffer oder mechanischen Tod.
+   * Reduces enemy health and starts a hurt or mechanical death state.
    * @param {Readonly<{amount:number}>} hit
    * @returns {boolean}
    */
@@ -126,7 +126,7 @@ export class Enemy extends MovableObject {
   }
 
   /**
-   * Erzeugt bei freiem Cooldown einen Kontakttreffer gegen Byte.
+   * Creates a contact hit against Byte when the cooldown is ready.
    * @param {Readonly<object>} target
    * @returns {Readonly<{amount:number,direction:number,source:string}>|null}
    */
@@ -138,14 +138,14 @@ export class Enemy extends MovableObject {
     return this.#combatState.createContactHit(this.id, direction);
   }
 
-  /** @returns {boolean} Ob ein Zwischenboss neu aktiviert wurde. */
+  /** @returns {boolean} Whether a biome boss was newly activated. */
   activateBoss() {
     if (!this.isBoss || this.isActive) return false;
     this.isActive = true;
     return true;
   }
 
-  /** @returns {Readonly<object>} Gemeinsame sichtbare Bosswerte. */
+  /** @returns {Readonly<object>} Shared visible boss values. */
   getBossSnapshot() {
     return Object.freeze({
       id: this.id,
@@ -160,7 +160,7 @@ export class Enemy extends MovableObject {
   }
 
   /**
-   * Startet einen vorhandenen Angriffsclip mit gemeinsamem Cooldown.
+   * Starts an existing attack clip with a shared cooldown.
    * @param {string} animationState
    * @returns {boolean}
    */
@@ -171,13 +171,13 @@ export class Enemy extends MovableObject {
     return true;
   }
 
-  /** @param {number} seconds Neue Angriffssperre in Sekunden. */
+  /** @param {number} seconds New attack cooldown in seconds. */
   setAttackCooldown(seconds) {
     this.#combatState.setAttackCooldown(seconds);
   }
 
   /**
-   * Wechselt den Animationszustand ohne Spritewissen in Unterklassen.
+   * Changes the animation state without exposing sprite knowledge to subclasses.
    * @param {string} state
    * @returns {boolean}
    */
@@ -188,7 +188,7 @@ export class Enemy extends MovableObject {
     return true;
   }
 
-  /** @param {number} deltaTimeSeconds Vergangene Framezeit. */
+  /** @param {number} deltaTimeSeconds Elapsed frame time. */
   updateAnimation(deltaTimeSeconds) {
     const frame = this.animationController.update(
       this.animationState,

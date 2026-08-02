@@ -4,7 +4,7 @@ import {
 
 let fullscreenController = null;
 
-/** Erstellt die Vollbildsteuerung genau einmal. */
+/** Creates the fullscreen controller exactly once. */
 export function initializeFullscreen(root = document.querySelector("[data-game-root]")) {
   if (fullscreenController) return fullscreenController;
   const button = root?.querySelector("[data-fullscreen-toggle]");

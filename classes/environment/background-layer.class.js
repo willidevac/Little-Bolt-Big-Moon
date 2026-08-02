@@ -1,7 +1,7 @@
 import { DrawableObject } from "../base/drawable-object.class.js";
 
 /**
- * Fährt einmalig durch ein hohes Panorama, ohne Bildbereiche zu wiederholen.
+ * Travels once through a tall panorama without repeating image areas.
  */
 export class BackgroundLayer extends DrawableObject {
   /**
@@ -20,7 +20,7 @@ export class BackgroundLayer extends DrawableObject {
   }
 
   /**
-   * Verschiebt einen unverzerrten 16:9-Ausschnitt durch das gesamte Panorama.
+   * Moves an undistorted 16:9 crop through the entire panorama.
    * @param {CanvasRenderingContext2D} context
    * @param {Readonly<{topY:number, bottomY:number}>} bounds
    * @param {{y:number}} camera

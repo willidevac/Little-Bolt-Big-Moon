@@ -9,16 +9,16 @@ function setText(element, value) {
   if (element.textContent !== text) element.textContent = text;
 }
 
-/** Bündelt alle kurzen und vorübergehenden Rückmeldungen des HUDs. */
+/** Groups all short-lived HUD feedback. */
 export class HudFeedbackController {
-  /** @param {Readonly<Record<string, HTMLElement>>} elements @param {number} pixelsPerMeter */
+  /** @param {Readonly<Record<string, HTMLElement>>} elements HUD elements. @param {number} pixelsPerMeter World scale. */
   constructor(elements, pixelsPerMeter) {
     this.elements = elements;
     this.announcement = new HudAnnouncement(elements.announcement);
     this.fallFeedback = new FallFeedback(elements.fallFeedback, pixelsPerMeter);
   }
 
-  /** Verbindet ein Gameplay-Ereignis mit seiner kurzen HUD-Rückmeldung. */
+  /** Connects a gameplay event to its brief HUD feedback. */
   handle(event) {
     if (this.#handleAnnouncement(event)) return;
     if (event.type === GAMEPLAY_EVENTS.PLAYER_FALL) {
@@ -29,7 +29,7 @@ export class HudFeedbackController {
     }
   }
 
-  /** Stoppt laufende Meldungen und entfernt ihre Sprachbeobachter. */
+  /** Stops active messages and removes their language observers. */
   destroy() {
     this.announcement.destroy();
     this.fallFeedback.destroy();

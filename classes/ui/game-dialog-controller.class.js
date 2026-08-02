@@ -3,7 +3,7 @@ const DIALOG_FOCUS_SELECTOR = "[data-dialog-focus]";
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled])';
 
 /**
- * Verwaltet modale Spieldialoge samt Fokusfalle und inertem Hintergrund.
+ * Manages modal game dialogs, including focus trapping and an inert background.
  */
 export class GameDialogController {
   /**
@@ -20,7 +20,7 @@ export class GameDialogController {
   }
 
   /**
-   * Verarbeitet Escape und Tab für einen geöffneten Dialog.
+   * Handles Escape and Tab for an open dialog.
    * @param {KeyboardEvent} event
    */
   handleKeydown(event) {
@@ -30,7 +30,7 @@ export class GameDialogController {
   }
 
   /**
-   * Prüft, ob direkt auf den abgedunkelten Dialoghintergrund geklickt wurde.
+   * Checks whether the dimmed dialog backdrop was clicked directly.
    * @param {EventTarget|null} target
    * @returns {boolean}
    */
@@ -39,7 +39,7 @@ export class GameDialogController {
   }
 
   /**
-   * Öffnet einen benannten Dialog und fokussiert seine Überschrift.
+   * Opens a named dialog and focuses its heading.
    * @param {string} name
    */
   open(name) {
@@ -53,7 +53,7 @@ export class GameDialogController {
   }
 
   /**
-   * Schließt den Dialog und setzt den Fokus zum Ausgangspunkt zurück.
+   * Closes the dialog and restores focus to its origin.
    * @param {boolean} [restoreFocus=true]
    */
   close(restoreFocus = true) {

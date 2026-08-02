@@ -1,4 +1,4 @@
-/** Baut für einen Neustart die Welt neu auf und leert alle Laufzustände. */
+/** Rebuilds the world for a restart and clears all run states. */
 export class RunResetController {
   #dependencies;
 
@@ -8,7 +8,7 @@ export class RunResetController {
   }
 
   /**
-   * Ersetzt eine alte Welt durch eine vollständig zurückgesetzte neue Welt.
+   * Replaces an old world with a completely reset new world.
    * @param {import("../core/world.class.js").World} currentWorld
    * @returns {import("../core/world.class.js").World}
    */

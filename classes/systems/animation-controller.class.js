@@ -1,7 +1,7 @@
 const FRAME_TIME_EPSILON_SECONDS = 1e-9;
 
 /**
- * Wählt Spriteframes anhand eines Zustands und vergangener Spielzeit aus.
+ * Selects sprite frames based on a state and elapsed game time.
  */
 export class AnimationController {
   /**
@@ -18,9 +18,9 @@ export class AnimationController {
   }
 
   /**
-   * Beginnt einen Clip nur dann neu, wenn sich der Zustand ändert.
+   * Restarts a clip only when the state changes.
    * @param {string} state
-   * @returns {number} Der erste oder aktuelle Frame des Clips.
+   * @returns {number} The first or current frame of the clip.
    */
   setState(state) {
     this.#getClip(state);
@@ -32,7 +32,7 @@ export class AnimationController {
   }
 
   /**
-   * Verarbeitet vergangene Spielzeit und liefert den sichtbaren Spriteframe.
+   * Processes elapsed game time and returns the visible sprite frame.
    * @param {string} state
    * @param {number} deltaTimeSeconds
    * @returns {number}
@@ -47,7 +47,7 @@ export class AnimationController {
   }
 
   /**
-   * Liefert den absoluten Frameindex des aktuellen Clips.
+   * Returns the absolute frame index of the current clip.
    * @returns {number}
    */
   getCurrentFrameIndex() {

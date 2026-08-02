@@ -5,7 +5,7 @@ const BIOME_ACTIONS = Object.freeze([
   "reviewBoss",
 ]);
 
-/** Bewegt Byte im freigeschalteten Review-Lauf ohne eigene Physikschleife. */
+/** Moves Byte during an unlocked review run without a separate physics loop. */
 export class ReviewFlightController {
   /**
    * @param {import("../core/game.class.js").Game} game
@@ -19,7 +19,7 @@ export class ReviewFlightController {
     this.isEnabled = false;
   }
 
-  /** Aktiviert Flug, Unverwundbarkeit und die Review-Eingaben. */
+  /** Enables flight, invulnerability, and review input. */
   enable() {
     if (this.isEnabled) return false;
     this.isEnabled = true;

@@ -1,22 +1,22 @@
 import { clamp } from "../../js/utils/math.js";
 
-/** Steuert Bytes waagerechte Bodenbewegung und begrenzt sie auf die Welt. */
+/** Controls Byte's horizontal ground movement and confines it to the world. */
 export class CharacterMovementController {
   #character;
 
-  /** @param {import("../entities/character.class.js").Character} character */
+  /** @param {import("../entities/character.class.js").Character} character Character to control. */
   constructor(character) {
     this.#character = character;
   }
 
-  /** Aktualisiert Bytes Blickrichtung über die waagerechte Eingabe. */
+  /** Updates Byte's facing direction from horizontal input. */
   updateFacingDirection(input) {
     const direction = this.#getDirection(input);
     if (direction !== 0) this.#character.facingDirection = direction;
   }
 
   /**
-   * Beschleunigt oder bremst Byte während einer Bodenbewegung.
+   * Accelerates or decelerates Byte during ground movement.
    * @param {number} deltaTimeSeconds
    * @param {Readonly<object>} input
    * @param {Readonly<object>} config
@@ -28,7 +28,7 @@ export class CharacterMovementController {
     this.#accelerate(deltaTimeSeconds, direction, config);
   }
 
-  /** Hält Byte innerhalb des linken und rechten Weltrands. */
+  /** Keeps Byte within the left and right world boundaries. */
   keepInsideWorld(worldWidth) {
     const previousX = this.#character.x;
     const maximumX = worldWidth - this.#character.width;

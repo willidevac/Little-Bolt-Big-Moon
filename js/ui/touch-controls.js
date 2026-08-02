@@ -3,7 +3,7 @@ import { TouchControls } from "../../classes/input/touch-controls.class.js";
 let touchControls = null;
 
 /**
- * Erstellt und verbindet die mobile Steuerung genau einmal.
+ * Creates and binds the mobile controls exactly once.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @param {HTMLElement} [root=document.querySelector("[data-game-root]")]
  * @returns {TouchControls}

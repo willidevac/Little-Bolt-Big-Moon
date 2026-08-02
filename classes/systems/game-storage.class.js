@@ -12,7 +12,7 @@ const DEFAULT_RECORDS = Object.freeze({
 });
 
 /**
- * Bewahrt Rekorde und Einstellungen fehlertolerant im Browser auf.
+ * Stores records and settings in the browser with safe error handling.
  */
 export class GameStorage {
   /**
@@ -29,7 +29,7 @@ export class GameStorage {
   }
 
   /**
-   * Lädt den gespeicherten Datensatz oder verwendet sichere Standardwerte.
+   * Loads the saved data or uses safe default values.
    * @returns {Readonly<object>}
    */
   load() {
@@ -44,7 +44,7 @@ export class GameStorage {
   }
 
   /**
-   * Übernimmt die besten Werte eines beendeten Laufs.
+   * Applies the best values from a completed run.
    * @param {Readonly<object>} run
    * @param {boolean} isVictory
    * @returns {Readonly<object>}
@@ -70,7 +70,7 @@ export class GameStorage {
   }
 
   /**
-   * Merkt sich, ob der Ton ausgeschaltet sein soll.
+   * Stores whether audio should be muted.
    * @param {boolean} isMuted
    * @returns {Readonly<object>}
    */
@@ -81,7 +81,7 @@ export class GameStorage {
   }
 
   /**
-   * Speichert eine Lautstärke zwischen 0 und 100 Prozent.
+   * Stores a volume between 0 and 100 percent.
    * @param {"music"|"effects"} group
    * @param {number} value
    * @returns {Readonly<object>}
@@ -94,7 +94,7 @@ export class GameStorage {
   }
 
   /**
-   * Speichert eine unterstützte Oberflächensprache.
+   * Stores a supported interface language.
    * @param {string} language
    * @returns {Readonly<object>}
    */
@@ -108,7 +108,7 @@ export class GameStorage {
   }
 
   /**
-   * Gibt eine unveränderliche Kopie des aktuellen Datensatzes zurück.
+   * Returns an immutable copy of the current data.
    * @returns {Readonly<object>}
    */
   getSnapshot() {

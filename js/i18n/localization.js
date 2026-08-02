@@ -5,7 +5,7 @@ let currentLanguage = LOCALIZATION_CONFIG.defaultLanguage;
 const listeners = new Set();
 
 /**
- * Liefert die aktuell aktive Sprache.
+ * Returns the currently active language.
  * @returns {string}
  */
 export function getLanguage() {
@@ -13,7 +13,7 @@ export function getLanguage() {
 }
 
 /**
- * Wechselt auf eine unterstützte Sprache.
+ * Switches to a supported language.
  * @param {string} language
  * @returns {boolean}
  */
@@ -26,7 +26,7 @@ export function setLanguage(language) {
 }
 
 /**
- * Übersetzt einen Schlüssel und setzt benannte Platzhalter ein.
+ * Translates a key and substitutes named placeholders.
  * @param {string} key
  * @param {Readonly<Record<string, string|number>>} [values]
  * @returns {string}
@@ -40,7 +40,7 @@ export function translate(key, values = {}) {
 }
 
 /**
- * Beobachtet Sprachwechsel und liefert eine Abmeldefunktion.
+ * Observes language changes and returns an unsubscribe function.
  * @param {(language:string) => void} listener
  * @returns {() => void}
  */

@@ -1,5 +1,5 @@
 /**
- * Bündelt die Kollisionsprüfungen der Spielwelt.
+ * Groups the game world's collision checks.
  */
 export class CollisionManager {
   /**
@@ -10,7 +10,7 @@ export class CollisionManager {
   }
 
   /**
-   * Prüft, ob sich zwei rechteckige Flächen überschneiden.
+   * Checks whether two rectangular areas overlap.
    * @param {import("../base/drawable-object.class.js").DrawableObject} firstObject
    * @param {import("../base/drawable-object.class.js").DrawableObject} secondObject
    * @returns {boolean}
@@ -25,7 +25,7 @@ export class CollisionManager {
   }
 
   /**
-   * Erkennt einen Gegnerkontakt ausschließlich beim fallenden Überqueren von oben.
+   * Detects enemy contact only while falling across the target from above.
    * @param {import("../entities/character.class.js").Character} character
    * @param {import("../base/drawable-object.class.js").DrawableObject} target
    * @param {number} deltaTimeSeconds
@@ -45,7 +45,7 @@ export class CollisionManager {
   }
 
   /**
-   * Öffnet vor der Bewegung eine neue Prüfung des Bodenkontakts.
+   * Starts a fresh ground-contact check before movement.
    * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
    */
   resetGroundStates(movableObjects) {
@@ -53,7 +53,7 @@ export class CollisionManager {
   }
 
   /**
-   * Setzt fallende Objekte auf die zuerst überquerte Plattformoberkante.
+   * Places falling objects on the first crossed platform surface.
    * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
    * @param {ReadonlyArray<import("../environment/platform.class.js").Platform>} platforms
    * @param {number} deltaTimeSeconds

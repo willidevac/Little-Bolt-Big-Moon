@@ -1,6 +1,6 @@
-/** Überträgt die Bewegung einer Plattform auf darauf stehende Objekte. */
+/** Transfers a platform's movement to objects standing on it. */
 export class PlatformMotionSystem {
-  /** Nimmt alle sicher gelandeten Objekte im aktuellen Bild mit. */
+  /** Carries all safely landed objects during the current frame. */
   carryGroundMovables(movableObjects) {
     movableObjects.forEach((movableObject) => {
       const platform = movableObject.groundPlatform;

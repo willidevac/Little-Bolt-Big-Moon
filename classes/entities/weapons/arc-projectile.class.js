@@ -21,7 +21,7 @@ const ARC_VISUAL_CONFIG = Object.freeze({
 });
 
 /**
- * Langsames Spielerprojektil, das auf einen zweiten nahen Gegner überspringt.
+ * Slow player projectile that chains to a second nearby enemy.
  */
 export class ArcProjectile extends Projectile {
   /**
@@ -38,7 +38,7 @@ export class ArcProjectile extends Projectile {
   }
 
   /**
-   * Liefert den abgeschwächten Treffer für den zweiten Gegner.
+   * Returns the reduced hit for the second enemy.
    * @returns {Readonly<{amount:number,direction:number,source:string}>}
    */
   createSecondaryHit() {

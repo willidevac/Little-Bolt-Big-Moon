@@ -8,7 +8,7 @@ import {
 } from "../../js/config/platform-route-rules.js";
 
 /**
- * Erstellt einzelne sichere Plattformdefinitionen für eine geplante Route.
+ * Creates individual safe platform definitions for a planned route.
  */
 export class PlatformDefinitionFactory {
   /** @param {number} worldWidth */
@@ -20,7 +20,7 @@ export class PlatformDefinitionFactory {
   }
 
   /**
-   * Erstellt eine automatisch geplante Plattform.
+   * Creates an automatically planned platform.
    * @param {Readonly<object>} section
    * @param {number} routeIndex
    * @param {number} y
@@ -39,7 +39,7 @@ export class PlatformDefinitionFactory {
   }
 
   /**
-   * Erstellt eine handgebaute Hauptplattform eines Challenge-Raums.
+   * Creates a handcrafted main platform for a challenge room.
    * @param {Readonly<object>} section
    * @param {Readonly<object>} room
    * @param {number} roomIndex
@@ -61,7 +61,7 @@ export class PlatformDefinitionFactory {
   }
 
   /**
-   * Erstellt einen optionalen, schwereren Nebenweg.
+   * Creates an optional, more difficult side route.
    * @param {Readonly<object>} section
    * @param {Readonly<object>} room
    * @param {number} roomIndex
@@ -86,7 +86,7 @@ export class PlatformDefinitionFactory {
   }
 
   /**
-   * Erstellt die verbindende Fangplattform zwischen zwei Gebieten.
+   * Creates the connecting catch platform between two areas.
    * @param {Readonly<object>} section
    * @param {number} routeIndex
    * @param {number} y
@@ -102,7 +102,7 @@ export class PlatformDefinitionFactory {
   }
 
   /**
-   * Bricht bei einem zu weiten handgebauten Sprung ab.
+   * Rejects a handcrafted jump that is too wide.
    * @param {Readonly<object>} upperPlatform
    * @param {Readonly<object>|null} lowerPlatform
    */

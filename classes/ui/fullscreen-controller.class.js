@@ -1,8 +1,8 @@
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
-/** Hält Browser-Vollbild und sichtbaren Schalter synchron. */
+/** Keeps browser fullscreen state and the visible toggle synchronized. */
 export class FullscreenController {
-  /** @param {Document} documentTarget @param {HTMLElement} root @param {HTMLElement} button */
+  /** @param {Document} documentTarget Browser document. @param {HTMLElement} root Game root. @param {HTMLElement} button Toggle button. */
   constructor(documentTarget, root, button) {
     this.document = documentTarget;
     this.root = root;
@@ -13,7 +13,7 @@ export class FullscreenController {
     this.unsubscribeLanguage = null;
   }
 
-  /** Bindet den Schalter oder blendet ihn bei fehlender Unterstützung aus. */
+  /** Binds the toggle or hides it when fullscreen is unsupported. */
   initialize() {
     this.button.hidden = !this.isSupported;
     if (!this.isSupported) return this;
@@ -24,7 +24,7 @@ export class FullscreenController {
     return this;
   }
 
-  /** Betritt oder verlässt Vollbild nach einer echten Nutzeraktion. */
+  /** Enters or exits fullscreen after a genuine user action. */
   async toggle() {
     try {
       if (this.document.fullscreenElement) await this.document.exitFullscreen();
@@ -36,7 +36,7 @@ export class FullscreenController {
     }
   }
 
-  /** Zeigt jederzeit den echten Zustand des Browsers an. */
+  /** Displays the browser's actual state at all times. */
   render() {
     const isActive = this.document.fullscreenElement === this.root;
     const key = isActive ? "fullscreen.exit" : "fullscreen.enter";
@@ -45,7 +45,7 @@ export class FullscreenController {
     this.button.setAttribute("aria-pressed", String(isActive));
   }
 
-  /** Entfernt alle gesetzten Beobachter. */
+  /** Removes all registered observers. */
   destroy() {
     this.button.removeEventListener("click", this.boundToggle);
     this.document.removeEventListener("fullscreenchange", this.boundRender);

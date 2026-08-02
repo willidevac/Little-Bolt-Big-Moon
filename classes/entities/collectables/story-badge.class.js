@@ -1,6 +1,6 @@
 import { AnchoredCollectable } from "./anchored-collectable.class.js";
 
 /**
- * Optionales Erinnerungsstück, das seiner Nebenweg-Plattform folgt.
+ * Optional keepsake that follows its side-route platform.
  */
 export class StoryBadge extends AnchoredCollectable {}
