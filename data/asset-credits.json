@@ -1694,6 +1694,16 @@
       "created": "2026-07-30",
       "modifications": "Chroma-key removal, subject isolation and nearest-neighbor packing produced eight native 48x48 icons.",
       "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "scrapyard-clean-hd-architecture-layout-v1",
+      "file": "img/concepts/approvals/scrapyard-clean-hd-architecture-production-layout-v1.png",
+      "role": "clean-hd-scrapyard-architecture-production-reference",
+      "status": "approved",
+      "origin": "OpenAI built-in image generation using the approved Clean-HD scrapyard tile and background references",
+      "created": "2026-08-02",
+      "modifications": "The approved production board defines varied machinery walls, a room facade, a transition arch, overhead architecture and matching ledges without artificial canvas bars.",
+      "licenseId": "openai-generated-output"
     }
   ]
 }
