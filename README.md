@@ -89,8 +89,8 @@ kleiner Einstiegspunkt und enthält keine Gameplaylogik.
 
 Das Spiel ist vom Startbildschirm bis zum Ende spielbar. Der aktuelle Stand
 ist ein Release-Kandidat: Gameplay, Gegner, Upgrades, Audio, responsive
-Steuerung und Abschlusssequenz sind umgesetzt. Vor der Veröffentlichung
-werden die Pflicht-Checkliste und das Balancing vollständig geprüft.
+Steuerung und Abschlusssequenz sind umgesetzt. Pflicht-Checkliste, Balancing,
+Clean Code und lokale Release-Wege wurden vollständig geprüft.
 
 ## Extras über die Pflichtanforderungen
 
@@ -107,6 +107,7 @@ werden die Pflicht-Checkliste und das Balancing vollständig geprüft.
 - [`docs/asset-guide.md`](docs/asset-guide.md) – visueller Stil und Assetgrößen
 - [`docs/asset-licensing.md`](docs/asset-licensing.md) – Herkunft und Nutzung
 - [`docs/project-structure.md`](docs/project-structure.md) – Ordner und Zuständigkeiten
+- [`docs/quality-audit.md`](docs/quality-audit.md) – sichtbare und technische Abnahme
 - [`data/asset-credits.json`](data/asset-credits.json) – Assetnachweise
 
 ## Asset-Hinweis

@@ -1,6 +1,6 @@
 # Qualitäts- und Sichtprüfung
 
-Stand: 1. August 2026
+Stand: 2. August 2026
 
 ## Prüfumfang
 
@@ -71,7 +71,23 @@ echten Werten aus `GAME_CONFIG` in Ladungsschritten von 0,1 Prozent.
 - Nach dem Bossabschluss erscheint der fehlende Schritt und ist sicher erreichbar.
 - Die fünf Bosse benötigen mit vollem Bolzenmagazin und Reparaturschlüssel
   höchstens 7, 9, 9, 12 und 20 Treffer; die Lichtbogenkanone verkürzt späte Kämpfe.
-- Alle 55 eigenständigen QA-Dateien laufen ohne Fehler durch.
+- Alle 70 eigenständigen QA-Dateien laufen ohne Fehler durch.
+
+## Clean-Code-Endaudit
+
+Der gesamte Produktionscode wurde nach den verbindlichen Kursregeln geprüft.
+Die größten JavaScript-Dateien bleiben mit 347 Zeilen für `Game`, 331 Zeilen
+für `Character` und 291 Zeilen für `World` deutlich unter der festen Grenze.
+
+- Keine JavaScript-Datei überschreitet 400 Zeilen.
+- Keine erkannte Funktion überschreitet 14 Zeilen.
+- Öffentliche Klassen und Methoden besitzen JSDoc.
+- Produktionscode enthält keine Debugausgaben oder `debugger`-Anweisungen.
+- Es existieren keine offenen `TODO`-, `FIXME`-, `HACK`- oder `XXX`-Marker.
+- Produktionscode verwendet weder `var` noch lockere Gleichheitsvergleiche.
+- Alle 111 Produktionsdateien besitzen verwendete und eindeutige Imports.
+- Zustände, HUD-Feedback, Bodenbewegung, Run-Neustart, Weltaufbau und
+  Laufwert-Synchronisierung besitzen getrennte Verantwortungen und eigene Tests.
 
 ## Release-Abnahme
 
@@ -94,6 +110,8 @@ Review-Neustart gehören damit ebenfalls verbindlich zur Gesamtabnahme.
 
 - Jede JavaScript-Datei bleibt unter 400 Zeilen.
 - Jede erkannte Funktion bleibt bei höchstens 14 Zeilen.
+- Öffentliche Klassen und Methoden benötigen JSDoc.
+- Wartungsmarker, `var`, lockere Vergleiche und unbenutzte Imports werden abgelehnt.
 - Relative Importe und lokale Assets werden geprüft.
 - IDs, ARIA-Bezüge, Buttons, Touchsteuerung und Übersetzungsschlüssel werden geprüft.
 - Plattformroute, Bosse, Respawns, Storyobjekte und Sammelobjekte besitzen Regressionstests.

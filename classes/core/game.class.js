@@ -8,14 +8,20 @@ import {
 } from "./gameplay-event-hub.class.js";
 import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
+import { RunStatsSynchronizer } from
+  "../systems/run-stats-synchronizer.class.js";
 import { createLevelOne } from "../../js/levels/level-01.js";
 import { createGameCombatSystems } from "../../js/factories/game-combat-systems.js";
+import { createRunResetController } from
+  "../../js/factories/run-reset-controller.js";
 
 /**
  * Einstiegspunkt für Initialisierung und Lebenszyklus des Spiels.
  */
 export class Game {
   #gameLoop;
+  #runResetController;
+  #runStatsSynchronizer;
   #stateMachine;
   /**
    * @param {HTMLCanvasElement} canvas
@@ -29,6 +35,9 @@ export class Game {
     this.config = config;
     this.#initializeRuntime(inputTarget);
     Object.assign(this, createGameCombatSystems(config, this));
+    this.#runResetController = createRunResetController(
+      this, () => this.#createWorld(),
+    );
   }
 
   #initializeRuntime(inputTarget) {
@@ -39,6 +48,7 @@ export class Game {
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
     this.runStats = this.#createRunStats();
+    this.#runStatsSynchronizer = new RunStatsSynchronizer(this.runStats);
     this.#gameLoop = new GameLoop(
       this.config.timing.maximumDeltaTimeMilliseconds,
       (deltaTimeSeconds) => this.#processFrame(deltaTimeSeconds),
@@ -227,14 +237,7 @@ export class Game {
    * Erzeugt ohne Seitenreload eine vollständig frische Spielwelt.
    */
   reset() {
-    this.world.destroy();
-    this.keyboard.reset();
-    this.world = this.#createWorld();
-    this.world.initialize();
-    this.runStats.reset(this.world.level?.playerStart?.y ?? 0);
-    this.weaponSystem.reset();
-    this.combatSystem.reset();
-    this.upgradeFlow.reset();
+    this.#runResetController.restart(this.world);
     this.#gameLoop.resetClock();
     this.#setGameState(GAME_STATES.PLAYING);
     this.gameCanvas.setLoopState("running");
@@ -255,7 +258,7 @@ export class Game {
     const attack = this.weaponSystem.update(deltaTimeSeconds, this.world.character);
     this.world.handlePlayerAttack(attack);
     this.world.update(deltaTimeSeconds);
-    this.#updateRunStats(deltaTimeSeconds);
+    this.#runStatsSynchronizer.update(deltaTimeSeconds, this.world);
     this.world.takeDamageEvents().forEach((hit) => this.takeDamage(hit));
     if (this.world.isCharacterInDeathZone()) this.#handleDeathZone();
     if (this.world.bossFight.takeVictory()) this.win();
@@ -302,17 +305,6 @@ export class Game {
 
   #reflectState(state) {
     this.canvas.dataset.gameState = state;
-  }
-
-  /**
-   * Überträgt Weltposition und neue Funde in die Laufwerte.
-   */
-  #updateRunStats(deltaTimeSeconds) {
-    this.runStats.updateTime(deltaTimeSeconds, this.world.getHeightLossPixels());
-    this.runStats.updateHeight(this.world.character?.y);
-    this.runStats.applyPickups(this.world.takeCollectedPickups());
-    this.runStats.applyEnemyDefeats(this.world.takeDefeatedEnemies());
-    this.runStats.updateBoss(this.world.bossFight.getSnapshot());
   }
 
   /** Verarbeitet zustandsübergreifende Eingaben. */

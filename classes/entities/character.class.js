@@ -27,6 +27,7 @@ export { CHARACTER_STATES } from "../../js/config/character-visual-config.js";
  */
 export class Character extends MovableObject {
   #hitState;
+  #movementController;
 
   /** Erstellt Byte in seinem neutralen Startzustand. */
   constructor() {
@@ -51,7 +52,7 @@ export class Character extends MovableObject {
     this.jumpController = new PrecisionJumpController();
     this.attackState = new CharacterAttackState();
     this.#hitState = new CharacterHitState();
-    this.movementController = new CharacterMovementController(this);
+    this.#movementController = new CharacterMovementController(this);
     this.animationController = new AnimationController(BYTE_ANIMATION_CLIPS);
   }
 
@@ -107,7 +108,7 @@ export class Character extends MovableObject {
     if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, config);
     this.#updateJumpCharge(config);
     super.update(deltaTimeSeconds, world);
-    this.movementController.keepInsideWorld(world.config.world.width);
+    this.#movementController.keepInsideWorld(world.config.world.width);
     this.#changeState(resolveCharacterState(this, config, CHARACTER_STATES));
     this.#updateAnimation(deltaTimeSeconds);
   }
@@ -225,14 +226,14 @@ export class Character extends MovableObject {
   }
 
   #handleControls(deltaTimeSeconds, input, config) {
-    if (this.isOnGround) this.movementController.updateFacingDirection(input);
+    if (this.isOnGround) this.#movementController.updateFacingDirection(input);
     const launch = this.jumpController.update(
       deltaTimeSeconds, input, this.isOnGround, config,
     );
     if (launch) return this.#launch(launch);
     if (this.jumpController.isCharging) return this.#stopGroundMovement();
     if (this.isOnGround) {
-      this.movementController.updateGroundMovement(deltaTimeSeconds, input, config);
+      this.#movementController.updateGroundMovement(deltaTimeSeconds, input, config);
     }
   }
 

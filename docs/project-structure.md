@@ -10,14 +10,15 @@ Spiel/
 │   └── pages/                 eigenständige Zusatzseiten
 ├── classes/                   alle objektorientierten Klassen
 │   ├── base/                  DrawableObject, MovableObject
-│   ├── core/                  Game, GameLoop, World, EntityRegistry, Camera
+│   ├── core/                  Game, GameLoop, World, SceneBuilder, Registry, Camera
 │   ├── entities/              Charakter, Gegner, Waffen, Items
 │   ├── environment/           Plattformen und Hintergründe
-│   ├── systems/               Figurensteuerung, Kampf, Laufvorräte, Routen, Score
+│   ├── systems/               Figurensteuerung, Kampf, Laufablauf, Routen, Score
 │   ├── input/                 Tastatur und Touch
 │   └── ui/                    Bildschirme, Dialoge, HUD-Status und Rückmeldungen
 ├── js/
 │   ├── config/                feste Werte und Assetpfade
+│   ├── factories/             übersichtliche Verdrahtung von Spielsystemen
 │   ├── levels/                Levelaufbau
 │   ├── ui/                    DOM-Bildschirme und Dialoge
 │   └── utils/                 kleine Hilfsfunktionen

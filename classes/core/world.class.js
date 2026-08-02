@@ -8,16 +8,13 @@ import { WorldEventReporter } from "../systems/world-event-reporter.class.js";
 import { PlatformMotionSystem } from "../systems/platform-motion-system.class.js";
 import { VisualFeedbackSystem } from "../systems/visual-feedback-system.class.js";
 import { WorldRenderer } from "../systems/world-renderer.class.js";
-import { Character } from "../entities/character.class.js";
-import { Platform } from "../environment/platform.class.js";
 import { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 import { Camera } from "./camera.class.js";
 import { GameplayEventHub, GAMEPLAY_EVENTS } from "./gameplay-event-hub.class.js";
 import { WorldEntityRegistry } from "./world-entity-registry.class.js";
+import { WorldSceneBuilder } from "./world-scene-builder.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
-const FALLBACK_CHARACTER_POSITION = Object.freeze({ x: 160, y: 240 });
-const FALLBACK_PLATFORM_BOUNDS = Object.freeze({ x: 96, y: 560, width: 512, height: 32 });
 const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.PLATFORMS,
   WORLD_ENTITY_GROUPS.DECORATIONS,
@@ -42,6 +39,7 @@ export class World {
   #enemyCombatSystem;
   #platformMotionSystem;
   #renderer;
+  #sceneBuilder;
 
   /**
    * @param {CanvasRenderingContext2D} context
@@ -69,6 +67,7 @@ export class World {
     this.#entityRegistry = new WorldEntityRegistry(
       Object.values(WORLD_ENTITY_GROUPS),
     );
+    this.#sceneBuilder = new WorldSceneBuilder(this.level);
     this.#collectedPickups = [];
     this.#damageEvents = [];
   }
@@ -90,12 +89,7 @@ export class World {
   /** @returns {boolean} Ob die Welt neu aktiviert wurde. */
   initialize() {
     if (this.isInitialized) return false;
-    this.#addLevelEntities(WORLD_ENTITY_GROUPS.PLATFORMS, "platforms");
-    this.#addLevelEntities(WORLD_ENTITY_GROUPS.DECORATIONS, "storyProps");
-    this.waveManager.initialize(this);
-    this.#addLevelEntities(WORLD_ENTITY_GROUPS.COLLECTABLES, "collectables");
-    this.#addLevelEntities(WORLD_ENTITY_GROUPS.HAZARDS, "hazards");
-    this.#ensureFallbackScene();
+    this.character = this.#sceneBuilder.build(this);
     this.camera.reset(this.character);
     this.#fallTracker.reset(this.character);
     this.isInitialized = true;
@@ -230,33 +224,6 @@ export class World {
     this.feedback.destroy();
     this.camera.reset();
     this.isInitialized = false;
-  }
-
-  #ensureFallbackScene() {
-    const characters = this.#getGroup(WORLD_ENTITY_GROUPS.CHARACTERS);
-    const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
-    if (characters.length === 0) this.#addFallbackCharacter();
-    else this.character = characters[0];
-    if (platforms.length === 0) this.#addFallbackPlatform();
-  }
-
-  #addLevelEntities(groupName, propertyName) {
-    const entities = this.level?.[propertyName];
-    if (!Array.isArray(entities)) return;
-    entities.forEach((entity) => this.addEntity(groupName, entity));
-  }
-
-  #addFallbackCharacter() {
-    this.character = new Character();
-    const startPosition = this.level?.playerStart ?? FALLBACK_CHARACTER_POSITION;
-    Object.assign(this.character, startPosition);
-    this.addEntity(WORLD_ENTITY_GROUPS.CHARACTERS, this.character);
-  }
-
-  #addFallbackPlatform() {
-    const platform = new Platform();
-    Object.assign(platform, FALLBACK_PLATFORM_BOUNDS);
-    this.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
 
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {

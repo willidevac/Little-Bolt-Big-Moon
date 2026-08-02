@@ -69,11 +69,25 @@ function auditProductionFile(file, source, functions, isProductionFile) {
   if (!isProductionFile) return [];
   return [
     ...auditDebugCode(file, source),
+    ...auditMaintainability(file, source),
     ...auditNames(file, functions),
     ...auditExportedClasses(file, source),
     ...auditFunctionSpacing(file, source, functions),
     ...auditJsDoc(file, source, functions),
   ];
+}
+
+function auditMaintainability(file, source) {
+  const code = maskNonCode(source);
+  const problems = [];
+  if (/\b(?:TODO|FIXME|HACK|XXX)\b/i.test(source)) {
+    problems.push(`${file}: offener Wartungsmarker`);
+  }
+  if (/\bvar\b/.test(code)) problems.push(`${file}: veraltete var-Deklaration`);
+  if (/(^|[^=!])==(?!=)|(^|[^!])!=(?!=)/m.test(code)) {
+    problems.push(`${file}: nicht strikter Vergleich`);
+  }
+  return problems;
 }
 
 function auditDebugCode(file, source) {
