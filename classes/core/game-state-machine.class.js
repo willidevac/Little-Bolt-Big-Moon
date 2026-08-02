@@ -39,6 +39,7 @@ const ALLOWED_TRANSITIONS = Object.freeze({
  */
 export class GameStateMachine {
   #currentState;
+  #listeners;
 
   /**
    * @param {string} [initialState=GAME_STATES.HOME]
@@ -46,6 +47,7 @@ export class GameStateMachine {
   constructor(initialState = GAME_STATES.HOME) {
     this.#validateState(initialState);
     this.#currentState = initialState;
+    this.#listeners = new Set();
   }
 
   /**
@@ -58,6 +60,19 @@ export class GameStateMachine {
   }
 
   /**
+   * Informiert einen Beobachter über spätere Zustandswechsel.
+   * @param {(state:string) => void} listener
+   * @returns {() => void}
+   */
+  onChange(listener) {
+    if (typeof listener !== "function") {
+      throw new TypeError("Der Zustandsbeobachter muss eine Funktion sein.");
+    }
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  /**
    * Wechselt in einen erlaubten Zustand.
    * @param {string} nextState
    * @returns {boolean} Ob sich der Zustand geändert hat.
@@ -67,6 +82,7 @@ export class GameStateMachine {
     if (this.is(nextState)) return false;
     this.#validateTransition(nextState);
     this.#currentState = nextState;
+    this.#notifyChange();
     return true;
   }
 
@@ -76,6 +92,10 @@ export class GameStateMachine {
    */
   getState() {
     return this.#currentState;
+  }
+
+  #notifyChange() {
+    this.#listeners.forEach((listener) => listener(this.#currentState));
   }
 
   /**

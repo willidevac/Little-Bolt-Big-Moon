@@ -17,7 +17,6 @@ import { createGameCombatSystems } from "../../js/factories/game-combat-systems.
 export class Game {
   #gameLoop;
   #stateMachine;
-  #stateListeners;
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {Readonly<object>} config
@@ -35,7 +34,7 @@ export class Game {
   #initializeRuntime(inputTarget) {
     this.isInitialized = false;
     this.#stateMachine = new GameStateMachine();
-    this.#stateListeners = new Set();
+    this.#stateMachine.onChange((state) => this.#reflectState(state));
     this.gameplayEvents = new GameplayEventHub();
     this.keyboard = new Keyboard(inputTarget);
     this.world = this.#createWorld();
@@ -64,11 +63,7 @@ export class Game {
    * @returns {() => void} Funktion zum Abmelden.
    */
   onStateChange(listener) {
-    if (typeof listener !== "function") {
-      throw new TypeError("Der Zustandsbeobachter muss eine Funktion sein.");
-    }
-    this.#stateListeners.add(listener);
-    return () => this.#stateListeners.delete(listener);
+    return this.#stateMachine.onChange(listener);
   }
 
   /**
@@ -302,15 +297,11 @@ export class Game {
    * @returns {boolean}
    */
   #setGameState(nextState) {
-    const changed = this.#stateMachine.transitionTo(nextState);
-    this.canvas.dataset.gameState = this.state;
-    if (changed) this.#notifyStateChange();
-    return changed;
+    return this.#stateMachine.transitionTo(nextState);
   }
 
-  /** Meldet den aktuellen Zustand an alle registrierten Beobachter. */
-  #notifyStateChange() {
-    this.#stateListeners.forEach((listener) => listener(this.state));
+  #reflectState(state) {
+    this.canvas.dataset.gameState = state;
   }
 
   /**
