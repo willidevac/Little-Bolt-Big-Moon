@@ -111,7 +111,7 @@ export class Character extends MovableObject {
     if (!this.isHurt) this.#handleControls(deltaTimeSeconds, input, config);
     this.#updateJumpCharge(config);
     super.update(deltaTimeSeconds, world);
-    this.#movementController.keepInsideWorld(world.config.world.width);
+    this.#movementController.keepInsideWorld(world.config.world.width, config);
     this.#changeState(resolveCharacterState(this, config, CHARACTER_STATES));
     this.#updateAnimation(deltaTimeSeconds);
   }

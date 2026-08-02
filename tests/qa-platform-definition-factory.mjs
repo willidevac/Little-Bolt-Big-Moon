@@ -53,7 +53,7 @@ function createAuthoredPlatform(type) {
   const entry = authoredSteps.find(({ step }) => step.type === type);
   return factory.createAuthored(
     entry.section, entry.room, entry.roomIndex,
-    entry.step, entry.stepIndex, 500, null,
+    entry.step, entry.stepIndex, 500, null, false,
   );
 }
 

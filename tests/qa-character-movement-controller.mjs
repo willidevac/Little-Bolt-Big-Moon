@@ -8,6 +8,8 @@ const config = Object.freeze({
   horizontalAccelerationPixelsPerSecondSquared: 1800,
   horizontalBrakingPixelsPerSecondSquared: 2400,
   maximumHorizontalSpeedPixelsPerSecond: 300,
+  wallBounceHorizontalRetention: 0.65,
+  minimumWallBounceSpeedPixelsPerSecond: 180,
 });
 const character = createCharacter();
 const movement = new CharacterMovementController(character);
@@ -28,26 +30,39 @@ assert.equal(character.facingDirection, -1);
 movement.updateFacingDirection(createInput(false, false));
 assert.equal(character.facingDirection, -1);
 
-assertWorldBoundary(movement, character, -20, 0);
-assertWorldBoundary(movement, character, 980, 936);
+assertGroundBoundary(movement, character, -20, 0);
+assertGroundBoundary(movement, character, 980, 936);
+assertAirborneWallBounce(movement, character, -20, -300, 0, 195);
+assertAirborneWallBounce(movement, character, 980, 200, 936, -180);
 assertCharacterIntegration();
 
 console.log("CLEAN-011: Bytes Bodenbewegung ist getrennt und geprüft.");
 
 function createCharacter() {
-  return { x: 100, width: 64, velocityX: 0, facingDirection: 1 };
+  return {
+    x: 100, width: 64, velocityX: 0, facingDirection: 1, isOnGround: true,
+  };
 }
 
 function createInput(left, right) {
   return { left, right };
 }
 
-function assertWorldBoundary(movementController, target, startX, expectedX) {
+function assertGroundBoundary(movementController, target, startX, expectedX) {
   target.x = startX;
   target.velocityX = 200;
-  movementController.keepInsideWorld(1000);
+  target.isOnGround = true;
+  movementController.keepInsideWorld(1000, config);
   assert.equal(target.x, expectedX);
   assert.equal(target.velocityX, 0);
+}
+
+function assertAirborneWallBounce(controller, target, x, speed, nextX, nextSpeed) {
+  Object.assign(target, { x, velocityX: speed, isOnGround: false });
+  assert.equal(controller.keepInsideWorld(1000, config), true);
+  assert.equal(target.x, nextX);
+  assert.equal(target.velocityX, nextSpeed);
+  assert.equal(target.facingDirection, Math.sign(nextSpeed));
 }
 
 function assertCharacterIntegration() {

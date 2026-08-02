@@ -47,14 +47,15 @@ export class PlatformDefinitionFactory {
    * @param {number} stepIndex
    * @param {number} y
    * @param {Readonly<object>|null} previousPlatform
+   * @param {boolean} isRescue
    * @returns {Readonly<object>}
    */
   createAuthored(
-    section, room, roomIndex, step, stepIndex, y, previousPlatform,
+    section, room, roomIndex, step, stepIndex, y, previousPlatform, isRescue,
   ) {
     this.assertAuthoredJump(step, previousPlatform);
     const platform = this.#getAuthoredData(
-      section, room, roomIndex, step, stepIndex, y,
+      section, room, roomIndex, step, stepIndex, y, isRescue,
     );
     this.#addPlatformBehavior(platform, section.route);
     return Object.freeze(platform);
@@ -113,13 +114,22 @@ export class PlatformDefinitionFactory {
     throw new RangeError(`Der handgebaute Sprung hat ${horizontalGap}px Abstand.`);
   }
 
-  #getAuthoredData(section, room, roomIndex, step, stepIndex, y) {
+  #getAuthoredData(section, room, roomIndex, step, stepIndex, y, isRescue) {
+    const type = isRescue ? "catch" : step.type;
     return {
       id: `${section.id}-${room.id}-${roomIndex + 1}-${stepIndex + 1}`,
-      x: step.x, y, type: step.type, tileset: section.tileset,
+      x: this.#getAuthoredX(step, type), y, type, tileset: section.tileset,
       roomId: room.id,
       roomRole: this.#getRoomRole(room.steps.length, stepIndex),
     };
+  }
+
+  #getAuthoredX(step, type) {
+    if (type === step.type) return step.x;
+    const centeredX = step.x + PLATFORM_WIDTHS[step.type] / 2 -
+      PLATFORM_WIDTHS[type] / 2;
+    return this.#clamp(centeredX, SIDE_PADDING,
+      this.worldWidth - SIDE_PADDING - PLATFORM_WIDTHS[type]);
   }
 
   #getRoomRole(stepCount, stepIndex) {

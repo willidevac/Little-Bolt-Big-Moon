@@ -28,12 +28,18 @@ export class CharacterMovementController {
     this.#accelerate(deltaTimeSeconds, direction, config);
   }
 
-  /** Keeps Byte within the left and right world boundaries. */
-  keepInsideWorld(worldWidth) {
-    const previousX = this.#character.x;
+  /**
+   * Keeps Byte inside the world and reflects airborne wall impacts.
+   * @returns {boolean} Whether Byte touched a world boundary.
+   */
+  keepInsideWorld(worldWidth, config) {
     const maximumX = worldWidth - this.#character.width;
-    this.#character.x = clamp(previousX, 0, maximumX);
-    if (this.#character.x !== previousX) this.#character.velocityX = 0;
+    const direction = this.#getBoundaryDirection(maximumX);
+    if (direction === 0) return false;
+    this.#character.x = clamp(this.#character.x, 0, maximumX);
+    if (this.#character.isOnGround) this.#character.velocityX = 0;
+    else this.#applyWallBounce(direction, config);
+    return true;
   }
 
   #accelerate(deltaTimeSeconds, direction, config) {
@@ -53,6 +59,35 @@ export class CharacterMovementController {
       return;
     }
     this.#character.velocityX -= Math.sign(this.#character.velocityX) * braking;
+  }
+
+  #applyWallBounce(direction, config) {
+    this.#validateWallBounceConfig(config);
+    const retainedSpeed = Math.abs(this.#character.velocityX) *
+      config.wallBounceHorizontalRetention;
+    const speed = Math.max(config.minimumWallBounceSpeedPixelsPerSecond,
+      retainedSpeed);
+    this.#character.velocityX = direction * speed;
+    this.#character.facingDirection = direction;
+  }
+
+  #getBoundaryDirection(maximumX) {
+    const velocity = this.#character.velocityX;
+    const hitsLeft = this.#character.x < 0 ||
+      (this.#character.x === 0 && velocity < 0);
+    const hitsRight = this.#character.x > maximumX ||
+      (this.#character.x === maximumX && velocity > 0);
+    if (hitsLeft) return 1;
+    if (hitsRight) return -1;
+    return 0;
+  }
+
+  #validateWallBounceConfig(config) {
+    const retention = config?.wallBounceHorizontalRetention;
+    const minimumSpeed = config?.minimumWallBounceSpeedPixelsPerSecond;
+    const hasRetention = Number.isFinite(retention) && retention > 0 && retention < 1;
+    if (hasRetention && Number.isFinite(minimumSpeed) && minimumSpeed > 0) return;
+    throw new TypeError("The wall-bounce configuration is invalid.");
   }
 
   #getDirection(input) {

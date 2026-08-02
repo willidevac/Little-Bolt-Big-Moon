@@ -80,7 +80,7 @@ export class PlatformRouteBuilder {
     const platforms = [];
     const y = this.#getSectionStartY(section, sectionIndex);
     const previous = this.#addAuthoredFloor(platforms, section, sectionIndex, y);
-    const state = { y, previous };
+    const state = { y, previous, stepsSinceCatch: 0 };
     this.#appendAuthoredRooms(platforms, section, state);
     platforms.push(this.#createBoundary(
       section, platforms.length, state.previous, nextSection,
@@ -97,13 +97,23 @@ export class PlatformRouteBuilder {
   #appendAuthoredRoom(platforms, section, room, roomIndex, state) {
     const roomStart = platforms.length;
     room.steps.forEach((step, stepIndex) => {
-      state.y -= step.gapY;
-      state.previous = this.platformFactory.createAuthored(
-        section, room, roomIndex, step, stepIndex, state.y, state.previous,
+      this.#appendAuthoredStep(
+        platforms, section, room, roomIndex, step, stepIndex, state,
       );
-      platforms.push(state.previous);
     });
     this.#appendShortcut(platforms, section, room, roomIndex, roomStart);
+  }
+
+  #appendAuthoredStep(platforms, section, room, roomIndex, step, stepIndex, state) {
+    state.y -= step.gapY;
+    state.stepsSinceCatch += 1;
+    const isRescue = stepIndex === 0 && step.type === "path" &&
+      state.stepsSinceCatch >= section.route.catchEvery;
+    state.previous = this.platformFactory.createAuthored(
+      section, room, roomIndex, step, stepIndex, state.y, state.previous, isRescue,
+    );
+    platforms.push(state.previous);
+    if (isRescue || step.type === "catch") state.stepsSinceCatch = 0;
   }
 
   #appendShortcut(platforms, section, room, roomIndex, roomStart) {
