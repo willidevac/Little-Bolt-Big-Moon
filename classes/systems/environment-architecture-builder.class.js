@@ -8,6 +8,7 @@ import {
 } from "../../js/config/environment-architecture-config.js";
 import { getLandmarkLayout } from
   "../../js/config/environment-landmark-config.js";
+import { PLATFORM_WIDTHS } from "../../js/config/platform-route-rules.js";
 
 const MODULE_PATTERNS = Object.freeze([
   Object.freeze(["wall", "facade", "overhead", "tower", "arch", "corner"]),
@@ -98,20 +99,26 @@ export class EnvironmentArchitectureBuilder {
 
   #createLandmarkStructures(section, room, architecture, roomData) {
     const layout = getLandmarkLayout(room.landmark);
+    const solidWallSide = this.#selectSolidWallSide(
+      roomData, architecture.frames,
+    );
     return layout.map((frameId, index) => {
       const data = this.#createLandmarkData(
         section.id, room.id, frameId, index, architecture.frames, roomData,
+        solidWallSide,
       );
       return new EnvironmentStructure(data, architecture.atlas);
     });
   }
 
-  #createLandmarkData(sectionId, roomId, frameId, index, frames, roomData) {
+  #createLandmarkData(
+    sectionId, roomId, frameId, index, frames, roomData, solidWallSide,
+  ) {
     const role = this.#getFrameRole(frameId);
     const frame = frames[frameId];
     const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
     const position = this.#getLandmarkPosition(frameId, roomData, size);
-    const collisionBoxes = this.#getLandmarkCollisions(frameId, size);
+    const collisionBoxes = this.#getLandmarkCollisions(frameId, size, solidWallSide);
     return this.#createData({
       id: `${sectionId}-${roomId}-landmark-${index + 1}`,
       role, frame, ...position, ...size, collisionBoxes,
@@ -142,15 +149,68 @@ export class EnvironmentArchitectureBuilder {
     return bounds.bottom + bottomOffset - height;
   }
 
-  #getLandmarkCollisions(frameId, size) {
-    if (frameId === "leftWall") {
+  #getLandmarkCollisions(frameId, size, solidWallSide) {
+    if (frameId === "leftWall" && solidWallSide === "left") {
       return [this.#createSideCollision("left", size)];
     }
-    if (frameId === "rightWall") {
+    if (frameId === "rightWall" && solidWallSide === "right") {
       return [this.#createSideCollision("right", size)];
     }
     if (frameId === "ledge") return [this.#createLedgeCollision(size)];
+    if (this.#hasWalkableTop(frameId)) return [this.#createTopCollision(size)];
     return [];
+  }
+
+  #selectSolidWallSide(roomData, frames) {
+    const leftHits = this.#countWallIntersections("left", roomData, frames);
+    const rightHits = this.#countWallIntersections("right", roomData, frames);
+    if (leftHits === rightHits) return roomData.side;
+    return leftHits < rightHits ? "left" : "right";
+  }
+
+  #countWallIntersections(side, roomData, frames) {
+    const frameId = `${side}Wall`;
+    const frame = frames[frameId];
+    const size = this.#getRenderSize(frame, MODULE_SCALES.wall);
+    const position = this.#getLandmarkPosition(frameId, roomData, size);
+    const local = this.#createSideCollision(side, size);
+    const collider = this.#createAbsoluteCollider(position, local);
+    return roomData.platforms.filter((platform) => {
+      return this.#platformCrossesCollider(platform, collider);
+    }).length;
+  }
+
+  #createAbsoluteCollider(position, collider) {
+    return Object.freeze({
+      x: position.x + collider.offsetX,
+      y: position.y + collider.offsetY,
+      width: collider.width,
+      height: collider.height,
+    });
+  }
+
+  #platformCrossesCollider(platform, collider) {
+    const width = PLATFORM_WIDTHS[platform.type];
+    const crossesY = platform.y >= collider.y &&
+      platform.y <= collider.y + collider.height;
+    const crossesX = platform.x < collider.x + collider.width &&
+      platform.x + width > collider.x;
+    return crossesX && crossesY;
+  }
+
+  #hasWalkableTop(frameId) {
+    return frameId === "arch" || frameId === "facade" ||
+      frameId === "tower" ||
+      frameId.endsWith("Corner");
+  }
+
+  #createTopCollision(size) {
+    return Object.freeze({
+      offsetX: 8,
+      offsetY: 8,
+      width: size.width - 16,
+      height: 18,
+    });
   }
 
   #createRoomData(roomIndex, roomCount, sectionIndex, platforms) {
@@ -160,7 +220,10 @@ export class EnvironmentArchitectureBuilder {
     const moduleType = roomIndex === roomCount - 1
       ? "arch"
       : pattern[roomIndex % pattern.length];
-    return Object.freeze({ bounds, side, moduleType, roomIndex, sectionIndex });
+    return Object.freeze({
+      bounds, side, moduleType, roomIndex, sectionIndex,
+      platforms: Object.freeze([...platforms]),
+    });
   }
 
   #createRoomStructures(section, room, architecture, roomData) {
