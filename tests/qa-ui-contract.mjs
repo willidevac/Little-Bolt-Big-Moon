@@ -7,6 +7,10 @@ const screenSource = await fs.readFile(
   "classes/ui/screen-controller.class.js",
   "utf8",
 );
+const dialogSource = await fs.readFile(
+  "classes/ui/game-dialog-controller.class.js",
+  "utf8",
+);
 const storageSource = await fs.readFile(
   "classes/ui/storage-controller.class.js",
   "utf8",
@@ -87,7 +91,8 @@ function assertActionBindings(actionNames) {
   screenActions.forEach((action) => {
     assert.ok(hasActionKey(screenSource, action), `Aktion fehlt: ${action}`);
   });
-  assert.match(screenSource, /event\.target\.matches\(SELECTORS\.dialogs\)/);
+  assert.match(screenSource, /dialogController\.isBackdrop\(event\.target\)/);
+  assert.match(dialogSource, /target\.matches\(DIALOG_SELECTOR\)/);
   assert.match(storageSource, /boundMuteClick/);
   assert.match(storageSource, /addEventListener\("click", this\.boundMuteClick\)/);
 }

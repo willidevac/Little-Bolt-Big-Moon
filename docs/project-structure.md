@@ -15,7 +15,7 @@ Spiel/
 │   ├── environment/           Plattformen und Hintergründe
 │   ├── systems/               Kampfzustände, Bossangriffe, Laufvorräte, Routen, Score
 │   ├── input/                 Tastatur und Touch
-│   └── ui/                    Canvas-Statusanzeigen
+│   └── ui/                    Bildschirme, Dialoge und Canvas-Statusanzeigen
 ├── js/
 │   ├── config/                feste Werte und Assetpfade
 │   ├── levels/                Levelaufbau

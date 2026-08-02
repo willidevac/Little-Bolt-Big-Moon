@@ -1,6 +1,7 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
+import { GameDialogController } from "./game-dialog-controller.class.js";
 import { UpgradeOptionView } from "./upgrade-option-view.class.js";
 
 const SELECTORS = Object.freeze({
@@ -16,19 +17,15 @@ const SELECTORS = Object.freeze({
   upgradeEyebrow: "[data-upgrade-eyebrow]",
   upgradeCopy: "[data-upgrade-copy]",
   upgradeOptions: "[data-upgrade-options]",
-  dialogs: "[data-game-dialog]",
   start: '[data-ui-action="start"]',
   resume: '[data-ui-action="resume"]',
   mute: '[data-ui-action="mute"]',
-  dialogFocus: "[data-dialog-focus]",
 });
 
 const END_SCREEN_CONTENT = Object.freeze({
   [GAME_STATES.WON]: "end.won",
   [GAME_STATES.LOST]: "end.lost",
 });
-
-const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled])';
 
 /**
  * Liefert ein benötigtes DOM-Element oder bricht verständlich ab.
@@ -56,13 +53,19 @@ export class ScreenController {
     this.root = root;
     this.storySequences = storySequences;
     this.#assignRequiredElements();
-    this.dialogs = [...root.querySelectorAll(SELECTORS.dialogs)];
-    this.activeDialog = null;
-    this.previousFocus = null;
+    this.dialogController = new GameDialogController(
+      root, this.#getDialogBackgroundElements(),
+    );
     this.unsubscribe = null;
     this.unsubscribeLanguage = null;
+    this.#bindActions();
+  }
+
+  #bindActions() {
     this.boundClick = this.handleClick.bind(this);
-    this.boundDialogKeydown = this.handleDialogKeydown.bind(this);
+    this.boundDialogKeydown = this.dialogController.handleKeydown.bind(
+      this.dialogController,
+    );
     this.actions = this.createActions();
   }
 
@@ -89,6 +92,13 @@ export class ScreenController {
     this.endScore = getRequiredElement(this.root, SELECTORS.endScore);
   }
 
+  #getDialogBackgroundElements() {
+    return [
+      this.homeScreen, this.pauseScreen, this.upgradeScreen,
+      this.endScreen, this.muteButton,
+    ];
+  }
+
   /**
    * Bindet alle UI-Ereignisse höchstens einmal.
    * @returns {ScreenController}
@@ -109,7 +119,7 @@ export class ScreenController {
    * Entfernt die von diesem Controller gesetzten Verbindungen.
    */
   destroy() {
-    this.closeDialog(false);
+    this.dialogController.close(false);
     this.root.removeEventListener("click", this.boundClick);
     this.root.removeEventListener("keydown", this.boundDialogKeydown);
     this.unsubscribe?.();
@@ -124,56 +134,12 @@ export class ScreenController {
    */
   handleClick(event) {
     if (!(event.target instanceof Element)) return;
-    if (event.target.matches(SELECTORS.dialogs)) return this.closeDialog();
+    if (this.dialogController.isBackdrop(event.target)) {
+      return this.dialogController.close();
+    }
     const button = event.target.closest("button[data-ui-action]");
     if (!button || !this.root.contains(button)) return;
     this.actions[button.dataset.uiAction]?.(button);
-  }
-
-  /**
-   * Schließt einen offenen Dialog über Escape, ohne das Spiel fortzusetzen.
-   * @param {KeyboardEvent} event
-   */
-  handleDialogKeydown(event) {
-    if (!this.activeDialog) return;
-    if (event.code === "Escape") this.closeDialogFromKey(event);
-    if (event.code === "Tab") this.trapDialogFocus(event);
-  }
-
-  /**
-   * Schließt den Dialog über die Tastatur.
-   * @param {KeyboardEvent} event
-   */
-  closeDialogFromKey(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.closeDialog();
-  }
-
-  /**
-   * Öffnet einen benannten Dialog und fokussiert dessen Überschrift.
-   * @param {string} name
-   */
-  openDialog(name) {
-    if (this.activeDialog) return;
-    const dialog = this.getDialog(name);
-    this.previousFocus = this.root.ownerDocument.activeElement;
-    this.setBackgroundInert(true);
-    this.activeDialog = dialog;
-    dialog.hidden = false;
-    getRequiredElement(dialog, SELECTORS.dialogFocus).focus();
-  }
-
-  /**
-   * Schließt den Dialog und setzt den Fokus zum Ausgangspunkt zurück.
-   * @param {boolean} [restoreFocus=true]
-   */
-  closeDialog(restoreFocus = true) {
-    if (!this.activeDialog) return;
-    this.activeDialog.hidden = true;
-    this.activeDialog = null;
-    this.setBackgroundInert(false);
-    if (restoreFocus) this.restorePreviousFocus();
   }
 
   /**
@@ -188,7 +154,7 @@ export class ScreenController {
       if (moveFocus) this.focusScreen(state);
       return;
     }
-    this.closeDialog(false);
+    this.dialogController.close(false);
   }
 
   #setScreenVisibility(state) {
@@ -216,10 +182,10 @@ export class ScreenController {
   createActions() {
     return Object.freeze({
       start: () => this.startRun(),
-      controls: () => this.openDialog("controls"),
-      settings: () => this.openDialog("settings"),
-      imprint: () => this.openDialog("imprint"),
-      "close-dialog": () => this.closeDialog(),
+      controls: () => this.dialogController.open("controls"),
+      settings: () => this.dialogController.open("settings"),
+      imprint: () => this.dialogController.open("imprint"),
+      "close-dialog": () => this.dialogController.close(),
       pause: () => this.game.togglePause(),
       resume: () => this.game.resume(),
       upgrade: (button) => this.game.chooseUpgrade(button.dataset.upgradeId),
@@ -236,44 +202,6 @@ export class ScreenController {
   }
 
   /**
-   * Liefert einen statisch vorhandenen Dialog anhand seines Namens.
-   * @param {string} name
-   * @returns {HTMLElement}
-   */
-  getDialog(name) {
-    const dialog = this.dialogs.find((element) => {
-      return element instanceof HTMLElement && element.dataset.gameDialog === name;
-    });
-    if (dialog instanceof HTMLElement) return dialog;
-    throw new Error(`Dialog nicht gefunden: ${name}`);
-  }
-
-  /**
-   * Hält Tab und Shift+Tab innerhalb des offenen Dialogs.
-   * @param {KeyboardEvent} event
-   */
-  trapDialogFocus(event) {
-    const focusable = [...this.activeDialog.querySelectorAll(FOCUSABLE_SELECTOR)];
-    if (focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable.at(-1);
-    const active = this.root.ownerDocument.activeElement;
-    if (event.shiftKey && active === first) this.moveFocus(event, last);
-    if (!event.shiftKey && active === last) this.moveFocus(event, first);
-  }
-
-  /**
-   * Verhindert den Standardwechsel und fokussiert das Ziel.
-   * @param {KeyboardEvent} event
-   * @param {Element} target
-   */
-  moveFocus(event, target) {
-    if (!(target instanceof HTMLElement)) return;
-    event.preventDefault();
-    target.focus();
-  }
-
-  /**
    * Fokussiert den wichtigsten Button des sichtbaren Screens.
    * @param {string} state
    */
@@ -284,18 +212,6 @@ export class ScreenController {
       this.upgradeOptions.querySelector("button")?.focus();
     }
     if (END_SCREEN_CONTENT[state]) this.endTitle.focus();
-  }
-
-  /**
-   * Sperrt die abgedunkelten Menüs, solange der Dialog offen ist.
-   * @param {boolean} isInert
-   */
-  setBackgroundInert(isInert) {
-    this.homeScreen.inert = isInert;
-    this.pauseScreen.inert = isInert;
-    this.upgradeScreen.inert = isInert;
-    this.endScreen.inert = isInert;
-    this.muteButton.inert = isInert;
   }
 
   #renderEndScreen(state, contentKey) {
@@ -327,11 +243,4 @@ export class ScreenController {
     this.upgradeCopy.textContent = translate(`${prefix}.copy`);
   }
 
-  /**
-   * Gibt den Fokus nach dem Dialog an dessen Öffner zurück.
-   */
-  restorePreviousFocus() {
-    if (this.previousFocus instanceof HTMLElement) this.previousFocus.focus();
-    this.previousFocus = null;
-  }
 }

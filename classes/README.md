@@ -9,7 +9,7 @@ erhält genau eine Datei mit der Endung `.class.js`.
 - `environment/` – Plattformen und Hintergründe
 - `systems/` – Kampfzustände, Bossangriffe, Laufvorräte, Routen, Score und Audio
 - `input/` – Tastatur- und Touchsteuerung
-- `ui/` – Statusanzeigen innerhalb des Canvas
+- `ui/` – Bildschirme, barrierefreie Dialoge und Statusanzeigen
 
 Konkrete Gegner- und Waffenklassen werden erst angelegt, wenn ihre
 Basisklassen implementiert und getestet sind.
