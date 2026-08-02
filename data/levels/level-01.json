@@ -994,21 +994,21 @@
           {
             "id": "versorgungsschleuse",
             "steps": [
-              { "x": 320, "gapY": 152, "type": "path" },
-              { "x": 480, "gapY": 160, "type": "moving" },
-              { "x": 832, "gapY": 164, "type": "path" },
+              { "x": 64, "gapY": 152, "type": "catch" },
+              { "x": 64, "gapY": 160, "type": "moving" },
+              { "x": 352, "gapY": 164, "type": "path" },
               { "x": 608, "gapY": 168, "type": "moving" },
-              { "x": 352, "gapY": 176, "type": "path" }
+              { "x": 704, "gapY": 176, "type": "catch" }
             ]
           },
           {
             "id": "raketen-kabelschacht",
             "steps": [
-              { "x": 128, "gapY": 160, "type": "path" },
-              { "x": 288, "gapY": 164, "type": "path" },
-              { "x": 608, "gapY": 168, "type": "path" },
-              { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 640, "gapY": 152, "type": "path" }
+              { "x": 64, "gapY": 160, "type": "catch" },
+              { "x": 576, "gapY": 164, "type": "path" },
+              { "x": 576, "gapY": 168, "type": "path" },
+              { "x": 896, "gapY": 176, "type": "path" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ],
             "shortcut": [
               {
@@ -1024,7 +1024,7 @@
               },
               {
                 "stepIndex": 3,
-                "x": 256,
+                "x": 512,
                 "type": "moving"
               }
             ]
@@ -1032,101 +1032,101 @@
           {
             "id": "wartungslift",
             "steps": [
-              { "x": 384, "gapY": 164, "type": "path" },
-              { "x": 224, "gapY": 168, "type": "moving" },
-              { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 672, "gapY": 152, "type": "moving" },
-              { "x": 896, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 164, "type": "catch" },
+              { "x": 1024, "gapY": 168, "type": "moving" },
+              { "x": 768, "gapY": 176, "type": "path" },
+              { "x": 448, "gapY": 152, "type": "moving" },
+              { "x": 64, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "ventilkreuz",
             "steps": [
-              { "x": 640, "gapY": 168, "type": "path" },
-              { "x": 480, "gapY": 176, "type": "moving" },
-              { "x": 128, "gapY": 152, "type": "path" },
-              { "x": 352, "gapY": 160, "type": "moving" },
-              { "x": 608, "gapY": 164, "type": "path" }
+              { "x": 64, "gapY": 168, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "moving" },
+              { "x": 64, "gapY": 152, "type": "path" },
+              { "x": 288, "gapY": 160, "type": "moving" },
+              { "x": 320, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "druckleitung",
             "steps": [
-              { "x": 864, "gapY": 176, "type": "path" },
-              { "x": 768, "gapY": 152, "type": "moving" },
-              { "x": 384, "gapY": 160, "type": "path" },
-              { "x": 160, "gapY": 164, "type": "moving" },
-              { "x": 416, "gapY": 168, "type": "path" }
+              { "x": 320, "gapY": 176, "type": "catch" },
+              { "x": 512, "gapY": 152, "type": "moving" },
+              { "x": 704, "gapY": 160, "type": "path" },
+              { "x": 1024, "gapY": 164, "type": "moving" },
+              { "x": 704, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "wartungsbucht",
             "steps": [
-              { "x": 672, "gapY": 152, "type": "path" },
-              { "x": 832, "gapY": 164, "type": "moving" },
-              { "x": 704, "gapY": 176, "type": "path" },
+              { "x": 704, "gapY": 152, "type": "catch" },
+              { "x": 1024, "gapY": 164, "type": "moving" },
+              { "x": 768, "gapY": 176, "type": "path" },
               { "x": 448, "gapY": 160, "type": "moving" },
-              { "x": 192, "gapY": 168, "type": "path" }
+              { "x": 64, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "kuehlmittelleiter",
             "steps": [
-              { "x": 416, "gapY": 160, "type": "path" },
-              { "x": 576, "gapY": 168, "type": "moving" },
-              { "x": 864, "gapY": 152, "type": "path" },
+              { "x": 64, "gapY": 160, "type": "catch" },
+              { "x": 64, "gapY": 168, "type": "moving" },
+              { "x": 352, "gapY": 152, "type": "path" },
               { "x": 608, "gapY": 176, "type": "moving" },
-              { "x": 352, "gapY": 164, "type": "path" }
+              { "x": 704, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "relaisschacht",
             "steps": [
-              { "x": 128, "gapY": 168, "type": "path" },
-              { "x": 288, "gapY": 152, "type": "moving" },
-              { "x": 608, "gapY": 164, "type": "path" },
-              { "x": 864, "gapY": 176, "type": "moving" },
-              { "x": 640, "gapY": 160, "type": "path" }
+              { "x": 704, "gapY": 168, "type": "catch" },
+              { "x": 1024, "gapY": 152, "type": "moving" },
+              { "x": 768, "gapY": 164, "type": "path" },
+              { "x": 512, "gapY": 176, "type": "moving" },
+              { "x": 320, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "lose-gitter",
             "steps": [
-              { "x": 416, "gapY": 176, "type": "path" },
-              { "x": 256, "gapY": 160, "type": "moving" },
-              { "x": 384, "gapY": 168, "type": "path" },
-              { "x": 640, "gapY": 152, "type": "moving" },
-              { "x": 896, "gapY": 164, "type": "path" }
+              { "x": 320, "gapY": 176, "type": "catch" },
+              { "x": 320, "gapY": 160, "type": "moving" },
+              { "x": 128, "gapY": 168, "type": "path" },
+              { "x": 64, "gapY": 152, "type": "moving" },
+              { "x": 64, "gapY": 164, "type": "catch" }
             ]
           },
           {
             "id": "seitenwechsel",
             "steps": [
-              { "x": 672, "gapY": 152, "type": "path" },
-              { "x": 512, "gapY": 176, "type": "moving" },
-              { "x": 192, "gapY": 164, "type": "path" },
-              { "x": 416, "gapY": 168, "type": "moving" },
-              { "x": 672, "gapY": 160, "type": "path" }
+              { "x": 64, "gapY": 152, "type": "catch" },
+              { "x": 64, "gapY": 176, "type": "moving" },
+              { "x": 352, "gapY": 164, "type": "path" },
+              { "x": 608, "gapY": 168, "type": "moving" },
+              { "x": 704, "gapY": 160, "type": "catch" }
             ]
           },
           {
             "id": "druckausgleich",
             "steps": [
-              { "x": 928, "gapY": 164, "type": "path" },
-              { "x": 832, "gapY": 152, "type": "moving" },
-              { "x": 448, "gapY": 176, "type": "path" },
-              { "x": 224, "gapY": 160, "type": "moving" },
-              { "x": 480, "gapY": 168, "type": "path" }
+              { "x": 704, "gapY": 164, "type": "catch" },
+              { "x": 1024, "gapY": 152, "type": "moving" },
+              { "x": 768, "gapY": 176, "type": "path" },
+              { "x": 512, "gapY": 160, "type": "moving" },
+              { "x": 320, "gapY": 168, "type": "catch" }
             ]
           },
           {
             "id": "ausstieg-zur-aussenhuelle",
             "steps": [
-              { "x": 736, "gapY": 168, "type": "path" },
-              { "x": 896, "gapY": 164, "type": "moving" },
+              { "x": 320, "gapY": 168, "type": "catch" },
+              { "x": 512, "gapY": 164, "type": "moving" },
               { "x": 704, "gapY": 160, "type": "path" },
-              { "x": 448, "gapY": 176, "type": "moving" },
-              { "x": 192, "gapY": 152, "type": "path" }
+              { "x": 1024, "gapY": 176, "type": "moving" },
+              { "x": 704, "gapY": 152, "type": "catch" }
             ]
           }
         ]
@@ -3034,7 +3034,7 @@
     {
       "id": "story-luma-cargo-crate",
       "type": "lumaCargoCrate",
-      "x": 672,
+      "x": 896,
       "y": 88296,
       "anchorPlatformId": "launch-tower-supply-shafts-raketen-kabelschacht-2-5"
     },
@@ -3148,7 +3148,7 @@
       "id": "supply-shafts-spikes-01",
       "type": "retractableSpikes",
       "damage": 15,
-      "x": 672,
+      "x": 928,
       "phaseOffsetSeconds": 0.45,
       "anchorPlatformId": "launch-tower-supply-shafts-wartungslift-3-1"
     },
@@ -3333,7 +3333,7 @@
       "id": "launch-tower-energy-01",
       "type": "energy",
       "amount": 20,
-      "x": 288,
+      "x": 1088,
       "y": 88028,
       "anchorPlatformId": "launch-tower-supply-shafts-wartungslift-3-2"
     },
@@ -3341,7 +3341,7 @@
       "id": "launch-tower-gear-02",
       "type": "gear",
       "amount": 1,
-      "x": 416,
+      "x": 768,
       "y": 86232,
       "anchorPlatformId": "launch-tower-supply-shafts-druckleitung-5-3"
     },
@@ -3489,7 +3489,7 @@
       "type": "storyBadge",
       "badgePart": "left",
       "amount": 1,
-      "x": 320,
+      "x": 576,
       "y": 88512,
       "anchorPlatformId": "launch-tower-supply-shafts-raketen-kabelschacht-shortcut-3"
     },
