@@ -1,7 +1,13 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { AuthoredRoom } from
   "../../classes/environment/authored-room.class.js";
+import { Platform } from "../../classes/environment/platform.class.js";
+import { RoomPuzzleRouteBuilder } from
+  "../../classes/systems/room-puzzle-route-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
+import { getPlatformTilesetConfig } from
+  "../config/platform-tileset-config.js";
+import { createRoomPieceLayout } from "./room-stack-layout.js";
 
 /** Creates the room-by-room rebuild of Little Bolt, Big Moon. */
 export function createLevelOne() {
@@ -17,7 +23,27 @@ function createLevelDefinition(data) {
     playerStart: Object.freeze({ ...data.playerStart }),
     sections: Object.freeze(data.sections.map(createSection)),
     structures: Object.freeze(createStructures(data)),
-    ...createEmptyEntityGroups(),
+    ...createEntityGroups(data),
+  });
+}
+
+function createEntityGroups(data) {
+  return Object.freeze({
+    platforms: Object.freeze(createPuzzlePlatforms(data)),
+    collectables: Object.freeze([]),
+    storyProps: Object.freeze([]),
+    hazards: Object.freeze([]),
+    combatZones: Object.freeze([]),
+    enemies: Object.freeze([]),
+  });
+}
+
+function createPuzzlePlatforms(data) {
+  return new RoomPuzzleRouteBuilder(data).build().map((definition) => {
+    const platformType = data.platformTypes[definition.type];
+    const platformData = Object.freeze({ ...platformType, ...definition });
+    return new Platform(platformData,
+      getPlatformTilesetConfig(definition.tileset));
   });
 }
 
@@ -27,34 +53,26 @@ function createStructures(data) {
 }
 
 function createRoomStack(data, templates) {
-  const lastIndex = data.sections.length - 1;
   return data.sections.flatMap((section, index) => {
-    const bounds = getStackBounds(section, index, lastIndex, data.roomStack);
-    const count = getStackPieceCount(index, lastIndex, data.roomStack);
-    return createSectionRoomStack(section, bounds, count, data, templates);
+    const pieces = createRoomPieceLayout(
+      section, index, data.sections.length, data.roomStack,
+    );
+    return pieces.map((piece) => {
+      const template = templates.get(piece.templateId);
+      return createRoom(createStackPiece(section, template, piece, data));
+    });
   });
 }
 
-function createSectionRoomStack(section, bounds, count, data, templates) {
-  const pieceHeight = (bounds.bottomY - bounds.topY) / count;
-  return Array.from({ length: count }, (_, index) => {
-    const templateId = section.roomPattern[index % section.roomPattern.length];
-    const template = templates.get(templateId);
-    const room = createStackPiece(section, template, index, pieceHeight,
-      bounds.topY, data);
-    return createRoom(room);
-  });
-}
-
-function createStackPiece(section, template, index, height, topY, data) {
+function createStackPiece(section, template, piece, data) {
   const reference = data.roomStack;
   const collisionBoxes = scaleCollisionBoxes(template.collisionBoxes,
-    data.width, height, reference);
+    data.width, piece.height, reference);
   return Object.freeze({
-    id: `${section.id}-room-${String(index + 1).padStart(2, "0")}`,
+    id: `${section.id}-room-${String(piece.index + 1).padStart(2, "0")}`,
     source: template.source,
     sourceWidth: reference.sourceWidth, sourceHeight: reference.sourceHeight,
-    x: 0, y: topY + index * height, width: data.width, height,
+    x: 0, y: piece.y, width: data.width, height: piece.height,
     collisionBoxes,
   });
 }
@@ -71,28 +89,8 @@ function scaleCollisionBoxes(boxes, width, height, reference) {
   }));
 }
 
-function getStackBounds(section, index, lastIndex, stack) {
-  return Object.freeze({
-    topY: index === lastIndex ? stack.bossRoomBottomY : section.topY,
-    bottomY: index === 0 ? stack.startRoomTopY : section.bottomY,
-  });
-}
-
-function getStackPieceCount(index, lastIndex, stack) {
-  if (index === 0) return stack.firstSectionPieces;
-  if (index === lastIndex) return stack.lastSectionPieces;
-  return stack.piecesPerSection;
-}
-
 function createRoomTemplateMap(templates) {
   return new Map(templates.map((template) => [template.id, template]));
-}
-
-function createEmptyEntityGroups() {
-  return Object.freeze(Object.fromEntries([
-    "platforms", "collectables", "storyProps", "hazards", "combatZones",
-    "enemies",
-  ].map((group) => [group, Object.freeze([])])));
 }
 
 function createRoom(room) {

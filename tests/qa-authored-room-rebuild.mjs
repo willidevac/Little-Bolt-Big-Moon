@@ -8,9 +8,9 @@ import { BYTE_GROUND_CONTACT_OFFSET_Y } from
 const level = createLevelOne();
 assert.equal(level.structures.length, 210);
 [
-  "platforms", "collectables", "storyProps", "hazards", "combatZones",
-  "enemies",
+  "collectables", "storyProps", "hazards", "combatZones", "enemies",
 ].forEach((group) => assert.deepEqual(level[group], []));
+assert.equal(level.platforms.length, 55);
 
 const room = level.structures.find(({ id }) => {
   return id === "scrapyard-rebound-shaft-01";
