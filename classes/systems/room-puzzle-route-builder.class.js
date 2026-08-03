@@ -34,7 +34,15 @@ export class RoomPuzzleRouteBuilder {
       y: piece.y + platform.offsetY * scaleY,
       type: platform.type,
       tileset: section.tileset,
+      ...this.#createBehavior(platform),
     }));
+  }
+
+  #createBehavior(platform) {
+    if (!platform.movement) return Object.freeze({});
+    return Object.freeze({
+      movement: Object.freeze({ ...platform.movement }),
+    });
   }
 
   #getRecipe(section, templateId) {

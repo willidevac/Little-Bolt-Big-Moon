@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { createLevelOne } from "../js/levels/level-01.js";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 
-const ROUTE_TOP_Y = 90000;
+const ROUTE_TOP_Y = 60000;
 const ROUTE_BOTTOM_Y = 150000;
-const EXPECTED_PLATFORM_COUNT = 401;
+const EXPECTED_PLATFORM_COUNT = 625;
 const level = createLevelOne();
 const surfaces = collectSurfaces(level);
 const reachable = findReachableSurfaces(surfaces, GAME_CONFIG);
@@ -20,7 +20,7 @@ assert.ok(level.platforms.every(isInsidePuzzleRoute));
 assert.ok(Math.min(...reachedY) <= ROUTE_TOP_Y + 60);
 assertSectionDifficulty(level);
 
-console.log("MAP-001: Six progressive room puzzles are reachable.");
+console.log("MAP-001: Nine progressive room puzzles are reachable.");
 
 function collectSurfaces(currentLevel) {
   const platforms = currentLevel.platforms.map(toSurface);
@@ -102,8 +102,9 @@ function assertSectionDifficulty(currentLevel) {
 
 function assertPuzzleProfiles(sections) {
   assert.deepEqual(
-    sections.slice(0, 6).map(({ puzzleProfile }) => puzzleProfile),
+    sections.slice(0, 9).map(({ puzzleProfile }) => puzzleProfile),
     ["introduction", "precision", "wall-rebounds", "assembly-lines",
-      "unstable-smelter", "core-meltdown"],
+      "unstable-smelter", "core-meltdown", "shaft-lifts", "wind-sweeps",
+      "launch-countdown"],
   );
 }

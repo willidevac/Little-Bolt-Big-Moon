@@ -3,6 +3,8 @@ import { AuthoredRoom } from
   "../../classes/environment/authored-room.class.js";
 import { FallingPlatform } from
   "../../classes/environment/falling-platform.class.js";
+import { MovingPlatform } from
+  "../../classes/environment/moving-platform.class.js";
 import { Platform } from "../../classes/environment/platform.class.js";
 import { RoomPuzzleRouteBuilder } from
   "../../classes/systems/room-puzzle-route-builder.class.js";
@@ -10,6 +12,11 @@ import { getAssetPath } from "../config/asset-paths.js";
 import { getPlatformTilesetConfig } from
   "../config/platform-tileset-config.js";
 import { createRoomPieceLayout } from "./room-stack-layout.js";
+
+const SPECIAL_PLATFORM_CLASSES = Object.freeze({
+  falling: FallingPlatform,
+  moving: MovingPlatform,
+});
 
 /** Creates the room-by-room rebuild of Little Bolt, Big Moon. */
 export function createLevelOne() {
@@ -49,8 +56,7 @@ function createPuzzlePlatforms(data) {
 function createPuzzlePlatform(definition, platformTypes) {
   const platformType = platformTypes[definition.type];
   const platformData = Object.freeze({ ...platformType, ...definition });
-  const PlatformClass = definition.type === "falling" ?
-    FallingPlatform : Platform;
+  const PlatformClass = SPECIAL_PLATFORM_CLASSES[definition.type] ?? Platform;
   return new PlatformClass(platformData,
     getPlatformTilesetConfig(definition.tileset));
 }

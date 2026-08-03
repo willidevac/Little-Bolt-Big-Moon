@@ -10,9 +10,9 @@
     { "id": "factory-assembly", "name": "Fabrik – Montagehallen", "backgroundId": "factory", "tileset": "factory", "topY": 110000, "bottomY": 120000, "puzzleProfile": "assembly-lines", "roomPattern": ["factory-assembly", "factory-smelter", "factory-assembly", "factory-energy-core"] },
     { "id": "factory-smelter", "name": "Fabrik – Schmelzwerk", "backgroundId": "factory", "tileset": "factory", "topY": 100000, "bottomY": 110000, "puzzleProfile": "unstable-smelter", "roomPattern": ["factory-smelter", "factory-assembly", "factory-energy-core"] },
     { "id": "factory-energy-core", "name": "Fabrik – Energiekern", "backgroundId": "factory", "tileset": "factory", "topY": 90000, "bottomY": 100000, "puzzleProfile": "core-meltdown", "roomPattern": ["factory-energy-core", "factory-smelter", "factory-assembly"] },
-    { "id": "launch-tower-supply-shafts", "name": "Startturm – Versorgungsschächte", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 80000, "bottomY": 90000, "roomPattern": ["launch-tower-supply-shafts", "launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
-    { "id": "launch-tower-outer-hull", "name": "Startturm – Außenhülle", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 70000, "bottomY": 80000, "roomPattern": ["launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
-    { "id": "launch-tower-launch-platform", "name": "Startturm – Startrampe", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 60000, "bottomY": 70000, "roomPattern": ["launch-tower-launch-platform", "launch-tower-outer-hull", "launch-tower-supply-shafts"] },
+    { "id": "launch-tower-supply-shafts", "name": "Startturm – Versorgungsschächte", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 80000, "bottomY": 90000, "puzzleProfile": "shaft-lifts", "roomPattern": ["launch-tower-supply-shafts", "launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
+    { "id": "launch-tower-outer-hull", "name": "Startturm – Außenhülle", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 70000, "bottomY": 80000, "puzzleProfile": "wind-sweeps", "roomPattern": ["launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
+    { "id": "launch-tower-launch-platform", "name": "Startturm – Startrampe", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 60000, "bottomY": 70000, "puzzleProfile": "launch-countdown", "roomPattern": ["launch-tower-launch-platform", "launch-tower-outer-hull", "launch-tower-supply-shafts"] },
     { "id": "space-station-cargo-ring", "name": "Raumstation – Frachtring", "backgroundId": "space-station", "tileset": "space-station", "topY": 50000, "bottomY": 60000, "roomPattern": ["space-station-cargo-ring", "space-station-research", "space-station-cargo-ring", "space-station-command"] },
     { "id": "space-station-research", "name": "Raumstation – Forschungstrakt", "backgroundId": "space-station", "tileset": "space-station", "topY": 40000, "bottomY": 50000, "roomPattern": ["space-station-research", "space-station-cargo-ring", "space-station-command"] },
     { "id": "space-station-command", "name": "Raumstation – Kommandozentrum", "backgroundId": "space-station", "tileset": "space-station", "topY": 30000, "bottomY": 40000, "roomPattern": ["space-station-command", "space-station-research", "space-station-cargo-ring"] },
@@ -43,6 +43,7 @@
         "respawnDelaySeconds": 3
       }
     },
+    "moving": { "tileFrames": [0, 2, 3] },
     "catch": { "tileFrames": [0, 2, 2, 2, 2, 2, 2, 3] }
   },
   "puzzleRouteProfiles": {
@@ -179,6 +180,78 @@
         { "x": 550, "offsetY": 250, "type": "falling" },
         { "x": 300, "offsetY": 140, "type": "narrow" },
         { "x": 580, "offsetY": 30, "type": "falling" }
+      ]
+    },
+    "shaft-lifts": {
+      "launch-tower-supply-shafts": [
+        { "x": 720, "offsetY": 640, "type": "path" },
+        { "x": 430, "offsetY": 500, "type": "moving", "movement": { "minimumX": 350, "maximumX": 550, "speedPixelsPerSecond": 85 } },
+        { "x": 760, "offsetY": 330, "type": "narrow" },
+        { "x": 500, "offsetY": 190, "type": "narrow" },
+        { "x": 760, "offsetY": 40, "type": "narrow" }
+      ],
+      "launch-tower-outer-hull": [
+        { "x": 430, "offsetY": 640, "type": "path" },
+        { "x": 700, "offsetY": 510, "type": "moving", "movement": { "minimumX": 620, "maximumX": 780, "speedPixelsPerSecond": 85 } },
+        { "x": 400, "offsetY": 350, "type": "narrow" },
+        { "x": 760, "offsetY": 190, "type": "narrow" },
+        { "x": 500, "offsetY": 40, "type": "narrow" }
+      ],
+      "launch-tower-launch-platform": [
+        { "x": 700, "offsetY": 640, "type": "path" },
+        { "x": 430, "offsetY": 520, "type": "moving", "movement": { "minimumX": 350, "maximumX": 550, "speedPixelsPerSecond": 85 } },
+        { "x": 760, "offsetY": 350, "type": "narrow" },
+        { "x": 430, "offsetY": 210, "type": "narrow" },
+        { "x": 700, "offsetY": 45, "type": "narrow" }
+      ]
+    },
+    "wind-sweeps": {
+      "launch-tower-supply-shafts": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 510, "type": "moving", "movement": { "minimumX": 380, "maximumX": 620, "speedPixelsPerSecond": 100 } },
+        { "x": 820, "offsetY": 370, "type": "narrow" },
+        { "x": 500, "offsetY": 220, "type": "moving", "movement": { "minimumX": 380, "maximumX": 620, "speedPixelsPerSecond": 100 } },
+        { "x": 780, "offsetY": 45, "type": "narrow" }
+      ],
+      "launch-tower-outer-hull": [
+        { "x": 420, "offsetY": 640, "type": "path" },
+        { "x": 700, "offsetY": 510, "type": "moving", "movement": { "minimumX": 580, "maximumX": 820, "speedPixelsPerSecond": 100 } },
+        { "x": 390, "offsetY": 370, "type": "narrow" },
+        { "x": 720, "offsetY": 220, "type": "moving", "movement": { "minimumX": 600, "maximumX": 840, "speedPixelsPerSecond": 100 } },
+        { "x": 430, "offsetY": 45, "type": "narrow" }
+      ],
+      "launch-tower-launch-platform": [
+        { "x": 760, "offsetY": 640, "type": "path" },
+        { "x": 470, "offsetY": 510, "type": "moving", "movement": { "minimumX": 350, "maximumX": 590, "speedPixelsPerSecond": 100 } },
+        { "x": 820, "offsetY": 370, "type": "narrow" },
+        { "x": 500, "offsetY": 220, "type": "moving", "movement": { "minimumX": 380, "maximumX": 620, "speedPixelsPerSecond": 100 } },
+        { "x": 780, "offsetY": 45, "type": "narrow" }
+      ]
+    },
+    "launch-countdown": {
+      "launch-tower-supply-shafts": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 540, "offsetY": 520, "type": "moving", "movement": { "minimumX": 390, "maximumX": 690, "speedPixelsPerSecond": 120 } },
+        { "x": 820, "offsetY": 400, "type": "narrow" },
+        { "x": 520, "offsetY": 280, "type": "moving", "movement": { "minimumX": 370, "maximumX": 670, "speedPixelsPerSecond": 120 } },
+        { "x": 820, "offsetY": 150, "type": "narrow" },
+        { "x": 550, "offsetY": 30, "type": "moving", "movement": { "minimumX": 400, "maximumX": 700, "speedPixelsPerSecond": 120 } }
+      ],
+      "launch-tower-outer-hull": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 680, "offsetY": 520, "type": "moving", "movement": { "minimumX": 530, "maximumX": 830, "speedPixelsPerSecond": 120 } },
+        { "x": 380, "offsetY": 400, "type": "narrow" },
+        { "x": 680, "offsetY": 280, "type": "moving", "movement": { "minimumX": 530, "maximumX": 830, "speedPixelsPerSecond": 120 } },
+        { "x": 380, "offsetY": 150, "type": "narrow" },
+        { "x": 680, "offsetY": 30, "type": "moving", "movement": { "minimumX": 530, "maximumX": 830, "speedPixelsPerSecond": 120 } }
+      ],
+      "launch-tower-launch-platform": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 520, "type": "moving", "movement": { "minimumX": 350, "maximumX": 650, "speedPixelsPerSecond": 120 } },
+        { "x": 820, "offsetY": 400, "type": "narrow" },
+        { "x": 500, "offsetY": 280, "type": "moving", "movement": { "minimumX": 350, "maximumX": 650, "speedPixelsPerSecond": 120 } },
+        { "x": 820, "offsetY": 150, "type": "narrow" },
+        { "x": 520, "offsetY": 30, "type": "moving", "movement": { "minimumX": 370, "maximumX": 670, "speedPixelsPerSecond": 120 } }
       ]
     }
   },
