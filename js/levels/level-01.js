@@ -1,6 +1,8 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { AuthoredRoom } from
   "../../classes/environment/authored-room.class.js";
+import { FallingPlatform } from
+  "../../classes/environment/falling-platform.class.js";
 import { Platform } from "../../classes/environment/platform.class.js";
 import { RoomPuzzleRouteBuilder } from
   "../../classes/systems/room-puzzle-route-builder.class.js";
@@ -40,11 +42,17 @@ function createEntityGroups(data) {
 
 function createPuzzlePlatforms(data) {
   return new RoomPuzzleRouteBuilder(data).build().map((definition) => {
-    const platformType = data.platformTypes[definition.type];
-    const platformData = Object.freeze({ ...platformType, ...definition });
-    return new Platform(platformData,
-      getPlatformTilesetConfig(definition.tileset));
+    return createPuzzlePlatform(definition, data.platformTypes);
   });
+}
+
+function createPuzzlePlatform(definition, platformTypes) {
+  const platformType = platformTypes[definition.type];
+  const platformData = Object.freeze({ ...platformType, ...definition });
+  const PlatformClass = definition.type === "falling" ?
+    FallingPlatform : Platform;
+  return new PlatformClass(platformData,
+    getPlatformTilesetConfig(definition.tileset));
 }
 
 function createStructures(data) {

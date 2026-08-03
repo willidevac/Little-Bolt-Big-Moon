@@ -15,7 +15,8 @@ const platform = platforms[0];
 const initialY = platform.y;
 const world = { config: GAME_CONFIG };
 
-assert.ok(platforms.length >= 100);
+assert.equal(platforms.length, 70);
+assertProgressiveDistribution(platforms);
 assert.ok(platforms.every(hasFairTiming));
 assert.equal(platform.onLanded({ team: "enemy" }), false);
 assert.equal(platform.onLanded({ team: "player" }), true);
@@ -40,6 +41,15 @@ function hasFairTiming(candidate) {
   return candidate.warningDelaySeconds >= 1 &&
     candidate.maximumDropPixels === 900 &&
     candidate.respawnDelaySeconds === 3;
+}
+
+function assertProgressiveDistribution(platformsToCheck) {
+  const countFor = (sectionId) => platformsToCheck.filter(({ id }) => {
+    return id.startsWith(sectionId);
+  }).length;
+  assert.equal(countFor("factory-assembly"), 0);
+  assert.equal(countFor("factory-smelter"), 28);
+  assert.equal(countFor("factory-energy-core"), 42);
 }
 
 function assertDoesNotDrawOrCatch(candidate) {

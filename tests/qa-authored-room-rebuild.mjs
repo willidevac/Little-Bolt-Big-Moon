@@ -10,7 +10,7 @@ assert.equal(level.structures.length, 210);
 [
   "collectables", "storyProps", "hazards", "combatZones", "enemies",
 ].forEach((group) => assert.deepEqual(level[group], []));
-assert.equal(level.platforms.length, 177);
+assert.equal(level.platforms.length, 401);
 
 const room = level.structures.find(({ id }) => {
   return id === "scrapyard-rebound-shaft-01";

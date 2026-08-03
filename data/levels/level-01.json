@@ -7,9 +7,9 @@
     { "id": "scrapyard-machine-graveyard", "name": "Schrottplatz – Maschinenfriedhof", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 140000, "bottomY": 150000, "puzzleProfile": "introduction", "roomPattern": ["scrapyard-machine-graveyard", "scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
     { "id": "scrapyard-pressworks", "name": "Schrottplatz – Presswerk", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 130000, "bottomY": 140000, "puzzleProfile": "precision", "roomPattern": ["scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
     { "id": "scrapyard-signal-tower", "name": "Schrottplatz – Funkturm", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 120000, "bottomY": 130000, "puzzleProfile": "wall-rebounds", "roomPattern": ["scrapyard-signal-tower", "scrapyard-pressworks", "scrapyard-machine-graveyard"] },
-    { "id": "factory-assembly", "name": "Fabrik – Montagehallen", "backgroundId": "factory", "tileset": "factory", "topY": 110000, "bottomY": 120000, "roomPattern": ["factory-assembly", "factory-smelter", "factory-assembly", "factory-energy-core"] },
-    { "id": "factory-smelter", "name": "Fabrik – Schmelzwerk", "backgroundId": "factory", "tileset": "factory", "topY": 100000, "bottomY": 110000, "roomPattern": ["factory-smelter", "factory-assembly", "factory-energy-core"] },
-    { "id": "factory-energy-core", "name": "Fabrik – Energiekern", "backgroundId": "factory", "tileset": "factory", "topY": 90000, "bottomY": 100000, "roomPattern": ["factory-energy-core", "factory-smelter", "factory-assembly"] },
+    { "id": "factory-assembly", "name": "Fabrik – Montagehallen", "backgroundId": "factory", "tileset": "factory", "topY": 110000, "bottomY": 120000, "puzzleProfile": "assembly-lines", "roomPattern": ["factory-assembly", "factory-smelter", "factory-assembly", "factory-energy-core"] },
+    { "id": "factory-smelter", "name": "Fabrik – Schmelzwerk", "backgroundId": "factory", "tileset": "factory", "topY": 100000, "bottomY": 110000, "puzzleProfile": "unstable-smelter", "roomPattern": ["factory-smelter", "factory-assembly", "factory-energy-core"] },
+    { "id": "factory-energy-core", "name": "Fabrik – Energiekern", "backgroundId": "factory", "tileset": "factory", "topY": 90000, "bottomY": 100000, "puzzleProfile": "core-meltdown", "roomPattern": ["factory-energy-core", "factory-smelter", "factory-assembly"] },
     { "id": "launch-tower-supply-shafts", "name": "Startturm – Versorgungsschächte", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 80000, "bottomY": 90000, "roomPattern": ["launch-tower-supply-shafts", "launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
     { "id": "launch-tower-outer-hull", "name": "Startturm – Außenhülle", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 70000, "bottomY": 80000, "roomPattern": ["launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
     { "id": "launch-tower-launch-platform", "name": "Startturm – Startrampe", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 60000, "bottomY": 70000, "roomPattern": ["launch-tower-launch-platform", "launch-tower-outer-hull", "launch-tower-supply-shafts"] },
@@ -34,6 +34,15 @@
   "platformTypes": {
     "path": { "tileFrames": [0, 2, 3] },
     "narrow": { "tileFrames": [0, 3] },
+    "falling": {
+      "tileFrames": [0, 3],
+      "fall": {
+        "warningDelaySeconds": 1.25,
+        "speedPixelsPerSecond": 430,
+        "maximumDropPixels": 900,
+        "respawnDelaySeconds": 3
+      }
+    },
     "catch": { "tileFrames": [0, 2, 2, 2, 2, 2, 2, 3] }
   },
   "puzzleRouteProfiles": {
@@ -98,6 +107,78 @@
         { "x": 700, "offsetY": 460, "type": "narrow" },
         { "x": 550, "offsetY": 150, "type": "narrow" },
         { "x": 820, "offsetY": 35, "type": "narrow" }
+      ]
+    },
+    "assembly-lines": {
+      "factory-assembly": [
+        { "x": 760, "offsetY": 640, "type": "path" },
+        { "x": 470, "offsetY": 490, "type": "narrow" },
+        { "x": 790, "offsetY": 340, "type": "narrow" },
+        { "x": 460, "offsetY": 190, "type": "narrow" },
+        { "x": 700, "offsetY": 40, "type": "narrow" }
+      ],
+      "factory-smelter": [
+        { "x": 720, "offsetY": 640, "type": "path" },
+        { "x": 430, "offsetY": 500, "type": "narrow" },
+        { "x": 760, "offsetY": 320, "type": "narrow" },
+        { "x": 430, "offsetY": 180, "type": "narrow" },
+        { "x": 650, "offsetY": 35, "type": "narrow" }
+      ],
+      "factory-energy-core": [
+        { "x": 430, "offsetY": 640, "type": "path" },
+        { "x": 760, "offsetY": 520, "type": "narrow" },
+        { "x": 650, "offsetY": 330, "type": "narrow" },
+        { "x": 390, "offsetY": 210, "type": "narrow" },
+        { "x": 700, "offsetY": 50, "type": "narrow" }
+      ]
+    },
+    "unstable-smelter": {
+      "factory-assembly": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 500, "type": "falling" },
+        { "x": 820, "offsetY": 360, "type": "narrow" },
+        { "x": 470, "offsetY": 210, "type": "falling" },
+        { "x": 760, "offsetY": 50, "type": "narrow" }
+      ],
+      "factory-smelter": [
+        { "x": 720, "offsetY": 640, "type": "path" },
+        { "x": 430, "offsetY": 500, "type": "falling" },
+        { "x": 770, "offsetY": 320, "type": "narrow" },
+        { "x": 440, "offsetY": 180, "type": "falling" },
+        { "x": 740, "offsetY": 35, "type": "narrow" }
+      ],
+      "factory-energy-core": [
+        { "x": 430, "offsetY": 640, "type": "path" },
+        { "x": 730, "offsetY": 520, "type": "falling" },
+        { "x": 800, "offsetY": 350, "type": "narrow" },
+        { "x": 480, "offsetY": 210, "type": "falling" },
+        { "x": 760, "offsetY": 50, "type": "narrow" }
+      ]
+    },
+    "core-meltdown": {
+      "factory-assembly": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 520, "offsetY": 510, "type": "falling" },
+        { "x": 850, "offsetY": 380, "type": "narrow" },
+        { "x": 520, "offsetY": 250, "type": "falling" },
+        { "x": 830, "offsetY": 120, "type": "narrow" },
+        { "x": 560, "offsetY": 30, "type": "falling" }
+      ],
+      "factory-smelter": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 520, "type": "falling" },
+        { "x": 780, "offsetY": 390, "type": "narrow" },
+        { "x": 450, "offsetY": 250, "type": "falling" },
+        { "x": 780, "offsetY": 120, "type": "narrow" },
+        { "x": 520, "offsetY": 30, "type": "falling" }
+      ],
+      "factory-energy-core": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 680, "offsetY": 520, "type": "falling" },
+        { "x": 850, "offsetY": 390, "type": "narrow" },
+        { "x": 550, "offsetY": 250, "type": "falling" },
+        { "x": 300, "offsetY": 140, "type": "narrow" },
+        { "x": 580, "offsetY": 30, "type": "falling" }
       ]
     }
   },
