@@ -5,7 +5,10 @@ import { createLevelOne } from "../js/levels/level-01.js";
 
 const level = createLevelOne(GAME_CONFIG.enemies);
 const structures = level.structures;
-const sources = new Set(structures.map(({ atlas }) => atlas.config.source));
+const EXPECTED_STRUCTURE_COUNT = 210;
+const sources = new Set(structures.map(({ spriteConfig }) => {
+  return spriteConfig.source;
+}));
 const roles = new Set(structures.map(({ role }) => role));
 const collidable = structures.filter((structure) => {
   return structure.getCollisionBoundsList().length > 0;
@@ -15,17 +18,20 @@ const rendererSource = await fs.readFile(
   "utf8",
 );
 
-assert.ok(structures.length >= 200);
+assert.equal(structures.length, EXPECTED_STRUCTURE_COUNT);
 assert.equal(new Set(structures.map(({ id }) => id)).size, structures.length);
-assert.equal(sources.size, 10);
-assert.deepEqual([...roles].sort(), [
-  "arch", "corner", "facade", "ledge", "overhead", "tower", "wall",
-]);
-assert.ok(collidable.length >= 80);
+assert.ok(structures.every(isAuthoredArchitecture));
+assert.equal(sources.size, 16);
+assert.deepEqual([...roles], ["authored-room"]);
+assert.equal(collidable.length, structures.length);
 assert.ok(structures.every(staysInsideWorld));
 assert.doesNotMatch(rendererSource, /BoundaryStructureRenderer|fillRect\(/);
 
-console.log("ENV-001: 90 Clean-HD architecture parts create varied rooms.");
+console.log("ENV-001: 210 cohesive HD room pieces cover the full journey.");
+
+function isAuthoredArchitecture(structure) {
+  return structure.role === "authored-room";
+}
 
 function staysInsideWorld(structure) {
   return structure.x >= 0 && structure.x + structure.width <= level.width &&

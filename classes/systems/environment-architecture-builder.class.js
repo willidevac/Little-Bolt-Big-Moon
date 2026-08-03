@@ -6,13 +6,6 @@ import { getLandmarkLayout } from
   "../../js/config/environment-landmark-config.js";
 import { PLATFORM_WIDTHS } from "../../js/config/platform-route-rules.js";
 
-const MODULE_PATTERNS = Object.freeze([
-  Object.freeze(["wall", "facade", "overhead", "tower", "arch", "corner"]),
-  Object.freeze(["facade", "wall", "corner", "overhead", "tower", "arch"]),
-  Object.freeze(["tower", "overhead", "facade", "wall", "corner", "arch"]),
-  Object.freeze(["corner", "tower", "wall", "facade", "arch", "overhead"]),
-  Object.freeze(["overhead", "corner", "tower", "arch", "facade", "wall"]),
-]);
 const MODULE_SCALES = Object.freeze({
   wall: 0.72,
   facade: 0.78,
@@ -24,7 +17,7 @@ const MODULE_SCALES = Object.freeze({
 });
 const WALL_COLLIDER_WIDTH = 36;
 
-/** Builds varied architecture from the authored platform-room metadata. */
+/** Builds only explicitly authored landmark architecture. */
 export class EnvironmentArchitectureBuilder {
   /**
    * @param {number} worldWidth
@@ -41,11 +34,7 @@ export class EnvironmentArchitectureBuilder {
     this.atlasLibrary = atlasLibrary;
   }
 
-  /**
-   * @param {ReadonlyArray<object>} sections
-   * @param {ReadonlyArray<object>} platforms
-   * @returns {ReadonlyArray<EnvironmentStructure>}
-   */
+  /** Builds architecture only for rooms explicitly marked as landmarks. */
   build(sections, platforms) {
     this.#validateCollections(sections, platforms);
     const structures = sections.flatMap((section, sectionIndex) => {
@@ -55,62 +44,43 @@ export class EnvironmentArchitectureBuilder {
   }
 
   #buildSection(section, sectionIndex, platforms) {
-    const rooms = section.route.rooms ?? [];
-    return rooms.flatMap((room, roomIndex) => this.#buildPlannedRoom(
-      section, sectionIndex, room, roomIndex, rooms.length, platforms,
-    ));
+    return section.route.rooms.flatMap((room, roomIndex) => {
+      if (!room.landmark) return [];
+      return this.#buildRoom(section, sectionIndex, room, roomIndex, platforms);
+    });
   }
 
-  #buildPlannedRoom(section, sectionIndex, room, roomIndex, roomCount, platforms) {
-    const variantId = (sectionIndex + roomIndex) % 2 === 0
-      ? "base"
-      : "alternate";
-    const architecture = this.#getArchitecture(section.tileset, variantId);
+  #buildRoom(section, sectionIndex, room, roomIndex, platforms) {
     const roomPlatforms = this.#findRoomPlatforms(section, room, platforms);
-    return this.#buildRoom(
-      section, room, roomIndex, roomCount, sectionIndex, roomPlatforms,
-      architecture,
+    if (roomPlatforms.length === 0) return [];
+    const variantId = (sectionIndex + roomIndex) % 2 === 0
+      ? "base" : "alternate";
+    const architecture = this.atlasLibrary.get(section.tileset, variantId);
+    return this.#createLandmarkStructures(
+      section, room, architecture, roomPlatforms,
     );
   }
 
-  #findRoomPlatforms(section, room, platforms) {
-    return platforms.filter((platform) => this.#matchesRoom(
-      section.id, room.id, platform,
-    ));
-  }
-
-  #matchesRoom(sectionId, roomId, platform) {
-    return platform.roomId === roomId &&
-      platform.id.startsWith(`${sectionId}-`);
-  }
-
-  #buildRoom(
-    section, room, roomIndex, roomCount, sectionIndex, platforms, architecture,
-  ) {
-    if (platforms.length === 0) return [];
-    const roomData = this.#createRoomData(
-      roomIndex, roomCount, sectionIndex, platforms,
-    );
-    if (room.landmark) {
-      return this.#createLandmarkStructures(
-        section, room, architecture, roomData,
-      );
-    }
-    return this.#createRoomStructures(section, room, architecture, roomData);
-  }
-
-  #createLandmarkStructures(section, room, architecture, roomData) {
-    const layout = getLandmarkLayout(room.landmark);
+  #createLandmarkStructures(section, room, architecture, platforms) {
+    const roomData = this.#createRoomData(platforms);
     const solidWallSide = this.#selectSolidWallSide(
       roomData, architecture.frames,
     );
-    return layout.map((frameId, index) => {
-      const data = this.#createLandmarkData(
-        section.id, room.id, frameId, index, architecture.frames, roomData,
-        solidWallSide,
+    return getLandmarkLayout(room.landmark).map((frameId, index) => {
+      return this.#createLandmarkStructure(
+        section, room, architecture, roomData, solidWallSide, frameId, index,
       );
-      return new EnvironmentStructure(data, architecture.atlas);
     });
+  }
+
+  #createLandmarkStructure(
+    section, room, architecture, roomData, solidWallSide, frameId, index,
+  ) {
+    const data = this.#createLandmarkData(
+      section.id, room.id, frameId, index, architecture.frames, roomData,
+      solidWallSide,
+    );
+    return new EnvironmentStructure(data, architecture.atlas);
   }
 
   #createLandmarkData(
@@ -120,8 +90,9 @@ export class EnvironmentArchitectureBuilder {
     const frame = frames[frameId];
     const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
     const position = this.#getLandmarkPosition(frameId, roomData, size);
-    const collisionBoxes = this.#getLandmarkCollisions(frameId, size, solidWallSide);
-    return this.#createData({
+    const collisionBoxes = this.#getLandmarkCollisions(frameId, size,
+      solidWallSide);
+    return Object.freeze({
       id: `${sectionId}-${roomId}-landmark-${index + 1}`,
       role, frame, ...position, ...size, collisionBoxes,
     });
@@ -158,9 +129,9 @@ export class EnvironmentArchitectureBuilder {
     if (frameId === "rightWall" && solidWallSide === "right") {
       return [this.#createSideCollision("right", size)];
     }
-    if (frameId === "ledge") return [this.#createLedgeCollision(size)];
-    if (this.#hasWalkableTop(frameId)) return [this.#createTopCollision(size)];
-    return [];
+    if (frameId === "ledge") return [this.#createTopCollision(size)];
+    return this.#hasWalkableTop(frameId)
+      ? [this.#createTopCollision(size)] : [];
   }
 
   #selectSolidWallSide(roomData, frames) {
@@ -202,8 +173,7 @@ export class EnvironmentArchitectureBuilder {
 
   #hasWalkableTop(frameId) {
     return frameId === "arch" || frameId === "facade" ||
-      frameId === "tower" ||
-      frameId.endsWith("Corner");
+      frameId === "tower" || frameId.endsWith("Corner");
   }
 
   #createTopCollision(size) {
@@ -215,119 +185,8 @@ export class EnvironmentArchitectureBuilder {
     });
   }
 
-  #createRoomData(roomIndex, roomCount, sectionIndex, platforms) {
-    const bounds = this.#getRoomBounds(platforms);
-    const side = this.#getOpenArchitectureSide(platforms);
-    const pattern = MODULE_PATTERNS[sectionIndex % MODULE_PATTERNS.length];
-    const moduleType = roomIndex === roomCount - 1
-      ? "arch"
-      : pattern[roomIndex % pattern.length];
-    return Object.freeze({
-      bounds, side, moduleType, roomIndex, sectionIndex,
-      platforms: Object.freeze([...platforms]),
-    });
-  }
-
-  #createRoomStructures(section, room, architecture, roomData) {
-    const { bounds, side, moduleType, roomIndex, sectionIndex } = roomData;
-    const mainData = this.#createMainData(
-      section.id, room.id, moduleType, side, bounds, architecture.frames,
-    );
-    const structures = [new EnvironmentStructure(mainData, architecture.atlas)];
-    this.#addOptionalLedge(structures, section, room, architecture, roomData);
-    return structures;
-  }
-
-  #addOptionalLedge(structures, section, room, architecture, roomData) {
-    const { bounds, side, roomIndex, sectionIndex } = roomData;
-    if ((roomIndex + sectionIndex) % 5 !== 1) return;
-    const data = this.#createLedgeData(
-      section.id, room.id, side, bounds, architecture.frames,
-    );
-    structures.push(new EnvironmentStructure(data, architecture.atlas));
-  }
-
-  #createMainData(sectionId, roomId, moduleType, side, bounds, frames) {
-    const frameId = this.#getSideFrameId(moduleType, side);
-    if (frameId) return this.#createSideData(
-      sectionId, roomId, frameId, side, bounds, frames,
-    );
-    return this.#createSceneryData(
-      sectionId, roomId, moduleType, side, bounds, frames,
-    );
-  }
-
-  #getSideFrameId(moduleType, side) {
-    if (moduleType === "wall") {
-      return side === "left" ? "leftWall" : "rightWall";
-    }
-    if (moduleType === "tower") return "tower";
-    if (moduleType === "corner") return `${side}Corner`;
-    return null;
-  }
-
-  #createSideData(sectionId, roomId, frameId, side, bounds, frames) {
-    const role = this.#getRole(frameId);
-    const frame = frames[frameId];
-    const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
-    const x = side === "left" ? 0 : this.worldWidth - size.width;
-    const y = bounds.bottom + 56 - size.height;
-    return this.#createData({
-      id: `${sectionId}-${roomId}-${frameId}`, role, frame, x, y, ...size,
-      collisionBoxes: [this.#createSideCollision(side, size)],
-    });
-  }
-
-  #createSceneryData(sectionId, roomId, role, side, bounds, frames) {
-    const frame = frames[role];
-    const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
-    const x = this.#getSceneryX(role, side, size.width);
-    const y = role === "overhead"
-      ? bounds.top - 24
-      : bounds.bottom + 48 - size.height;
-    return this.#createData({
-      id: `${sectionId}-${roomId}-${role}`, role, frame, x, y, ...size,
-      collisionBoxes: [],
-    });
-  }
-
-  #createLedgeData(sectionId, roomId, side, bounds, frames) {
-    const role = "ledge";
-    const frame = frames[role];
-    const size = this.#getRenderSize(frame, MODULE_SCALES[role]);
-    const position = this.#getLedgePosition(side, bounds, size);
-    return this.#createData({
-      id: `${sectionId}-${roomId}-${role}`, role, frame, ...position, ...size,
-      collisionBoxes: [this.#createLedgeCollision(size)],
-    });
-  }
-
-  #getLedgePosition(side, bounds, size) {
-    const edgeGap = 176;
-    const x = side === "left"
-      ? edgeGap
-      : this.worldWidth - edgeGap - size.width;
-    const y = Math.round((bounds.top + bounds.bottom) / 2 - size.height / 2);
-    return Object.freeze({ x, y });
-  }
-
-  #createLedgeCollision(size) {
-    return Object.freeze({
-      offsetX: 8,
-      offsetY: 8,
-      width: size.width - 16,
-      height: 18,
-    });
-  }
-
-  #createData(data) {
-    return Object.freeze({ ...data });
-  }
-
   #createSideCollision(side, size) {
-    const offsetX = side === "left"
-      ? size.width - WALL_COLLIDER_WIDTH
-      : 0;
+    const offsetX = side === "left" ? size.width - WALL_COLLIDER_WIDTH : 0;
     return Object.freeze({
       offsetX,
       offsetY: 24,
@@ -336,15 +195,12 @@ export class EnvironmentArchitectureBuilder {
     });
   }
 
-  #getSceneryX(role, side, width) {
-    if (role !== "overhead") return Math.round((this.worldWidth - width) / 2);
-    return side === "left" ? 32 : this.worldWidth - width - 32;
-  }
-
-  #getRole(frameId) {
-    if (frameId === "leftWall" || frameId === "rightWall") return "wall";
-    if (frameId === "tower") return "tower";
-    return "corner";
+  #getLedgePosition(side, bounds, size) {
+    const edgeGap = 176;
+    const x = side === "left"
+      ? edgeGap : this.worldWidth - edgeGap - size.width;
+    const y = Math.round((bounds.top + bounds.bottom) / 2 - size.height / 2);
+    return Object.freeze({ x, y });
   }
 
   #getFrameRole(frameId) {
@@ -357,6 +213,14 @@ export class EnvironmentArchitectureBuilder {
     return Object.freeze({
       width: Math.round(frame.width * scale),
       height: Math.round(frame.height * scale),
+    });
+  }
+
+  #createRoomData(platforms) {
+    return Object.freeze({
+      bounds: this.#getRoomBounds(platforms),
+      side: this.#getOpenArchitectureSide(platforms),
+      platforms: Object.freeze([...platforms]),
     });
   }
 
@@ -375,8 +239,11 @@ export class EnvironmentArchitectureBuilder {
     return averageX < this.worldWidth / 2 ? "right" : "left";
   }
 
-  #getArchitecture(biomeId, variantId) {
-    return this.atlasLibrary.get(biomeId, variantId);
+  #findRoomPlatforms(section, room, platforms) {
+    return platforms.filter((platform) => {
+      return platform.roomId === room.id &&
+        platform.id.startsWith(`${section.id}-`);
+    });
   }
 
   #validateCollections(sections, platforms) {

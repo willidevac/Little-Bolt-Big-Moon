@@ -103,7 +103,7 @@ function assertBiomeCrossfade() {
   BIOME_BOUNDARIES.forEach((boundaryY) => {
     const context = createContext();
     renderer.draw(context, { y: boundaryY - viewport.height / 2 });
-    assert.equal(context.images.length, 6);
+    assert.equal(context.images.length, 2);
     assert.deepEqual(context.alphaValues, [0.5, 0.5]);
   });
   assertCrossfadeProgress(renderer, viewport);

@@ -8,6 +8,7 @@ export const ASSET_PATHS = Object.freeze({
   fonts: "./img/fonts",
   items: "./img/sprites/items",
   props: "./img/sprites/props",
+  rooms: "./img/rooms",
   tilesets: "./img/tilesets",
   ui: "./img/ui",
   weapons: "./img/sprites/weapons",

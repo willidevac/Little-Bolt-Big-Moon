@@ -49,7 +49,8 @@ export class WorldSceneBuilder {
 
   #ensurePlatform(world) {
     const platforms = world.getEntities(WORLD_ENTITY_GROUPS.PLATFORMS);
-    if (platforms.length > 0) return;
+    const structures = world.getEntities(WORLD_ENTITY_GROUPS.STRUCTURES);
+    if (platforms.length > 0 || structures.length > 0) return;
     const platform = new Platform();
     Object.assign(platform, FALLBACK_PLATFORM_BOUNDS);
     world.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
