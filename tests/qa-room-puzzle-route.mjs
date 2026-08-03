@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { createLevelOne } from "../js/levels/level-01.js";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 
-const SECTION_TOP_Y = 140000;
-const SECTION_BOTTOM_Y = 150000;
+const ROUTE_TOP_Y = 120000;
+const ROUTE_BOTTOM_Y = 150000;
+const EXPECTED_PLATFORM_COUNT = 177;
 const level = createLevelOne();
 const surfaces = collectSurfaces(level);
 const reachable = findReachableSurfaces(surfaces, GAME_CONFIG);
@@ -11,28 +12,30 @@ const reachedY = surfaces
   .filter(({ id }) => reachable.has(id))
   .map(({ y }) => y);
 
-assert.equal(level.platforms.length, 55);
+assert.equal(level.platforms.length, EXPECTED_PLATFORM_COUNT);
 assert.ok(level.platforms.every(({ width }) => width <= 192));
-assert.ok(new Set(level.platforms.map(({ x }) => x)).size >= 7);
-assert.ok(level.platforms.every(isInsideFirstSection));
-assert.ok(Math.min(...reachedY) <= SECTION_TOP_Y + 60);
+assert.ok(level.platforms.every(isInsideRoomWalls));
+assert.ok(new Set(level.platforms.map(({ x }) => x)).size >= 15);
+assert.ok(level.platforms.every(isInsidePuzzleRoute));
+assert.ok(Math.min(...reachedY) <= ROUTE_TOP_Y + 60);
+assertSectionDifficulty(level);
 
-console.log("MAP-001: The first 10,000 px room puzzle is fully reachable.");
+console.log("MAP-001: Three progressive scrapyard puzzles are reachable.");
 
 function collectSurfaces(currentLevel) {
   const platforms = currentLevel.platforms.map(toSurface);
   const rooms = currentLevel.structures.flatMap((room) => {
     return room.getCollisionBoundsList()
-      .filter(isFirstSectionLandingSurface)
+      .filter(isPuzzleRouteLandingSurface)
       .map(toSurface);
   });
   return [...platforms, ...rooms].sort((first, second) => second.y - first.y);
 }
 
-function isFirstSectionLandingSurface(surface) {
-  const isInSection = surface.y >= SECTION_TOP_Y &&
-    surface.y <= SECTION_BOTTOM_Y;
-  return isInSection && !surface.id.endsWith("wall");
+function isPuzzleRouteLandingSurface(surface) {
+  const isInRoute = surface.y >= ROUTE_TOP_Y &&
+    surface.y <= ROUTE_BOTTOM_Y;
+  return isInRoute && !surface.id.endsWith("wall");
 }
 
 function toSurface(surface) {
@@ -75,6 +78,31 @@ function getHorizontalGap(first, second) {
   return Math.max(0, second.x - firstRight, first.x - secondRight);
 }
 
-function isInsideFirstSection(platform) {
-  return platform.y >= SECTION_TOP_Y && platform.y <= SECTION_BOTTOM_Y;
+function isInsidePuzzleRoute(platform) {
+  return platform.y >= ROUTE_TOP_Y && platform.y <= ROUTE_BOTTOM_Y;
+}
+
+function isInsideRoomWalls(platform) {
+  return platform.x >= 230 && platform.x + platform.width <= 1050;
+}
+
+function assertSectionDifficulty(currentLevel) {
+  assertPuzzleProfiles(currentLevel.sections);
+  const groups = currentLevel.sections.slice(0, 3).map((section) => {
+    return currentLevel.platforms.filter(({ id }) => id.startsWith(section.id));
+  });
+  assert.deepEqual(groups.map(({ length }) => length), [55, 61, 61]);
+  const horizontalRanges = groups.map((platforms) => {
+    const positions = platforms.map(({ x }) => x);
+    return Math.max(...positions) - Math.min(...positions);
+  });
+  assert.ok(horizontalRanges[1] > horizontalRanges[0]);
+  assert.ok(horizontalRanges[2] > horizontalRanges[1]);
+}
+
+function assertPuzzleProfiles(sections) {
+  assert.deepEqual(
+    sections.slice(0, 3).map(({ puzzleProfile }) => puzzleProfile),
+    ["introduction", "precision", "wall-rebounds"],
+  );
 }

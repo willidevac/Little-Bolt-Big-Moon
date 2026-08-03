@@ -4,9 +4,9 @@
   "height": 150000,
   "playerStart": { "x": 560, "y": 149853 },
   "sections": [
-    { "id": "scrapyard-machine-graveyard", "name": "Schrottplatz – Maschinenfriedhof", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 140000, "bottomY": 150000, "hasPuzzleRoute": true, "roomPattern": ["scrapyard-machine-graveyard", "scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
-    { "id": "scrapyard-pressworks", "name": "Schrottplatz – Presswerk", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 130000, "bottomY": 140000, "roomPattern": ["scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
-    { "id": "scrapyard-signal-tower", "name": "Schrottplatz – Funkturm", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 120000, "bottomY": 130000, "roomPattern": ["scrapyard-signal-tower", "scrapyard-pressworks", "scrapyard-machine-graveyard"] },
+    { "id": "scrapyard-machine-graveyard", "name": "Schrottplatz – Maschinenfriedhof", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 140000, "bottomY": 150000, "puzzleProfile": "introduction", "roomPattern": ["scrapyard-machine-graveyard", "scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
+    { "id": "scrapyard-pressworks", "name": "Schrottplatz – Presswerk", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 130000, "bottomY": 140000, "puzzleProfile": "precision", "roomPattern": ["scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
+    { "id": "scrapyard-signal-tower", "name": "Schrottplatz – Funkturm", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 120000, "bottomY": 130000, "puzzleProfile": "wall-rebounds", "roomPattern": ["scrapyard-signal-tower", "scrapyard-pressworks", "scrapyard-machine-graveyard"] },
     { "id": "factory-assembly", "name": "Fabrik – Montagehallen", "backgroundId": "factory", "tileset": "factory", "topY": 110000, "bottomY": 120000, "roomPattern": ["factory-assembly", "factory-smelter", "factory-assembly", "factory-energy-core"] },
     { "id": "factory-smelter", "name": "Fabrik – Schmelzwerk", "backgroundId": "factory", "tileset": "factory", "topY": 100000, "bottomY": 110000, "roomPattern": ["factory-smelter", "factory-assembly", "factory-energy-core"] },
     { "id": "factory-energy-core", "name": "Fabrik – Energiekern", "backgroundId": "factory", "tileset": "factory", "topY": 90000, "bottomY": 100000, "roomPattern": ["factory-energy-core", "factory-smelter", "factory-assembly"] },
@@ -36,26 +36,70 @@
     "narrow": { "tileFrames": [0, 3] },
     "catch": { "tileFrames": [0, 2, 2, 2, 2, 2, 2, 3] }
   },
-  "puzzleRecipes": {
-    "scrapyard-machine-graveyard": [
-      { "x": 720, "offsetY": 630, "type": "path" },
-      { "x": 520, "offsetY": 410, "type": "narrow" },
-      { "x": 800, "offsetY": 330, "type": "narrow" },
-      { "x": 470, "offsetY": 60, "type": "narrow" }
-    ],
-    "scrapyard-pressworks": [
-      { "x": 700, "offsetY": 630, "type": "path" },
-      { "x": 430, "offsetY": 480, "type": "narrow" },
-      { "x": 760, "offsetY": 330, "type": "narrow" },
-      { "x": 430, "offsetY": 180, "type": "narrow" },
-      { "x": 520, "offsetY": 50, "type": "narrow" }
-    ],
-    "scrapyard-signal-tower": [
-      { "x": 520, "offsetY": 630, "type": "path" },
-      { "x": 780, "offsetY": 470, "type": "narrow" },
-      { "x": 560, "offsetY": 150, "type": "narrow" },
-      { "x": 780, "offsetY": 30, "type": "narrow" }
-    ]
+  "puzzleRouteProfiles": {
+    "introduction": {
+      "scrapyard-machine-graveyard": [
+        { "x": 720, "offsetY": 630, "type": "path" },
+        { "x": 520, "offsetY": 410, "type": "narrow" },
+        { "x": 800, "offsetY": 330, "type": "narrow" },
+        { "x": 470, "offsetY": 60, "type": "narrow" }
+      ],
+      "scrapyard-pressworks": [
+        { "x": 700, "offsetY": 630, "type": "path" },
+        { "x": 430, "offsetY": 480, "type": "narrow" },
+        { "x": 760, "offsetY": 330, "type": "narrow" },
+        { "x": 430, "offsetY": 180, "type": "narrow" },
+        { "x": 520, "offsetY": 50, "type": "narrow" }
+      ],
+      "scrapyard-signal-tower": [
+        { "x": 520, "offsetY": 630, "type": "path" },
+        { "x": 780, "offsetY": 470, "type": "narrow" },
+        { "x": 560, "offsetY": 150, "type": "narrow" },
+        { "x": 780, "offsetY": 30, "type": "narrow" }
+      ]
+    },
+    "precision": {
+      "scrapyard-machine-graveyard": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 480, "offsetY": 450, "type": "narrow" },
+        { "x": 820, "offsetY": 330, "type": "narrow" },
+        { "x": 410, "offsetY": 60, "type": "narrow" }
+      ],
+      "scrapyard-pressworks": [
+        { "x": 760, "offsetY": 640, "type": "path" },
+        { "x": 390, "offsetY": 490, "type": "narrow" },
+        { "x": 810, "offsetY": 340, "type": "narrow" },
+        { "x": 430, "offsetY": 190, "type": "narrow" },
+        { "x": 680, "offsetY": 40, "type": "narrow" }
+      ],
+      "scrapyard-signal-tower": [
+        { "x": 430, "offsetY": 640, "type": "path" },
+        { "x": 800, "offsetY": 460, "type": "narrow" },
+        { "x": 600, "offsetY": 150, "type": "narrow" },
+        { "x": 790, "offsetY": 35, "type": "narrow" }
+      ]
+    },
+    "wall-rebounds": {
+      "scrapyard-machine-graveyard": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 520, "offsetY": 485, "type": "narrow" },
+        { "x": 830, "offsetY": 330, "type": "narrow" },
+        { "x": 500, "offsetY": 55, "type": "narrow" }
+      ],
+      "scrapyard-pressworks": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 490, "type": "narrow" },
+        { "x": 850, "offsetY": 340, "type": "narrow" },
+        { "x": 500, "offsetY": 190, "type": "narrow" },
+        { "x": 770, "offsetY": 40, "type": "narrow" }
+      ],
+      "scrapyard-signal-tower": [
+        { "x": 350, "offsetY": 640, "type": "path" },
+        { "x": 700, "offsetY": 460, "type": "narrow" },
+        { "x": 550, "offsetY": 150, "type": "narrow" },
+        { "x": 820, "offsetY": 35, "type": "narrow" }
+      ]
+    }
   },
   "roomTemplates": [
     { "id": "scrapyard-machine-graveyard", "source": "scrapyard-machine-graveyard-room-v1.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-wall", "offsetX": 1050, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-gantry", "offsetX": 650, "offsetY": 184, "width": 460, "height": 24 }, { "id": "left-shelf", "offsetX": 276, "offsetY": 536, "width": 170, "height": 24 }] },
