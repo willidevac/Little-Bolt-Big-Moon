@@ -27,6 +27,15 @@ controller.initialize();
 controller.start();
 
 assert.equal(controller.flight.character, game.world.character);
+root.querySelector("[data-review-height]").value = "434";
+controller.handleHeightTeleport();
+assert.equal(game.world.character.y, 148117);
+game.keyboard.reviewUp = true;
+controller.flight.update(0.1);
+assert.equal(game.world.character.isAffectedByGravity, false);
+game.keyboard.reviewUp = false;
+controller.flight.update(0.1);
+assert.equal(game.world.character.isAffectedByGravity, true);
 const firstCharacter = game.world.character;
 game.restartWorld();
 assert.notEqual(game.world.character, firstCharacter);
@@ -46,7 +55,7 @@ function createRoot() {
     "[data-review-version]", "[data-review-dialog]", "[data-review-form]",
     "[data-review-start]", "[data-review-code]", "[data-review-error]",
     "[data-review-banner]", "[data-review-exit]", "[data-review-cancel]",
-    "[data-review-biome]",
+    "[data-review-biome]", "[data-review-height]", "[data-review-teleport]",
   ].forEach((selector) => element.elements.set(selector, new FakeElement()));
   return element;
 }
@@ -56,7 +65,10 @@ function createGame() {
   const game = {
     canvas: new FakeElement(), keyboard: createKeyboard(),
     runStats: { updateHeight() {} },
-    config: { world: { width: 1280, height: 150000 } },
+    config: {
+      world: { width: 1280, height: 150000 },
+      hud: { heightPixelsPerMeter: 4 },
+    },
     world: createWorld(),
     ...createGameActions(listeners),
   };
@@ -77,7 +89,9 @@ function createGameActions(listeners) {
 function createWorld() {
   return {
     character: createCharacter(),
-    level: { enemies: [], sections: createSections() },
+    level: {
+      enemies: [], sections: createSections(), playerStart: { y: 149853 },
+    },
     camera: { reset() {} },
     addEntity() {},
   };
@@ -95,6 +109,7 @@ function createCharacter() {
 function createKeyboard() {
   return {
     left: false, right: false, jump: false, down: false, fast: false,
+    reviewLeft: false, reviewRight: false, reviewUp: false, reviewDown: false,
     consumePress() { return false; },
   };
 }

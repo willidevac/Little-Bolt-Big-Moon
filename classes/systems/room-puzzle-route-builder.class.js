@@ -26,7 +26,7 @@ export class RoomPuzzleRouteBuilder {
   }
 
   #buildPiece(section, piece) {
-    const recipe = this.#getRecipe(section, piece.templateId);
+    const recipe = this.#getPieceRecipe(section, piece);
     const scaleY = piece.height / this.levelData.roomStack.referenceHeight;
     return recipe.map((platform, index) => Object.freeze({
       id: `${section.id}-room-${piece.index + 1}-step-${index + 1}`,
@@ -36,6 +36,12 @@ export class RoomPuzzleRouteBuilder {
       tileset: section.tileset,
       ...this.#createBehavior(platform),
     }));
+  }
+
+  #getPieceRecipe(section, piece) {
+    const recipe = this.#getRecipe(section, piece.templateId);
+    const additions = section.piecePlatforms?.[piece.index] ?? [];
+    return [...recipe, ...additions];
   }
 
   #createBehavior(platform) {

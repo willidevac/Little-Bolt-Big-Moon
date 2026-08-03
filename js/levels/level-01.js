@@ -72,7 +72,9 @@ function createRoomStack(data, templates) {
       section, index, data.sections.length, data.roomStack,
     );
     return pieces.map((piece) => {
-      const template = templates.get(piece.templateId);
+      const templateId = section.roomTemplateOverrides?.[piece.index] ??
+        piece.templateId;
+      const template = templates.get(templateId);
       return createRoom(createStackPiece(section, template, piece, data));
     });
   });

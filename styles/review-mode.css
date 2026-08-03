@@ -63,6 +63,9 @@
   top: 0.6rem;
   left: 50%;
   display: flex;
+  width: max-content;
+  max-width: calc(100% - 1.2rem);
+  flex-wrap: wrap;
   gap: 0.55rem;
   padding: 0.45rem 0.65rem;
   border: 2px solid var(--color-orange);
@@ -71,6 +74,7 @@
   background: rgb(9 20 30 / 94%);
   transform: translateX(-50%);
   font-size: clamp(0.5rem, 0.9vw, 0.7rem);
+  justify-content: center;
 }
 
 .review-banner[hidden] {
@@ -84,7 +88,8 @@
 }
 
 .review-banner button,
-.review-banner select {
+.review-banner select,
+.review-banner input {
   min-height: 2rem;
   border: 1px solid var(--color-cream);
   color: var(--color-cream);
@@ -92,12 +97,13 @@
   font: inherit;
 }
 
-[data-review-control] {
-  display: none;
+.review-banner input {
+  width: 5.5rem;
+  padding-inline: 0.35rem;
 }
 
-[data-review-mode="true"] [data-review-control] {
-  display: flex;
+[data-review-control] {
+  display: none;
 }
 
 @media (max-width: 700px) and (orientation: landscape) {
@@ -107,7 +113,8 @@
   }
 
   .review-banner strong,
-  .review-banner label span {
+  .review-banner label span,
+  .review-banner__hint {
     display: none;
   }
 }

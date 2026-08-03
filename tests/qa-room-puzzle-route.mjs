@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { createLevelOne } from "../js/levels/level-01.js";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 
-const ROUTE_TOP_Y = 30000;
+const ROUTE_TOP_Y = 618;
 const ROUTE_BOTTOM_Y = 150000;
-const EXPECTED_PLATFORM_COUNT = 891;
+const EXPECTED_PLATFORM_COUNT = 1166;
 const level = createLevelOne();
 const surfaces = collectSurfaces(level);
 const reachable = findReachableSurfaces(surfaces, GAME_CONFIG);
@@ -20,7 +20,7 @@ assert.ok(level.platforms.every(isInsidePuzzleRoute));
 assert.ok(Math.min(...reachedY) <= ROUTE_TOP_Y + 60);
 assertSectionDifficulty(level);
 
-console.log("MAP-001: Twelve progressive room puzzles are reachable.");
+console.log("MAP-001: The complete route reaches the boss arena.");
 
 function collectSurfaces(currentLevel) {
   const platforms = currentLevel.platforms.map(toSurface);
@@ -91,21 +91,28 @@ function assertSectionDifficulty(currentLevel) {
   const groups = currentLevel.sections.slice(0, 3).map((section) => {
     return currentLevel.platforms.filter(({ id }) => id.startsWith(section.id));
   });
-  assert.deepEqual(groups.map(({ length }) => length), [55, 61, 61]);
-  const horizontalRanges = groups.map((platforms) => {
-    const positions = platforms.map(({ x }) => x);
-    return Math.max(...positions) - Math.min(...positions);
-  });
-  assert.ok(horizontalRanges[1] > horizontalRanges[0]);
-  assert.ok(horizontalRanges[2] > horizontalRanges[1]);
+  assert.deepEqual(groups.map(({ length }) => length), [57, 61, 61]);
+  assert.ok(groups[0].some(({ x }) => x === 330));
+  assert.ok(groups[0].some(isHeight434RescuePlatform));
+  assert.equal(new Set(groups.map(createRouteSignature)).size, groups.length);
+}
+
+function isHeight434RescuePlatform(platform) {
+  return platform.id === "scrapyard-machine-graveyard-room-12-step-5" &&
+    platform.x === 640;
+}
+
+function createRouteSignature(platforms) {
+  return platforms.map(({ x }) => x).join(",");
 }
 
 function assertPuzzleProfiles(sections) {
   assert.deepEqual(
-    sections.slice(0, 12).map(({ puzzleProfile }) => puzzleProfile),
+    sections.slice(0, 15).map(({ puzzleProfile }) => puzzleProfile),
     ["introduction", "precision", "wall-rebounds", "assembly-lines",
       "unstable-smelter", "core-meltdown", "shaft-lifts", "wind-sweeps",
       "launch-countdown", "cargo-orbits", "research-shifts",
-      "command-gauntlet"],
+      "command-gauntlet", "lunar-drift", "ruin-trials",
+      "warden-approach"],
   );
 }

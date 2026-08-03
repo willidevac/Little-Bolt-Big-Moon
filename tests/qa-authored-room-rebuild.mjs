@@ -4,13 +4,14 @@ import { createLevelOne } from "../js/levels/level-01.js";
 import levelData from "../data/levels/level-01.json" with { type: "json" };
 import { BYTE_GROUND_CONTACT_OFFSET_Y } from
   "../js/config/character-visual-config.js";
+import { GAME_CONFIG } from "../js/config/game-config.js";
 
 const level = createLevelOne();
 assert.equal(level.structures.length, 210);
 [
   "collectables", "storyProps", "hazards", "combatZones", "enemies",
 ].forEach((group) => assert.deepEqual(level[group], []));
-assert.equal(level.platforms.length, 891);
+assert.equal(level.platforms.length, 1166);
 
 const room = level.structures.find(({ id }) => {
   return id === "scrapyard-rebound-shaft-01";
@@ -40,7 +41,10 @@ const route = [
   colliders.get("middle-left-ledge"),
   colliders.get("upper-right-exit"),
 ];
-const maximumJumpHeight = 920 ** 2 / (2 * 2200);
+const maximumJumpSpeed =
+  GAME_CONFIG.character.maximumJumpSpeedPixelsPerSecond;
+const gravity = GAME_CONFIG.physics.gravityPixelsPerSecondSquared;
+const maximumJumpHeight = maximumJumpSpeed ** 2 / (2 * gravity);
 route.slice(1).forEach((upper, index) => {
   const lower = route[index];
   const verticalGap = lower.y - upper.y;
@@ -74,8 +78,11 @@ stack.forEach((roomPiece) => {
 });
 
 const templateIds = new Set(levelData.roomTemplates.map(({ id }) => id));
-levelData.sections.forEach(({ roomPattern }) => {
+levelData.sections.forEach(({ roomPattern, roomTemplateOverrides = {} }) => {
   roomPattern.forEach((templateId) => assert.ok(templateIds.has(templateId)));
+  Object.values(roomTemplateOverrides).forEach((templateId) => {
+    assert.ok(templateIds.has(templateId));
+  });
 });
 for (const { source } of levelData.roomTemplates) {
   const roomImage = await readFile(new URL(`../img/rooms/${source}`,

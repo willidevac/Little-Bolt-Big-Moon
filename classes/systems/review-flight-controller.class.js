@@ -17,24 +17,33 @@ export class ReviewFlightController {
     this.config = config;
     this.character = game.world.character;
     this.isEnabled = false;
+    this.isFlying = false;
   }
 
-  /** Enables flight, invulnerability, and review input. */
+  /** Enables on-demand arrow-key flight for the review run. */
   enable() {
     if (this.isEnabled) return false;
     this.isEnabled = true;
-    this.character.isAffectedByGravity = false;
-    this.character.setInvulnerability(Infinity);
-    this.#stopCharacter();
+    return true;
+  }
+
+  /** Disables the review helper and leaves normal gameplay physics active. */
+  disable() {
+    if (!this.isEnabled) return false;
+    this.isEnabled = false;
+    this.#endFlight();
     return true;
   }
 
   /** @param {number} deltaTimeSeconds */
   update(deltaTimeSeconds) {
     if (!this.isEnabled || !Number.isFinite(deltaTimeSeconds)) return;
-    this.#stopCharacter();
     this.#applyBiomeJump();
-    this.#applyFlight(deltaTimeSeconds);
+    const direction = this.#getFlightDirection();
+    if (!direction.x && !direction.y) return this.#endFlight();
+    this.#beginFlight();
+    this.#stopCharacter();
+    this.#applyFlight(deltaTimeSeconds, direction);
     this.game.runStats.updateHeight(this.character.y);
   }
 
@@ -42,8 +51,21 @@ export class ReviewFlightController {
   teleportTo(biomeIndex) {
     const target = this.config.reviewTargets[biomeIndex];
     if (!this.#isValidTarget(target)) return false;
+    this.#endFlight();
     this.character.x = this.#clampX(target.x);
     this.character.y = this.#clampY(target.y);
+    this.#stopCharacter();
+    this.game.world.camera.reset(this.character);
+    return true;
+  }
+
+  /** Teleports Byte to a measured height above the run start. */
+  teleportToHeight(heightMeters) {
+    if (!Number.isFinite(heightMeters) || heightMeters < 0) return false;
+    const startY = this.game.world.level.playerStart.y;
+    const pixelsPerMeter = this.game.config.hud.heightPixelsPerMeter;
+    this.#endFlight();
+    this.character.y = this.#clampY(startY - heightMeters * pixelsPerMeter);
     this.#stopCharacter();
     this.game.world.camera.reset(this.character);
     return true;
@@ -57,14 +79,35 @@ export class ReviewFlightController {
     });
   }
 
-  #applyFlight(deltaTimeSeconds) {
-    const input = this.game.keyboard;
-    const directionX = Number(input.right) - Number(input.left);
-    const directionY = Number(input.down) - Number(input.jump);
-    const length = Math.hypot(directionX, directionY) || 1;
-    const distance = this.#getSpeed(input.fast) * deltaTimeSeconds;
+  #applyFlight(deltaTimeSeconds, direction) {
+    const { x: directionX, y: directionY } = direction;
+    const length = Math.hypot(directionX, directionY);
+    const distance = this.#getSpeed(this.game.keyboard.fast) * deltaTimeSeconds;
     this.character.x = this.#clampX(this.character.x + directionX / length * distance);
     this.character.y = this.#clampY(this.character.y + directionY / length * distance);
+  }
+
+  #getFlightDirection() {
+    const input = this.game.keyboard;
+    return Object.freeze({
+      x: Number(input.reviewRight) - Number(input.reviewLeft),
+      y: Number(input.reviewDown) - Number(input.reviewUp),
+    });
+  }
+
+  #beginFlight() {
+    if (this.isFlying) return;
+    this.isFlying = true;
+    this.character.isAffectedByGravity = false;
+    this.character.setInvulnerability(Infinity);
+  }
+
+  #endFlight() {
+    if (!this.isFlying) return;
+    this.isFlying = false;
+    this.character.isAffectedByGravity = true;
+    this.character.setInvulnerability(0);
+    this.#stopCharacter();
   }
 
   #getSpeed(isFast) {
@@ -92,12 +135,15 @@ export class ReviewFlightController {
 
   #validate(game, config) {
     const hasGame = game?.world?.character && game?.keyboard && game?.runStats;
+    const hasHeightScale = Number.isFinite(
+      game?.config?.hud?.heightPixelsPerMeter,
+    ) && Number.isFinite(game?.world?.level?.playerStart?.y);
     const hasSpeed = Number.isFinite(config?.flightSpeedPixelsPerSecond) &&
       Number.isFinite(config?.fastMultiplier);
     const hasTargets = Array.isArray(config?.reviewTargets) &&
       config.reviewTargets.length === BIOME_ACTIONS.length &&
       config.reviewTargets.every((target) => this.#isValidTarget(target));
-    if (hasGame && hasSpeed && hasTargets) return;
+    if (hasGame && hasHeightScale && hasSpeed && hasTargets) return;
     throw new TypeError("Der Review-Flug benötigt Spiel, Tempo und sechs Ziele.");
   }
 }

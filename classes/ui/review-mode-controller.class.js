@@ -14,6 +14,8 @@ const SELECTORS = Object.freeze({
   exit: "[data-review-exit]",
   cancel: "[data-review-cancel]",
   biome: "[data-review-biome]",
+  height: "[data-review-height]",
+  teleport: "[data-review-teleport]",
 });
 
 /** Unlocks the hidden, unscored mentor review mode. */
@@ -41,6 +43,7 @@ export class ReviewModeController {
     this.boundExit = this.exit.bind(this);
     this.boundCancel = () => this.dialog.close();
     this.boundBiomeChange = this.handleBiomeChange.bind(this);
+    this.boundHeightTeleport = this.handleHeightTeleport.bind(this);
     this.boundStateChange = this.handleStateChange.bind(this);
     this.boundHudChange = this.syncBiomeControl.bind(this);
   }
@@ -56,6 +59,8 @@ export class ReviewModeController {
     this.exitButton = this.#getElement(SELECTORS.exit);
     this.cancelButton = this.#getElement(SELECTORS.cancel);
     this.biomeControl = this.#getElement(SELECTORS.biome);
+    this.heightControl = this.#getElement(SELECTORS.height);
+    this.teleportButton = this.#getElement(SELECTORS.teleport);
   }
 
   /** Binds the hidden unlock flow exactly once. */
@@ -67,6 +72,7 @@ export class ReviewModeController {
     this.exitButton.addEventListener("click", this.boundExit);
     this.cancelButton.addEventListener("click", this.boundCancel);
     this.biomeControl.addEventListener("change", this.boundBiomeChange);
+    this.teleportButton.addEventListener("click", this.boundHeightTeleport);
     this.game.onStateChange(this.boundStateChange);
     this.game.onHudChange(this.boundHudChange);
     if (this.#hasStoredAccess()) this.start();
@@ -114,13 +120,22 @@ export class ReviewModeController {
     delete this.root.dataset.reviewMode;
     delete this.game.canvas.dataset.reviewMode;
     this.banner.hidden = true;
+    this.flight?.disable();
     this.flight = null;
     this.game.goHome();
   }
 
   /** Jumps directly to the beginning of a selected biome. */
   handleBiomeChange() {
+    this.#enableFlight();
     this.flight?.teleportTo(Number(this.biomeControl.value));
+  }
+
+  /** Flies directly to a requested height in metres. */
+  handleHeightTeleport() {
+    this.#enableFlight();
+    const moved = this.flight?.teleportToHeight(Number(this.heightControl.value));
+    if (moved) this.syncBiomeControl();
   }
 
   /** Reconnects review flight to the fresh world after a restart. */
@@ -142,6 +157,17 @@ export class ReviewModeController {
     this.game.world.addEntity(WORLD_ENTITY_GROUPS.DECORATIONS, this.flight);
     this.#showAllEnemies();
     this.flight.enable();
+    this.#configureHeightControl();
+  }
+
+  #enableFlight() {
+    this.flight?.enable();
+  }
+
+  #configureHeightControl() {
+    const startY = this.game.world.level.playerStart.y;
+    const scale = this.game.config.hud.heightPixelsPerMeter;
+    this.heightControl.max = String(Math.floor(startY / scale));
   }
 
   #getCurrentTargetIndex() {

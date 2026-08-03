@@ -2,10 +2,15 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 import { createLevelOne } from "../js/levels/level-01.js";
+import levelData from "../data/levels/level-01.json" with { type: "json" };
 
 const level = createLevelOne(GAME_CONFIG.enemies);
 const structures = level.structures;
 const EXPECTED_STRUCTURE_COUNT = 210;
+const expectedSourceCount = new Set([
+  ...levelData.roomTemplates.map(({ source }) => source),
+  ...levelData.rooms.map(({ source }) => source),
+]).size;
 const sources = new Set(structures.map(({ spriteConfig }) => {
   return spriteConfig.source;
 }));
@@ -21,7 +26,7 @@ const rendererSource = await fs.readFile(
 assert.equal(structures.length, EXPECTED_STRUCTURE_COUNT);
 assert.equal(new Set(structures.map(({ id }) => id)).size, structures.length);
 assert.ok(structures.every(isAuthoredArchitecture));
-assert.equal(sources.size, 16);
+assert.equal(sources.size, expectedSourceCount);
 assert.deepEqual([...roles], ["authored-room"]);
 assert.equal(collidable.length, structures.length);
 assert.ok(structures.every(staysInsideWorld));

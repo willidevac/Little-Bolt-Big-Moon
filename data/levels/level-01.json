@@ -4,7 +4,7 @@
   "height": 150000,
   "playerStart": { "x": 560, "y": 149853 },
   "sections": [
-    { "id": "scrapyard-machine-graveyard", "name": "Schrottplatz – Maschinenfriedhof", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 140000, "bottomY": 150000, "puzzleProfile": "introduction", "roomPattern": ["scrapyard-machine-graveyard", "scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
+    { "id": "scrapyard-machine-graveyard", "name": "Schrottplatz – Maschinenfriedhof", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 140000, "bottomY": 150000, "puzzleProfile": "introduction", "piecePlatforms": { "3": [{ "x": 700, "offsetY": 310, "type": "narrow" }], "11": [{ "x": 640, "offsetY": 310, "type": "narrow" }] }, "roomTemplateOverrides": { "0": "scrapyard-chain-room-014", "1": "scrapyard-chain-room-013", "2": "scrapyard-chain-room-012", "3": "scrapyard-chain-room-011", "4": "scrapyard-chain-room-010", "5": "scrapyard-chain-room-009", "6": "scrapyard-chain-room-008", "7": "scrapyard-chain-room-007", "8": "scrapyard-chain-room-006", "9": "scrapyard-chain-room-005", "10": "scrapyard-chain-room-004", "11": "scrapyard-chain-room-003", "12": "scrapyard-chain-room-002" }, "roomPattern": ["scrapyard-machine-graveyard", "scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
     { "id": "scrapyard-pressworks", "name": "Schrottplatz – Presswerk", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 130000, "bottomY": 140000, "puzzleProfile": "precision", "roomPattern": ["scrapyard-pressworks", "scrapyard-machine-graveyard", "scrapyard-signal-tower"] },
     { "id": "scrapyard-signal-tower", "name": "Schrottplatz – Funkturm", "backgroundId": "scrapyard", "tileset": "scrapyard", "topY": 120000, "bottomY": 130000, "puzzleProfile": "wall-rebounds", "roomPattern": ["scrapyard-signal-tower", "scrapyard-pressworks", "scrapyard-machine-graveyard"] },
     { "id": "factory-assembly", "name": "Fabrik – Montagehallen", "backgroundId": "factory", "tileset": "factory", "topY": 110000, "bottomY": 120000, "puzzleProfile": "assembly-lines", "roomPattern": ["factory-assembly", "factory-smelter", "factory-assembly", "factory-energy-core"] },
@@ -16,9 +16,9 @@
     { "id": "space-station-cargo-ring", "name": "Raumstation – Frachtring", "backgroundId": "space-station", "tileset": "space-station", "topY": 50000, "bottomY": 60000, "puzzleProfile": "cargo-orbits", "roomPattern": ["space-station-cargo-ring", "space-station-research", "space-station-cargo-ring", "space-station-command"] },
     { "id": "space-station-research", "name": "Raumstation – Forschungstrakt", "backgroundId": "space-station", "tileset": "space-station", "topY": 40000, "bottomY": 50000, "puzzleProfile": "research-shifts", "roomPattern": ["space-station-research", "space-station-cargo-ring", "space-station-command"] },
     { "id": "space-station-command", "name": "Raumstation – Kommandozentrum", "backgroundId": "space-station", "tileset": "space-station", "topY": 30000, "bottomY": 40000, "puzzleProfile": "command-gauntlet", "roomPattern": ["space-station-command", "space-station-research", "space-station-cargo-ring"] },
-    { "id": "moon-crater-field", "name": "Mond – Kraterfeld", "backgroundId": "moon", "tileset": "moon", "topY": 20000, "bottomY": 30000, "roomPattern": ["moon-crater-field", "moon-ruins", "moon-crater-field"] },
-    { "id": "moon-ruins", "name": "Mond – Ruinen", "backgroundId": "moon", "tileset": "moon", "topY": 10000, "bottomY": 20000, "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] },
-    { "id": "moon-warden-fortress", "name": "Mond – Wächterfestung", "backgroundId": "moon", "tileset": "moon", "topY": 0, "bottomY": 10000, "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] }
+    { "id": "moon-crater-field", "name": "Mond – Kraterfeld", "backgroundId": "moon", "tileset": "moon", "topY": 20000, "bottomY": 30000, "puzzleProfile": "lunar-drift", "roomPattern": ["moon-crater-field", "moon-ruins", "moon-crater-field"] },
+    { "id": "moon-ruins", "name": "Mond – Ruinen", "backgroundId": "moon", "tileset": "moon", "topY": 10000, "bottomY": 20000, "puzzleProfile": "ruin-trials", "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] },
+    { "id": "moon-warden-fortress", "name": "Mond – Wächterfestung", "backgroundId": "moon", "tileset": "moon", "topY": 0, "bottomY": 10000, "puzzleProfile": "warden-approach", "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] }
   ],
   "roomStack": {
     "piecesPerSection": 14,
@@ -51,7 +51,7 @@
       "scrapyard-machine-graveyard": [
         { "x": 720, "offsetY": 630, "type": "path" },
         { "x": 520, "offsetY": 410, "type": "narrow" },
-        { "x": 800, "offsetY": 330, "type": "narrow" },
+        { "x": 330, "offsetY": 260, "type": "narrow" },
         { "x": 470, "offsetY": 60, "type": "narrow" }
       ],
       "scrapyard-pressworks": [
@@ -334,9 +334,80 @@
         { "x": 500, "offsetY": 140, "type": "falling" },
         { "x": 760, "offsetY": 30, "type": "moving", "movement": { "minimumX": 620, "maximumX": 850, "speedPixelsPerSecond": 130 } }
       ]
+    },
+    "lunar-drift": {
+      "moon-crater-field": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 520, "offsetY": 520, "type": "moving", "movement": { "minimumX": 420, "maximumX": 620, "speedPixelsPerSecond": 105 } },
+        { "x": 820, "offsetY": 400, "type": "narrow" },
+        { "x": 500, "offsetY": 280, "type": "falling" },
+        { "x": 760, "offsetY": 150, "type": "moving", "movement": { "minimumX": 650, "maximumX": 850, "speedPixelsPerSecond": 105 } },
+        { "x": 520, "offsetY": 30, "type": "narrow" }
+      ],
+      "moon-ruins": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 680, "offsetY": 520, "type": "moving", "movement": { "minimumX": 580, "maximumX": 780, "speedPixelsPerSecond": 105 } },
+        { "x": 380, "offsetY": 400, "type": "narrow" },
+        { "x": 680, "offsetY": 280, "type": "falling" },
+        { "x": 400, "offsetY": 150, "type": "moving", "movement": { "minimumX": 300, "maximumX": 500, "speedPixelsPerSecond": 105 } },
+        { "x": 680, "offsetY": 30, "type": "narrow" }
+      ]
+    },
+    "ruin-trials": {
+      "moon-crater-field": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 580, "offsetY": 540, "type": "moving", "movement": { "minimumX": 460, "maximumX": 700, "speedPixelsPerSecond": 120 } },
+        { "x": 820, "offsetY": 440, "type": "falling" },
+        { "x": 540, "offsetY": 340, "type": "narrow" },
+        { "x": 780, "offsetY": 240, "type": "moving", "movement": { "minimumX": 660, "maximumX": 850, "speedPixelsPerSecond": 120 } },
+        { "x": 500, "offsetY": 140, "type": "falling" },
+        { "x": 780, "offsetY": 30, "type": "falling" }
+      ],
+      "moon-ruins": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 650, "offsetY": 540, "type": "moving", "movement": { "minimumX": 530, "maximumX": 770, "speedPixelsPerSecond": 120 } },
+        { "x": 380, "offsetY": 440, "type": "falling" },
+        { "x": 650, "offsetY": 340, "type": "narrow" },
+        { "x": 400, "offsetY": 240, "type": "moving", "movement": { "minimumX": 280, "maximumX": 520, "speedPixelsPerSecond": 120 } },
+        { "x": 650, "offsetY": 140, "type": "falling" },
+        { "x": 420, "offsetY": 30, "type": "falling" }
+      ]
+    },
+    "warden-approach": {
+      "moon-crater-field": [
+        { "x": 800, "offsetY": 640, "type": "path" },
+        { "x": 560, "offsetY": 540, "type": "moving", "movement": { "minimumX": 420, "maximumX": 700, "speedPixelsPerSecond": 135 } },
+        { "x": 820, "offsetY": 440, "type": "falling" },
+        { "x": 520, "offsetY": 340, "type": "moving", "movement": { "minimumX": 380, "maximumX": 660, "speedPixelsPerSecond": 135 } },
+        { "x": 820, "offsetY": 240, "type": "narrow" },
+        { "x": 500, "offsetY": 140, "type": "falling" },
+        { "x": 760, "offsetY": 30, "type": "moving", "movement": { "minimumX": 620, "maximumX": 850, "speedPixelsPerSecond": 135 } }
+      ],
+      "moon-ruins": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 650, "offsetY": 540, "type": "moving", "movement": { "minimumX": 510, "maximumX": 790, "speedPixelsPerSecond": 135 } },
+        { "x": 380, "offsetY": 440, "type": "falling" },
+        { "x": 650, "offsetY": 340, "type": "moving", "movement": { "minimumX": 510, "maximumX": 790, "speedPixelsPerSecond": 135 } },
+        { "x": 380, "offsetY": 240, "type": "narrow" },
+        { "x": 650, "offsetY": 140, "type": "falling" },
+        { "x": 420, "offsetY": 30, "type": "moving", "movement": { "minimumX": 280, "maximumX": 560, "speedPixelsPerSecond": 135 } }
+      ]
     }
   },
   "roomTemplates": [
+    { "id": "scrapyard-chain-room-002", "source": "scrapyard-chain-room-002-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 242, "height": 720 }, { "id": "right-wall", "offsetX": 1038, "offsetY": 0, "width": 242, "height": 720 }, { "id": "left-service-ledge", "offsetX": 122, "offsetY": 518, "width": 386, "height": 26 }, { "id": "right-service-ledge", "offsetX": 728, "offsetY": 329, "width": 340, "height": 26 }] },
+    { "id": "scrapyard-chain-room-003", "source": "scrapyard-chain-room-003-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 242, "height": 720 }, { "id": "right-wall", "offsetX": 1038, "offsetY": 0, "width": 242, "height": 720 }, { "id": "left-press-ledge", "offsetX": 98, "offsetY": 283, "width": 443, "height": 28 }, { "id": "right-press-ledge", "offsetX": 837, "offsetY": 453, "width": 233, "height": 28 }] },
+    { "id": "scrapyard-chain-room-004", "source": "scrapyard-chain-room-004-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 242, "height": 720 }, { "id": "right-wall", "offsetX": 1038, "offsetY": 0, "width": 242, "height": 720 }, { "id": "left-signal-ledge", "offsetX": 120, "offsetY": 188, "width": 249, "height": 26 }, { "id": "right-signal-ledge", "offsetX": 835, "offsetY": 442, "width": 307, "height": 26 }] },
+    { "id": "scrapyard-chain-room-005", "source": "scrapyard-chain-room-005-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 242, "height": 720 }, { "id": "right-wall", "offsetX": 1038, "offsetY": 0, "width": 242, "height": 720 }, { "id": "left-crane-ledge", "offsetX": 106, "offsetY": 429, "width": 316, "height": 28 }, { "id": "right-service-ledge", "offsetX": 902, "offsetY": 164, "width": 202, "height": 26 }] },
+    { "id": "scrapyard-chain-room-006", "source": "scrapyard-chain-room-006-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 242, "height": 720 }, { "id": "right-wall", "offsetX": 1038, "offsetY": 0, "width": 242, "height": 720 }, { "id": "left-crusher-ledge", "offsetX": 152, "offsetY": 115, "width": 314, "height": 28 }, { "id": "right-catch-ledge", "offsetX": 880, "offsetY": 459, "width": 225, "height": 26 }] },
+    { "id": "scrapyard-chain-room-007", "source": "scrapyard-chain-room-007-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 245, "height": 720 }, { "id": "right-wall", "offsetX": 1028, "offsetY": 0, "width": 252, "height": 720 }, { "id": "left-battery-ledge", "offsetX": 145, "offsetY": 341, "width": 321, "height": 28 }, { "id": "right-upper-catch", "offsetX": 882, "offsetY": 72, "width": 232, "height": 26 }, { "id": "right-lower-catch", "offsetX": 807, "offsetY": 601, "width": 307, "height": 26 }] },
+    { "id": "scrapyard-chain-room-008", "source": "scrapyard-chain-room-008-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 245, "height": 720 }, { "id": "right-wall", "offsetX": 1044, "offsetY": 0, "width": 236, "height": 720 }, { "id": "left-upper-catch", "offsetX": 204, "offsetY": 168, "width": 187, "height": 26 }, { "id": "left-lower-catch", "offsetX": 118, "offsetY": 616, "width": 346, "height": 26 }, { "id": "right-magnet-ledge", "offsetX": 707, "offsetY": 423, "width": 411, "height": 28 }] },
+    { "id": "scrapyard-chain-room-009", "source": "scrapyard-chain-room-009-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 220, "height": 720 }, { "id": "right-wall", "offsetX": 1043, "offsetY": 0, "width": 237, "height": 720 }, { "id": "left-relay-ledge", "offsetX": 167, "offsetY": 546, "width": 327, "height": 28 }, { "id": "right-precision-ledge", "offsetX": 932, "offsetY": 107, "width": 136, "height": 26 }] },
+    { "id": "scrapyard-chain-room-010", "source": "scrapyard-chain-room-010-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 220, "height": 720 }, { "id": "right-wall", "offsetX": 1065, "offsetY": 0, "width": 215, "height": 720 }, { "id": "left-upper-landing", "offsetX": 212, "offsetY": 212, "width": 111, "height": 25 }, { "id": "left-emergency-catch", "offsetX": 219, "offsetY": 445, "width": 47, "height": 24 }, { "id": "right-elevator-deck", "offsetX": 724, "offsetY": 458, "width": 350, "height": 28 }] },
+    { "id": "scrapyard-chain-room-011", "source": "scrapyard-chain-room-011-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 221, "height": 720 }, { "id": "right-wall", "offsetX": 1058, "offsetY": 0, "width": 222, "height": 720 }, { "id": "left-dismantling-deck", "offsetX": 219, "offsetY": 553, "width": 371, "height": 28 }, { "id": "right-middle-step", "offsetX": 924, "offsetY": 450, "width": 146, "height": 25 }, { "id": "right-upper-step", "offsetX": 924, "offsetY": 171, "width": 146, "height": 25 }] },
+    { "id": "scrapyard-chain-room-012", "source": "scrapyard-chain-room-012-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 238, "height": 720 }, { "id": "right-wall", "offsetX": 1041, "offsetY": 0, "width": 239, "height": 720 }, { "id": "left-upper-catch", "offsetX": 218, "offsetY": 67, "width": 79, "height": 25 }, { "id": "right-inspection-deck", "offsetX": 733, "offsetY": 295, "width": 347, "height": 28 }, { "id": "left-lower-deck", "offsetX": 238, "offsetY": 584, "width": 325, "height": 28 }] },
+    { "id": "scrapyard-chain-room-013", "source": "scrapyard-chain-room-013-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 243, "height": 720 }, { "id": "right-wall", "offsetX": 1045, "offsetY": 0, "width": 235, "height": 720 }, { "id": "left-routing-deck", "offsetX": 256, "offsetY": 305, "width": 299, "height": 28 }, { "id": "right-distribution-deck", "offsetX": 656, "offsetY": 476, "width": 427, "height": 28 }, { "id": "left-lower-deck", "offsetX": 239, "offsetY": 584, "width": 324, "height": 28 }, { "id": "right-upper-shelf", "offsetX": 953, "offsetY": 99, "width": 143, "height": 25 }] },
+    { "id": "scrapyard-chain-room-014", "source": "scrapyard-chain-room-014-v2.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 269, "height": 720 }, { "id": "right-wall", "offsetX": 1011, "offsetY": 0, "width": 269, "height": 720 }, { "id": "left-transfer-deck", "offsetX": 250, "offsetY": 305, "width": 296, "height": 28 }, { "id": "right-entry-deck", "offsetX": 820, "offsetY": 564, "width": 266, "height": 28 }, { "id": "right-exit-shelf", "offsetX": 917, "offsetY": 139, "width": 151, "height": 25 }] },
     { "id": "scrapyard-machine-graveyard", "source": "scrapyard-machine-graveyard-room-v1.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-wall", "offsetX": 1050, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-gantry", "offsetX": 650, "offsetY": 184, "width": 460, "height": 24 }, { "id": "left-shelf", "offsetX": 276, "offsetY": 536, "width": 170, "height": 24 }] },
     { "id": "scrapyard-pressworks", "source": "scrapyard-pressworks-room-v1.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-wall", "offsetX": 1050, "offsetY": 0, "width": 230, "height": 720 }] },
     { "id": "scrapyard-signal-tower", "source": "scrapyard-signal-tower-room-v1.png", "collisionBoxes": [{ "id": "left-wall", "offsetX": 0, "offsetY": 0, "width": 230, "height": 720 }, { "id": "right-wall", "offsetX": 1050, "offsetY": 0, "width": 230, "height": 720 }, { "id": "left-relay-ledge", "offsetX": 276, "offsetY": 292, "width": 92, "height": 20 }, { "id": "right-dish-ledge", "offsetX": 920, "offsetY": 286, "width": 130, "height": 20 }] },

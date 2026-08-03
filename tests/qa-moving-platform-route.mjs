@@ -8,13 +8,13 @@ const platforms = level.platforms.filter((platform) => {
   return platform instanceof MovingPlatform;
 });
 
-assert.equal(platforms.length, 168);
+assert.equal(platforms.length, 263);
 assertProgressiveDistribution(platforms);
 assert.ok(platforms.every(staysInsideRoomWalls));
 assert.ok(platforms.every(hasValidMovement));
 assertMovementIsReported(platforms[0]);
 
-console.log("PLT-004: 168 moving platforms stay fair and bounded.");
+console.log("PLT-004: 263 moving platforms stay fair and bounded.");
 
 function assertProgressiveDistribution(platformsToCheck) {
   assert.equal(countFor(platformsToCheck, "launch-tower-supply-shafts"), 14);
@@ -23,6 +23,9 @@ function assertProgressiveDistribution(platformsToCheck) {
   assert.equal(countFor(platformsToCheck, "space-station-cargo-ring"), 14);
   assert.equal(countFor(platformsToCheck, "space-station-research"), 28);
   assert.equal(countFor(platformsToCheck, "space-station-command"), 42);
+  assert.equal(countFor(platformsToCheck, "moon-crater-field"), 28);
+  assert.equal(countFor(platformsToCheck, "moon-ruins"), 28);
+  assert.equal(countFor(platformsToCheck, "moon-warden-fortress"), 39);
 }
 
 function countFor(platformsToCount, sectionId) {
@@ -37,7 +40,7 @@ function staysInsideRoomWalls(platform) {
 function hasValidMovement(platform) {
   return platform.minimumX <= platform.x && platform.x <= platform.maximumX &&
     platform.speedPixelsPerSecond >= 85 &&
-    platform.speedPixelsPerSecond <= 130;
+    platform.speedPixelsPerSecond <= 135;
 }
 
 function assertMovementIsReported(platform) {

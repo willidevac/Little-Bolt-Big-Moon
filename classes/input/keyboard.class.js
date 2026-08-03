@@ -1,25 +1,25 @@
-const ACTION_BY_KEY_CODE = Object.freeze({
-  KeyA: "left",
-  ArrowLeft: "left",
-  KeyD: "right",
-  ArrowRight: "right",
-  KeyW: "jump",
-  ArrowUp: "jump",
-  Space: "jump",
-  KeyF: "attack",
-  KeyJ: "attack",
-  KeyQ: "weaponSwitch",
-  KeyS: "down",
-  ArrowDown: "down",
-  ShiftLeft: "fast",
-  ShiftRight: "fast",
-  Digit1: "reviewBiome1",
-  Digit2: "reviewBiome2",
-  Digit3: "reviewBiome3",
-  Digit4: "reviewBiome4",
-  Digit5: "reviewBiome5",
-  Digit6: "reviewBoss",
-  Escape: "pause",
+const ACTIONS_BY_KEY_CODE = Object.freeze({
+  KeyA: ["left"],
+  ArrowLeft: ["left", "reviewLeft"],
+  KeyD: ["right"],
+  ArrowRight: ["right", "reviewRight"],
+  KeyW: ["jump"],
+  ArrowUp: ["jump", "reviewUp"],
+  Space: ["jump"],
+  KeyF: ["attack"],
+  KeyJ: ["attack"],
+  KeyQ: ["weaponSwitch"],
+  KeyS: ["down"],
+  ArrowDown: ["down", "reviewDown"],
+  ShiftLeft: ["fast"],
+  ShiftRight: ["fast"],
+  Digit1: ["reviewBiome1"],
+  Digit2: ["reviewBiome2"],
+  Digit3: ["reviewBiome3"],
+  Digit4: ["reviewBiome4"],
+  Digit5: ["reviewBiome5"],
+  Digit6: ["reviewBoss"],
+  Escape: ["pause"],
 });
 
 const PREVENTED_DEFAULT_CODES = Object.freeze([
@@ -30,7 +30,7 @@ const PREVENTED_DEFAULT_CODES = Object.freeze([
   "Space",
 ]);
 
-const SUPPORTED_ACTIONS = new Set(Object.values(ACTION_BY_KEY_CODE));
+const SUPPORTED_ACTIONS = new Set(Object.values(ACTIONS_BY_KEY_CODE).flat());
 
 /**
  * Stores the current state of all keyboard and touch actions.
@@ -134,10 +134,12 @@ export class Keyboard {
   }
 
   #updateKeyState(event, isPressed) {
-    const action = ACTION_BY_KEY_CODE[event.code];
-    if (!action || (isPressed && this.#hasModifier(event))) return;
+    const actions = ACTIONS_BY_KEY_CODE[event.code];
+    if (!actions || (isPressed && this.#hasModifier(event))) return;
     this.#preventBrowserAction(event);
-    this.setAction(action, isPressed, `keyboard:${event.code}`);
+    actions.forEach((action) => {
+      this.setAction(action, isPressed, `keyboard:${event.code}`);
+    });
   }
 
   #preventBrowserAction(event) {

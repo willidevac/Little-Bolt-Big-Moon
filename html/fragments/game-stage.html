@@ -95,6 +95,23 @@
             <option value="5" data-i18n="review.boss">Boss-Arena</option>
           </select>
         </label>
+        <label>
+          <span data-i18n="review.height">Höhe</span>
+          <input
+            type="number"
+            value="0"
+            min="0"
+            step="1"
+            inputmode="numeric"
+            data-review-height
+          >
+        </label>
+        <button type="button" data-review-teleport data-i18n="review.goHeight">
+          Höhe laden
+        </button>
+        <span class="review-banner__hint" data-i18n="review.controls">
+          Pfeile: fliegen · WASD/Leertaste: spielen
+        </span>
         <button type="button" data-review-exit data-i18n="review.exit">
           Review verlassen
         </button>

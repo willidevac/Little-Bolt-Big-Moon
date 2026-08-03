@@ -15,7 +15,7 @@ const platform = platforms[0];
 const initialY = platform.y;
 const world = { config: GAME_CONFIG };
 
-assert.equal(platforms.length, 140);
+assert.equal(platforms.length, 222);
 assertProgressiveDistribution(platforms);
 assert.ok(platforms.every(hasFairTiming));
 assert.equal(platform.onLanded({ team: "enemy" }), false);
@@ -53,6 +53,9 @@ function assertProgressiveDistribution(platformsToCheck) {
   assert.equal(countFor("space-station-cargo-ring"), 14);
   assert.equal(countFor("space-station-research"), 28);
   assert.equal(countFor("space-station-command"), 28);
+  assert.equal(countFor("moon-crater-field"), 14);
+  assert.equal(countFor("moon-ruins"), 42);
+  assert.equal(countFor("moon-warden-fortress"), 26);
 }
 
 function assertDoesNotDrawOrCatch(candidate) {

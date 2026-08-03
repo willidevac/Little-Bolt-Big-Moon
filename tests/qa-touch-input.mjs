@@ -231,7 +231,17 @@ function assertKeyboardPath(input) {
   assert.equal(input.left, true);
   dispatchKey(target, "keyup", "KeyA");
   assert.equal(input.left, false);
+  assertArrowPath(input, target);
   input.unbind();
+}
+
+function assertArrowPath(input, target) {
+  dispatchKey(target, "keydown", "ArrowLeft");
+  assert.equal(input.left, true);
+  assert.equal(input.reviewLeft, true);
+  dispatchKey(target, "keyup", "ArrowLeft");
+  assert.equal(input.left, false);
+  assert.equal(input.reviewLeft, false);
 }
 
 function dispatchKey(target, type, code) {
