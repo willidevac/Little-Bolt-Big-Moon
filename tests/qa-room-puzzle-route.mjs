@@ -4,7 +4,7 @@ import { GAME_CONFIG } from "../js/config/game-config.js";
 
 const ROUTE_TOP_Y = 618;
 const ROUTE_BOTTOM_Y = 150000;
-const EXPECTED_PLATFORM_COUNT = 1166;
+const EXPECTED_PLATFORM_COUNT = 1167;
 const level = createLevelOne();
 const surfaces = collectSurfaces(level);
 const reachable = findReachableSurfaces(surfaces, GAME_CONFIG);
@@ -91,7 +91,7 @@ function assertSectionDifficulty(currentLevel) {
   const groups = currentLevel.sections.slice(0, 3).map((section) => {
     return currentLevel.platforms.filter(({ id }) => id.startsWith(section.id));
   });
-  assert.deepEqual(groups.map(({ length }) => length), [57, 61, 61]);
+  assert.deepEqual(groups.map(({ length }) => length), [57, 62, 61]);
   assert.ok(groups[0].some(({ x }) => x === 330));
   assert.ok(groups[0].some(isHeight434RescuePlatform));
   assert.equal(new Set(groups.map(createRouteSignature)).size, groups.length);
