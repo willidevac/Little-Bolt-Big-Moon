@@ -13,9 +13,9 @@
     { "id": "launch-tower-supply-shafts", "name": "Startturm – Versorgungsschächte", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 80000, "bottomY": 90000, "puzzleProfile": "shaft-lifts", "roomPattern": ["launch-tower-supply-shafts", "launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
     { "id": "launch-tower-outer-hull", "name": "Startturm – Außenhülle", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 70000, "bottomY": 80000, "puzzleProfile": "wind-sweeps", "roomPattern": ["launch-tower-outer-hull", "launch-tower-supply-shafts", "launch-tower-launch-platform"] },
     { "id": "launch-tower-launch-platform", "name": "Startturm – Startrampe", "backgroundId": "launch-tower", "tileset": "launch-tower", "topY": 60000, "bottomY": 70000, "puzzleProfile": "launch-countdown", "roomPattern": ["launch-tower-launch-platform", "launch-tower-outer-hull", "launch-tower-supply-shafts"] },
-    { "id": "space-station-cargo-ring", "name": "Raumstation – Frachtring", "backgroundId": "space-station", "tileset": "space-station", "topY": 50000, "bottomY": 60000, "roomPattern": ["space-station-cargo-ring", "space-station-research", "space-station-cargo-ring", "space-station-command"] },
-    { "id": "space-station-research", "name": "Raumstation – Forschungstrakt", "backgroundId": "space-station", "tileset": "space-station", "topY": 40000, "bottomY": 50000, "roomPattern": ["space-station-research", "space-station-cargo-ring", "space-station-command"] },
-    { "id": "space-station-command", "name": "Raumstation – Kommandozentrum", "backgroundId": "space-station", "tileset": "space-station", "topY": 30000, "bottomY": 40000, "roomPattern": ["space-station-command", "space-station-research", "space-station-cargo-ring"] },
+    { "id": "space-station-cargo-ring", "name": "Raumstation – Frachtring", "backgroundId": "space-station", "tileset": "space-station", "topY": 50000, "bottomY": 60000, "puzzleProfile": "cargo-orbits", "roomPattern": ["space-station-cargo-ring", "space-station-research", "space-station-cargo-ring", "space-station-command"] },
+    { "id": "space-station-research", "name": "Raumstation – Forschungstrakt", "backgroundId": "space-station", "tileset": "space-station", "topY": 40000, "bottomY": 50000, "puzzleProfile": "research-shifts", "roomPattern": ["space-station-research", "space-station-cargo-ring", "space-station-command"] },
+    { "id": "space-station-command", "name": "Raumstation – Kommandozentrum", "backgroundId": "space-station", "tileset": "space-station", "topY": 30000, "bottomY": 40000, "puzzleProfile": "command-gauntlet", "roomPattern": ["space-station-command", "space-station-research", "space-station-cargo-ring"] },
     { "id": "moon-crater-field", "name": "Mond – Kraterfeld", "backgroundId": "moon", "tileset": "moon", "topY": 20000, "bottomY": 30000, "roomPattern": ["moon-crater-field", "moon-ruins", "moon-crater-field"] },
     { "id": "moon-ruins", "name": "Mond – Ruinen", "backgroundId": "moon", "tileset": "moon", "topY": 10000, "bottomY": 20000, "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] },
     { "id": "moon-warden-fortress", "name": "Mond – Wächterfestung", "backgroundId": "moon", "tileset": "moon", "topY": 0, "bottomY": 10000, "roomPattern": ["moon-ruins", "moon-crater-field", "moon-ruins"] }
@@ -252,6 +252,87 @@
         { "x": 500, "offsetY": 280, "type": "moving", "movement": { "minimumX": 350, "maximumX": 650, "speedPixelsPerSecond": 120 } },
         { "x": 820, "offsetY": 150, "type": "narrow" },
         { "x": 520, "offsetY": 30, "type": "moving", "movement": { "minimumX": 370, "maximumX": 670, "speedPixelsPerSecond": 120 } }
+      ]
+    },
+    "cargo-orbits": {
+      "space-station-cargo-ring": [
+        { "x": 780, "offsetY": 640, "type": "path" },
+        { "x": 520, "offsetY": 520, "type": "moving", "movement": { "minimumX": 420, "maximumX": 620, "speedPixelsPerSecond": 95 } },
+        { "x": 820, "offsetY": 400, "type": "narrow" },
+        { "x": 500, "offsetY": 280, "type": "falling" },
+        { "x": 780, "offsetY": 150, "type": "narrow" },
+        { "x": 520, "offsetY": 30, "type": "narrow" }
+      ],
+      "space-station-research": [
+        { "x": 500, "offsetY": 640, "type": "path" },
+        { "x": 760, "offsetY": 520, "type": "moving", "movement": { "minimumX": 660, "maximumX": 850, "speedPixelsPerSecond": 95 } },
+        { "x": 470, "offsetY": 400, "type": "narrow" },
+        { "x": 760, "offsetY": 280, "type": "falling" },
+        { "x": 500, "offsetY": 150, "type": "narrow" },
+        { "x": 760, "offsetY": 30, "type": "narrow" }
+      ],
+      "space-station-command": [
+        { "x": 760, "offsetY": 640, "type": "path" },
+        { "x": 500, "offsetY": 520, "type": "moving", "movement": { "minimumX": 400, "maximumX": 600, "speedPixelsPerSecond": 95 } },
+        { "x": 800, "offsetY": 400, "type": "narrow" },
+        { "x": 500, "offsetY": 280, "type": "falling" },
+        { "x": 780, "offsetY": 150, "type": "narrow" },
+        { "x": 520, "offsetY": 30, "type": "narrow" }
+      ]
+    },
+    "research-shifts": {
+      "space-station-cargo-ring": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 540, "offsetY": 520, "type": "moving", "movement": { "minimumX": 420, "maximumX": 660, "speedPixelsPerSecond": 110 } },
+        { "x": 820, "offsetY": 400, "type": "falling" },
+        { "x": 520, "offsetY": 280, "type": "moving", "movement": { "minimumX": 400, "maximumX": 640, "speedPixelsPerSecond": 110 } },
+        { "x": 820, "offsetY": 150, "type": "falling" },
+        { "x": 550, "offsetY": 30, "type": "narrow" }
+      ],
+      "space-station-research": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 680, "offsetY": 520, "type": "moving", "movement": { "minimumX": 560, "maximumX": 800, "speedPixelsPerSecond": 110 } },
+        { "x": 400, "offsetY": 400, "type": "falling" },
+        { "x": 680, "offsetY": 280, "type": "moving", "movement": { "minimumX": 560, "maximumX": 800, "speedPixelsPerSecond": 110 } },
+        { "x": 400, "offsetY": 150, "type": "falling" },
+        { "x": 680, "offsetY": 30, "type": "narrow" }
+      ],
+      "space-station-command": [
+        { "x": 800, "offsetY": 640, "type": "path" },
+        { "x": 520, "offsetY": 520, "type": "moving", "movement": { "minimumX": 400, "maximumX": 640, "speedPixelsPerSecond": 110 } },
+        { "x": 820, "offsetY": 400, "type": "falling" },
+        { "x": 520, "offsetY": 280, "type": "moving", "movement": { "minimumX": 400, "maximumX": 640, "speedPixelsPerSecond": 110 } },
+        { "x": 820, "offsetY": 150, "type": "falling" },
+        { "x": 550, "offsetY": 30, "type": "narrow" }
+      ]
+    },
+    "command-gauntlet": {
+      "space-station-cargo-ring": [
+        { "x": 820, "offsetY": 640, "type": "path" },
+        { "x": 580, "offsetY": 540, "type": "moving", "movement": { "minimumX": 440, "maximumX": 720, "speedPixelsPerSecond": 130 } },
+        { "x": 820, "offsetY": 440, "type": "falling" },
+        { "x": 540, "offsetY": 340, "type": "moving", "movement": { "minimumX": 400, "maximumX": 680, "speedPixelsPerSecond": 130 } },
+        { "x": 820, "offsetY": 240, "type": "narrow" },
+        { "x": 520, "offsetY": 140, "type": "falling" },
+        { "x": 760, "offsetY": 30, "type": "moving", "movement": { "minimumX": 620, "maximumX": 850, "speedPixelsPerSecond": 130 } }
+      ],
+      "space-station-research": [
+        { "x": 400, "offsetY": 640, "type": "path" },
+        { "x": 650, "offsetY": 540, "type": "moving", "movement": { "minimumX": 510, "maximumX": 790, "speedPixelsPerSecond": 130 } },
+        { "x": 380, "offsetY": 440, "type": "falling" },
+        { "x": 650, "offsetY": 340, "type": "moving", "movement": { "minimumX": 510, "maximumX": 790, "speedPixelsPerSecond": 130 } },
+        { "x": 380, "offsetY": 240, "type": "narrow" },
+        { "x": 650, "offsetY": 140, "type": "falling" },
+        { "x": 420, "offsetY": 30, "type": "moving", "movement": { "minimumX": 280, "maximumX": 560, "speedPixelsPerSecond": 130 } }
+      ],
+      "space-station-command": [
+        { "x": 800, "offsetY": 640, "type": "path" },
+        { "x": 540, "offsetY": 540, "type": "moving", "movement": { "minimumX": 400, "maximumX": 680, "speedPixelsPerSecond": 130 } },
+        { "x": 820, "offsetY": 440, "type": "falling" },
+        { "x": 520, "offsetY": 340, "type": "moving", "movement": { "minimumX": 380, "maximumX": 660, "speedPixelsPerSecond": 130 } },
+        { "x": 820, "offsetY": 240, "type": "narrow" },
+        { "x": 500, "offsetY": 140, "type": "falling" },
+        { "x": 760, "offsetY": 30, "type": "moving", "movement": { "minimumX": 620, "maximumX": 850, "speedPixelsPerSecond": 130 } }
       ]
     }
   },

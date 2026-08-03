@@ -15,7 +15,7 @@ const platform = platforms[0];
 const initialY = platform.y;
 const world = { config: GAME_CONFIG };
 
-assert.equal(platforms.length, 70);
+assert.equal(platforms.length, 140);
 assertProgressiveDistribution(platforms);
 assert.ok(platforms.every(hasFairTiming));
 assert.equal(platform.onLanded({ team: "enemy" }), false);
@@ -50,6 +50,9 @@ function assertProgressiveDistribution(platformsToCheck) {
   assert.equal(countFor("factory-assembly"), 0);
   assert.equal(countFor("factory-smelter"), 28);
   assert.equal(countFor("factory-energy-core"), 42);
+  assert.equal(countFor("space-station-cargo-ring"), 14);
+  assert.equal(countFor("space-station-research"), 28);
+  assert.equal(countFor("space-station-command"), 28);
 }
 
 function assertDoesNotDrawOrCatch(candidate) {
