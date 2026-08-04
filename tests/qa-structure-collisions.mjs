@@ -18,6 +18,7 @@ assert.equal(system.resolve(wallHit, [structure], 0.1, config), 1);
 assert.equal(wallHit.x, 88);
 assert.equal(wallHit.velocityX, -130);
 assert.equal(wallHit.lastImpactDirection, -1);
+assert.equal(structure.lastSurfaceDirection, -1);
 
 const landing = createCharacter({
   x: 122, y: 58, velocityX: 0, velocityY: 200,
@@ -37,6 +38,9 @@ console.log("ENV-002: Walls bounce, surfaces carry and review flight stays free.
 
 function createStructure(bounds) {
   return {
+    onWallImpact(_character, direction) {
+      this.lastSurfaceDirection = direction;
+    },
     getCollisionBoundsList() {
       return [{ ...bounds, owner: this }];
     },

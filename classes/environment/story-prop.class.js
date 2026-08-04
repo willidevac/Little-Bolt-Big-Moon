@@ -21,6 +21,8 @@ export class StoryProp extends DrawableObject {
     this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
     this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
     this.groundOffsets = visualConfig.groundOffsets;
+    this.glowColor = visualConfig.glowColor ?? "#67efff";
+    this.pulseTime = 0;
     this.#anchorTo(anchorPlatform);
     this.loadSprite(visualConfig.sprite);
     this.animationController = this.#createAnimation(visualConfig.animation);
@@ -32,6 +34,7 @@ export class StoryProp extends DrawableObject {
    * @param {number} deltaTimeSeconds
    */
   update(deltaTimeSeconds) {
+    this.pulseTime += Math.max(0, deltaTimeSeconds);
     if (this.animationController) {
       const frame = this.animationController.update(
         ANIMATION_STATE,
@@ -51,6 +54,13 @@ export class StoryProp extends DrawableObject {
   draw(context) {
     if (!this.isAvailable) return;
     const drawY = getGroundedSpriteY(this, this.groundOffsets);
+    const pulse = (Math.sin(this.pulseTime * 2.4 + this.storyOrder) + 1) / 2;
+    context.save();
+    context.globalAlpha = 0.5 + pulse * 0.12;
+    context.shadowColor = this.glowColor;
+    context.shadowBlur = 7 + pulse * 5;
+    this.drawCurrentFrame(context, this.x, drawY, this.width, this.height);
+    context.restore();
     this.drawCurrentFrame(context, this.x, drawY, this.width, this.height);
   }
 
@@ -79,7 +89,9 @@ export class StoryProp extends DrawableObject {
       config.renderScale > 0;
     const hasFrame = this.#hasValidFrame(config);
     const hasGroundOffsets = this.#hasValidGroundOffsets(config);
-    if (hasSprite && hasScale && hasFrame && hasGroundOffsets) return;
+    const hasGlow = config?.glowColor === undefined ||
+      (typeof config.glowColor === "string" && config.glowColor.length > 0);
+    if (hasSprite && hasScale && hasFrame && hasGroundOffsets && hasGlow) return;
     throw new TypeError("Die Storyobjektdarstellung ist ungültig.");
   }
 

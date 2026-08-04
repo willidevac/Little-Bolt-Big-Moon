@@ -2,17 +2,23 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 import { Keyboard } from "../classes/input/keyboard.class.js";
+import { Camera } from "../classes/core/camera.class.js";
 import { ReviewFlightController } from "../classes/systems/review-flight-controller.class.js";
+import { GAME_CONFIG } from "../js/config/game-config.js";
 import { REVIEW_MODE_CONFIG } from "../js/config/review-mode-config.js";
 
 const character = createCharacter();
 const keyboard = new Keyboard(new EventTarget());
 const heights = [];
 const cameraTargets = [];
+const cameraSpeedMultipliers = [];
 const game = {
   world: {
     character,
-    camera: { reset: (target) => cameraTargets.push(target) },
+    camera: {
+      reset: (target) => cameraTargets.push(target),
+      setFollowSpeedMultiplier: (value) => cameraSpeedMultipliers.push(value),
+    },
     level: { playerStart: { y: 149853 } },
   },
   keyboard,
@@ -44,8 +50,10 @@ keyboard.fast = true;
 keyboard.reviewRight = true;
 flight.update(1);
 assert.equal(character.x, 1216);
+assert.equal(cameraSpeedMultipliers.at(-1), REVIEW_MODE_CONFIG.fastMultiplier);
 keyboard.reviewRight = false;
 flight.update(0.01);
+assert.equal(cameraSpeedMultipliers.at(-1), 1);
 keyboard.setAction("reviewBiome5", true, "test");
 flight.update(0);
 assert.equal(character.y, REVIEW_MODE_CONFIG.reviewTargets[4].y);
@@ -60,6 +68,7 @@ assert.equal(character.y, 148117);
 assert.equal(flight.disable(), true);
 assert.equal(character.isAffectedByGravity, true);
 assert.ok(heights.length >= 2);
+assertFastCameraKeepsUp();
 await assertReviewContract();
 
 console.log("DEV-ART-001: Versteckter Mentor-Review-Modus und Freiflug bestanden.");
@@ -71,6 +80,21 @@ function createCharacter() {
     setOnGround(value) { this.isOnGround = value; },
     setInvulnerability(value) { this.invulnerabilitySecondsRemaining = value; },
   };
+}
+
+function assertFastCameraKeepsUp() {
+  const normalCamera = new Camera(GAME_CONFIG);
+  const fastCamera = new Camera(GAME_CONFIG);
+  const lowerTarget = { y: 1000, height: 64 };
+  const upperTarget = { y: 0, height: 64 };
+  normalCamera.reset(lowerTarget);
+  fastCamera.reset(lowerTarget);
+  fastCamera.setFollowSpeedMultiplier(REVIEW_MODE_CONFIG.fastMultiplier);
+  normalCamera.update(upperTarget, 0.1);
+  fastCamera.update(upperTarget, 0.1);
+  assert.ok(fastCamera.y < normalCamera.y);
+  assert.equal(normalCamera.y - fastCamera.y,
+    GAME_CONFIG.camera.upwardFollowSpeedPixelsPerSecond * 0.2);
 }
 
 async function assertReviewContract() {

@@ -45,10 +45,9 @@ const pickup = world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES)
 assert.ok(pickup);
 assert.equal(pickup.frameIndex, 9);
 assert.equal(pickup.getPickup().weaponId, "boltThrower");
-assert.equal(
-  pickup.anchorPlatformId,
-  "scrapyard-machine-graveyard-schrott-zickzack-3-1",
-);
+assert.equal(pickup.anchorPlatformId, pickup.anchorPlatform.id);
+assert.equal(pickup.y + pickup.height, pickup.anchorPlatform.y);
+assert.equal(pickup.anchorPlatform.mechanic ?? null, null);
 assert.ok(level.playerStart.y - pickup.y > 1_000);
 
 world.character.x = pickup.x;

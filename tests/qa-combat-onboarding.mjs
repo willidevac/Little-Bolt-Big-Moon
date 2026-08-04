@@ -10,11 +10,6 @@ import { RunStats } from "../classes/systems/run-stats.class.js";
 import { WeaponSystem } from "../classes/systems/weapon-system.class.js";
 import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 
-const INTRO_PLATFORM_ID =
-  "scrapyard-machine-graveyard-schrott-zickzack-3-1";
-const SUPPORT_PLATFORM_ID =
-  "scrapyard-machine-graveyard-schrott-zickzack-3-5";
-
 const level = createLevelOne(GAME_CONFIG.enemies);
 assertLevelOrder(level);
 await assertInterfaceStartsLocked();
@@ -25,10 +20,10 @@ console.log("FB-006: Sprung-Einstieg vor Kampfeinführung bestanden.");
 function assertLevelOrder(levelData) {
   const pickup = levelData.collectables.find(({ type }) => type === "weapon");
   const supportGear = findById(levelData.collectables, "scrapyard-gear-02");
-  const crawler = findById(levelData.enemies, "scrapyard-crawler-01");
   const firstZone = levelData.combatZones[0];
-  assert.equal(pickup.anchorPlatformId, INTRO_PLATFORM_ID);
-  assert.equal(supportGear.anchorPlatformId, SUPPORT_PLATFORM_ID);
+  const crawler = findById(levelData.enemies, firstZone.enemyIds[0]);
+  assert.match(pickup.anchorPlatformId, /^route-scrapyard-/);
+  assert.match(supportGear.anchorPlatformId, /^route-scrapyard-/);
   assert.ok(levelData.playerStart.y - pickup.y > 1_000);
   assert.ok(crawler.y < pickup.y);
   assert.ok(firstZone.enemyIds.includes(crawler.id));

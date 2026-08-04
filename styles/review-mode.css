@@ -77,6 +77,14 @@
   justify-content: center;
 }
 
+.game-shell[data-review-mode="true"] .game-hud {
+  top: var(--review-toolbar-offset, 4rem);
+}
+
+.game-shell[data-review-mode="true"] .utility-buttons {
+  top: var(--review-toolbar-offset, 4rem);
+}
+
 .review-banner[hidden] {
   display: none;
 }

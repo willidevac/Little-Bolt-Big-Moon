@@ -15,6 +15,7 @@ export class Camera {
     this.deadZoneBottom = config.camera.deadZoneBottomPixels;
     this.upwardFollowSpeed = config.camera.upwardFollowSpeedPixelsPerSecond;
     this.downwardFollowSpeed = config.camera.downwardFollowSpeedPixelsPerSecond;
+    this.followSpeedMultiplier = 1;
   }
 
   /**
@@ -47,6 +48,14 @@ export class Camera {
     return true;
   }
 
+  /** Temporarily accelerates camera tracking, for example during review flight. */
+  setFollowSpeedMultiplier(multiplier = 1) {
+    if (!Number.isFinite(multiplier) || multiplier < 1) {
+      throw new RangeError("Der Kamera-Folgefaktor muss mindestens 1 sein.");
+    }
+    this.followSpeedMultiplier = multiplier;
+  }
+
   #getDesiredY(target) {
     const targetCenterY = target.y + target.height / 2;
     const screenY = targetCenterY - this.y;
@@ -56,7 +65,10 @@ export class Camera {
   }
 
   #getFollowSpeed(desiredY) {
-    return desiredY < this.y ? this.upwardFollowSpeed : this.downwardFollowSpeed;
+    const speed = desiredY < this.y
+      ? this.upwardFollowSpeed
+      : this.downwardFollowSpeed;
+    return speed * this.followSpeedMultiplier;
   }
 
   #moveTowards(current, target, maximumDistance) {

@@ -11,6 +11,8 @@ const config = Object.freeze({
   wallInsetPixels: 48,
   wallBounceHorizontalRetention: 0.65,
   minimumWallBounceSpeedPixelsPerSecond: 180,
+  wallReboundAirControlAccelerationPixelsPerSecondSquared: 1600,
+  wallReboundAirControlMaximumSpeedPixelsPerSecond: 1000,
 });
 const character = createCharacter();
 const movement = new CharacterMovementController(character);
@@ -35,6 +37,11 @@ assertGroundBoundary(movement, character, -20, -200, 48);
 assertGroundBoundary(movement, character, 980, 200, 888);
 assertAirborneWallBounce(movement, character, -20, -300, 48, 195);
 assertAirborneWallBounce(movement, character, 980, 200, 888, -180);
+character.velocityX = 900;
+movement.updateWallReboundControl(0.25, createInput(true, false), config);
+assert.equal(character.velocityX, 500);
+assert.equal(character.facingDirection, -1);
+assertControlledReboundStrength();
 assertCharacterIntegration();
 
 console.log("CLEAN-011: Bytes Bodenbewegung ist getrennt und geprüft.");
@@ -64,6 +71,28 @@ function assertAirborneWallBounce(controller, target, x, speed, nextX, nextSpeed
   assert.equal(target.x, nextX);
   assert.equal(target.velocityX, nextSpeed);
   assert.equal(target.facingDirection, Math.sign(nextSpeed));
+}
+
+function assertControlledReboundStrength() {
+  const target = new Character();
+  const rebound = {
+    direction: 1,
+    horizontalSpeedPixelsPerSecond: 900,
+    verticalSpeedPixelsPerSecond: 1000,
+    controlSeconds: 0.9,
+    releasedVerticalRatio: 0.52,
+    dropVerticalRatio: 0.18,
+  };
+  target.wallReboundInput.jump = false;
+  target.beginControlledWallRebound(rebound);
+  assert.equal(target.velocityY, -520);
+  target.wallReboundInput.jump = true;
+  target.beginControlledWallRebound(rebound);
+  assert.equal(target.velocityY, -1000);
+  target.wallReboundInput.down = true;
+  target.beginControlledWallRebound(rebound);
+  assert.equal(target.velocityY, -180);
+  assert.equal(target.wallReboundControlSeconds, 0.9);
 }
 
 function assertCharacterIntegration() {

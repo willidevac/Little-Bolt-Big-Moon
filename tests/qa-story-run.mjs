@@ -8,18 +8,20 @@ import {
 } from "../classes/core/world.class.js";
 
 const EXPECTED_TYPES = Object.freeze([
-  "emptyLumaCradle",
-  "factoryDuoPoster",
-  "lumaCargoCrate",
-  "lumaBadgeHalf",
-  "blueSignalBeacon",
-  "poweredOffLuma",
+  "abandonedCompanionCradle",
+  "sealedLumaTransport",
+  "launchTraceConsole",
+  "stationDetentionPod",
+  "fortressRouteBeacon",
+  "lumaContainmentCapsule",
 ]);
 const RUNTIME_ASSETS = Object.freeze([
-  Object.freeze(["img/sprites/props/empty-luma-cradle.png", 96, 64]),
-  Object.freeze(["img/sprites/props/factory-duo-poster.png", 64, 96]),
-  Object.freeze(["img/sprites/props/luma-cargo-crate.png", 64, 64]),
-  Object.freeze(["img/sprites/props/blue-signal-beacon.png", 256, 96]),
+  Object.freeze(["img/sprites/props/story-abandoned-cradle-clean-hd.png", 160, 106]),
+  Object.freeze(["img/sprites/props/story-luma-transport-case-clean-hd.png", 144, 84]),
+  Object.freeze(["img/sprites/props/story-launch-trace-console-clean-hd.png", 144, 109]),
+  Object.freeze(["img/sprites/props/story-detention-pod-clean-hd.png", 160, 164]),
+  Object.freeze(["img/sprites/props/story-fortress-route-beacon-clean-hd.png", 128, 142]),
+  Object.freeze(["img/sprites/props/story-luma-containment-clean-hd.png", 220, 192]),
 ]);
 const input = Object.freeze({
   consumePress: () => false,
@@ -35,7 +37,7 @@ assertStoryOrder();
 assertBiomePlacements();
 assertNonBlockingProps();
 assertWorldIntegration();
-assertSignalAnimation();
+assertStoryPulse();
 await assertRuntimeAssets();
 
 console.log("STORY-001: Sechs wortlose Hinweise sicher integriert.");
@@ -49,7 +51,7 @@ function assertStoryOrder() {
 function assertBiomePlacements() {
   const ranges = [
     [140000, 150000], [110000, 120000], [80000, 90000],
-    [40000, 50000], [30000, 40000], [0, 1000],
+    [30000, 60000], [20000, 30000], [0, 1000],
   ];
   level.storyProps.forEach((prop, index) => {
     const [minimum, maximum] = ranges[index];
@@ -74,15 +76,13 @@ function assertWorldIntegration() {
   assert.deepEqual(decorations, level.storyProps);
 }
 
-function assertSignalAnimation() {
-  const signal = level.storyProps.find(({ type }) => {
-    return type === "blueSignalBeacon";
+function assertStoryPulse() {
+  level.storyProps.forEach((prop) => {
+    prop.update(0.33);
+    assert.equal(prop.frameIndex, 0);
+    assert.equal(prop.pulseTime, 0.33);
+    assert.match(prop.glowColor, /^#[0-9a-f]{6}$/i);
   });
-  const staticProp = level.storyProps[0];
-  signal.update(0.33);
-  staticProp.update(0.33);
-  assert.equal(signal.frameIndex, 1);
-  assert.equal(staticProp.frameIndex, 0);
 }
 
 async function assertRuntimeAssets() {

@@ -58,11 +58,11 @@ export class StructureCollisionSystem {
   #resolveHorizontalCrossing(character, previous, current, collider, config) {
     if (this.#crossesLeft(character, previous, current, collider)) {
       const distance = current.x + current.width - collider.x;
-      return this.#hitWall(character, -1, distance, config);
+      return this.#hitWall(character, -1, distance, config, collider.owner);
     }
     if (this.#crossesRight(character, previous, current, collider)) {
       const distance = collider.x + collider.width - current.x;
-      return this.#hitWall(character, 1, distance, config);
+      return this.#hitWall(character, 1, distance, config, collider.owner);
     }
     return false;
   }
@@ -105,7 +105,9 @@ export class StructureCollisionSystem {
       return this.#hitCeiling(character, current, collider);
     }
     const direction = smallest === "left" ? -1 : 1;
-    return this.#hitWall(character, direction, overlaps[smallest], config);
+    return this.#hitWall(
+      character, direction, overlaps[smallest], config, collider.owner,
+    );
   }
 
   #getOverlapDistances(current, collider) {
@@ -135,9 +137,10 @@ export class StructureCollisionSystem {
     return true;
   }
 
-  #hitWall(character, direction, distance, config) {
+  #hitWall(character, direction, distance, config, owner) {
     character.x += direction * distance;
     this.#reflectHorizontally(character, direction, config);
+    owner?.onWallImpact?.(character, direction);
     return true;
   }
 

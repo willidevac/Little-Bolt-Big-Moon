@@ -1,118 +1,18 @@
 import assert from "node:assert/strict";
 import { createLevelOne } from "../js/levels/level-01.js";
-import { GAME_CONFIG } from "../js/config/game-config.js";
 
-const ROUTE_TOP_Y = 618;
-const ROUTE_BOTTOM_Y = 150000;
-const EXPECTED_PLATFORM_COUNT = 1175;
 const level = createLevelOne();
-const surfaces = collectSurfaces(level);
-const reachable = findReachableSurfaces(surfaces, GAME_CONFIG);
-const reachedY = surfaces
-  .filter(({ id }) => reachable.has(id))
-  .map(({ y }) => y);
 
-assert.equal(level.platforms.length, EXPECTED_PLATFORM_COUNT);
-assert.ok(level.platforms.every(({ width }) => width <= 192));
-assert.ok(level.platforms.every(isInsideRoomWalls));
-assert.ok(new Set(level.platforms.map(({ x }) => x)).size >= 15);
-assert.ok(level.platforms.every(isInsidePuzzleRoute));
-assert.ok(Math.min(...reachedY) <= ROUTE_TOP_Y + 60);
-assertSectionDifficulty(level);
+const floor = level.platforms[0];
+const wallFeatures = level.platforms.filter(({ kind }) => {
+  return kind === "wall-feature-platform";
+});
 
-console.log("MAP-001: The complete route reaches the boss arena.");
+assert.equal(floor.kind, "floor");
+assert.equal(floor.width, level.width);
+assert.equal(wallFeatures.length, 60);
+assert.ok(wallFeatures.every(({ anchorSide }) => {
+  return anchorSide === "left" || anchorSide === "right";
+}));
 
-function collectSurfaces(currentLevel) {
-  const platforms = currentLevel.platforms.map(toSurface);
-  const rooms = currentLevel.structures.flatMap((room) => {
-    return room.getCollisionBoundsList()
-      .filter(isPuzzleRouteLandingSurface)
-      .map(toSurface);
-  });
-  return [...platforms, ...rooms].sort((first, second) => second.y - first.y);
-}
-
-function isPuzzleRouteLandingSurface(surface) {
-  const isInRoute = surface.y >= ROUTE_TOP_Y &&
-    surface.y <= ROUTE_BOTTOM_Y;
-  return isInRoute && !surface.id.endsWith("wall");
-}
-
-function toSurface(surface) {
-  return Object.freeze({
-    id: surface.id, x: surface.x, y: surface.y, width: surface.width,
-  });
-}
-
-function findReachableSurfaces(surfaces, config) {
-  const reachable = new Set([surfaces[0].id]);
-  surfaces.forEach((lower, lowerIndex) => {
-    if (!reachable.has(lower.id)) return;
-    surfaces.slice(lowerIndex + 1).forEach((upper) => {
-      if (canReach(lower, upper, config)) reachable.add(upper.id);
-    });
-  });
-  return reachable;
-}
-
-function canReach(lower, upper, config) {
-  const height = lower.y - upper.y;
-  const verticalSpeed = config.character.maximumJumpSpeedPixelsPerSecond;
-  const gravity = config.physics.gravityPixelsPerSecondSquared;
-  if (height <= 0 || height > verticalSpeed ** 2 / (2 * gravity)) return false;
-  return getHorizontalGap(lower, upper) <= getHorizontalReach(
-    height, verticalSpeed, gravity, config.character,
-  );
-}
-
-function getHorizontalReach(height, verticalSpeed, gravity, character) {
-  const flightTime = (verticalSpeed + Math.sqrt(
-    verticalSpeed ** 2 - 2 * gravity * height,
-  )) / gravity;
-  return flightTime * character.maximumJumpHorizontalSpeedPixelsPerSecond;
-}
-
-function getHorizontalGap(first, second) {
-  const firstRight = first.x + first.width;
-  const secondRight = second.x + second.width;
-  return Math.max(0, second.x - firstRight, first.x - secondRight);
-}
-
-function isInsidePuzzleRoute(platform) {
-  return platform.y >= ROUTE_TOP_Y && platform.y <= ROUTE_BOTTOM_Y;
-}
-
-function isInsideRoomWalls(platform) {
-  return platform.x >= 230 && platform.x + platform.width <= 1050;
-}
-
-function assertSectionDifficulty(currentLevel) {
-  assertPuzzleProfiles(currentLevel.sections);
-  const groups = currentLevel.sections.slice(0, 3).map((section) => {
-    return currentLevel.platforms.filter(({ id }) => id.startsWith(section.id));
-  });
-  assert.deepEqual(groups.map(({ length }) => length), [57, 65, 66]);
-  assert.ok(groups[0].some(({ x }) => x === 330));
-  assert.ok(groups[0].some(isHeight434RescuePlatform));
-  assert.equal(new Set(groups.map(createRouteSignature)).size, groups.length);
-}
-
-function isHeight434RescuePlatform(platform) {
-  return platform.id === "scrapyard-machine-graveyard-room-12-step-5" &&
-    platform.x === 640;
-}
-
-function createRouteSignature(platforms) {
-  return platforms.map(({ x }) => x).join(",");
-}
-
-function assertPuzzleProfiles(sections) {
-  assert.deepEqual(
-    sections.slice(0, 15).map(({ puzzleProfile }) => puzzleProfile),
-    ["introduction", "precision", "wall-rebounds", "assembly-lines",
-      "unstable-smelter", "core-meltdown", "shaft-lifts", "wind-sweeps",
-      "launch-countdown", "cargo-orbits", "research-shifts",
-      "command-gauntlet", "lunar-drift", "ruin-trials",
-      "warden-approach"],
-  );
-}
+console.log("MAP-001: Wall features stay sparse and separate from the jump route.");

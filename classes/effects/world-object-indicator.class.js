@@ -8,8 +8,8 @@ export const WORLD_OBJECT_INDICATOR_TYPES = Object.freeze({
 
 const INDICATOR_CONFIGS = Object.freeze({
   pickup: Object.freeze({
-    color: "#ffd166",
-    shadowBlur: 16,
+    color: "#6df6ff",
+    shadowBlur: 12,
     radiusRatio: 0.42,
     ringHeight: 5,
   }),

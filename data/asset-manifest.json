@@ -832,6 +832,114 @@
       "licenseId": "openai-generated-output"
     },
     {
+      "id": "moon-warden-arena",
+      "priority": "P0",
+      "category": "environment",
+      "file": "img/environment/moon-warden-arena-clean-hd.png",
+      "frameWidth": 1536,
+      "frameHeight": 1024,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "animatedOverlay": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "moon-warden-entry-lift",
+      "priority": "P0",
+      "category": "environment",
+      "file": "img/environment/moon-warden-entry-lift-clean-hd.png",
+      "frameWidth": 512,
+      "frameHeight": 107,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": {
+        "static": 1
+      },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-abandoned-cradle",
+      "priority": "P1",
+      "category": "props",
+      "file": "img/sprites/props/story-abandoned-cradle-clean-hd.png",
+      "frameWidth": 160,
+      "frameHeight": 106,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-luma-transport-case",
+      "priority": "P1",
+      "category": "props",
+      "file": "img/sprites/props/story-luma-transport-case-clean-hd.png",
+      "frameWidth": 144,
+      "frameHeight": 84,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-launch-trace-console",
+      "priority": "P1",
+      "category": "props",
+      "file": "img/sprites/props/story-launch-trace-console-clean-hd.png",
+      "frameWidth": 144,
+      "frameHeight": 109,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-detention-pod",
+      "priority": "P1",
+      "category": "props",
+      "file": "img/sprites/props/story-detention-pod-clean-hd.png",
+      "frameWidth": 160,
+      "frameHeight": 164,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-fortress-route-beacon",
+      "priority": "P1",
+      "category": "props",
+      "file": "img/sprites/props/story-fortress-route-beacon-clean-hd.png",
+      "frameWidth": 128,
+      "frameHeight": 142,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
+      "id": "story-luma-containment",
+      "priority": "P0",
+      "category": "props",
+      "file": "img/sprites/props/story-luma-containment-clean-hd.png",
+      "frameWidth": 220,
+      "frameHeight": 192,
+      "columns": 1,
+      "rows": 1,
+      "totalFrames": 1,
+      "states": { "storyClue": 1 },
+      "licenseId": "openai-assisted-project-art"
+    },
+    {
       "id": "game-cover",
       "priority": "P0",
       "category": "cover",

@@ -1,167 +1,103 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
-import { AuthoredRoom } from
-  "../../classes/environment/authored-room.class.js";
-import { FallingPlatform } from
-  "../../classes/environment/falling-platform.class.js";
-import { MovingPlatform } from
-  "../../classes/environment/moving-platform.class.js";
-import { Platform } from "../../classes/environment/platform.class.js";
-import { RoomPuzzleRouteBuilder } from
-  "../../classes/systems/room-puzzle-route-builder.class.js";
+import { ThinWallBuilder } from
+  "../../classes/systems/thin-wall-builder.class.js";
+import { SparseWallPlatformBuilder } from
+  "../../classes/systems/sparse-wall-platform-builder.class.js";
+import { ScrapyardPrototypeBuilder } from
+  "../../classes/systems/scrapyard-prototype-builder.class.js";
+import { ProgressionRouteBuilder } from
+  "../../classes/systems/progression-route-builder.class.js";
+import { FinalBossBuilder } from
+  "../../classes/systems/final-boss-builder.class.js";
+import { ItemPlacementBuilder } from
+  "../../classes/systems/item-placement-builder.class.js";
+import { ExplorationAreaBuilder } from
+  "../../classes/systems/exploration-area-builder.class.js";
+import { CombatEncounterBuilder } from
+  "../../classes/systems/combat-encounter-builder.class.js";
+import { StoryPropBuilder } from
+  "../../classes/systems/story-prop-builder.class.js";
+import { GAME_CONFIG } from "../config/game-config.js";
 import { getAssetPath } from "../config/asset-paths.js";
-import { getPlatformTilesetConfig } from
-  "../config/platform-tileset-config.js";
-import { createRoomPieceLayout } from "./room-stack-layout.js";
 
-const SPECIAL_PLATFORM_CLASSES = Object.freeze({
-  falling: FallingPlatform,
-  moving: MovingPlatform,
-});
-
-/** Creates the room-by-room rebuild of Little Bolt, Big Moon. */
-export function createLevelOne() {
+/** Creates the deliberately empty baseline used before the new world build. */
+export function createLevelOne(enemyConfig = GAME_CONFIG.enemies) {
   validateLevelData(levelData);
-  return createLevelDefinition(levelData);
-}
-
-function createLevelDefinition(data) {
-  return Object.freeze({
-    id: data.id,
-    width: data.width,
-    height: data.height,
-    playerStart: Object.freeze({ ...data.playerStart }),
-    sections: Object.freeze(data.sections.map(createSection)),
-    structures: Object.freeze(createStructures(data)),
-    ...createEntityGroups(data),
+  const sections = Object.freeze(levelData.sections.map(createSection));
+  const prototype = new ScrapyardPrototypeBuilder();
+  const prototypePlatforms = prototype.buildPlatforms();
+  const wallPlatforms = new SparseWallPlatformBuilder(levelData.width)
+    .build(sections);
+  const lastTutorialPlatform = prototypePlatforms
+    .filter(({ routeRole }) => routeRole === "main")
+    .sort((first, second) => first.routeOrder - second.routeOrder)
+    .at(-1);
+  const progression = new ProgressionRouteBuilder(levelData.width).build(
+    sections, wallPlatforms, lastTutorialPlatform,
+  );
+  const boss = new FinalBossBuilder().build();
+  const structures = Object.freeze([
+    ...new ThinWallBuilder(levelData.width).build(sections),
+    ...prototype.buildStructures(),
+    ...boss.structures,
+  ]);
+  const routePlatforms = Object.freeze([
+    ...wallPlatforms,
+    ...prototypePlatforms,
+    ...progression,
+  ]);
+  const itemPlacement = new ItemPlacementBuilder();
+  const routeCollectables = itemPlacement.build(routePlatforms);
+  const firstWeapon = routeCollectables.find(({ weaponId }) => {
+    return weaponId === "boltThrower";
   });
-}
-
-function createEntityGroups(data) {
+  const explorationPlatforms = new ExplorationAreaBuilder(levelData.width)
+    .build(routePlatforms, firstWeapon);
+  const platforms = Object.freeze([...routePlatforms, ...explorationPlatforms]);
+  const collectables = Object.freeze([
+    ...routeCollectables,
+    ...itemPlacement.buildSearchRewards(explorationPlatforms),
+    ...itemPlacement.buildPreBossSupply(routePlatforms, routeCollectables),
+  ]);
+  const storyProps = new StoryPropBuilder().build(platforms, collectables);
+  const encounters = new CombatEncounterBuilder(levelData.width)
+    .build(platforms, enemyConfig);
   return Object.freeze({
-    platforms: Object.freeze(createPuzzlePlatforms(data)),
-    collectables: Object.freeze([]),
-    storyProps: Object.freeze([]),
+    id: levelData.id,
+    width: levelData.width,
+    height: levelData.height,
+    playerStart: Object.freeze({ ...levelData.playerStart }),
+    sections,
+    structures,
+    platforms,
+    collectables,
+    storyProps,
     hazards: Object.freeze([]),
-    combatZones: Object.freeze([]),
-    enemies: Object.freeze([]),
+    combatZones: Object.freeze([
+      ...encounters.combatZones,
+      ...boss.combatZones,
+    ]),
+    enemies: Object.freeze([...encounters.enemies, ...boss.enemies]),
   });
-}
-
-function createPuzzlePlatforms(data) {
-  return new RoomPuzzleRouteBuilder(data).build().map((definition) => {
-    return createPuzzlePlatform(definition, data.platformTypes);
-  });
-}
-
-function createPuzzlePlatform(definition, platformTypes) {
-  const platformType = platformTypes[definition.type];
-  const platformData = Object.freeze({ ...platformType, ...definition });
-  const PlatformClass = SPECIAL_PLATFORM_CLASSES[definition.type] ?? Platform;
-  return new PlatformClass(platformData,
-    getPlatformTilesetConfig(definition.tileset));
-}
-
-function createStructures(data) {
-  const templates = createRoomTemplateMap(data.roomTemplates);
-  return [...createRoomStack(data, templates), ...data.rooms.map(createRoom)];
-}
-
-function createRoomStack(data, templates) {
-  return data.sections.flatMap((section, index) => {
-    const pieces = createRoomPieceLayout(
-      section, index, data.sections.length, data.roomStack,
-    );
-    return pieces.map((piece) => {
-      const templateId = section.roomTemplateOverrides?.[piece.index] ??
-        piece.templateId;
-      const template = templates.get(templateId);
-      return createRoom(createStackPiece(section, template, piece, data));
-    });
-  });
-}
-
-function createStackPiece(section, template, piece, data) {
-  const reference = data.roomStack;
-  const collisionBoxes = scaleCollisionBoxes(template.collisionBoxes,
-    data.width, piece.height, reference);
-  return Object.freeze({
-    id: `${section.id}-room-${String(piece.index + 1).padStart(2, "0")}`,
-    source: template.source,
-    sourceWidth: reference.sourceWidth, sourceHeight: reference.sourceHeight,
-    x: 0, y: piece.y, width: data.width, height: piece.height,
-    collisionBoxes,
-  });
-}
-
-function scaleCollisionBoxes(boxes, width, height, reference) {
-  const scaleX = width / reference.referenceWidth;
-  const scaleY = height / reference.referenceHeight;
-  return boxes.map((box) => Object.freeze({
-    ...box,
-    offsetX: box.offsetX * scaleX,
-    offsetY: box.offsetY * scaleY,
-    width: box.width * scaleX,
-    height: box.height * scaleY,
-  }));
-}
-
-function createRoomTemplateMap(templates) {
-  return new Map(templates.map((template) => [template.id, template]));
-}
-
-function createRoom(room) {
-  const spriteConfig = Object.freeze({
-    source: getAssetPath("rooms", room.source),
-    frameWidth: room.sourceWidth,
-    frameHeight: room.sourceHeight,
-    frameCount: 1,
-  });
-  return new AuthoredRoom(room, spriteConfig);
 }
 
 function createSection(section) {
   return Object.freeze({
     ...section,
-    backgroundLayers: Object.freeze([createBackgroundLayer(section.id)]),
-  });
-}
-
-function createBackgroundLayer(sectionId) {
-  return Object.freeze({
-    source: getAssetPath("backgrounds", `${sectionId}-background-v1.png`),
-    frameWidth: 1024,
-    frameHeight: 1536,
-    scrollRate: 1,
+    backgroundLayers: Object.freeze([Object.freeze({
+      source: getAssetPath("backgrounds", `${section.id}-background-v1.png`),
+      frameWidth: 1024,
+      frameHeight: 1536,
+      scrollRate: 1,
+    })]),
   });
 }
 
 function validateLevelData(data) {
-  if (hasLevelIdentity(data) && hasLevelCollections(data) &&
-    hasValidRoomPlan(data)) return;
-  throw new TypeError("The level rebuild data is incomplete.");
-}
-
-function hasLevelIdentity(data) {
-  const hasId = typeof data?.id === "string" && data.id.length > 0;
-  const size = [data?.width, data?.height, data?.playerStart?.x,
-    data?.playerStart?.y];
-  return hasId && size.every(Number.isFinite) && data.width > 0 &&
-    data.height > 0;
-}
-
-function hasLevelCollections(data) {
-  return ["sections", "roomTemplates", "rooms", "platforms", "collectables",
-    "storyProps", "hazards", "combatZones", "enemies"].every((key) => {
-    return Array.isArray(data?.[key]);
-  });
-}
-
-function hasValidRoomPlan(data) {
-  const hasStack = Number.isInteger(data?.roomStack?.piecesPerSection) &&
-    data.roomStack.piecesPerSection > 0;
-  const hasPatterns = data?.sections?.every(({ roomPattern }) => {
-    return Array.isArray(roomPattern) && roomPattern.length > 0;
-  });
-  return hasStack && hasPatterns && data.sections.length > 0 &&
-    data.roomTemplates.length > 0 && data.rooms.length > 0;
+  const values = [data?.width, data?.height,
+    data?.playerStart?.x, data?.playerStart?.y];
+  const hasIdentity = typeof data?.id === "string" && data.id.length > 0;
+  const hasSections = Array.isArray(data?.sections) && data.sections.length > 0;
+  if (hasIdentity && hasSections && values.every(Number.isFinite)) return;
+  throw new TypeError("The cleared level data is incomplete.");
 }

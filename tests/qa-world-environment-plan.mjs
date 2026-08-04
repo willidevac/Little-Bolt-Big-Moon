@@ -28,13 +28,17 @@ for (const section of sections) {
 }
 
 const bossRoom = level.structures.find(({ id }) => {
-  return id === "moon-warden-boss-room";
+  return id === "moon-warden-final-arena";
 });
 assert.ok(bossRoom);
 assert.deepEqual([bossRoom.x, bossRoom.y, bossRoom.width, bossRoom.height],
-  [0, 0, 1280, 720]);
-assert.deepEqual(bossRoom.getCollisionBoundsList().map(({ id }) => {
-  return id.replace(`${bossRoom.id}-`, "");
-}), ["left-wall", "right-wall", "arena-floor", "left-terrace", "right-terrace"]);
+  [0, 16, 1280, 1280 * 1024 / 1536]);
+assert.deepEqual(bossRoom.getCollisionBoundsList().map(({ x, y, width, height }) => {
+  return [x, y, width, height];
+}), [
+  [48, 108, 48, 492],
+  [1184, 108, 48, 492],
+  [96, 60, 1088, 48],
+]);
 
 console.log("ROOM-002: 15 unique macro environments and boss room passed.");

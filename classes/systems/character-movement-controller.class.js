@@ -57,6 +57,21 @@ export class CharacterMovementController {
     this.#character.facingDirection = direction;
   }
 
+  /** Allows deliberate left/right correction briefly after a shaft rebound. */
+  updateWallReboundControl(deltaTimeSeconds, input, config) {
+    const direction = this.#getDirection(input);
+    if (direction === 0) return;
+    const acceleration =
+      config.wallReboundAirControlAccelerationPixelsPerSecondSquared;
+    const maximumSpeed = config.wallReboundAirControlMaximumSpeedPixelsPerSecond;
+    this.#character.velocityX = clamp(
+      this.#character.velocityX + direction * acceleration * deltaTimeSeconds,
+      -maximumSpeed,
+      maximumSpeed,
+    );
+    this.#character.facingDirection = direction;
+  }
+
   #stopWallMovement() {
     this.#character.velocityX = 0;
   }

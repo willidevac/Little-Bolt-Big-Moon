@@ -1,31 +1,24 @@
 import assert from "node:assert/strict";
-import { Platform } from "../classes/environment/platform.class.js";
 import { SpringMine } from "../classes/entities/enemies/spring-mine.class.js";
 import { GAME_CONFIG } from "../js/config/game-config.js";
 import { createLevelOne } from "../js/levels/level-01.js";
 
-const BIOMES = Object.freeze(["scrapyard", "factory", "launch", "space", "moon"]);
 const level = createLevelOne(GAME_CONFIG.enemies);
 const mines = level.enemies.filter(({ type }) => type === "springMine");
 
-assert.equal(mines.length, BIOMES.length);
-BIOMES.forEach(assertBiomeHasMine);
+assert.equal(mines.length, 7);
+assert.ok(mines.every(({ id }) => !id.startsWith("combat-enemy-1-")));
 mines.forEach(assertFixedSupport);
 assertTelegraphedLeap();
 assertHurtAndDeathStates();
 
-console.log("ENM-P2: Fünf faire Sprungminen mit Warnung und Flugbahn bestanden.");
-
-function assertBiomeHasMine(biome) {
-  assert.equal(mines.filter(({ id }) => id.startsWith(biome)).length, 1);
-}
+console.log("ENM-P2: Sieben späte Sprungminen mit Warnung und Flugbahn bestanden.");
 
 function assertFixedSupport(mine) {
-  const support = level.platforms.find((platform) => {
-    return platform.constructor === Platform &&
-      platform.y === mine.y + mine.height && overlaps(mine, platform);
-  });
+  const support = level.platforms.find(({ id }) => id === mine.anchorPlatformId);
   assert.ok(support, `${mine.id} braucht eine feste Plattform.`);
+  assert.equal(support.y, mine.y + mine.height);
+  assert.ok(overlaps(mine, support));
 }
 
 function assertTelegraphedLeap() {

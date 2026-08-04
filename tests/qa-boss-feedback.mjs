@@ -73,10 +73,12 @@ function createAnnouncementElement() {
 
 function assertBossCompletionContext() {
   const zone = level.combatZones.find(({ unlockPlatformId }) => unlockPlatformId);
-  const enemy = level.enemies.find(({ id }) => id === zone.enemyIds[0]);
+  const enemies = zone.enemyIds.map((enemyId) => {
+    return level.enemies.find(({ id }) => id === enemyId);
+  });
   const state = createWorldState();
   const world = createWorld(state);
-  const manager = new WaveManager([zone], [enemy], level.platforms);
+  const manager = new WaveManager([zone], enemies, level.platforms);
   world.waveManager = manager;
   manager.initialize(world);
   triggerAndDefeatBoss(manager, world, zone, state);
@@ -119,7 +121,7 @@ function assertUpgradeContext(world) {
   const appliedPhases = [];
   const flow = new RunUpgradeFlow(upgradeData, createDependencies(appliedPhases));
   assert.equal(flow.openFrom(world), true);
-  assert.deepEqual(appliedPhases, ["scrapyard-biome-boss"]);
+  assert.deepEqual(appliedPhases, ["combat-stage-3-zone"]);
   assert.equal(flow.getContext().didUnlockPath, true);
 }
 

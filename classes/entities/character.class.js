@@ -46,6 +46,10 @@ export class Character extends MovableObject {
     this.state = CHARACTER_STATES.IDLE;
     this.inactivitySeconds = 0;
     this.facingDirection = 1;
+    this.wallReboundControlSeconds = 0;
+    this.wallReboundInput = Object.seal({
+      left: false, right: false, jump: false, down: false,
+    });
   }
 
   #initializeControllers() {
@@ -119,6 +123,9 @@ export class Character extends MovableObject {
   #updateStateTimers(deltaTimeSeconds) {
     this.attackState.update(deltaTimeSeconds);
     this.#hitState.update(deltaTimeSeconds);
+    this.wallReboundControlSeconds = Math.max(
+      0, this.wallReboundControlSeconds - deltaTimeSeconds,
+    );
   }
 
   /**
@@ -201,6 +208,33 @@ export class Character extends MovableObject {
     this.#movementController.reflectWallImpact(direction, config);
   }
 
+  /** Starts one player-controlled rebound from a shaft's inner wall face. */
+  beginControlledWallRebound(rebound) {
+    const values = [
+      rebound?.horizontalSpeedPixelsPerSecond,
+      rebound?.verticalSpeedPixelsPerSecond,
+      rebound?.controlSeconds,
+      rebound?.releasedVerticalRatio,
+      rebound?.dropVerticalRatio,
+    ];
+    if (![-1, 1].includes(rebound?.direction) ||
+      !values.every((value) => Number.isFinite(value) && value > 0)) {
+      throw new TypeError("Der steuerbare Wandabprall ist ungültig.");
+    }
+    const verticalRatio = rebound.forceFullVertical
+      ? 1
+      : this.wallReboundInput.down
+        ? rebound.dropVerticalRatio
+        : this.wallReboundInput.jump ? 1 : rebound.releasedVerticalRatio;
+    this.velocityX = rebound.direction *
+      rebound.horizontalSpeedPixelsPerSecond;
+    this.facingDirection = rebound.direction;
+    this.wallReboundControlSeconds = rebound.controlSeconds;
+    this.applyUpwardImpulse(
+      rebound.verticalSpeedPixelsPerSecond * verticalRatio,
+    );
+  }
+
   /**
    * Extends coyote time and the jump buffer for the current run.
    * @param {number} amountSeconds
@@ -234,6 +268,12 @@ export class Character extends MovableObject {
   }
 
   #handleControls(deltaTimeSeconds, input, config) {
+    this.#syncWallReboundInput(input);
+    if (!this.isOnGround && this.wallReboundControlSeconds > 0) {
+      this.#movementController.updateWallReboundControl(
+        deltaTimeSeconds, input, config,
+      );
+    }
     if (this.isOnGround) this.#movementController.updateFacingDirection(input);
     const launch = this.jumpController.update(
       deltaTimeSeconds, input, this.isOnGround, config,
@@ -243,6 +283,14 @@ export class Character extends MovableObject {
     if (this.isOnGround) {
       this.#movementController.updateGroundMovement(deltaTimeSeconds, input, config);
     }
+  }
+
+  #syncWallReboundInput(input) {
+    this.wallReboundInput.left = Boolean(input.left);
+    this.wallReboundInput.right = Boolean(input.right);
+    this.wallReboundInput.jump = Boolean(input.jump);
+    this.wallReboundInput.down = Boolean(input.down);
+    if (this.isOnGround) this.wallReboundControlSeconds = 0;
   }
 
   #prepareHurtState() {

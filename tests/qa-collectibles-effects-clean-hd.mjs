@@ -62,7 +62,8 @@ function verifyRuntimeConfig() {
   const css = readSource("styles/upgrades.css");
   assert.match(collectable, /"collectables-clean-hd\.png"[\s\S]*frameWidth: 64/);
   assert.match(collectable, /"arc-charge-clean-hd\.png"[\s\S]*frameWidth: 48/);
-  assert.match(story, /"collectables-clean-hd\.png"/);
+  assert.match(story, /"story-abandoned-cradle-clean-hd\.png"/);
+  assert.match(story, /"story-luma-containment-clean-hd\.png"/);
   assert.deepEqual(upgrades, EXPECTED_UPGRADE_SHEET);
   assert.match(css, /image-rendering: auto/);
 }

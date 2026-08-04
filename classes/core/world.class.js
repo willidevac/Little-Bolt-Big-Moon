@@ -18,6 +18,7 @@ import { WorldSceneBuilder } from "./world-scene-builder.class.js";
 
 export { WORLD_ENTITY_GROUPS } from "./world-entity-groups.js";
 const UPDATE_ORDER = Object.freeze([
+  WORLD_ENTITY_GROUPS.STRUCTURES,
   WORLD_ENTITY_GROUPS.PLATFORMS,
   WORLD_ENTITY_GROUPS.DECORATIONS,
   WORLD_ENTITY_GROUPS.CHARACTERS,
@@ -26,7 +27,7 @@ const UPDATE_ORDER = Object.freeze([
   WORLD_ENTITY_GROUPS.COLLECTABLES,
   WORLD_ENTITY_GROUPS.HAZARDS,
 ]);
-const NON_PLATFORM_UPDATE_ORDER = Object.freeze(UPDATE_ORDER.slice(1));
+const NON_PLATFORM_UPDATE_ORDER = Object.freeze(UPDATE_ORDER.slice(2));
 
 /**
  * Coordinates active game objects and the systems of a world frame.
@@ -140,6 +141,7 @@ export class World {
   }
 
   #updateMovingEntities(movableObjects, deltaTimeSeconds) {
+    this.#updateEntityGroups([WORLD_ENTITY_GROUPS.STRUCTURES], deltaTimeSeconds);
     this.#updateEntityGroups([WORLD_ENTITY_GROUPS.PLATFORMS], deltaTimeSeconds);
     this.#platformMotionSystem.carryGroundMovables(movableObjects);
     this.#updateEntityGroups(NON_PLATFORM_UPDATE_ORDER, deltaTimeSeconds);
@@ -290,13 +292,27 @@ export class World {
 
   #resolveHazardHits() {
     if (!this.character) return;
-    const hazards = this.#getGroup(WORLD_ENTITY_GROUPS.HAZARDS);
-    const hazard = hazards.find((candidate) => {
+    const hazard = this.#getDamageSources().find((candidate) => {
       return candidate.isDangerous &&
-        this.#collisionManager.areOverlapping(this.character, candidate);
+        (candidate.wasTouchedBy?.(this.character) ||
+          this.#collisionManager.areOverlapping(this.character, candidate));
     });
     const hit = hazard?.createHit(this.character);
     if (hit) this.#damageEvents.push(hit);
+  }
+
+  #getDamageSources() {
+    return [
+      ...this.#getGroup(WORLD_ENTITY_GROUPS.HAZARDS),
+      ...this.#getDamageSourcesFrom(WORLD_ENTITY_GROUPS.STRUCTURES),
+      ...this.#getDamageSourcesFrom(WORLD_ENTITY_GROUPS.PLATFORMS),
+    ];
+  }
+
+  #getDamageSourcesFrom(groupName) {
+    return this.#getGroup(groupName).filter((candidate) => {
+      return typeof candidate.createHit === "function";
+    });
   }
 
   #processEntities(groupOrder, callback) {

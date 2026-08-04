@@ -13,6 +13,7 @@ export class AnchoredCollectable extends CollectableObject {
     this.#validateAnchor(data, anchorPlatform);
     this.anchorPlatformId = data.anchorPlatformId;
     this.anchorPlatform = anchorPlatform;
+    this.isPreBossSupply = Boolean(data.isPreBossSupply);
     this.y = anchorPlatform.y - this.height;
   }
 

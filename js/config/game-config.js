@@ -31,14 +31,16 @@ const CHARACTER_CONFIG = Object.freeze({
   horizontalAccelerationPixelsPerSecondSquared: 1800,
   horizontalBrakingPixelsPerSecondSquared: 2400,
   maximumHorizontalSpeedPixelsPerSecond: 300,
-  jumpChargeSeconds: 1.1,
-  minimumJumpSpeedPixelsPerSecond: 525,
-  maximumJumpSpeedPixelsPerSecond: 966,
-  minimumJumpHorizontalSpeedPixelsPerSecond: 150,
-  maximumJumpHorizontalSpeedPixelsPerSecond: 480,
+  jumpChargeSeconds: 0.55,
+  minimumJumpSpeedPixelsPerSecond: 600,
+  maximumJumpSpeedPixelsPerSecond: 1440,
+  minimumJumpHorizontalSpeedPixelsPerSecond: 170,
+  maximumJumpHorizontalSpeedPixelsPerSecond: 600,
   wallInsetPixels: 48,
   wallBounceHorizontalRetention: 0.65,
   minimumWallBounceSpeedPixelsPerSecond: 180,
+  wallReboundAirControlAccelerationPixelsPerSecondSquared: 1600,
+  wallReboundAirControlMaximumSpeedPixelsPerSecond: 1000,
   movementStateThresholdPixelsPerSecond: 1,
   sleepAfterInactivitySeconds: 15,
 });
@@ -183,7 +185,7 @@ const ENEMY_COMBAT_CONFIG = Object.freeze({
 const CAMERA_CONFIG = Object.freeze({
   deadZoneTopPixels: 216,
   deadZoneBottomPixels: 504,
-  upwardFollowSpeedPixelsPerSecond: 900,
+  upwardFollowSpeedPixelsPerSecond: 1280,
   downwardFollowSpeedPixelsPerSecond: 1400,
 });
 

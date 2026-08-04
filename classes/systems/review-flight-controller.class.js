@@ -43,7 +43,9 @@ export class ReviewFlightController {
     if (!direction.x && !direction.y) return this.#endFlight();
     this.#beginFlight();
     this.#stopCharacter();
-    this.#applyFlight(deltaTimeSeconds, direction);
+    const isFast = this.game.keyboard.fast;
+    this.#syncCameraFollow(isFast);
+    this.#applyFlight(deltaTimeSeconds, direction, isFast);
     this.game.runStats.updateHeight(this.character.y);
   }
 
@@ -79,10 +81,10 @@ export class ReviewFlightController {
     });
   }
 
-  #applyFlight(deltaTimeSeconds, direction) {
+  #applyFlight(deltaTimeSeconds, direction, isFast) {
     const { x: directionX, y: directionY } = direction;
     const length = Math.hypot(directionX, directionY);
-    const distance = this.#getSpeed(this.game.keyboard.fast) * deltaTimeSeconds;
+    const distance = this.#getSpeed(isFast) * deltaTimeSeconds;
     this.character.x = this.#clampX(this.character.x + directionX / length * distance);
     this.character.y = this.#clampY(this.character.y + directionY / length * distance);
   }
@@ -105,6 +107,7 @@ export class ReviewFlightController {
   #endFlight() {
     if (!this.isFlying) return;
     this.isFlying = false;
+    this.#syncCameraFollow(false);
     this.character.isAffectedByGravity = true;
     this.character.setInvulnerability(0);
     this.#stopCharacter();
@@ -113,6 +116,11 @@ export class ReviewFlightController {
   #getSpeed(isFast) {
     const speed = this.config.flightSpeedPixelsPerSecond;
     return isFast ? speed * this.config.fastMultiplier : speed;
+  }
+
+  #syncCameraFollow(isFast) {
+    const multiplier = isFast ? this.config.fastMultiplier : 1;
+    this.game.world.camera.setFollowSpeedMultiplier?.(multiplier);
   }
 
   #stopCharacter() {

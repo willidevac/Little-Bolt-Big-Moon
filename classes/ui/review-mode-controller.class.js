@@ -46,6 +46,7 @@ export class ReviewModeController {
     this.boundHeightTeleport = this.handleHeightTeleport.bind(this);
     this.boundStateChange = this.handleStateChange.bind(this);
     this.boundHudChange = this.syncBiomeControl.bind(this);
+    this.boundReviewLayout = this.syncReviewLayout.bind(this);
   }
 
   #assignElements() {
@@ -75,6 +76,7 @@ export class ReviewModeController {
     this.teleportButton.addEventListener("click", this.boundHeightTeleport);
     this.game.onStateChange(this.boundStateChange);
     this.game.onHudChange(this.boundHudChange);
+    globalThis.addEventListener?.("resize", this.boundReviewLayout);
     if (this.#hasStoredAccess()) this.start();
     return this;
   }
@@ -111,6 +113,7 @@ export class ReviewModeController {
     this.root.dataset.reviewMode = "true";
     this.game.canvas.dataset.reviewMode = "true";
     this.banner.hidden = false;
+    this.syncReviewLayout();
     return true;
   }
 
@@ -120,9 +123,19 @@ export class ReviewModeController {
     delete this.root.dataset.reviewMode;
     delete this.game.canvas.dataset.reviewMode;
     this.banner.hidden = true;
+    this.root.style?.removeProperty?.("--review-toolbar-offset");
     this.flight?.disable();
     this.flight = null;
     this.game.goHome();
+  }
+
+  /** Reserves the banner's real wrapped height for every other HUD layer. */
+  syncReviewLayout() {
+    if (!this.#isActive() || this.banner.hidden) return;
+    const bannerBottom = this.banner.offsetTop + this.banner.offsetHeight;
+    this.root.style?.setProperty?.(
+      "--review-toolbar-offset", `${bannerBottom + 8}px`,
+    );
   }
 
   /** Jumps directly to the beginning of a selected biome. */

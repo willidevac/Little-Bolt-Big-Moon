@@ -18,12 +18,12 @@ const HAZARD_FRAMES = Object.freeze({
   pulseGate: Object.freeze([[12, 13], [13, 13], [14, 13], [15, 13]]),
 });
 const STORY_PROP_FRAMES = Object.freeze({
-  emptyLumaCradle: Object.freeze([[0, 14]]),
-  factoryDuoPoster: Object.freeze([[0, 0]]),
-  lumaCargoCrate: Object.freeze([[0, 0]]),
-  lumaBadgeHalf: Object.freeze([[14, 3]]),
-  blueSignalBeacon: Object.freeze([[0, 0], [1, 0], [2, 0], [3, 0]]),
-  poweredOffLuma: Object.freeze([[0, 8]]),
+  abandonedCompanionCradle: Object.freeze([[0, 4]]),
+  sealedLumaTransport: Object.freeze([[0, 4]]),
+  launchTraceConsole: Object.freeze([[0, 4]]),
+  stationDetentionPod: Object.freeze([[0, 4]]),
+  fortressRouteBeacon: Object.freeze([[0, 4]]),
+  lumaContainmentCapsule: Object.freeze([[0, 4]]),
 });
 const level = createLevelOne(GAME_CONFIG.enemies);
 
@@ -35,7 +35,7 @@ console.log("FB-003: Funde, Gefahren und Storyobjekte stehen fest am Boden.");
 
 function assertGroundedPickup(item) {
   PICKUP_FRAMES[item.animationState].forEach(([frame, gap]) => {
-    assertFrameContact(item, frame, gap, item.anchorPlatform.y, "#ffd166");
+    assertFrameContact(item, frame, gap, item.anchorPlatform.y, "#6df6ff");
   });
 }
 

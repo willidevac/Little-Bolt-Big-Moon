@@ -125,15 +125,28 @@ function addAudioAssets(assets) {
 function addLevelAssets(assets) {
   levelData.sections.forEach((section) => {
     addSectionBackgrounds(assets, section);
-    assets.add(resolveAsset("tilesets", `${section.tileset}-tiles.png`));
     assets.add(resolveAsset(
-      "tilesets",
-      `${section.tileset}-architecture-clean-hd.png`,
+      "tilesets", `${section.tileset}-tiles-clean-hd.png`,
     ));
     assets.add(resolveAsset(
-      "tilesets",
-      `${section.tileset}-architecture-alt-clean-hd.png`,
+      "environment", `${section.tileset}-wall-clean-hd.png`,
     ));
+    assets.add(resolveAsset(
+      "environment", `${section.tileset}-wall-platform-clean-hd.png`,
+    ));
+  });
+  assets.add(resolveAsset("environment", "scrapyard-floor-clean-hd.png"));
+  ["precision", "standard", "launch", "rest", "rescue"].forEach((role) => {
+    assets.add(resolveAsset(
+      "environment", `scrapyard-platform-${role}-clean-hd.png`,
+    ));
+  });
+  [
+    "factory-trap-platform-clean-hd.png",
+    "launch-falling-platform-clean-hd.png",
+    "launch-spring-platform-clean-hd.png",
+  ].forEach((fileName) => {
+    assets.add(resolveAsset("environment", fileName));
   });
 }
 

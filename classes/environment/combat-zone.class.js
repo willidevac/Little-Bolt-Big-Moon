@@ -5,7 +5,7 @@ export const COMBAT_ZONE_STATES = Object.freeze({
 });
 
 /**
- * Invisible trigger for an optional enemy encounter.
+ * Invisible trigger for an optional or progression-locking enemy encounter.
  */
 export class CombatZone {
   #state;
