@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
 const RUNTIME_FILE = "img/sprites/characters/byte-clean-hd.png";
-const MASTER_FILE = "img/concepts/approvals/byte-clean-hd-production-layout-v1.png";
 const RUNTIME_CONFIG_FILE = "js/config/character-visual-config.js";
 
 verifyFiles();
@@ -15,7 +14,6 @@ console.log("ART-005: Byte-Clean-HD-Runtime mit 33 Frames bestanden.");
 
 function verifyFiles() {
   assert.equal(existsSync(RUNTIME_FILE), true);
-  assert.equal(existsSync(MASTER_FILE), true);
 }
 
 function verifyPng() {
@@ -50,7 +48,6 @@ function verifyRuntimeConfig() {
 function verifyCredits() {
   const credits = readJson("data/asset-credits.json").assets;
   assert.equal(hasCredit(credits, RUNTIME_FILE), true);
-  assert.equal(hasCredit(credits, MASTER_FILE), true);
 }
 
 function readJson(file) {

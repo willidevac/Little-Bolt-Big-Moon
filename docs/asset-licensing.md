@@ -1,9 +1,9 @@
 # Asset-Herkunft und Lizenzierung
 
-Konzeptbilder und ausgewählte fertige Hintergründe wurden mit
-OpenAI-Bildgenerierung erstellt. Konzepte dienen als Referenz und werden nicht
-unverändert als Spritesheet eingesetzt. Direkt verwendete Hintergründe sind in
-`data/asset-credits.json` ausdrücklich als generierter Output gekennzeichnet.
+Die Laufzeitgrafiken und Hintergründe wurden teilweise mit
+OpenAI-Bildgenerierung erstellt und anschließend für das Spiel aufbereitet.
+Nur tatsächlich verwendete Laufzeitdateien werden im Repository behalten und
+in `data/asset-credits.json` mit ihrer Herkunft dokumentiert.
 
 Die Produktionssprites werden anhand des Konzepts pixelgenau neu gestaltet,
 vereinheitlicht und manuell animiert. Dadurch dokumentieren wir einen
@@ -35,7 +35,7 @@ Rechtsberatung.
 
 | Lizenz-ID | Quelle | Verwendung |
 | --- | --- | --- |
-| `openai-generated-output` | OpenAI EU Terms | Konzepte, Cover und direkt verwendete Raumhintergründe |
+| `openai-generated-output` | OpenAI EU Terms | Cover und direkt verwendete Raumhintergründe |
 | `openai-assisted-project-art` | OpenAI EU Terms plus dokumentierte manuelle Pixel-Art-Überarbeitung | neue Sprites, Tiles und UI-Grafiken |
 | `silkscreen-ofl-1.1` | offizielles Google-Fonts-Verzeichnis mit `OFL.txt` | lokale UI-Schrift Silkscreen Regular/Bold |
 

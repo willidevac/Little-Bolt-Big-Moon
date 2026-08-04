@@ -3,8 +3,6 @@ import { existsSync, readFileSync } from "node:fs";
 import { readAppMarkupSync } from "./helpers/read-app-markup.mjs";
 
 const RUNTIME_FILE = "img/ui/hud-icons-clean-hd.png";
-const MASTER_FILE =
-  "img/concepts/approvals/hud-icons-clean-hd-production-layout-v1.png";
 const ICON_NAMES = Object.freeze([
   "energy",
   "ammo",
@@ -28,7 +26,6 @@ console.log("ART-008: Acht Clean-HD-HUD-Symbole und Rahmen bestanden.");
 
 function verifyFiles() {
   assert.equal(existsSync(RUNTIME_FILE), true);
-  assert.equal(existsSync(MASTER_FILE), true);
 }
 
 function verifyPng() {
@@ -71,7 +68,6 @@ function verifyStyles() {
 function verifyCredits() {
   const files = readJson("data/asset-credits.json").assets.map(({ file }) => file);
   assert.equal(files.includes(RUNTIME_FILE), true);
-  assert.equal(files.includes(MASTER_FILE), true);
 }
 
 function readJson(file) {

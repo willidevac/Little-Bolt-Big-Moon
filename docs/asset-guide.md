@@ -21,13 +21,13 @@ entwickelt sich von warmem Rost zu kühlem Mondlicht.
 
 | Asset | Raster | Darstellung im Spiel |
 |---|---:|---:|
-| Byte und Luma | 32 × 32 px | 64 × 64 px |
-| Schrottkrabbler/Drohne | 48 × 32 px | 96 × 64 px |
-| Endboss | 96 × 96 px | 192 × 192 px |
-| Plattform-Tiles | 32 × 32 px | 64 × 64 px |
-| Waffen und Items | 16–32 px | ganzzahlig × 2 |
-| UI-Symbole | 24 × 24 px | 24 oder 48 px |
-| Hintergrundsegment | 320 × 360 px | 1280 × 1440 px |
+| Byte | 64 × 64 px | 64 × 64 px |
+| Luma | 32 × 32 px | 64 × 64 px |
+| Schrottkrabbler/Drohne | 96 × 64 px | 96 × 64 px |
+| Endboss | 192 × 192 px | 192 × 192 px |
+| Waffen und Items | 16–96 px | native Clean-HD-Größe |
+| UI-Symbole | 48 × 48 px | 24 oder 48 px |
+| Hintergrundabschnitt | 1024 × 1536 px | bildschirmfüllender Ausschnitt |
 
 Die vollständigen Dateinamen, Sheetmaße und Framezahlen stehen im
 [`P0-Produktionskatalog`](asset-production-catalog.md) und maschinenlesbar in
@@ -35,13 +35,9 @@ Die vollständigen Dateinamen, Sheetmaße und Framezahlen stehen im
 
 ## Produktionsablauf
 
-1. Konzeptbild nur als visuelle Referenz verwenden.
-2. Eine verbindliche Masteransicht von Byte pixelgenau zeichnen.
-3. Proportionen, Palette und Konturen sperren.
-4. Erst danach Animationsframes erstellen.
-5. Jedes Spritesheet bei nativer Größe und vierfacher Vergrößerung prüfen.
-6. Assets mit beschreibenden englischen Dateinamen exportieren.
-7. Tatsächliche Datei und Herkunft vor Integration in
+1. Proportionen, Palette und Konturen vor der Animation sperren.
+2. Jedes Spritesheet bei nativer Größe und vierfacher Vergrößerung prüfen.
+3. Assets mit beschreibenden englischen Dateinamen exportieren.
+4. Nur die tatsächlich verwendete Laufzeitdatei einchecken.
+5. Tatsächliche Datei und Herkunft vor Integration in
    `data/asset-credits.json` ergänzen.
-
-Sound gehört nicht zur aktuellen Assetphase.

@@ -1,11 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
-const MASTERS = Object.freeze([
-  "img/concepts/approvals/collectables-clean-hd-production-layout-v1.png",
-  "img/concepts/approvals/upgrade-icons-clean-hd-production-layout-v1.png",
-  "img/concepts/approvals/gameplay-effects-clean-hd-production-layout-v1.png",
-]);
 const ASSETS = Object.freeze([
   ["collectable-items", "img/sprites/items/collectables-clean-hd.png",
     64, 64, 5, 3, 15],
@@ -30,7 +25,6 @@ verifyCredits();
 console.log("ART-017: 44 Clean-HD-Collectible-, Upgrade- und Effektframes bestanden.");
 
 function verifyFilesAndPngs() {
-  MASTERS.forEach((file) => assert.equal(existsSync(file), true));
   ASSETS.forEach(([, file, width, height, columns, rows]) => {
     assert.equal(existsSync(file), true);
     assertPng(file, width * columns, height * rows);
@@ -70,7 +64,7 @@ function verifyRuntimeConfig() {
 
 function verifyCredits() {
   const files = readJson("data/asset-credits.json").assets.map(({ file }) => file);
-  [...MASTERS, ...ASSETS.map(([, file]) => file)].forEach((file) => {
+  ASSETS.map(([, file]) => file).forEach((file) => {
     assert.equal(files.includes(file), true);
   });
 }

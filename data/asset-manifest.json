@@ -1,990 +1,768 @@
 {
-  "version": 1,
-  "status": "production-plan",
-  "sourcePixelRules": {
-    "gameplayScale": 2,
-    "backgroundScale": 4,
-    "imageSmoothingEnabled": false,
-    "transparentPaddingPixels": 2
-  },
-  "assets": [
-    {
-      "id": "byte-character",
-      "priority": "P0",
-      "category": "characters",
-      "file": "img/sprites/characters/byte-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 5,
-      "totalFrames": 33,
-      "states": {
-        "idle": 4,
-        "run": 6,
-        "jump": 1,
-        "fall": 1,
-        "land": 2,
-        "melee": 4,
-        "shoot": 3,
-        "hurt": 2,
-        "sleep": 4,
-        "dead": 6
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "luma-character",
-      "priority": "P0",
-      "category": "characters",
-      "file": "img/sprites/characters/luma.png",
-      "frameWidth": 32,
-      "frameHeight": 32,
-      "columns": 5,
-      "rows": 2,
-      "totalFrames": 10,
-      "states": {
-        "poweredOff": 1,
-        "idle": 4,
-        "revive": 5
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrap-crawler",
-      "priority": "P0",
-      "category": "enemies",
-      "file": "img/sprites/enemies/scrap-crawler-clean-hd.png",
-      "frameWidth": 96,
-      "frameHeight": 64,
-      "columns": 7,
-      "rows": 2,
-      "totalFrames": 13,
-      "states": {
-        "walk": 4,
-        "attack": 3,
-        "hurt": 2,
-        "dead": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-guard",
-      "priority": "P0",
-      "category": "enemies",
-      "file": "img/sprites/enemies/drone-guard-clean-hd.png",
-      "frameWidth": 96,
-      "frameHeight": 64,
-      "columns": 5,
-      "rows": 4,
-      "totalFrames": 20,
-      "states": {
-        "idle": 4,
-        "move": 4,
-        "telegraph": 3,
-        "attack": 3,
-        "hurt": 2,
-        "dead": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden",
-      "priority": "P0",
-      "category": "enemies",
-      "file": "img/sprites/enemies/moon-warden-clean-hd.png",
-      "frameWidth": 192,
-      "frameHeight": 192,
-      "columns": 7,
-      "rows": 4,
-      "totalFrames": 26,
-      "states": {
-        "idle": 4,
-        "move": 4,
-        "meleeAttack": 5,
-        "rangedAttack": 5,
-        "hurt": 2,
-        "dead": 6
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "player-weapons",
-      "priority": "P0",
-      "category": "weapons",
-      "file": "img/sprites/weapons/player-weapons-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 2,
-      "rows": 1,
-      "totalFrames": 2,
-      "states": {
-        "repairWrench": 1,
-        "boltThrower": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "bolt-projectile",
-      "priority": "P0",
-      "category": "weapons",
-      "file": "img/sprites/weapons/bolt-projectile-clean-hd.png",
-      "frameWidth": 32,
-      "frameHeight": 16,
-      "columns": 2,
-      "rows": 1,
-      "totalFrames": 2,
-      "states": {
-        "fly": 2
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-projectile",
-      "priority": "P0",
-      "category": "weapons",
-      "file": "img/sprites/weapons/drone-projectile-clean-hd.png",
-      "frameWidth": 32,
-      "frameHeight": 32,
-      "columns": 4,
-      "rows": 1,
-      "totalFrames": 4,
-      "states": {
-        "fly": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "boss-projectiles",
-      "priority": "P0",
-      "category": "weapons",
-      "file": "img/sprites/weapons/boss-projectiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 32,
-      "columns": 4,
-      "rows": 2,
-      "totalFrames": 8,
-      "states": {
-        "shockwave": 4,
-        "moonBolt": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "collectable-items",
-      "priority": "P0",
-      "category": "items",
-      "file": "img/sprites/items/collectables-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 5,
-      "rows": 3,
-      "totalFrames": 15,
-      "states": {
-        "gear": 4,
-        "energyCell": 4,
-        "boltAmmo": 1,
-        "boltThrowerPickup": 4,
-        "badgeHalves": 2
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "upgrade-icons",
-      "priority": "P0",
-      "category": "items",
-      "file": "img/sprites/items/upgrade-icons-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 5,
-      "rows": 1,
-      "totalFrames": 5,
-      "states": {
-        "maximumEnergy": 1,
-        "wrenchDamage": 1,
-        "arcChargeCapacity": 1,
-        "knockbackResistance": 1,
-        "jumpControl": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "gameplay-effects",
-      "priority": "P0",
-      "category": "effects",
-      "file": "img/sprites/effects/gameplay-effects-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 6,
-      "rows": 4,
-      "totalFrames": 23,
-      "states": {
-        "jumpDust": 4,
-        "hitSpark": 4,
-        "muzzleFlash": 3,
-        "pickupShine": 6,
-        "explosion": 6
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "empty-luma-cradle",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/empty-luma-cradle.png",
-      "frameWidth": 96,
-      "frameHeight": 64,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-duo-poster",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/factory-duo-poster.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "luma-cargo-crate",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/luma-cargo-crate.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "blue-signal-beacon",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/blue-signal-beacon.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "columns": 4,
-      "rows": 1,
-      "totalFrames": 4,
-      "states": {
-        "signal": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-revive-socket",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/moon-revive-socket.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 4,
-      "rows": 1,
-      "totalFrames": 4,
-      "states": {
-        "activate": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/scrapyard-tiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 4,
-      "totalFrames": 32,
-      "states": {
-        "tiles": 32
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/factory-tiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 4,
-      "totalFrames": 32,
-      "states": {
-        "tiles": 32
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/launch-tower-tiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 4,
-      "totalFrames": 32,
-      "states": {
-        "tiles": 32
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/space-station-tiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 4,
-      "totalFrames": 32,
-      "states": {
-        "tiles": 32
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/moon-tiles-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 4,
-      "totalFrames": 32,
-      "states": {
-        "tiles": 32
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "hazard-tiles",
-      "priority": "P0",
-      "category": "tilesets",
-      "file": "img/tilesets/scrapyard-hazards-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 8,
-      "rows": 2,
-      "totalFrames": 16,
-      "states": {
-        "spikes": 4,
-        "electric": 4,
-        "warning": 4,
-        "arenaGate": 4
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-far",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-far-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-mid",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-mid-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-near",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-near-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-far",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/factory-far-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-mid",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/factory-mid-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-near",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/factory-near-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-far",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-far-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-mid",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-mid-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-near",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-near-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-far",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/space-station-far-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-mid",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/space-station-mid-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-near",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/space-station-near-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-far",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/moon-far-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-mid",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/moon-mid-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-near",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/moon-near-clean-hd.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousParallax": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-panorama-v2",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/scrapyard-panorama-v2.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-panorama-v2",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/factory-panorama-v2.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-panorama-v2",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/launch-tower-panorama-v2.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-panorama-v2",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/space-station-panorama-v2.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-panorama-v2",
-      "priority": "P0",
-      "category": "backgrounds",
-      "file": "img/backgrounds/moon-panorama-v2.png",
-      "frameWidth": 1024,
-      "frameHeight": 1536,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "continuousPanorama": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "hud-icons",
-      "priority": "P0",
-      "category": "ui",
-      "file": "img/ui/hud-icons-clean-hd.png",
-      "frameWidth": 48,
-      "frameHeight": 48,
-      "columns": 8,
-      "rows": 1,
-      "totalFrames": 8,
-      "states": {
-        "energy": 1,
-        "ammo": 1,
-        "gears": 1,
-        "height": 1,
-        "score": 1,
-        "arcCharge": 1,
-        "weapon": 1,
-        "pause": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "ui-panel-tiles",
-      "priority": "P0",
-      "category": "ui",
-      "file": "img/ui/panel-tiles.png",
-      "frameWidth": 16,
-      "frameHeight": 16,
-      "columns": 3,
-      "rows": 3,
-      "totalFrames": 9,
-      "states": {
-        "nineSlice": 9
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "touch-control-icons",
-      "priority": "P0",
-      "category": "ui",
-      "file": "img/ui/touch-controls.png",
-      "frameWidth": 48,
-      "frameHeight": 48,
-      "columns": 6,
-      "rows": 2,
-      "totalFrames": 12,
-      "states": {
-        "left": 2,
-        "right": 2,
-        "jump": 2,
-        "attack": 2,
-        "weapon": 2,
-        "pause": 2
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "menu-icons",
-      "priority": "P0",
-      "category": "ui",
-      "file": "img/ui/menu-icons.png",
-      "frameWidth": 24,
-      "frameHeight": 24,
-      "columns": 6,
-      "rows": 1,
-      "totalFrames": 6,
-      "states": {
-        "play": 1,
-        "home": 1,
-        "restart": 1,
-        "mute": 1,
-        "unmute": 1,
-        "close": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "boss-health-frame",
-      "priority": "P0",
-      "category": "ui",
-      "file": "img/ui/boss-health-frame.png",
-      "frameWidth": 320,
-      "frameHeight": 32,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "arc-cannon",
-      "priority": "P1",
-      "category": "weapons",
-      "file": "img/sprites/weapons/arc-cannon-clean-hd.png",
-      "frameWidth": 96,
-      "frameHeight": 64,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "pickup": 1
-      },
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "arc-projectile",
-      "priority": "P1",
-      "category": "weapons",
-      "file": "img/sprites/weapons/arc-projectile-clean-hd.png",
-      "frameWidth": 64,
-      "frameHeight": 64,
-      "columns": 4,
-      "rows": 1,
-      "totalFrames": 4,
-      "states": {
-        "flight": 4
-      },
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "arc-charge",
-      "priority": "P1",
-      "category": "items",
-      "file": "img/sprites/items/arc-charge-clean-hd.png",
-      "frameWidth": 48,
-      "frameHeight": 72,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "pickup": 1
-      },
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-warden-arena",
-      "priority": "P0",
-      "category": "environment",
-      "file": "img/environment/moon-warden-arena-clean-hd.png",
-      "frameWidth": 1536,
-      "frameHeight": 1024,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "animatedOverlay": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden-entry-lift",
-      "priority": "P0",
-      "category": "environment",
-      "file": "img/environment/moon-warden-entry-lift-clean-hd.png",
-      "frameWidth": 512,
-      "frameHeight": 107,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-abandoned-cradle",
-      "priority": "P1",
-      "category": "props",
-      "file": "img/sprites/props/story-abandoned-cradle-clean-hd.png",
-      "frameWidth": 160,
-      "frameHeight": 106,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-luma-transport-case",
-      "priority": "P1",
-      "category": "props",
-      "file": "img/sprites/props/story-luma-transport-case-clean-hd.png",
-      "frameWidth": 144,
-      "frameHeight": 84,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-launch-trace-console",
-      "priority": "P1",
-      "category": "props",
-      "file": "img/sprites/props/story-launch-trace-console-clean-hd.png",
-      "frameWidth": 144,
-      "frameHeight": 109,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-detention-pod",
-      "priority": "P1",
-      "category": "props",
-      "file": "img/sprites/props/story-detention-pod-clean-hd.png",
-      "frameWidth": 160,
-      "frameHeight": 164,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-fortress-route-beacon",
-      "priority": "P1",
-      "category": "props",
-      "file": "img/sprites/props/story-fortress-route-beacon-clean-hd.png",
-      "frameWidth": 128,
-      "frameHeight": 142,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-luma-containment",
-      "priority": "P0",
-      "category": "props",
-      "file": "img/sprites/props/story-luma-containment-clean-hd.png",
-      "frameWidth": 220,
-      "frameHeight": 192,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": { "storyClue": 1 },
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "game-cover",
-      "priority": "P0",
-      "category": "cover",
-      "file": "img/cover/little-bolt-big-moon-cover-v1.png",
-      "frameWidth": 1672,
-      "frameHeight": 941,
-      "columns": 1,
-      "rows": 1,
-      "totalFrames": 1,
-      "states": {
-        "static": 1
-      },
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "ui-font-regular",
-      "priority": "P0",
-      "category": "fonts",
-      "file": "img/fonts/silkscreen-regular.ttf",
-      "frameWidth": null,
-      "frameHeight": null,
-      "columns": null,
-      "rows": null,
-      "totalFrames": 1,
-      "states": {
-        "fontFile": 1
-      },
-      "usageSizes": [16, 24, 32],
-      "licenseId": "silkscreen-ofl-1.1"
-    },
-    {
-      "id": "ui-font-bold",
-      "priority": "P0",
-      "category": "fonts",
-      "file": "img/fonts/silkscreen-bold.ttf",
-      "frameWidth": null,
-      "frameHeight": null,
-      "columns": null,
-      "rows": null,
-      "totalFrames": 1,
-      "states": {
-        "fontFile": 1
-      },
-      "usageSizes": [18, 24, 32, 48],
-      "licenseId": "silkscreen-ofl-1.1"
-    }
-  ]
+    "version":  2,
+    "status":  "runtime",
+    "sourcePixelRules":  {
+                             "gameplayScale":  2,
+                             "backgroundScale":  4,
+                             "imageSmoothingEnabled":  false,
+                             "transparentPaddingPixels":  2
+                         },
+    "assets":  [
+                   {
+                       "id":  "factory-assembly-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/factory-assembly-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-energy-core-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/factory-energy-core-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-smelter-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/factory-smelter-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-launch-platform-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/launch-tower-launch-platform-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-outer-hull-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/launch-tower-outer-hull-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-supply-shafts-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/launch-tower-supply-shafts-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-crater-field-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/moon-crater-field-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-ruins-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/moon-ruins-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-warden-fortress-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/moon-warden-fortress-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "scrapyard-machine-graveyard-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/scrapyard-machine-graveyard-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "scrapyard-pressworks-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/scrapyard-pressworks-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "scrapyard-signal-tower-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/scrapyard-signal-tower-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-cargo-ring-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/space-station-cargo-ring-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-command-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/space-station-command-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-research-background-v1",
+                       "priority":  "P0",
+                       "category":  "backgrounds",
+                       "file":  "img/backgrounds/space-station-research-background-v1.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "game-cover",
+                       "priority":  "P0",
+                       "category":  "cover",
+                       "file":  "img/cover/little-bolt-big-moon-cover-v1.png",
+                       "frameWidth":  1672,
+                       "frameHeight":  941,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "static":  1
+                                  },
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-combat-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-trap-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-trap-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-wall-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-wall-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-falling-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-falling-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-spring-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-spring-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-combat-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-tower-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-tower-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-wall-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-tower-wall-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-combat-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/moon-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/moon-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-wall-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/moon-wall-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden-arena",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/moon-warden-arena-clean-hd.png",
+                       "frameWidth":  1536,
+                       "frameHeight":  1024,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "animatedOverlay":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden-entry-lift",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/moon-warden-entry-lift-clean-hd.png",
+                       "frameWidth":  512,
+                       "frameHeight":  107,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "static":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-combat-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-floor-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-floor-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-launch-platform-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-platform-launch-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-precision-platform-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-platform-precision-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-rescue-platform-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-platform-rescue-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-rest-platform-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-platform-rest-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-standard-platform-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-platform-standard-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-wall-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-wall-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-combat-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/space-station-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/space-station-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-wall-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/space-station-wall-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "little-bolt-big-moon-favicon-v1",
+                       "priority":  "P0",
+                       "category":  "favicon.png",
+                       "file":  "img/favicon.png",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "ui-font-bold",
+                       "priority":  "P0",
+                       "category":  "fonts",
+                       "file":  "img/fonts/silkscreen-bold.ttf",
+                       "frameWidth":  null,
+                       "frameHeight":  null,
+                       "columns":  null,
+                       "rows":  null,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "fontFile":  1
+                                  },
+                       "usageSizes":  [
+                                          18,
+                                          24,
+                                          32,
+                                          48
+                                      ],
+                       "licenseId":  "silkscreen-ofl-1.1"
+                   },
+                   {
+                       "id":  "ui-font-regular",
+                       "priority":  "P0",
+                       "category":  "fonts",
+                       "file":  "img/fonts/silkscreen-regular.ttf",
+                       "frameWidth":  null,
+                       "frameHeight":  null,
+                       "columns":  null,
+                       "rows":  null,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "fontFile":  1
+                                  },
+                       "usageSizes":  [
+                                          16,
+                                          24,
+                                          32
+                                      ],
+                       "licenseId":  "silkscreen-ofl-1.1"
+                   },
+                   {
+                       "id":  "byte-character",
+                       "priority":  "P0",
+                       "category":  "characters",
+                       "file":  "img/sprites/characters/byte-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  8,
+                       "rows":  5,
+                       "totalFrames":  33,
+                       "states":  {
+                                      "idle":  4,
+                                      "run":  6,
+                                      "jump":  1,
+                                      "fall":  1,
+                                      "land":  2,
+                                      "melee":  4,
+                                      "shoot":  3,
+                                      "hurt":  2,
+                                      "sleep":  4,
+                                      "dead":  6
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "luma-character",
+                       "priority":  "P0",
+                       "category":  "characters",
+                       "file":  "img/sprites/characters/luma.png",
+                       "frameWidth":  32,
+                       "frameHeight":  32,
+                       "columns":  5,
+                       "rows":  2,
+                       "totalFrames":  10,
+                       "states":  {
+                                      "poweredOff":  1,
+                                      "idle":  4,
+                                      "revive":  5
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "gameplay-effects",
+                       "priority":  "P0",
+                       "category":  "effects",
+                       "file":  "img/sprites/effects/gameplay-effects-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  6,
+                       "rows":  4,
+                       "totalFrames":  23,
+                       "states":  {
+                                      "jumpDust":  4,
+                                      "hitSpark":  4,
+                                      "muzzleFlash":  3,
+                                      "pickupShine":  6,
+                                      "explosion":  6
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "drone-guard",
+                       "priority":  "P0",
+                       "category":  "enemies",
+                       "file":  "img/sprites/enemies/drone-guard-clean-hd.png",
+                       "frameWidth":  96,
+                       "frameHeight":  64,
+                       "columns":  5,
+                       "rows":  4,
+                       "totalFrames":  20,
+                       "states":  {
+                                      "idle":  4,
+                                      "move":  4,
+                                      "telegraph":  3,
+                                      "attack":  3,
+                                      "hurt":  2,
+                                      "dead":  4
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden",
+                       "priority":  "P0",
+                       "category":  "enemies",
+                       "file":  "img/sprites/enemies/moon-warden-clean-hd.png",
+                       "frameWidth":  192,
+                       "frameHeight":  192,
+                       "columns":  7,
+                       "rows":  4,
+                       "totalFrames":  26,
+                       "states":  {
+                                      "idle":  4,
+                                      "move":  4,
+                                      "meleeAttack":  5,
+                                      "rangedAttack":  5,
+                                      "hurt":  2,
+                                      "dead":  6
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrap-crawler",
+                       "priority":  "P0",
+                       "category":  "enemies",
+                       "file":  "img/sprites/enemies/scrap-crawler-clean-hd.png",
+                       "frameWidth":  96,
+                       "frameHeight":  64,
+                       "columns":  7,
+                       "rows":  2,
+                       "totalFrames":  13,
+                       "states":  {
+                                      "walk":  4,
+                                      "attack":  3,
+                                      "hurt":  2,
+                                      "dead":  4
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "arc-charge",
+                       "priority":  "P1",
+                       "category":  "items",
+                       "file":  "img/sprites/items/arc-charge-clean-hd.png",
+                       "frameWidth":  48,
+                       "frameHeight":  72,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "pickup":  1
+                                  },
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "collectable-items",
+                       "priority":  "P0",
+                       "category":  "items",
+                       "file":  "img/sprites/items/collectables-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  5,
+                       "rows":  3,
+                       "totalFrames":  15,
+                       "states":  {
+                                      "gear":  4,
+                                      "energyCell":  4,
+                                      "boltAmmo":  1,
+                                      "boltThrowerPickup":  4,
+                                      "badgeHalves":  2
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "upgrade-icons",
+                       "priority":  "P0",
+                       "category":  "items",
+                       "file":  "img/sprites/items/upgrade-icons-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  5,
+                       "rows":  1,
+                       "totalFrames":  5,
+                       "states":  {
+                                      "maximumEnergy":  1,
+                                      "wrenchDamage":  1,
+                                      "arcChargeCapacity":  1,
+                                      "knockbackResistance":  1,
+                                      "jumpControl":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "empty-luma-cradle",
+                       "priority":  "P0",
+                       "category":  "props",
+                       "file":  "img/sprites/props/empty-luma-cradle.png",
+                       "frameWidth":  96,
+                       "frameHeight":  64,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "static":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-abandoned-cradle",
+                       "priority":  "P1",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-abandoned-cradle-clean-hd.png",
+                       "frameWidth":  160,
+                       "frameHeight":  106,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-detention-pod",
+                       "priority":  "P1",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-detention-pod-clean-hd.png",
+                       "frameWidth":  160,
+                       "frameHeight":  164,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-fortress-route-beacon",
+                       "priority":  "P1",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-fortress-route-beacon-clean-hd.png",
+                       "frameWidth":  128,
+                       "frameHeight":  142,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-launch-trace-console",
+                       "priority":  "P1",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-launch-trace-console-clean-hd.png",
+                       "frameWidth":  144,
+                       "frameHeight":  109,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-luma-containment",
+                       "priority":  "P0",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-luma-containment-clean-hd.png",
+                       "frameWidth":  220,
+                       "frameHeight":  192,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-luma-transport-case",
+                       "priority":  "P1",
+                       "category":  "props",
+                       "file":  "img/sprites/props/story-luma-transport-case-clean-hd.png",
+                       "frameWidth":  144,
+                       "frameHeight":  84,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "storyClue":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "arc-cannon",
+                       "priority":  "P1",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/arc-cannon-clean-hd.png",
+                       "frameWidth":  96,
+                       "frameHeight":  64,
+                       "columns":  1,
+                       "rows":  1,
+                       "totalFrames":  1,
+                       "states":  {
+                                      "pickup":  1
+                                  },
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "arc-projectile",
+                       "priority":  "P1",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/arc-projectile-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  4,
+                       "rows":  1,
+                       "totalFrames":  4,
+                       "states":  {
+                                      "flight":  4
+                                  },
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "bolt-projectile",
+                       "priority":  "P0",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/bolt-projectile-clean-hd.png",
+                       "frameWidth":  32,
+                       "frameHeight":  16,
+                       "columns":  2,
+                       "rows":  1,
+                       "totalFrames":  2,
+                       "states":  {
+                                      "fly":  2
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "boss-projectiles",
+                       "priority":  "P0",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/boss-projectiles-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  32,
+                       "columns":  4,
+                       "rows":  2,
+                       "totalFrames":  8,
+                       "states":  {
+                                      "shockwave":  4,
+                                      "moonBolt":  4
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "drone-projectile",
+                       "priority":  "P0",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/drone-projectile-clean-hd.png",
+                       "frameWidth":  32,
+                       "frameHeight":  32,
+                       "columns":  4,
+                       "rows":  1,
+                       "totalFrames":  4,
+                       "states":  {
+                                      "fly":  4
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "player-weapons",
+                       "priority":  "P0",
+                       "category":  "weapons",
+                       "file":  "img/sprites/weapons/player-weapons-clean-hd.png",
+                       "frameWidth":  64,
+                       "frameHeight":  64,
+                       "columns":  2,
+                       "rows":  1,
+                       "totalFrames":  2,
+                       "states":  {
+                                      "repairWrench":  1,
+                                      "boltThrower":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "hud-icons",
+                       "priority":  "P0",
+                       "category":  "ui",
+                       "file":  "img/ui/hud-icons-clean-hd.png",
+                       "frameWidth":  48,
+                       "frameHeight":  48,
+                       "columns":  8,
+                       "rows":  1,
+                       "totalFrames":  8,
+                       "states":  {
+                                      "energy":  1,
+                                      "ammo":  1,
+                                      "gears":  1,
+                                      "height":  1,
+                                      "score":  1,
+                                      "arcCharge":  1,
+                                      "weapon":  1,
+                                      "pause":  1
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   }
+               ]
 }

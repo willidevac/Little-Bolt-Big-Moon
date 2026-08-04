@@ -2,8 +2,6 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
 const RUNTIME_FILE = "img/sprites/enemies/drone-guard-clean-hd.png";
-const MASTER_FILE =
-  "img/concepts/approvals/drone-guard-clean-hd-production-layout-v1.png";
 const CLASS_FILE = "classes/entities/enemies/drone-guard.class.js";
 
 verifyFiles();
@@ -16,7 +14,6 @@ console.log("ART-014: Drone Guard mit 20 Clean-HD-Frames bestanden.");
 
 function verifyFiles() {
   assert.equal(existsSync(RUNTIME_FILE), true);
-  assert.equal(existsSync(MASTER_FILE), true);
 }
 
 function verifyPng() {
@@ -45,7 +42,6 @@ function verifyRuntimeConfig() {
 function verifyCredits() {
   const files = readJson("data/asset-credits.json").assets.map(({ file }) => file);
   assert.equal(files.includes(RUNTIME_FILE), true);
-  assert.equal(files.includes(MASTER_FILE), true);
 }
 
 function readJson(file) {

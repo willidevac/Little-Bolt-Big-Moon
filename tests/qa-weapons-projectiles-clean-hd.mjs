@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
-const MASTER =
-  "img/concepts/approvals/weapons-projectiles-clean-hd-production-layout-v1.png";
 const ASSETS = Object.freeze([
   ["player-weapons", "player-weapons-clean-hd.png", 64, 64, 2, 1, 2],
   ["bolt-projectile", "bolt-projectile-clean-hd.png", 32, 16, 2, 1, 2],
@@ -20,7 +18,6 @@ verifyCredits();
 console.log("ART-016: 21 Clean-HD-Waffen- und Projektilframes bestanden.");
 
 function verifyFilesAndPngs() {
-  assert.equal(existsSync(MASTER), true);
   ASSETS.forEach(([, name, width, height, columns, rows]) => {
     const file = `img/sprites/weapons/${name}`;
     assert.equal(existsSync(file), true);
@@ -59,7 +56,6 @@ function verifyRuntimeConfigs() {
 
 function verifyCredits() {
   const files = readJson("data/asset-credits.json").assets.map(({ file }) => file);
-  assert.equal(files.includes(MASTER), true);
   ASSETS.forEach(([, name]) => {
     assert.equal(files.includes(`img/sprites/weapons/${name}`), true);
   });

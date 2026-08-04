@@ -8,14 +8,6 @@ import { readAppMarkup } from "./helpers/read-app-markup.mjs";
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs"]);
 const STYLE_EXTENSIONS = new Set([".css"]);
-const CLEAN_HD_BACKGROUNDS = new Set([
-  "scrapyard",
-  "factory",
-  "launch-tower",
-  "space-station",
-  "moon",
-]);
-const CLEAN_HD_LAYERS = Object.freeze(["far", "mid", "near"]);
 const levelData = JSON.parse(
   await fs.readFile(path.join(ROOT, "data", "levels", "level-01.json")),
 );
@@ -34,9 +26,14 @@ const styleFiles = [
 
 await assertNoDebugOutput(sourceFiles);
 await assertRelativeImports(sourceFiles);
-await assertDocumentAssets();
-await assertStyleAssets(styleFiles);
-await assertRuntimeAssets(sourceFiles);
+const documentAssets = await getDocumentAssets();
+const styleAssets = await getStyleAssets(styleFiles);
+const runtimeAssets = await getRuntimeAssets(sourceFiles);
+const allRuntimeAssets = new Set([
+  ...documentAssets, ...styleAssets, ...runtimeAssets,
+]);
+await assertFiles([...allRuntimeAssets]);
+await assertAssetInventory(allRuntimeAssets);
 
 console.log(
   `QA-001: ${sourceFiles.length} Dateien und alle Runtime-Assets geprüft.`,
@@ -77,30 +74,33 @@ function getRelativeImports(source) {
   return [...matches].map((match) => match[1]);
 }
 
-async function assertDocumentAssets() {
+async function getDocumentAssets() {
   const html = await readAppMarkup(ROOT);
   const matches = html.matchAll(/\b(?:src|href)=["']([^"']+)["']/g);
   const localPaths = [...matches].map((match) => match[1]).filter(isLocalFile);
-  await assertFiles(localPaths.map((file) => path.join(ROOT, file)));
+  return localPaths.map((file) => path.join(ROOT, file));
 }
 
-async function assertStyleAssets(files) {
+async function getStyleAssets(files) {
+  const assets = [];
   for (const file of files) {
     const css = await fs.readFile(file, "utf8");
     const urls = [...css.matchAll(/url\(([^)]+)\)/g)]
       .map((match) => match[1].replaceAll(/["']/g, ""))
       .filter(isLocalFile)
       .map((url) => path.resolve(path.dirname(file), url));
-    await assertFiles(urls);
+    assets.push(...urls);
   }
+  return assets;
 }
 
-async function assertRuntimeAssets(files) {
+async function getRuntimeAssets(files) {
   const assets = new Set(await getStaticAssetPaths(files));
   addAudioAssets(assets);
   addLevelAssets(assets);
+  addDynamicRuntimeAssets(assets);
   assets.add(path.resolve(ROOT, upgradeData.iconSheet.source));
-  await assertFiles([...assets]);
+  return assets;
 }
 
 async function getStaticAssetPaths(files) {
@@ -122,17 +122,34 @@ function addAudioAssets(assets) {
   });
 }
 
+function addDynamicRuntimeAssets(assets) {
+  [
+    ["effects", "gameplay-effects-clean-hd.png"],
+    ["environment", "moon-warden-entry-lift-clean-hd.png"],
+    ["weapons", "drone-projectile-clean-hd.png"],
+    ["weapons", "player-weapons-clean-hd.png"],
+    ["props", "story-abandoned-cradle-clean-hd.png"],
+    ["props", "story-luma-transport-case-clean-hd.png"],
+    ["props", "story-launch-trace-console-clean-hd.png"],
+    ["props", "story-detention-pod-clean-hd.png"],
+    ["props", "story-fortress-route-beacon-clean-hd.png"],
+    ["props", "story-luma-containment-clean-hd.png"],
+  ].forEach(([category, file]) => assets.add(resolveAsset(category, file)));
+}
+
 function addLevelAssets(assets) {
   levelData.sections.forEach((section) => {
-    addSectionBackgrounds(assets, section);
     assets.add(resolveAsset(
-      "tilesets", `${section.tileset}-tiles-clean-hd.png`,
+      "backgrounds", `${section.id}-background-v1.png`,
     ));
     assets.add(resolveAsset(
       "environment", `${section.tileset}-wall-clean-hd.png`,
     ));
     assets.add(resolveAsset(
       "environment", `${section.tileset}-wall-platform-clean-hd.png`,
+    ));
+    assets.add(resolveAsset(
+      "environment", `${section.tileset}-combat-platform-clean-hd.png`,
     ));
   });
   assets.add(resolveAsset("environment", "scrapyard-floor-clean-hd.png"));
@@ -150,17 +167,26 @@ function addLevelAssets(assets) {
   });
 }
 
-function addSectionBackgrounds(assets, section) {
-  if (!CLEAN_HD_BACKGROUNDS.has(section.backgroundId)) {
-    assets.add(resolveAsset("backgrounds", `${section.id}-background-v1.png`));
-    return;
-  }
-  CLEAN_HD_LAYERS.forEach((layer) => {
-    assets.add(resolveAsset(
-      "backgrounds",
-      `${section.backgroundId}-${layer}-clean-hd.png`,
-    ));
-  });
+async function assertAssetInventory(runtimeAssets) {
+  const expected = [...runtimeAssets].filter(isManifestAsset).map(relative).sort();
+  const manifest = JSON.parse(
+    await fs.readFile(path.join(ROOT, "data", "asset-manifest.json"), "utf8"),
+  );
+  const declared = manifest.assets.map(({ file }) => file).sort();
+  const onDisk = (await listFiles(path.join(ROOT, "img"),
+    new Set([".png", ".ttf"]))).map(relative).sort();
+  assert.deepEqual(declared, expected, "Asset-Manifest enthält Alt- oder Fehlpfade");
+  assert.deepEqual(onDisk, expected, "Ungenutzte Bild- oder Schriftdateien gefunden");
+  const credits = JSON.parse(
+    await fs.readFile(path.join(ROOT, "data", "asset-credits.json"), "utf8"),
+  );
+  const credited = new Set(credits.assets.map(({ file }) => file));
+  assert.ok(expected.every((file) => credited.has(file)));
+}
+
+function isManifestAsset(file) {
+  return file.startsWith(path.join(ROOT, "img")) &&
+    [".png", ".ttf"].includes(path.extname(file));
 }
 
 function resolveAsset(category, fileName) {

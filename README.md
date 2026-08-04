@@ -44,7 +44,7 @@ ist.
 - fünf Biome mit insgesamt 15 unterschiedlich gebauten Abschnitten
 - Kamera, die Byte beim Aufstieg und Fallen begleitet
 - aufladbarer Präzisionssprung ohne nachträgliche Luftsteuerung
-- statische, bewegliche und fallende Plattformen
+- statische, fallende, federnde und als Falle markierte Plattformen
 - zwei normale Gegnertypen, Zwischenbosse und ein Endboss
 - Rückstoß durch Gegner und Projektile
 - Schraubenschlüssel und auffindbarer Bolzenwerfer

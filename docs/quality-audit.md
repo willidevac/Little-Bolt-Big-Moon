@@ -1,6 +1,6 @@
 # Qualitäts- und Sichtprüfung
 
-Stand: 2. August 2026
+Stand: 4. August 2026
 
 ## Prüfumfang
 
@@ -16,8 +16,7 @@ breite Ansichten kontrolliert.
 | ID | Beobachtung | Behebung |
 | --- | --- | --- |
 | VIS-001 | Zehn Funde schwebten sichtbar oberhalb ihrer nächsten Plattform. | Alle Funde besitzen jetzt eine geprüfte "anchorPlatformId" und werden aus der Plattformoberkante positioniert. |
-| VIS-002 | Funde auf beweglichen Plattformen blieben bei deren Bewegung zurück. | "AnchoredCollectable" übernimmt die Framebewegung seiner Plattform. |
-| VIS-003 | Funde auf Fallplattformen konnten während deren unsichtbarer Wartezeit in der Luft stehen. | Fund und Kollision werden gemeinsam mit der Plattform ausgeblendet und beim Respawn zurückgesetzt. |
+| VIS-002 | Funde auf Fallplattformen konnten während deren unsichtbarer Wartezeit in der Luft stehen. | Fund und Kollision werden gemeinsam mit der Plattform ausgeblendet und beim Respawn zurückgesetzt. |
 | VIS-004 | Storyobjekt-Höhen waren zusätzlich zur Plattform manuell in JSON gepflegt. | "StoryProp" berechnet die sichtbare Höhe nun aus seinem geprüften Anker. |
 | UI-001 | Punkte, Kombo und Pause ragten bei 844 × 500 und 1024 × 600 rechts aus dem Spielbereich. | Die äußeren HUD-Spalten dürfen jetzt wirklich schrumpfen. |
 | UI-002 | „Reparaturschlüssel“ wurde bei 568 × 320 abgeschnitten. | Der Waffenbereich besitzt eine eigene responsive Breite und kleinere Schrift. |
@@ -59,9 +58,9 @@ damit spätere Positionsänderungen nicht erneut zu schwebenden Objekten führen
 
 ## Normalmodus und Balancing
 
-Der normale Spielstart wurde sichtbar im Browser geprüft. Zusätzlich simuliert
-`qa-normal-gameplay.mjs` jeden der 955 aufeinanderfolgenden Hauptsprünge mit den
-echten Werten aus `GAME_CONFIG` in Ladungsschritten von 0,1 Prozent.
+Der normale Spielstart wurde sichtbar im Browser geprüft. Zusätzlich bewertet
+`qa-physics-route.mjs` alle 412 regulären Hauptsprünge mit den echten Werten
+aus `GAME_CONFIG` und überprüft sichere Eingabefenster bei 60 FPS.
 
 - Alle Hauptsprünge besitzen mindestens ein erreichbares Ladungsfenster.
 - Die frühen Fabriksprünge verlangen keine nahezu perfekte Vollladung mehr.
@@ -85,7 +84,8 @@ für `Character` und 291 Zeilen für `World` deutlich unter der festen Grenze.
 - Produktionscode enthält keine Debugausgaben oder `debugger`-Anweisungen.
 - Es existieren keine offenen `TODO`-, `FIXME`-, `HACK`- oder `XXX`-Marker.
 - Produktionscode verwendet weder `var` noch lockere Gleichheitsvergleiche.
-- Alle 111 Produktionsdateien besitzen verwendete und eindeutige Imports.
+- Alle 134 Produktionsdateien sind vom Spieleinstieg erreichbar und besitzen
+  verwendete sowie eindeutige Imports.
 - Zustände, HUD-Feedback, Bodenbewegung, Run-Neustart, Weltaufbau und
   Laufwert-Synchronisierung besitzen getrennte Verantwortungen und eigene Tests.
 

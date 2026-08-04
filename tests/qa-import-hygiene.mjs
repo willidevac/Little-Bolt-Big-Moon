@@ -12,7 +12,32 @@ const productionFiles = [
 const problems = (await Promise.all(productionFiles.map(auditFile))).flat();
 
 assert.deepEqual(problems, []);
+await assertAllProductionFilesReachable(productionFiles);
 console.log(`CLEAN-015: ${productionFiles.length} Dateien besitzen saubere Imports.`);
+
+async function assertAllProductionFilesReachable(files) {
+  const reachable = new Set();
+  const pending = [path.resolve("script.js")];
+  while (pending.length) {
+    const file = pending.pop();
+    if (reachable.has(file)) continue;
+    reachable.add(file);
+    const source = await fs.readFile(file, "utf8");
+    getRelativeImports(source).forEach((specifier) => {
+      pending.push(path.resolve(path.dirname(file), specifier));
+    });
+  }
+  const unreachable = files.map((file) => path.resolve(file))
+    .filter((file) => !reachable.has(file))
+    .map((file) => path.relative(process.cwd(), file).replaceAll("\\", "/"));
+  assert.deepEqual(unreachable, [], "Nicht erreichbarer Produktionscode");
+}
+
+function getRelativeImports(source) {
+  return [...source.matchAll(/(?:from\s+|import\s*)["'](\.[^"']+)["']/g)]
+    .map((match) => match[1])
+    .filter((specifier) => specifier.endsWith(".js"));
+}
 
 async function collectFiles(directory) {
   const entries = await fs.readdir(directory, { withFileTypes: true });

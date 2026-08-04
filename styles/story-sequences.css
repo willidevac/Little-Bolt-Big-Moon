@@ -75,7 +75,7 @@
 .story-sprite--byte {
   left: 29%;
   bottom: 14%;
-  background-image: url("../img/sprites/characters/byte.png");
+  background-image: url("../img/sprites/characters/byte-clean-hd.png");
   background-position: 0 0;
   background-size: 800% 500%;
 }
@@ -101,7 +101,7 @@
 .story-sprite--energy,
 .story-sprite--badge-left,
 .story-sprite--badge-right {
-  background-image: url("../img/sprites/items/collectables.png");
+  background-image: url("../img/sprites/items/collectables-clean-hd.png");
   background-size: 500% 300%;
 }
 

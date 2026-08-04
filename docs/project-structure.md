@@ -24,14 +24,13 @@ Spiel/
 │   └── utils/                 kleine Hilfsfunktionen
 ├── data/                      JSON-Level, Upgrades und Assetnachweise
 ├── img/
-│   ├── concepts/              nicht direkt verwendete Designreferenzen
 │   ├── sprites/               Figuren, Gegner, Waffen, Items, Effekte, Props
-│   ├── tilesets/              Plattform- und Umgebungskacheln
-│   ├── backgrounds/           Landschaft und Parallax-Ebenen
+│   ├── environment/           Wände, Plattformen und Bossarena
+│   ├── backgrounds/           15 tatsächlich verwendete Landschaftsbilder
 │   ├── ui/                    Buttons, Karten und Anzeigen
 │   └── fonts/                 lokal eingebundene Schriftarten
 ├── styles/                    aufgeteilte CSS-Dateien
-├── templates/                 optionale wiederverwendbare Markupteile
+├── templates/                 durch die Kurs-Checkliste verlangter Vorlagenordner
 ├── audio/                     lokal eingebundene Musik und Effekte
 └── docs/                      Planung und Projektnachweise
 ```

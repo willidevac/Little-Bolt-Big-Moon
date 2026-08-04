@@ -1,12 +1,8 @@
 # Grafik-Assets
 
-Produktionsbilder liegen ausschließlich in den vorgesehenen Unterordnern.
-Das Konzeptbild unter `concepts/` darf nicht direkt als Spritesheet benutzt
-werden.
-
-Freigegebene Charakter- und Gegnerreferenzen liegen unter
-`concepts/approvals/`. Auch diese Dateien dienen nur als Vorlage für die
-pixelgenaue Produktion.
+Im Repository liegen ausschließlich tatsächlich verwendete Laufzeitgrafiken.
+Historische Konzepte, Produktionsvorlagen und ersetzte Varianten werden nicht
+mit dem Spiel ausgeliefert.
 
 Die vollständig neu erzeugten Clean-HD-Seitenwände, Wandplattformen und die
 einzige durchgehende Startbodenplatte liegen unter `environment/`.
@@ -18,8 +14,7 @@ Die sechs neu erzeugten, wortlosen Storyobjekte liegen unter `sprites/props/`.
 Sie bilden ueber Ladestation, Transport, Flugroute, Gefangenschaft und
 Festungsspur bis zu Lumas Kapsel eine zusammenhaengende Halbmond-Bildsprache.
 
-Dateinamen verwenden Kleinbuchstaben und Bindestriche, zum Beispiel:
-
-- `byte-idle.png`
-- `scrap-crawler-walk.png`
-- `moon-platform-tileset.png`
+`backgrounds/` enthält genau die 15 im Level geladenen Landschaftsbilder.
+`environment/` enthält die fünf Wandsets, Plattformrollen, Mechanikplattformen
+und die Bossarena. Alle Sprite-Unterordner enthalten nur die aktuell über Code,
+HTML oder CSS referenzierten Sheets.

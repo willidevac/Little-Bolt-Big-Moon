@@ -1,1909 +1,759 @@
 {
-  "licenseProfiles": [
-    {
-      "id": "openai-generated-output",
-      "label": "OpenAI-generated project output",
-      "origin": "OpenAI image generation",
-      "terms": "https://openai.com/policies/eu-terms-of-use/",
-      "evidence": "docs/asset-licensing.md",
-      "notes": "Output rights apply between the user and OpenAI as described by the terms; exclusivity is not guaranteed."
-    },
-    {
-      "id": "openai-assisted-project-art",
-      "label": "OpenAI-assisted, manually adapted project pixel art",
-      "origin": "Project production based on the existing OpenAI-generated style sheet",
-      "terms": "https://openai.com/policies/eu-terms-of-use/",
-      "evidence": "docs/asset-licensing.md",
-      "notes": "Each finished file must be manually pixel-cleaned, palette-limited and added to this credits file before integration."
-    },
-    {
-      "id": "silkscreen-ofl-1.1",
-      "label": "Silkscreen under SIL Open Font License 1.1",
-      "origin": "The Silkscreen Project Authors via the official Google Fonts repository",
-      "source": "https://github.com/google/fonts/tree/main/ofl/silkscreen",
-      "terms": "https://github.com/google/fonts/blob/main/ofl/silkscreen/OFL.txt",
-      "evidence": "The font directory contains regular and bold font files plus its OFL.txt.",
-      "notes": "Copy OFL.txt into img/fonts/ when the font files are downloaded."
-    },
-    {
-      "id": "opengameart-cc0-audio",
-      "label": "OpenGameArt music under CC0 1.0",
-      "origin": "qubodup and SRG774 via OpenGameArt",
-      "source": "https://opengameart.org/",
-      "terms": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "evidence": "audio/licenses/OpenGameArt-CC0.txt",
-      "notes": "Attribution is not required, but authors and source pages are documented voluntarily."
-    },
-    {
-      "id": "kenney-cc0-audio",
-      "label": "Kenney audio under CC0 1.0",
-      "origin": "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
-      "source": "https://kenney.nl/assets",
-      "terms": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "evidence": "audio/licenses/Kenney-CC0.txt",
-      "notes": "Free for personal, educational and commercial projects; attribution is not required."
-    }
-  ],
-  "assets": [
-    {
-      "id": "little-bolt-big-moon-style-sheet-v1",
-      "file": "img/concepts/little-bolt-big-moon-style-sheet-v1.png",
-      "role": "design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation",
-      "created": "2026-07-23",
-      "modifications": "Production sprites will be manually redesigned and animated.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "little-bolt-big-moon-cover-v1",
-      "file": "img/cover/little-bolt-big-moon-cover-v1.png",
-      "role": "game-cover",
-      "status": "present",
-      "origin": "OpenAI image generation using the project style sheet as reference",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "byte-luma-master-v1",
-      "file": "img/concepts/approvals/byte-luma-master-v1.png",
-      "role": "approved-character-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the project style sheet and the selected chunky character direction as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as concept reference, not as a runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "enemies-master-v1",
-      "file": "img/concepts/approvals/enemies-master-v1.png",
-      "role": "approved-enemy-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the project style sheet, approved character master and selected angular enemy direction as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime spritesheets.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "weapons-master-v1",
-      "file": "img/concepts/approvals/weapons-master-v1.png",
-      "role": "approved-weapon-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved character master and selected cream-and-blue weapon direction as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime sprites.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "collectibles-master-v1",
-      "file": "img/concepts/approvals/collectibles-master-v1.png",
-      "role": "approved-collectible-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the selected orange-and-dark-gray collectible direction as reference",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as concept reference, not as runtime sprites.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "background-zones-master-v1",
-      "file": "img/concepts/approvals/background-zones-master-v1.png",
-      "role": "approved-background-zone-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the project style sheet and approved character direction as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the atmosphere and visual progression reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-background-master-v1",
-      "file": "img/concepts/approvals/scrapyard-background-master-v1.png",
-      "role": "approved-scrapyard-background-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone master and project style sheet as references",
-      "created": "2026-07-23",
-      "modifications": "A generated character was removed before approval; approved as the composite, parallax and storytelling reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-background-master-v1",
-      "file": "img/concepts/approvals/factory-background-master-v1.png",
-      "role": "approved-factory-background-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone, scrapyard and character masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the composite, parallax and wordless-story reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-background-master-v1",
-      "file": "img/concepts/approvals/launch-tower-background-master-v1.png",
-      "role": "approved-launch-tower-background-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone, factory and style masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the composite, parallax and atmospheric-transition reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-background-master-v1",
-      "file": "img/concepts/approvals/space-station-background-master-v1.png",
-      "role": "approved-space-station-background-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone, launch-tower and enemy masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the composite, parallax and security-story reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-background-master-v1",
-      "file": "img/concepts/approvals/moon-background-master-v1.png",
-      "role": "approved-moon-background-and-boss-arena-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone, space-station, enemy and character masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the composite, parallax, boss-arena and ending-story reference, not as runtime backgrounds.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "tiles-hazards-master-v1",
-      "file": "img/concepts/approvals/tiles-hazards-master-v1.png",
-      "role": "approved-tiles-platforms-and-hazards-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background-zone, collectible and enemy masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the modular tile, platform-state and hazard-state reference, not as runtime tilesets.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "story-props-master-v1",
-      "file": "img/concepts/approvals/story-props-master-v1.png",
-      "role": "approved-story-props-and-interactions-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved character, collectible, factory and Moon masters as references",
-      "created": "2026-07-23",
-      "modifications": "No manual modifications after generation; approved as the static-prop, signal-animation and revive-socket reference, not as runtime sprites.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "empty-luma-cradle-runtime",
-      "file": "img/sprites/props/empty-luma-cradle.png",
-      "role": "runtime-wordless-story-cradle",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved story-props master as reference",
-      "created": "2026-07-29",
-      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 96x64 runtime frame.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-duo-poster-runtime",
-      "file": "img/sprites/props/factory-duo-poster.png",
-      "role": "runtime-wordless-story-poster",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved story-props master as reference",
-      "created": "2026-07-29",
-      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 64x96 runtime frame.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "luma-cargo-crate-runtime",
-      "file": "img/sprites/props/luma-cargo-crate.png",
-      "role": "runtime-wordless-story-cargo-crate",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved story-props master as reference",
-      "created": "2026-07-29",
-      "modifications": "Chroma key removed and resized with JavaScript/Node processing to one 64x64 runtime frame.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "blue-signal-beacon-runtime",
-      "file": "img/sprites/props/blue-signal-beacon.png",
-      "role": "runtime-wordless-story-signal",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved story-props master as reference",
-      "created": "2026-07-29",
-      "modifications": "Chroma key removed, four equal frames isolated and resized with JavaScript/Node processing to a 256x96 runtime sheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "gameplay-vfx-master-v1",
-      "file": "img/concepts/approvals/gameplay-vfx-master-v1.png",
-      "role": "approved-gameplay-vfx-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved weapon, collectible and tile/hazard masters as references",
-      "created": "2026-07-23",
-      "modifications": "The jump-dust sequence was corrected to four frames before approval; approved as the 23-frame animation and contrast reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "ui-hud-menus-master-v1",
-      "file": "img/concepts/approvals/ui-hud-menus-master-v1.png",
-      "role": "approved-ui-hud-and-menus-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved background, collectible, weapon and tile/hazard masters as references",
-      "created": "2026-07-23",
-      "modifications": "German interface labels were corrected before approval; approved as the 1280x720 HUD, overlay, icon, touch-control and contrast reference, not as runtime UI assets.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "byte-animation-master-v1",
-      "file": "img/concepts/approvals/byte-animation-master-v1.png",
-      "role": "approved-byte-animation-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved character, weapon and gameplay-VFX masters as references",
-      "created": "2026-07-23",
-      "modifications": "The missing sixth run pose was added and floating sleep symbols were removed before approval; approved as the exact 33-pose animation reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "luma-animation-master-v1",
-      "file": "img/concepts/approvals/luma-animation-master-v1.png",
-      "role": "approved-luma-animation-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved character, story-prop, collectible and gameplay-VFX masters as references",
-      "created": "2026-07-23",
-      "modifications": "Approved as the exact 10-pose powered-off, hover-idle and revive reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrap-crawler-animation-master-v1",
-      "file": "img/concepts/approvals/scrap-crawler-animation-master-v1.png",
-      "role": "approved-scrap-crawler-animation-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and tile/hazard masters as references",
-      "created": "2026-07-23",
-      "modifications": "Approved as the exact 13-pose walk, attack, hurt and mechanical-defeat reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "drone-guard-animation-master-v1",
-      "file": "img/concepts/approvals/drone-guard-animation-master-v1.png",
-      "role": "approved-drone-guard-animation-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and background-zone masters as references",
-      "created": "2026-07-23",
-      "modifications": "Approved as the exact 20-pose idle, flight, telegraph, attack, hurt and mechanical-defeat reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-warden-animation-master-v1",
-      "file": "img/concepts/approvals/moon-warden-animation-master-v1.png",
-      "role": "approved-moon-warden-animation-design-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved enemy, gameplay-VFX and Moon-background masters as references",
-      "created": "2026-07-23",
-      "modifications": "The missing fourth idle pose was added before approval; approved as the exact 26-pose boss animation and non-destructive shutdown reference, not as the runtime spritesheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "byte-production-layout-v1",
-      "file": "img/concepts/approvals/byte-production-layout-v1.png",
-      "role": "approved-byte-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved Byte animation, character, weapon and gameplay-VFX masters as references",
-      "created": "2026-07-23",
-      "modifications": "The row-major state order and two hurt cells were corrected before approval; approved as the 8x5 packing reference with 33 filled and seven empty cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "byte-runtime-spritesheet-v1",
-      "file": "img/sprites/characters/byte.png",
-      "role": "legacy-runtime-byte-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated Byte production layout",
-      "created": "2026-07-23",
-      "modifications": "Chroma-key removal, nearest-neighbor packing into 32x32 cells and alpha validation were performed with JavaScript; final size 256x160 with 33 occupied and seven transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "byte-clean-hd-production-layout-v1",
-      "file": "img/concepts/approvals/byte-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-byte-runtime-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Byte production layout and Clean-HD pose reference",
-      "created": "2026-07-30",
-      "modifications": "The exact 8x5 topology and row-major order were retained with 33 occupied and seven empty cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "byte-clean-hd-runtime-spritesheet-v1",
-      "file": "img/sprites/characters/byte-clean-hd.png",
-      "role": "runtime-byte-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD Byte production layout",
-      "created": "2026-07-30",
-      "modifications": "Magenta background removal, grid exclusion and nearest-neighbor packing into 64x64 cells; final size 512x320 with 33 occupied and seven transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "luma-production-layout-v1",
-      "file": "img/concepts/approvals/luma-production-layout-v1.png",
-      "role": "approved-luma-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved Luma animation, character, story-prop and gameplay-VFX masters as references",
-      "created": "2026-07-23",
-      "modifications": "The powered-off antenna tip was corrected before approval; approved as the exact 5x2 packing reference with ten filled cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "luma-runtime-spritesheet-v1",
-      "file": "img/sprites/characters/luma.png",
-      "role": "runtime-luma-spritesheet",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated Luma production layout",
-      "created": "2026-07-23",
-      "modifications": "Magenta chroma-key removal, nearest-neighbor packing into 32x32 cells and alpha validation were performed with JavaScript; final size 160x64 with ten occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrap-crawler-production-layout-v1",
-      "file": "img/concepts/approvals/scrap-crawler-production-layout-v1.png",
-      "role": "approved-scrap-crawler-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved Scrap Crawler animation and enemy masters as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the exact 7x2 packing reference with 13 filled cells and one empty cell.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrap-crawler-runtime-spritesheet-v1",
-      "file": "img/sprites/enemies/scrap-crawler.png",
-      "role": "legacy-runtime-scrap-crawler-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated Scrap Crawler production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing into 48x32 cells and alpha validation were performed with JavaScript; final size 336x64 with 13 occupied and one transparent cell.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrap-crawler-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/scrap-crawler-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-scrap-crawler-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Scrap Crawler animation and Clean-HD gameplay references",
-      "created": "2026-07-30",
-      "modifications": "The exact 7x2 order was retained with 13 occupied cells and one empty reserve cell.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrap-crawler-clean-hd-runtime-v1",
-      "file": "img/sprites/enemies/scrap-crawler-clean-hd.png",
-      "role": "runtime-scrap-crawler-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD Scrap Crawler layout",
-      "created": "2026-07-30",
-      "modifications": "Chroma-key removal, detected-cell extraction, nearest-neighbor packing and legacy-bound alignment produced 13 native 96x64 frames.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-guard-production-layout-v1",
-      "file": "img/concepts/approvals/drone-guard-production-layout-v1.png",
-      "role": "approved-drone-guard-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved Drone Guard animation and enemy masters as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the exact 5x4 packing reference with 20 filled cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "drone-guard-runtime-spritesheet-v1",
-      "file": "img/sprites/enemies/drone-guard.png",
-      "role": "legacy-runtime-drone-guard-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated Drone Guard production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing into 48x32 cells and alpha validation were performed with JavaScript; final size 240x128 with 20 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-guard-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/drone-guard-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-drone-guard-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Drone Guard layout and Clean-HD Scrap Crawler reference",
-      "created": "2026-07-31",
-      "modifications": "The exact 5x4 order was retained with all 20 animation cells occupied.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "drone-guard-clean-hd-runtime-v1",
-      "file": "img/sprites/enemies/drone-guard-clean-hd.png",
-      "role": "runtime-drone-guard-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD Drone Guard layout",
-      "created": "2026-07-31",
-      "modifications": "Magenta removal, grid-safe cell extraction and native packing produced 20 transparent 96x64 frames without changing the rendered size.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden-production-layout-v1",
-      "file": "img/concepts/approvals/moon-warden-production-layout-v1.png",
-      "role": "approved-moon-warden-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved Moon Warden animation, enemy and Moon-background masters as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the exact 7x4 packing reference with 26 filled cells and two empty cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-warden-runtime-spritesheet-v1",
-      "file": "img/sprites/enemies/moon-warden.png",
-      "role": "legacy-runtime-moon-warden-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated Moon Warden production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing into 96x96 cells and alpha validation were performed with JavaScript; final size 672x384 with 26 occupied and two transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/moon-warden-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-moon-warden-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Moon Warden layout and Clean-HD Drone Guard reference",
-      "created": "2026-07-31",
-      "modifications": "The exact 7x4 order was retained with 26 occupied cells and two empty reserve cells.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-warden-clean-hd-runtime-v1",
-      "file": "img/sprites/enemies/moon-warden-clean-hd.png",
-      "role": "runtime-moon-warden-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD Moon Warden layout",
-      "created": "2026-07-31",
-      "modifications": "Magenta removal, grid-safe extraction, native 192x192 packing and seven-pixel despill preserved 26 poses and two empty cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "weapons-projectiles-production-layout-v1",
-      "file": "img/concepts/approvals/weapons-projectiles-production-layout-v1.png",
-      "role": "approved-weapons-and-projectiles-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved weapon, enemy and gameplay-VFX masters as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the production reference for two player weapons, two bolt frames, four drone-projectile frames and eight boss-projectile frames.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "player-weapons-runtime-v1",
-      "file": "img/sprites/weapons/player-weapons.png",
-      "role": "legacy-runtime-player-weapons-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x32 with two occupied 32x32 cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "bolt-projectile-runtime-v1",
-      "file": "img/sprites/weapons/bolt-projectile.png",
-      "role": "legacy-runtime-player-projectile-spritesheet",
-      "status": "legacy-present",
-      "origin": "Pixel-precise JavaScript adaptation of the approved bolt design and OpenAI-generated weapons production layout",
-      "created": "2026-07-24",
-      "modifications": "The generated bolt was manually refined in JavaScript for readability at 16x8 pixels; final size 32x8 with two occupied cells and validated alpha.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-projectile-runtime-v1",
-      "file": "img/sprites/weapons/drone-projectile.png",
-      "role": "legacy-runtime-drone-projectile-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 64x16 with four occupied 16x16 cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "boss-projectiles-runtime-v1",
-      "file": "img/sprites/weapons/boss-projectiles.png",
-      "role": "legacy-runtime-boss-projectiles-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated weapons production layout",
-      "created": "2026-07-24",
-      "modifications": "Green chroma-key removal, nearest-neighbor packing and alpha validation were performed with JavaScript; final size 128x32 with four shockwave and four energy-bolt cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "weapons-projectiles-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/weapons-projectiles-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-weapons-projectiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved weapon, Byte, arc-cannon and arc-projectile references",
-      "created": "2026-07-31",
-      "modifications": "Twenty generated weapon and projectile poses were isolated from the flat magenta production field and packed into exact runtime grids with JavaScript/Node.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "player-weapons-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/player-weapons-clean-hd.png",
-      "role": "runtime-player-weapons-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma-key removal and native 64x64 packing produced two transparent weapon cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "bolt-projectile-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/bolt-projectile-clean-hd.png",
-      "role": "runtime-player-projectile-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "Two bolt impulses were packed into native 32x16 transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "drone-projectile-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/drone-projectile-clean-hd.png",
-      "role": "runtime-drone-projectile-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "Four hostile energy impulses were packed into native 32x32 transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "boss-projectiles-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/boss-projectiles-clean-hd.png",
-      "role": "runtime-boss-projectiles-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "Four shockwaves and four moon bolts were packed into an exact 4x2 grid of native 64x32 cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "arc-cannon-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/arc-cannon-clean-hd.png",
-      "role": "runtime-arc-cannon-clean-hd-pickup",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "The isolated arc cannon was centered in its existing native 96x64 runtime frame.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "arc-projectile-clean-hd-runtime-v1",
-      "file": "img/sprites/weapons/arc-projectile-clean-hd.png",
-      "role": "runtime-arc-projectile-clean-hd-animation",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
-      "created": "2026-07-31",
-      "modifications": "Four electric discharge stages were centered in native 64x64 transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "collectables-production-layout-v1",
-      "file": "img/concepts/approvals/collectables-production-layout-v1.png",
-      "role": "approved-collectables-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved collectible and weapon masters, arranged with JavaScript",
-      "created": "2026-07-24",
-      "modifications": "Fifteen generated collectible poses were chroma-keyed and arranged into the exact 5x3 manifest order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "collectables-runtime-v1",
-      "file": "img/sprites/items/collectables.png",
-      "role": "legacy-runtime-collectables-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated collectables production material",
-      "created": "2026-07-24",
-      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x96 with fifteen occupied 32x32 cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "upgrade-icons-production-layout-v1",
-      "file": "img/concepts/approvals/upgrade-icons-production-layout-v1.png",
-      "role": "approved-upgrade-icons-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved HUD and collectible masters, arranged with JavaScript",
-      "created": "2026-07-24",
-      "modifications": "Five generated upgrade icons were chroma-keyed, isolated and arranged in manifest order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "upgrade-icons-runtime-v1",
-      "file": "img/sprites/items/upgrade-icons.png",
-      "role": "legacy-runtime-upgrade-icons-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated upgrade icon production material",
-      "created": "2026-07-24",
-      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 160x32 with five occupied 32x32 cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "gameplay-effects-production-layout-v1",
-      "file": "img/concepts/approvals/gameplay-effects-production-layout-v1.png",
-      "role": "approved-gameplay-effects-runtime-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved gameplay-VFX and weapon masters, selected and arranged with JavaScript",
-      "created": "2026-07-24",
-      "modifications": "Twenty-three required effects were selected from generated variants and arranged in the exact 6x4 manifest order with the final cell empty.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "gameplay-effects-runtime-v1",
-      "file": "img/sprites/effects/gameplay-effects.png",
-      "role": "legacy-runtime-gameplay-effects-spritesheet",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated gameplay-effects production material",
-      "created": "2026-07-24",
-      "modifications": "Nearest-neighbor packing and alpha validation were performed with JavaScript; final size 192x128 with 23 occupied cells and one transparent reserve cell.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "collectables-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/collectables-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-collectables-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved collectibles, Clean-HD weapons and arc-charge references",
-      "created": "2026-07-31",
-      "modifications": "Fifteen collectible poses and one arc charge were generated in strict runtime order on a flat magenta field.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "upgrade-icons-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/upgrade-icons-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-upgrade-icons-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved upgrade and Clean-HD weapon references",
-      "created": "2026-07-31",
-      "modifications": "Five semantic upgrade symbols were generated in the unchanged runtime order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "gameplay-effects-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/gameplay-effects-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-gameplay-effects-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved gameplay-effects and Clean-HD energy references",
-      "created": "2026-07-31",
-      "modifications": "Twenty-three gameplay effects were generated in strict 6x4 runtime order with the final reserve cell empty.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "collectables-clean-hd-runtime-v1",
-      "file": "img/sprites/items/collectables-clean-hd.png",
-      "role": "runtime-collectables-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma removal and exact packing produced fifteen native 64x64 transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "upgrade-icons-clean-hd-runtime-v1",
-      "file": "img/sprites/items/upgrade-icons-clean-hd.png",
-      "role": "runtime-upgrade-icons-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD upgrade layout",
-      "created": "2026-07-31",
-      "modifications": "Five icons were centered in native 64x64 transparent cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "gameplay-effects-clean-hd-runtime-v1",
-      "file": "img/sprites/effects/gameplay-effects-clean-hd.png",
-      "role": "runtime-gameplay-effects-clean-hd-spritesheet",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD effects layout",
-      "created": "2026-07-31",
-      "modifications": "Twenty-three effects were centered in native 64x64 cells; the final reserve cell remains transparent.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "arc-charge-clean-hd-runtime-v1",
-      "file": "img/sprites/items/arc-charge-clean-hd.png",
-      "role": "runtime-arc-charge-clean-hd-pickup",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
-      "created": "2026-07-31",
-      "modifications": "The arc charge was isolated and centered in its native 48x72 transparent frame.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-tiles-production-layout-v1",
-      "file": "img/concepts/approvals/scrapyard-tiles-production-layout-v1.png",
-      "role": "approved-scrapyard-runtime-tiles-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved tiles/hazards and scrapyard-background masters as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the exact 8x4 production layout for the shared 32-tile semantic order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-tiles-runtime-v1",
-      "file": "img/tilesets/scrapyard-tiles.png",
-      "role": "legacy-runtime-scrapyard-tileset",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard tiles production layout",
-      "created": "2026-07-24",
-      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-clean-hd-tiles-layout-v1",
-      "file": "img/concepts/approvals/scrapyard-clean-hd-tiles-production-layout-v1.png",
-      "role": "clean-hd-scrapyard-tiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved scrapyard tiles and Clean-HD gameplay references",
-      "created": "2026-07-30",
-      "modifications": "The exact 32-tile semantic order was retained in an 8x4 Clean-HD production layout.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-clean-hd-tiles-runtime-v1",
-      "file": "img/tilesets/scrapyard-tiles-clean-hd.png",
-      "role": "runtime-scrapyard-clean-hd-tileset",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD scrapyard tile layout",
-      "created": "2026-07-30",
-      "modifications": "Chroma-key removal, detected-cell extraction, nearest-neighbor packing and legacy-edge alignment produced 32 native 64x64 tiles.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-clean-hd-hazards-layout-v1",
-      "file": "img/concepts/approvals/scrapyard-clean-hd-hazards-production-layout-v1.png",
-      "role": "clean-hd-scrapyard-hazards-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved hazard and Clean-HD gameplay references",
-      "created": "2026-07-30",
-      "modifications": "Four animation stages each were arranged for spikes, electricity, warning beacons and arena gates.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-clean-hd-hazards-runtime-v1",
-      "file": "img/tilesets/scrapyard-hazards-clean-hd.png",
-      "role": "runtime-scrapyard-clean-hd-hazards",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD scrapyard hazard layout",
-      "created": "2026-07-30",
-      "modifications": "Chroma-key removal and nearest-neighbor packing produced 16 native 64x64 hazard frames.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-tiles-production-layout-v1",
-      "file": "img/concepts/approvals/factory-tiles-production-layout-v1.png",
-      "role": "approved-factory-runtime-tiles-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved scrapyard tile layout, tiles/hazards master and factory-background master as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the exact factory-material variant of the shared 8x4, 32-tile semantic order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-tiles-runtime-v1",
-      "file": "img/tilesets/factory-tiles.png",
-      "role": "legacy-runtime-factory-tileset",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory tiles production layout",
-      "created": "2026-07-24",
-      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-clean-hd-tiles-layout-v1",
-      "file": "img/concepts/approvals/factory-clean-hd-tiles-production-layout-v1.png",
-      "role": "clean-hd-factory-tiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved factory tiles, Clean-HD scrapyard tiles and factory background references",
-      "created": "2026-07-31",
-      "modifications": "All 32 factory tile identities were recreated in the unchanged 8x4 semantic order on a flat magenta field.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-clean-hd-tiles-runtime-v1",
-      "file": "img/tilesets/factory-tiles-clean-hd.png",
-      "role": "runtime-factory-clean-hd-tileset",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD factory tiles layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma removal and legacy-alpha-bound packing produced 32 native 64x64 cells with exactly doubled legacy bounds.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-tiles-production-layout-v1",
-      "file": "img/concepts/approvals/launch-tower-tiles-production-layout-v1.png",
-      "role": "approved-launch-tower-runtime-tiles-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved factory tile layout, tiles/hazards master and launch-tower-background master as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the launch-tower material variant of the shared 8x4, 32-tile semantic order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-tiles-runtime-v1",
-      "file": "img/tilesets/launch-tower-tiles.png",
-      "role": "legacy-runtime-launch-tower-tileset",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower tiles production layout",
-      "created": "2026-07-24",
-      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-clean-hd-tiles-layout-v1",
-      "file": "img/concepts/approvals/launch-tower-clean-hd-tiles-production-layout-v1.png",
-      "role": "clean-hd-launch-tower-tiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved launch-tower tiles and Clean-HD biome references",
-      "created": "2026-07-31",
-      "modifications": "All 32 launch-tower tile identities were recreated in the unchanged 8x4 semantic order on a flat magenta field.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-clean-hd-tiles-runtime-v1",
-      "file": "img/tilesets/launch-tower-tiles-clean-hd.png",
-      "role": "runtime-launch-tower-clean-hd-tileset",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD launch-tower tiles layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma removal and legacy-alpha-bound packing produced 32 native 64x64 cells with exactly doubled legacy bounds.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-tiles-production-layout-v1",
-      "file": "img/concepts/approvals/space-station-tiles-production-layout-v1.png",
-      "role": "approved-space-station-runtime-tiles-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved launch-tower tile layout, tiles/hazards master and space-station-background master as references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the space-station material variant of the shared 8x4, 32-tile semantic order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-tiles-runtime-v1",
-      "file": "img/tilesets/space-station-tiles.png",
-      "role": "legacy-runtime-space-station-tileset",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station tiles production layout",
-      "created": "2026-07-24",
-      "modifications": "Proportional cell extraction, green chroma-key removal, nearest-neighbor conversion to 32x32 cells and alpha validation were performed with JavaScript; final size 256x128 with 32 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-clean-hd-tiles-layout-v1",
-      "file": "img/concepts/approvals/space-station-clean-hd-tiles-production-layout-v1.png",
-      "role": "clean-hd-space-station-tiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved space-station tiles, background and Clean-HD references",
-      "created": "2026-07-31",
-      "modifications": "All 32 space-station tile identities were recreated in the unchanged 8x4 semantic order on a flat magenta field.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-clean-hd-tiles-runtime-v1",
-      "file": "img/tilesets/space-station-tiles-clean-hd.png",
-      "role": "runtime-space-station-clean-hd-tileset",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD space-station tiles layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma removal and legacy-alpha-bound packing produced 32 native 64x64 cells with exactly doubled legacy bounds.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-tiles-production-layout-v1",
-      "file": "img/concepts/approvals/moon-tiles-production-layout-v1.png",
-      "role": "approved-moon-runtime-tiles-layout-reference",
-      "status": "present",
-      "origin": "OpenAI image generation using the space-station tile layout and approved moon environment references",
-      "created": "2026-07-24",
-      "modifications": "Approved as the moon-material variant of the shared 8x4, 32-tile semantic order.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-tiles-runtime-v1",
-      "file": "img/tilesets/moon-tiles.png",
-      "role": "legacy-runtime-moon-tileset",
-      "status": "legacy-present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon tiles production layout",
-      "created": "2026-07-24",
-      "modifications": "Proportional cell extraction and chroma-key removal produced the legacy 256x128 sheet with 32 occupied cells.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-clean-hd-tiles-layout-v1",
-      "file": "img/concepts/approvals/moon-clean-hd-tiles-production-layout-v1.png",
-      "role": "clean-hd-moon-tiles-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved moon tiles, background and Clean-HD references",
-      "created": "2026-07-31",
-      "modifications": "All 32 moon tile identities were recreated in the unchanged 8x4 semantic order on a flat magenta field.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-clean-hd-tiles-runtime-v1",
-      "file": "img/tilesets/moon-tiles-clean-hd.png",
-      "role": "runtime-moon-clean-hd-tileset",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD moon tiles layout",
-      "created": "2026-07-31",
-      "modifications": "Chroma removal and legacy-alpha-bound packing produced 32 native 64x64 cells with exactly doubled legacy bounds.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-far-runtime-v1",
-      "file": "img/backgrounds/scrapyard-far.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
-      "created": "2026-07-28",
-      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-mid-runtime-v1",
-      "file": "img/backgrounds/scrapyard-mid.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
-      "created": "2026-07-28",
-      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-near-runtime-v1",
-      "file": "img/backgrounds/scrapyard-near.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated scrapyard background master",
-      "created": "2026-07-28",
-      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-far-runtime-v1",
-      "file": "img/backgrounds/factory-far.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
-      "created": "2026-07-28",
-      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-mid-runtime-v1",
-      "file": "img/backgrounds/factory-mid.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
-      "created": "2026-07-28",
-      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-near-runtime-v1",
-      "file": "img/backgrounds/factory-near.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated factory background master",
-      "created": "2026-07-28",
-      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-far-runtime-v1",
-      "file": "img/backgrounds/launch-tower-far.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
-      "created": "2026-07-28",
-      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-mid-runtime-v1",
-      "file": "img/backgrounds/launch-tower-mid.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
-      "created": "2026-07-28",
-      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-near-runtime-v1",
-      "file": "img/backgrounds/launch-tower-near.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated launch-tower background master",
-      "created": "2026-07-28",
-      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-far-runtime-v1",
-      "file": "img/backgrounds/space-station-far.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
-      "created": "2026-07-28",
-      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-mid-runtime-v1",
-      "file": "img/backgrounds/space-station-mid.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
-      "created": "2026-07-28",
-      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-near-runtime-v1",
-      "file": "img/backgrounds/space-station-near.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated space-station background master",
-      "created": "2026-07-28",
-      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-far-runtime-v1",
-      "file": "img/backgrounds/moon-far.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
-      "created": "2026-07-28",
-      "modifications": "The approved composite panel was cropped and converted with nearest-neighbour scaling to 1280x1680; it is tiled without transparent detail masks.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-mid-runtime-v1",
-      "file": "img/backgrounds/moon-mid.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
-      "created": "2026-07-28",
-      "modifications": "The approved mid panel was cropped, detail-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-near-runtime-v1",
-      "file": "img/backgrounds/moon-near.png",
-      "role": "unused-background-layer-draft",
-      "status": "present",
-      "origin": "JavaScript/Node processing of the approved OpenAI-generated moon background master",
-      "created": "2026-07-28",
-      "modifications": "The approved near panel was cropped, edge-masked and converted with nearest-neighbour scaling to 320x360.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-background-panorama-v2",
-      "file": "img/backgrounds/scrapyard-panorama-v2.png",
-      "role": "runtime-background-panorama",
-      "status": "replaced",
-      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
-      "created": "2026-07-28",
-      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from machine graveyard through pressworks to signal tower; rendered once without tiling.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-background-panorama-v2",
-      "file": "img/backgrounds/factory-panorama-v2.png",
-      "role": "runtime-background-panorama",
-      "status": "replaced",
-      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
-      "created": "2026-07-28",
-      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from assembly hall through smelter to energy core; rendered once without tiling.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-background-panorama-v2",
-      "file": "img/backgrounds/launch-tower-panorama-v2.png",
-      "role": "runtime-background-panorama",
-      "status": "replaced",
-      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
-      "created": "2026-07-28",
-      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from supply shafts through outer hull to launch platform; rendered once without tiling.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-background-panorama-v2",
-      "file": "img/backgrounds/space-station-panorama-v2.png",
-      "role": "runtime-background-panorama",
-      "status": "replaced",
-      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
-      "created": "2026-07-28",
-      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from cargo ring through research sector to command center; rendered once without tiling.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-background-panorama-v2",
-      "file": "img/backgrounds/moon-panorama-v2.png",
-      "role": "runtime-background-panorama",
-      "status": "replaced",
-      "origin": "OpenAI built-in image generation using the approved background-zone master as a style reference",
-      "created": "2026-07-28",
-      "modifications": "Generated as one continuous 1024x1536 portrait panorama progressing from crater field through ancient robot ruins to Moon Warden fortress; rendered once without tiling.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-machine-graveyard-background-v1",
-      "file": "img/backgrounds/scrapyard-machine-graveyard-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the machine graveyard room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-pressworks-background-v1",
-      "file": "img/backgrounds/scrapyard-pressworks-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the pressworks room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-signal-tower-background-v1",
-      "file": "img/backgrounds/scrapyard-signal-tower-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the signal tower room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-assembly-background-v1",
-      "file": "img/backgrounds/factory-assembly-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the assembly room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-smelter-background-v1",
-      "file": "img/backgrounds/factory-smelter-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the smelter room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-energy-core-background-v1",
-      "file": "img/backgrounds/factory-energy-core-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the energy core room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-supply-shafts-background-v1",
-      "file": "img/backgrounds/launch-tower-supply-shafts-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the supply shafts room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-outer-hull-background-v1",
-      "file": "img/backgrounds/launch-tower-outer-hull-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the outer hull room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-launch-platform-background-v1",
-      "file": "img/backgrounds/launch-tower-launch-platform-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the launch platform room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-cargo-ring-background-v1",
-      "file": "img/backgrounds/space-station-cargo-ring-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the cargo ring room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-research-background-v1",
-      "file": "img/backgrounds/space-station-research-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the research observatory room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-command-background-v1",
-      "file": "img/backgrounds/space-station-command-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the command spire room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-crater-field-background-v1",
-      "file": "img/backgrounds/moon-crater-field-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the crater field room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-ruins-background-v1",
-      "file": "img/backgrounds/moon-ruins-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the lunar ruins room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-warden-fortress-background-v1",
-      "file": "img/backgrounds/moon-warden-fortress-background-v1.png",
-      "role": "runtime-room-background",
-      "status": "present",
-      "origin": "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
-      "created": "2026-07-29",
-      "modifications": "Generated as one continuous portrait scene for the warden fortress room; no tiling or panel composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "p0-production-art-plan",
-      "file": "data/asset-manifest.json",
-      "role": "planned-production-assets",
-      "status": "planned",
-      "origin": "OpenAI-assisted project production with manual pixel-art adaptation",
-      "created": "2026-07-23",
-      "modifications": "Every generated draft will be redrawn to the fixed palette, frame grid and silhouette rules.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "silkscreen-regular-plan",
-      "file": "img/fonts/silkscreen-regular.ttf",
-      "role": "local-ui-font-regular",
-      "status": "present",
-      "origin": "The Silkscreen Project Authors via Google Fonts",
-      "created": "2026-07-26",
-      "modifications": "Original Silkscreen Regular file stored locally without modifications; OFL.txt is included in the same folder.",
-      "licenseId": "silkscreen-ofl-1.1"
-    },
-    {
-      "id": "silkscreen-bold-plan",
-      "file": "img/fonts/silkscreen-bold.ttf",
-      "role": "local-ui-font-bold",
-      "status": "present",
-      "origin": "The Silkscreen Project Authors via Google Fonts",
-      "created": "2026-07-26",
-      "modifications": "Original Silkscreen Bold file stored locally without modifications; OFL.txt is included in the same folder.",
-      "licenseId": "silkscreen-ofl-1.1"
-    },
-    {
-      "id": "little-bolt-big-moon-favicon-v1",
-      "file": "img/favicon.png",
-      "role": "browser-favicon",
-      "status": "present",
-      "origin": "OpenAI image generation using the approved game cover as a style and character reference",
-      "created": "2026-07-26",
-      "modifications": "Square pixel-art reduction to Byte's head and a cream crescent moon for legibility at browser-tab size.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "arc-cannon-runtime-v1",
-      "file": "img/sprites/weapons/arc-cannon.png",
-      "role": "legacy-runtime-arc-cannon-pickup",
-      "status": "legacy-present",
-      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
-      "created": "2026-07-29",
-      "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "arc-projectile-runtime-v1",
-      "file": "img/sprites/weapons/arc-projectile.png",
-      "role": "legacy-runtime-arc-projectile-animation",
-      "status": "legacy-present",
-      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
-      "created": "2026-07-29",
-      "modifications": "Four generated discharge stages were isolated, centered and assembled into a transparent sprite sheet.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "arc-charge-runtime-v1",
-      "file": "img/sprites/items/arc-charge.png",
-      "role": "legacy-runtime-arc-charge-pickup",
-      "status": "legacy-present",
-      "origin": "OpenAI built-in image generation using the approved Little Bolt, Big Moon pixel-art direction",
-      "created": "2026-07-29",
-      "modifications": "Green background removed, transparent bounds cropped and artwork resized to the runtime frame.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "little-bolt-cc0-music-v1",
-      "file": "audio/music/",
-      "role": "runtime-background-and-boss-music",
-      "status": "present",
-      "origin": "Two Simple Game Music Loops by qubodup and Dark Sci-Fi Audio Pack by SRG774 via OpenGameArt",
-      "created": "2026-07-28",
-      "modifications": "Files were renamed for their runtime roles and configured at reduced playback volume.",
-      "licenseId": "opengameart-cc0-audio"
-    },
-    {
-      "id": "little-bolt-cc0-effects-v1",
-      "file": "audio/sfx/",
-      "role": "runtime-gameplay-sound-effects",
-      "status": "present",
-      "origin": "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
-      "created": "2026-07-28",
-      "modifications": "Sixteen source effects were selected, renamed for gameplay roles and configured at reduced playback volume.",
-      "licenseId": "kenney-cc0-audio"
-    },
-    {
-      "id": "clean-hd-gameplay-preview-v1",
-      "file": "img/concepts/clean-hd-preview/clean-hd-gameplay-v1.png",
-      "role": "clean-hd-pixel-gameplay-design-reference",
-      "status": "approved-design-reference",
-      "origin": "OpenAI built-in image generation using the approved Byte, Scrap Crawler, scrapyard and HUD references",
-      "created": "2026-07-29",
-      "modifications": "A second targeted generation pass removed most micro-texture and strengthened gameplay-layer separation.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "clean-hd-scrapyard-background-preview-v1",
-      "file": "img/concepts/clean-hd-preview/clean-hd-scrapyard-background-v1.png",
-      "role": "clean-hd-pixel-background-design-reference",
-      "status": "approved-design-reference",
-      "origin": "OpenAI built-in image generation using the approved scrapyard and clean-HD-pixel references",
-      "created": "2026-07-29",
-      "modifications": "Generated without platforms, characters, enemies or HUD elements for later independent runtime composition.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "clean-hd-byte-core-poses-preview-v1",
-      "file": "img/concepts/clean-hd-preview/byte-core-poses-v1.png",
-      "role": "clean-hd-pixel-character-design-reference",
-      "status": "approved-design-reference",
-      "origin": "OpenAI built-in image generation using the approved Byte animation and clean-HD-pixel references",
-      "created": "2026-07-29",
-      "modifications": "Magenta chroma key removed locally; contains four transparent core-pose design samples, not runtime frames.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "clean-hd-scrapyard-gameplay-kit-preview-v1",
-      "file": "img/concepts/clean-hd-preview/scrapyard-gameplay-kit-v1.png",
-      "role": "clean-hd-pixel-enemy-and-platform-design-reference",
-      "status": "approved-design-reference",
-      "origin": "OpenAI built-in image generation using the approved Scrap Crawler, tileset and clean-HD-pixel references",
-      "created": "2026-07-29",
-      "modifications": "Magenta chroma key removed locally; contains one enemy and two transparent platform samples, not runtime frames.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-clean-hd-background-master-v1",
-      "file": "img/concepts/approvals/scrapyard-clean-hd-background-master-v1.png",
-      "role": "clean-hd-scrapyard-parallax-production-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved scrapyard master and Clean-HD background reference",
-      "created": "2026-07-30",
-      "modifications": "Preserves one composite preview plus far, middle and near depth panels instead of separate room concepts.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "scrapyard-clean-hd-background-composite-v1",
-      "file": "img/concepts/approvals/scrapyard-clean-hd-background-composite-v1.png",
-      "role": "clean-hd-scrapyard-runtime-composite-preview",
-      "status": "approved",
-      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD runtime layers",
-      "created": "2026-07-30",
-      "modifications": "Far, middle and near PNG files were combined without resampling to verify their shared composition.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-clean-hd-background-far-v1",
-      "file": "img/backgrounds/scrapyard-far-clean-hd.png",
-      "role": "runtime-scrapyard-clean-hd-far-panorama",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD scrapyard production master",
-      "created": "2026-07-30",
-      "modifications": "Generated as one opaque 1024x1536 far panorama for the complete 30000-pixel scrapyard biome.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-clean-hd-background-mid-v1",
-      "file": "img/backgrounds/scrapyard-mid-clean-hd.png",
-      "role": "runtime-scrapyard-clean-hd-mid-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD scrapyard production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; transparent 1024x1536 machinery islands retain the gameplay corridor.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-clean-hd-background-near-v1",
-      "file": "img/backgrounds/scrapyard-near-clean-hd.png",
-      "role": "runtime-scrapyard-clean-hd-near-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD scrapyard production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; transparent 1024x1536 edge framing leaves the central route open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-clean-hd-background-master-v1",
-      "file": "img/concepts/approvals/factory-clean-hd-background-master-v1.png",
-      "role": "clean-hd-factory-parallax-production-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved factory and Clean-HD scrapyard masters",
-      "created": "2026-07-30",
-      "modifications": "Preserves one composite preview plus far, middle and near depth panels for a single factory biome.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "factory-clean-hd-background-composite-v1",
-      "file": "img/concepts/approvals/factory-clean-hd-background-composite-v1.png",
-      "role": "clean-hd-factory-runtime-composite-preview",
-      "status": "approved",
-      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD factory runtime layers",
-      "created": "2026-07-30",
-      "modifications": "Far, middle and near PNG files were combined without resampling to verify their shared composition.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-clean-hd-background-far-v1",
-      "file": "img/backgrounds/factory-far-clean-hd.png",
-      "role": "runtime-factory-clean-hd-far-panorama",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD factory production master",
-      "created": "2026-07-30",
-      "modifications": "A second simplification pass produced one calm opaque 1024x1536 panorama for the complete factory biome.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-clean-hd-background-mid-v1",
-      "file": "img/backgrounds/factory-mid-clean-hd.png",
-      "role": "runtime-factory-clean-hd-mid-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD factory production master",
-      "created": "2026-07-30",
-      "modifications": "Misleading walkable silhouettes were removed before magenta chroma-key removal; the transparent center stays open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-clean-hd-background-near-v1",
-      "file": "img/backgrounds/factory-near-clean-hd.png",
-      "role": "runtime-factory-clean-hd-near-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD factory production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; transparent side framing leaves the central route open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-clean-hd-background-master-v1",
-      "file": "img/concepts/approvals/launch-tower-clean-hd-background-master-v1.png",
-      "role": "clean-hd-launch-tower-parallax-production-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved launch-tower and Clean-HD factory masters",
-      "created": "2026-07-30",
-      "modifications": "Preserves one composite preview plus far, middle and near depth panels for a single launch-tower biome.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "launch-tower-clean-hd-background-composite-v1",
-      "file": "img/concepts/approvals/launch-tower-clean-hd-background-composite-v1.png",
-      "role": "clean-hd-launch-tower-runtime-composite-preview",
-      "status": "approved",
-      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD launch-tower runtime layers",
-      "created": "2026-07-30",
-      "modifications": "Far, middle and near PNG files were combined without resampling to verify their shared composition.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-clean-hd-background-far-v1",
-      "file": "img/backgrounds/launch-tower-far-clean-hd.png",
-      "role": "runtime-launch-tower-clean-hd-far-panorama",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD launch-tower production master",
-      "created": "2026-07-30",
-      "modifications": "Generated as one calm opaque 1024x1536 atmosphere panorama for the complete launch-tower biome.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-clean-hd-background-mid-v1",
-      "file": "img/backgrounds/launch-tower-mid-clean-hd.png",
-      "role": "runtime-launch-tower-clean-hd-mid-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD launch-tower production master",
-      "created": "2026-07-30",
-      "modifications": "Factory holders were removed before magenta chroma-key removal; transparent tower spines retain the open route.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-clean-hd-background-near-v1",
-      "file": "img/backgrounds/launch-tower-near-clean-hd.png",
-      "role": "runtime-launch-tower-clean-hd-near-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD launch-tower production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; transparent exterior framing leaves the central route open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-clean-hd-background-master-v1",
-      "file": "img/concepts/approvals/space-station-clean-hd-background-master-v1.png",
-      "role": "clean-hd-space-station-parallax-production-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved space-station and Clean-HD launch-tower masters",
-      "created": "2026-07-30",
-      "modifications": "Preserves one composite preview plus far, middle and near depth panels for a single space-station biome.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "space-station-clean-hd-background-composite-v1",
-      "file": "img/concepts/approvals/space-station-clean-hd-background-composite-v1.png",
-      "role": "clean-hd-space-station-runtime-composite-preview",
-      "status": "approved",
-      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD space-station runtime layers",
-      "created": "2026-07-30",
-      "modifications": "Far, middle and near PNG files were combined without resampling to verify their shared composition.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-clean-hd-background-far-v1",
-      "file": "img/backgrounds/space-station-far-clean-hd.png",
-      "role": "runtime-space-station-clean-hd-far-panorama",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD space-station production master",
-      "created": "2026-07-30",
-      "modifications": "Generated as one calm opaque 1024x1536 orbital panorama for the complete space-station biome.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-clean-hd-background-mid-v1",
-      "file": "img/backgrounds/space-station-mid-clean-hd.png",
-      "role": "runtime-space-station-clean-hd-mid-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD space-station production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; isolated station modules keep the central route open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-clean-hd-background-near-v1",
-      "file": "img/backgrounds/space-station-near-clean-hd.png",
-      "role": "runtime-space-station-clean-hd-near-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD space-station production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; slim hull framing leaves the broad play corridor visible.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-clean-hd-background-master-v1",
-      "file": "img/concepts/approvals/moon-clean-hd-background-master-v1.png",
-      "role": "clean-hd-moon-parallax-production-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Moon and Clean-HD space-station masters",
-      "created": "2026-07-30",
-      "modifications": "Preserves one composite preview plus far, middle and near depth panels for the final Moon biome.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "moon-clean-hd-background-composite-v2",
-      "file": "img/concepts/approvals/moon-clean-hd-background-composite-v2.png",
-      "role": "clean-hd-moon-runtime-composite-preview",
-      "status": "approved",
-      "origin": "JavaScript/Node composition of the three OpenAI-generated Clean-HD Moon runtime layers",
-      "created": "2026-07-30",
-      "modifications": "The corrected vertical ruin layer removes shelf-like silhouettes before final composition.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-clean-hd-background-far-v1",
-      "file": "img/backgrounds/moon-far-clean-hd.png",
-      "role": "runtime-moon-clean-hd-far-panorama",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
-      "created": "2026-07-30",
-      "modifications": "Generated as one calm opaque 1024x1536 panorama from Earth memory to Warden fortress.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-clean-hd-background-mid-v1",
-      "file": "img/backgrounds/moon-mid-clean-hd.png",
-      "role": "runtime-moon-clean-hd-mid-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
-      "created": "2026-07-30",
-      "modifications": "A correction pass replaced shelf-like ruins with vertical edge fragments before chroma-key removal.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-clean-hd-background-near-v1",
-      "file": "img/backgrounds/moon-near-clean-hd.png",
-      "role": "runtime-moon-clean-hd-near-parallax",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved Clean-HD Moon production master",
-      "created": "2026-07-30",
-      "modifications": "Magenta chroma key was removed locally; slim basalt and machine framing leaves the central route open.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "hud-icons-clean-hd-layout-v1",
-      "file": "img/concepts/approvals/hud-icons-clean-hd-production-layout-v1.png",
-      "role": "clean-hd-hud-icons-layout-reference",
-      "status": "approved",
-      "origin": "OpenAI built-in image generation using the approved HUD and Clean-HD gameplay references",
-      "created": "2026-07-30",
-      "modifications": "Eight responsive HUD meanings were arranged in one exact horizontal production layout.",
-      "licenseId": "openai-generated-output"
-    },
-    {
-      "id": "hud-icons-clean-hd-runtime-v1",
-      "file": "img/ui/hud-icons-clean-hd.png",
-      "role": "runtime-hud-clean-hd-icons",
-      "status": "approved",
-      "origin": "JavaScript/Node processing of the OpenAI-generated Clean-HD HUD icon layout",
-      "created": "2026-07-30",
-      "modifications": "Chroma-key removal, subject isolation and nearest-neighbor packing produced eight native 48x48 icons.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-prototype-precision-platform-v1",
-      "file": "img/environment/scrapyard-platform-precision-clean-hd.png",
-      "role": "runtime-scrapyard-precision-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-prototype-standard-platform-v1",
-      "file": "img/environment/scrapyard-platform-standard-clean-hd.png",
-      "role": "runtime-scrapyard-standard-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-prototype-launch-platform-v1",
-      "file": "img/environment/scrapyard-platform-launch-clean-hd.png",
-      "role": "runtime-scrapyard-launch-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-prototype-rest-platform-v1",
-      "file": "img/environment/scrapyard-platform-rest-clean-hd.png",
-      "role": "runtime-scrapyard-rest-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-prototype-rescue-platform-v1",
-      "file": "img/environment/scrapyard-platform-rescue-clean-hd.png",
-      "role": "runtime-scrapyard-rescue-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-trap-platform-clean-hd-v1",
-      "file": "img/environment/factory-trap-platform-clean-hd.png",
-      "role": "runtime-factory-trap-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD factory trap prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-falling-platform-clean-hd-v1",
-      "file": "img/environment/launch-falling-platform-clean-hd.png",
-      "role": "runtime-launch-tower-falling-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD breakaway platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-spring-platform-clean-hd-v1",
-      "file": "img/environment/launch-spring-platform-clean-hd.png",
-      "role": "runtime-launch-tower-spring-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated Clean-HD spring platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "scrapyard-combat-platform-clean-hd-v1",
-      "file": "img/environment/scrapyard-combat-platform-clean-hd.png",
-      "role": "runtime-native-scrapyard-combat-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated extra-wide scrapyard platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x182 runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "factory-combat-platform-clean-hd-v1",
-      "file": "img/environment/factory-combat-platform-clean-hd.png",
-      "role": "runtime-native-factory-combat-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated extra-wide factory platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x175 runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "launch-tower-combat-platform-clean-hd-v1",
-      "file": "img/environment/launch-tower-combat-platform-clean-hd.png",
-      "role": "runtime-native-launch-tower-combat-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated extra-wide launch gantry prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal with one-pixel edge contraction, alpha validation, exact silhouette crop and proportional 1024x231 runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "space-station-combat-platform-clean-hd-v1",
-      "file": "img/environment/space-station-combat-platform-clean-hd.png",
-      "role": "runtime-native-space-station-combat-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated extra-wide orbital platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x185 runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-combat-platform-clean-hd-v1",
-      "file": "img/environment/moon-combat-platform-clean-hd.png",
-      "role": "runtime-native-moon-combat-platform",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated extra-wide lunar platform prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x213 runtime sizing; no previous platform artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden-arena-clean-hd-v1",
-      "file": "img/environment/moon-warden-arena-clean-hd.png",
-      "role": "runtime-final-boss-arena",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new Clean-HD lunar boss-arena prompt, followed by one targeted entrance correction",
-      "created": "2026-08-04",
-      "modifications": "The initial closed doorway was replaced with one unobstructed vertical entry shaft through the combat floor; the lower 224 pixels received a controlled alpha fade into the moon background; runtime light flow and an encounter-triggered energy seal are code overlays.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "moon-warden-entry-lift-clean-hd-v1",
-      "file": "img/environment/moon-warden-entry-lift-clean-hd.png",
-      "role": "runtime-final-boss-entry-lift",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated lunar fortress lift prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, surface-aligned crop, transparent-corner validation and proportional 512x107 runtime sizing.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-abandoned-cradle-clean-hd-v1",
-      "file": "img/sprites/props/story-abandoned-cradle-clean-hd.png",
-      "role": "runtime-wordless-story-clue-scrapyard",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 160x106 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-luma-transport-case-clean-hd-v1",
-      "file": "img/sprites/props/story-luma-transport-case-clean-hd.png",
-      "role": "runtime-wordless-story-clue-factory",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 144x84 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-launch-trace-console-clean-hd-v1",
-      "file": "img/sprites/props/story-launch-trace-console-clean-hd.png",
-      "role": "runtime-wordless-story-clue-launch-tower",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 144x109 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-detention-pod-clean-hd-v1",
-      "file": "img/sprites/props/story-detention-pod-clean-hd.png",
-      "role": "runtime-wordless-story-clue-space-station",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 160x164 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-fortress-route-beacon-clean-hd-v1",
-      "file": "img/sprites/props/story-fortress-route-beacon-clean-hd.png",
-      "role": "runtime-wordless-story-clue-moon",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 128x142 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    },
-    {
-      "id": "story-luma-containment-clean-hd-v1",
-      "file": "img/sprites/props/story-luma-containment-clean-hd.png",
-      "role": "runtime-wordless-story-clue-final-arena",
-      "status": "prototype",
-      "origin": "OpenAI built-in image generation from a new isolated final-rescue-story-object prompt",
-      "created": "2026-08-04",
-      "modifications": "Green-key removal, alpha validation, exact crop and proportional 220x192 runtime sizing; no previous story artwork reused.",
-      "licenseId": "openai-assisted-project-art"
-    }
-  ]
+    "licenseProfiles":  [
+                            {
+                                "id":  "openai-generated-output",
+                                "label":  "OpenAI-generated project output",
+                                "origin":  "OpenAI image generation",
+                                "terms":  "https://openai.com/policies/eu-terms-of-use/",
+                                "evidence":  "docs/asset-licensing.md",
+                                "notes":  "Output rights apply between the user and OpenAI as described by the terms; exclusivity is not guaranteed."
+                            },
+                            {
+                                "id":  "openai-assisted-project-art",
+                                "label":  "OpenAI-assisted, manually adapted project pixel art",
+                                "origin":  "Project production based on the existing OpenAI-generated style sheet",
+                                "terms":  "https://openai.com/policies/eu-terms-of-use/",
+                                "evidence":  "docs/asset-licensing.md",
+                                "notes":  "Each finished file must be manually pixel-cleaned, palette-limited and added to this credits file before integration."
+                            },
+                            {
+                                "id":  "silkscreen-ofl-1.1",
+                                "label":  "Silkscreen under SIL Open Font License 1.1",
+                                "origin":  "The Silkscreen Project Authors via the official Google Fonts repository",
+                                "source":  "https://github.com/google/fonts/tree/main/ofl/silkscreen",
+                                "terms":  "https://github.com/google/fonts/blob/main/ofl/silkscreen/OFL.txt",
+                                "evidence":  "The font directory contains regular and bold font files plus its OFL.txt.",
+                                "notes":  "Copy OFL.txt into img/fonts/ when the font files are downloaded."
+                            },
+                            {
+                                "id":  "opengameart-cc0-audio",
+                                "label":  "OpenGameArt music under CC0 1.0",
+                                "origin":  "qubodup and SRG774 via OpenGameArt",
+                                "source":  "https://opengameart.org/",
+                                "terms":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                                "evidence":  "audio/licenses/OpenGameArt-CC0.txt",
+                                "notes":  "Attribution is not required, but authors and source pages are documented voluntarily."
+                            },
+                            {
+                                "id":  "kenney-cc0-audio",
+                                "label":  "Kenney audio under CC0 1.0",
+                                "origin":  "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
+                                "source":  "https://kenney.nl/assets",
+                                "terms":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                                "evidence":  "audio/licenses/Kenney-CC0.txt",
+                                "notes":  "Free for personal, educational and commercial projects; attribution is not required."
+                            }
+                        ],
+    "assets":  [
+                   {
+                       "id":  "little-bolt-big-moon-cover-v1",
+                       "file":  "img/cover/little-bolt-big-moon-cover-v1.png",
+                       "role":  "game-cover",
+                       "status":  "present",
+                       "origin":  "OpenAI image generation using the project style sheet as reference",
+                       "created":  "2026-07-23",
+                       "modifications":  "No manual modifications after generation.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "empty-luma-cradle-runtime",
+                       "file":  "img/sprites/props/empty-luma-cradle.png",
+                       "role":  "runtime-wordless-story-cradle",
+                       "status":  "present",
+                       "origin":  "OpenAI image generation using the approved story-props master as reference",
+                       "created":  "2026-07-29",
+                       "modifications":  "Chroma key removed and resized with JavaScript/Node processing to one 96x64 runtime frame.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "byte-clean-hd-runtime-spritesheet-v1",
+                       "file":  "img/sprites/characters/byte-clean-hd.png",
+                       "role":  "runtime-byte-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD Byte production layout",
+                       "created":  "2026-07-30",
+                       "modifications":  "Magenta background removal, grid exclusion and nearest-neighbor packing into 64x64 cells; final size 512x320 with 33 occupied and seven transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "luma-runtime-spritesheet-v1",
+                       "file":  "img/sprites/characters/luma.png",
+                       "role":  "runtime-luma-spritesheet",
+                       "status":  "present",
+                       "origin":  "JavaScript/Node processing of the approved OpenAI-generated Luma production layout",
+                       "created":  "2026-07-23",
+                       "modifications":  "Magenta chroma-key removal, nearest-neighbor packing into 32x32 cells and alpha validation were performed with JavaScript; final size 160x64 with ten occupied cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrap-crawler-clean-hd-runtime-v1",
+                       "file":  "img/sprites/enemies/scrap-crawler-clean-hd.png",
+                       "role":  "runtime-scrap-crawler-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD Scrap Crawler layout",
+                       "created":  "2026-07-30",
+                       "modifications":  "Chroma-key removal, detected-cell extraction, nearest-neighbor packing and legacy-bound alignment produced 13 native 96x64 frames.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "drone-guard-clean-hd-runtime-v1",
+                       "file":  "img/sprites/enemies/drone-guard-clean-hd.png",
+                       "role":  "runtime-drone-guard-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD Drone Guard layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Magenta removal, grid-safe cell extraction and native packing produced 20 transparent 96x64 frames without changing the rendered size.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden-clean-hd-runtime-v1",
+                       "file":  "img/sprites/enemies/moon-warden-clean-hd.png",
+                       "role":  "runtime-moon-warden-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD Moon Warden layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Magenta removal, grid-safe extraction, native 192x192 packing and seven-pixel despill preserved 26 poses and two empty cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "player-weapons-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/player-weapons-clean-hd.png",
+                       "role":  "runtime-player-weapons-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Chroma-key removal and native 64x64 packing produced two transparent weapon cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "bolt-projectile-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/bolt-projectile-clean-hd.png",
+                       "role":  "runtime-player-projectile-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Two bolt impulses were packed into native 32x16 transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "drone-projectile-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/drone-projectile-clean-hd.png",
+                       "role":  "runtime-drone-projectile-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Four hostile energy impulses were packed into native 32x32 transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "boss-projectiles-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/boss-projectiles-clean-hd.png",
+                       "role":  "runtime-boss-projectiles-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Four shockwaves and four moon bolts were packed into an exact 4x2 grid of native 64x32 cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "arc-cannon-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/arc-cannon-clean-hd.png",
+                       "role":  "runtime-arc-cannon-clean-hd-pickup",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "The isolated arc cannon was centered in its existing native 96x64 runtime frame.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "arc-projectile-clean-hd-runtime-v1",
+                       "file":  "img/sprites/weapons/arc-projectile-clean-hd.png",
+                       "role":  "runtime-arc-projectile-clean-hd-animation",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD weapon layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Four electric discharge stages were centered in native 64x64 transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "collectables-clean-hd-runtime-v1",
+                       "file":  "img/sprites/items/collectables-clean-hd.png",
+                       "role":  "runtime-collectables-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Chroma removal and exact packing produced fifteen native 64x64 transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "upgrade-icons-clean-hd-runtime-v1",
+                       "file":  "img/sprites/items/upgrade-icons-clean-hd.png",
+                       "role":  "runtime-upgrade-icons-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD upgrade layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Five icons were centered in native 64x64 transparent cells.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "gameplay-effects-clean-hd-runtime-v1",
+                       "file":  "img/sprites/effects/gameplay-effects-clean-hd.png",
+                       "role":  "runtime-gameplay-effects-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD effects layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "Twenty-three effects were centered in native 64x64 cells; the final reserve cell remains transparent.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "arc-charge-clean-hd-runtime-v1",
+                       "file":  "img/sprites/items/arc-charge-clean-hd.png",
+                       "role":  "runtime-arc-charge-clean-hd-pickup",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD collectables layout",
+                       "created":  "2026-07-31",
+                       "modifications":  "The arc charge was isolated and centered in its native 48x72 transparent frame.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-machine-graveyard-background-v1",
+                       "file":  "img/backgrounds/scrapyard-machine-graveyard-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the machine graveyard room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "scrapyard-pressworks-background-v1",
+                       "file":  "img/backgrounds/scrapyard-pressworks-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the pressworks room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "scrapyard-signal-tower-background-v1",
+                       "file":  "img/backgrounds/scrapyard-signal-tower-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved scrapyard and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the signal tower room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-assembly-background-v1",
+                       "file":  "img/backgrounds/factory-assembly-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the assembly room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-smelter-background-v1",
+                       "file":  "img/backgrounds/factory-smelter-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the smelter room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "factory-energy-core-background-v1",
+                       "file":  "img/backgrounds/factory-energy-core-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved factory and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the energy core room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-supply-shafts-background-v1",
+                       "file":  "img/backgrounds/launch-tower-supply-shafts-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the supply shafts room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-outer-hull-background-v1",
+                       "file":  "img/backgrounds/launch-tower-outer-hull-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the outer hull room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "launch-tower-launch-platform-background-v1",
+                       "file":  "img/backgrounds/launch-tower-launch-platform-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved launch-tower and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the launch platform room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-cargo-ring-background-v1",
+                       "file":  "img/backgrounds/space-station-cargo-ring-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the cargo ring room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-research-background-v1",
+                       "file":  "img/backgrounds/space-station-research-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the research observatory room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "space-station-command-background-v1",
+                       "file":  "img/backgrounds/space-station-command-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved space-station and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the command spire room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-crater-field-background-v1",
+                       "file":  "img/backgrounds/moon-crater-field-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the crater field room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-ruins-background-v1",
+                       "file":  "img/backgrounds/moon-ruins-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the lunar ruins room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "moon-warden-fortress-background-v1",
+                       "file":  "img/backgrounds/moon-warden-fortress-background-v1.png",
+                       "role":  "runtime-room-background",
+                       "status":  "present",
+                       "origin":  "OpenAI built-in image generation using the approved moon and background-zone masters as style references",
+                       "created":  "2026-07-29",
+                       "modifications":  "Generated as one continuous portrait scene for the warden fortress room; no tiling or panel composition.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "p0-production-art-plan",
+                       "file":  "data/asset-manifest.json",
+                       "role":  "planned-production-assets",
+                       "status":  "planned",
+                       "origin":  "OpenAI-assisted project production with manual pixel-art adaptation",
+                       "created":  "2026-07-23",
+                       "modifications":  "Every generated draft will be redrawn to the fixed palette, frame grid and silhouette rules.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "silkscreen-regular-plan",
+                       "file":  "img/fonts/silkscreen-regular.ttf",
+                       "role":  "local-ui-font-regular",
+                       "status":  "present",
+                       "origin":  "The Silkscreen Project Authors via Google Fonts",
+                       "created":  "2026-07-26",
+                       "modifications":  "Original Silkscreen Regular file stored locally without modifications; OFL.txt is included in the same folder.",
+                       "licenseId":  "silkscreen-ofl-1.1"
+                   },
+                   {
+                       "id":  "silkscreen-bold-plan",
+                       "file":  "img/fonts/silkscreen-bold.ttf",
+                       "role":  "local-ui-font-bold",
+                       "status":  "present",
+                       "origin":  "The Silkscreen Project Authors via Google Fonts",
+                       "created":  "2026-07-26",
+                       "modifications":  "Original Silkscreen Bold file stored locally without modifications; OFL.txt is included in the same folder.",
+                       "licenseId":  "silkscreen-ofl-1.1"
+                   },
+                   {
+                       "id":  "little-bolt-big-moon-favicon-v1",
+                       "file":  "img/favicon.png",
+                       "role":  "browser-favicon",
+                       "status":  "present",
+                       "origin":  "OpenAI image generation using the approved game cover as a style and character reference",
+                       "created":  "2026-07-26",
+                       "modifications":  "Square pixel-art reduction to Byte\u0027s head and a cream crescent moon for legibility at browser-tab size.",
+                       "licenseId":  "openai-generated-output"
+                   },
+                   {
+                       "id":  "little-bolt-cc0-music-v1",
+                       "file":  "audio/music/",
+                       "role":  "runtime-background-and-boss-music",
+                       "status":  "present",
+                       "origin":  "Two Simple Game Music Loops by qubodup and Dark Sci-Fi Audio Pack by SRG774 via OpenGameArt",
+                       "created":  "2026-07-28",
+                       "modifications":  "Files were renamed for their runtime roles and configured at reduced playback volume.",
+                       "licenseId":  "opengameart-cc0-audio"
+                   },
+                   {
+                       "id":  "little-bolt-cc0-effects-v1",
+                       "file":  "audio/sfx/",
+                       "role":  "runtime-gameplay-sound-effects",
+                       "status":  "present",
+                       "origin":  "Kenney Sci-fi Sounds, Digital Audio and UI Audio",
+                       "created":  "2026-07-28",
+                       "modifications":  "Sixteen source effects were selected, renamed for gameplay roles and configured at reduced playback volume.",
+                       "licenseId":  "kenney-cc0-audio"
+                   },
+                   {
+                       "id":  "hud-icons-clean-hd-runtime-v1",
+                       "file":  "img/ui/hud-icons-clean-hd.png",
+                       "role":  "runtime-hud-clean-hd-icons",
+                       "status":  "approved",
+                       "origin":  "JavaScript/Node processing of the OpenAI-generated Clean-HD HUD icon layout",
+                       "created":  "2026-07-30",
+                       "modifications":  "Chroma-key removal, subject isolation and nearest-neighbor packing produced eight native 48x48 icons.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-precision-platform-v1",
+                       "file":  "img/environment/scrapyard-platform-precision-clean-hd.png",
+                       "role":  "runtime-scrapyard-precision-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-standard-platform-v1",
+                       "file":  "img/environment/scrapyard-platform-standard-clean-hd.png",
+                       "role":  "runtime-scrapyard-standard-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-launch-platform-v1",
+                       "file":  "img/environment/scrapyard-platform-launch-clean-hd.png",
+                       "role":  "runtime-scrapyard-launch-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-rest-platform-v1",
+                       "file":  "img/environment/scrapyard-platform-rest-clean-hd.png",
+                       "role":  "runtime-scrapyard-rest-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-prototype-rescue-platform-v1",
+                       "file":  "img/environment/scrapyard-platform-rescue-clean-hd.png",
+                       "role":  "runtime-scrapyard-rescue-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-trap-platform-clean-hd-v1",
+                       "file":  "img/environment/factory-trap-platform-clean-hd.png",
+                       "role":  "runtime-factory-trap-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD factory trap prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-falling-platform-clean-hd-v1",
+                       "file":  "img/environment/launch-falling-platform-clean-hd.png",
+                       "role":  "runtime-launch-tower-falling-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD breakaway platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-spring-platform-clean-hd-v1",
+                       "file":  "img/environment/launch-spring-platform-clean-hd.png",
+                       "role":  "runtime-launch-tower-spring-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD spring platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta key removal, alpha validation, surface-aligned cropping and runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-combat-platform-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-combat-platform-clean-hd.png",
+                       "role":  "runtime-native-scrapyard-combat-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated extra-wide scrapyard platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x182 runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-combat-platform-clean-hd-v1",
+                       "file":  "img/environment/factory-combat-platform-clean-hd.png",
+                       "role":  "runtime-native-factory-combat-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated extra-wide factory platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x175 runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-combat-platform-clean-hd-v1",
+                       "file":  "img/environment/launch-tower-combat-platform-clean-hd.png",
+                       "role":  "runtime-native-launch-tower-combat-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated extra-wide launch gantry prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal with one-pixel edge contraction, alpha validation, exact silhouette crop and proportional 1024x231 runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-combat-platform-clean-hd-v1",
+                       "file":  "img/environment/space-station-combat-platform-clean-hd.png",
+                       "role":  "runtime-native-space-station-combat-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated extra-wide orbital platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x185 runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-combat-platform-clean-hd-v1",
+                       "file":  "img/environment/moon-combat-platform-clean-hd.png",
+                       "role":  "runtime-native-moon-combat-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated extra-wide lunar platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact silhouette crop and proportional 1024x213 runtime sizing; no previous platform artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden-arena-clean-hd-v1",
+                       "file":  "img/environment/moon-warden-arena-clean-hd.png",
+                       "role":  "runtime-final-boss-arena",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new Clean-HD lunar boss-arena prompt, followed by one targeted entrance correction",
+                       "created":  "2026-08-04",
+                       "modifications":  "The initial closed doorway was replaced with one unobstructed vertical entry shaft through the combat floor; the lower 224 pixels received a controlled alpha fade into the moon background; runtime light flow and an encounter-triggered energy seal are code overlays.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-warden-entry-lift-clean-hd-v1",
+                       "file":  "img/environment/moon-warden-entry-lift-clean-hd.png",
+                       "role":  "runtime-final-boss-entry-lift",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated lunar fortress lift prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, surface-aligned crop, transparent-corner validation and proportional 512x107 runtime sizing.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-abandoned-cradle-clean-hd-v1",
+                       "file":  "img/sprites/props/story-abandoned-cradle-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-scrapyard",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 160x106 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-luma-transport-case-clean-hd-v1",
+                       "file":  "img/sprites/props/story-luma-transport-case-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-factory",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 144x84 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-launch-trace-console-clean-hd-v1",
+                       "file":  "img/sprites/props/story-launch-trace-console-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-launch-tower",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 144x109 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-detention-pod-clean-hd-v1",
+                       "file":  "img/sprites/props/story-detention-pod-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-space-station",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 160x164 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-fortress-route-beacon-clean-hd-v1",
+                       "file":  "img/sprites/props/story-fortress-route-beacon-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-moon",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated wordless-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 128x142 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "story-luma-containment-clean-hd-v1",
+                       "file":  "img/sprites/props/story-luma-containment-clean-hd.png",
+                       "role":  "runtime-wordless-story-clue-final-arena",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated final-rescue-story-object prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Green-key removal, alpha validation, exact crop and proportional 220x192 runtime sizing; no previous story artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-floor-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-floor-clean-hd.png",
+                       "role":  "runtime-safe-start-floor",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD scrapyard floor prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup, exact 1280-pixel crop and runtime collision alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-wall-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-wall-clean-hd.png",
+                       "role":  "runtime-animated-scrapyard-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-wall-platform-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-wall-platform-clean-hd.png",
+                       "role":  "runtime-scrapyard-wall-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new wall-platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup and landing-surface alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-wall-clean-hd-v1",
+                       "file":  "img/environment/factory-wall-clean-hd.png",
+                       "role":  "runtime-animated-factory-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-wall-platform-clean-hd-v1",
+                       "file":  "img/environment/factory-wall-platform-clean-hd.png",
+                       "role":  "runtime-factory-wall-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new wall-platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup and landing-surface alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-wall-clean-hd-v1",
+                       "file":  "img/environment/launch-tower-wall-clean-hd.png",
+                       "role":  "runtime-animated-launch-tower-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-wall-platform-clean-hd-v1",
+                       "file":  "img/environment/launch-tower-wall-platform-clean-hd.png",
+                       "role":  "runtime-launch-tower-wall-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new wall-platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup and landing-surface alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-wall-clean-hd-v1",
+                       "file":  "img/environment/space-station-wall-clean-hd.png",
+                       "role":  "runtime-animated-space-station-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "space-station-wall-platform-clean-hd-v1",
+                       "file":  "img/environment/space-station-wall-platform-clean-hd.png",
+                       "role":  "runtime-space-station-wall-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new wall-platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup and landing-surface alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-wall-clean-hd-v1",
+                       "file":  "img/environment/moon-wall-clean-hd.png",
+                       "role":  "runtime-animated-moon-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "moon-wall-platform-clean-hd-v1",
+                       "file":  "img/environment/moon-wall-platform-clean-hd.png",
+                       "role":  "runtime-moon-wall-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new wall-platform prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Transparency cleanup and landing-surface alignment.",
+                       "licenseId":  "openai-assisted-project-art"
+                   }
+               ]
 }
