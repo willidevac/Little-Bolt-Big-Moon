@@ -1,6 +1,10 @@
 import levelData from "../../data/levels/level-01.json" with { type: "json" };
 import { ThinWallBuilder } from
   "../../classes/systems/thin-wall-builder.class.js";
+import { EarlyTrickshotWallBuilder } from
+  "../../classes/systems/early-trickshot-wall-builder.class.js";
+import { JumpWindowBuilder } from
+  "../../classes/systems/jump-window-builder.class.js";
 import { SparseWallPlatformBuilder } from
   "../../classes/systems/sparse-wall-platform-builder.class.js";
 import { ScrapyardPrototypeBuilder } from
@@ -35,16 +39,18 @@ export function createLevelOne(enemyConfig = GAME_CONFIG.enemies) {
   const progression = new ProgressionRouteBuilder(levelData.width).build(
     sections, wallPlatforms, lastTutorialPlatform,
   );
-  const boss = new FinalBossBuilder().build();
-  const structures = Object.freeze([
-    ...new ThinWallBuilder(levelData.width).build(sections),
-    ...prototype.buildStructures(),
-    ...boss.structures,
-  ]);
   const routePlatforms = Object.freeze([
     ...wallPlatforms,
     ...prototypePlatforms,
     ...progression,
+  ]);
+  const boss = new FinalBossBuilder().build();
+  const structures = Object.freeze([
+    ...new ThinWallBuilder(levelData.width).build(sections),
+    ...new EarlyTrickshotWallBuilder().build(sections, routePlatforms),
+    ...new JumpWindowBuilder(levelData.width).build(sections, routePlatforms),
+    ...prototype.buildStructures(),
+    ...boss.structures,
   ]);
   const itemPlacement = new ItemPlacementBuilder();
   const routeCollectables = itemPlacement.build(routePlatforms);

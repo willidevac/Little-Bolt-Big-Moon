@@ -51,14 +51,14 @@ const PROFILES = Object.freeze({
     lanes: [140, 190, 520, 900, 760, 390, 120, 650,
       930, 820, 460, 180, 560, 960, 700, 300],
     widths: [240, 210, 150, 400], precisionEvery: 7, restEvery: 28,
-    mechanics: {},
+    mechanics: { crane: [31, 19] },
   }),
   factory: profile({
     accent: "#ff9b38", gaps: [305, 335, 315, 350, 308, 328, 342, 296],
     lanes: [880, 930, 620, 250, 100, 470, 850, 690,
       310, 150, 720, 980, 600, 220, 450, 900],
     widths: [220, 190, 132, 360], precisionEvery: 5, restEvery: 38,
-    mechanics: { trap: [12, 5] },
+    mechanics: { trap: [12, 5], crane: [23, 14] },
   }),
   "launch-tower": profile({
     accent: "#4ce8ff", gaps: [326, 350, 336, 348, 332, 346],

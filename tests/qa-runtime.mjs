@@ -173,6 +173,12 @@ function addLevelAssets(assets) {
     ));
   });
   [
+    "scrapyard-crane-platform-clean-hd.png",
+    "factory-crane-platform-clean-hd.png",
+    "factory-jump-window-clean-hd.png",
+    "launch-tower-jump-window-clean-hd.png",
+    "scrapyard-trickshot-wall-clean-hd.png",
+    "factory-trickshot-wall-clean-hd.png",
     "factory-trap-platform-clean-hd.png",
     "launch-falling-platform-clean-hd.png",
     "launch-spring-platform-clean-hd.png",

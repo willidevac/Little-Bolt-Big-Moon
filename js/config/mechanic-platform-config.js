@@ -6,6 +6,18 @@ export const MECHANIC_PLATFORM_SPRITES = Object.freeze({
   spring: sprite("launch-spring-platform-clean-hd.png", 320, 171),
 });
 
+const CRANE_PLATFORM_SPRITES = Object.freeze({
+  scrapyard: sprite("scrapyard-crane-platform-clean-hd.png", 1198, 328, 4),
+  factory: sprite("factory-crane-platform-clean-hd.png", 1086, 362, 4),
+});
+
+/** Returns the native vertical four-frame crane sprite for one early biome. */
+export function getCranePlatformSpriteConfig(biomeId) {
+  const config = CRANE_PLATFORM_SPRITES[biomeId];
+  if (config) return config;
+  throw new RangeError(`Unknown crane-platform biome: ${biomeId}`);
+}
+
 /** First appearances only; later combination routes are built after playtesting. */
 export const MECHANIC_PLATFORM_INTRODUCTIONS = Object.freeze([
   Object.freeze({
@@ -15,10 +27,11 @@ export const MECHANIC_PLATFORM_INTRODUCTIONS = Object.freeze([
     x: 480, y: 110000, width: 320, height: 82,
     accentColor: "#ff9b38",
     trap: Object.freeze({
-      safeSeconds: 1.7,
-      warningSeconds: 0.7,
-      activeSeconds: 0.8,
-      damage: 12,
+      safeSeconds: 2.2,
+      warningSeconds: 1.6,
+      activeSeconds: 0.75,
+      landingGraceSeconds: 0.9,
+      damage: 10,
     }),
   }),
   Object.freeze({
@@ -46,11 +59,11 @@ export const MECHANIC_PLATFORM_INTRODUCTIONS = Object.freeze([
   }),
 ]);
 
-function sprite(fileName, frameWidth, frameHeight) {
+function sprite(fileName, frameWidth, frameHeight, frameCount = 1) {
   return Object.freeze({
     source: getAssetPath("environment", fileName),
     frameWidth,
     frameHeight,
-    frameCount: 1,
+    frameCount,
   });
 }

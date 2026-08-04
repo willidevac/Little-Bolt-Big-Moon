@@ -656,6 +656,16 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "scrapyard-crane-platform-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-crane-platform-clean-hd.png",
+                       "role":  "runtime-animated-scrapyard-crane-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD crane-platform sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta-key removal; four native winch and cyan indicator phases arranged vertically.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "scrapyard-wall-clean-hd-v1",
                        "file":  "img/environment/scrapyard-wall-clean-hd.png",
                        "role":  "runtime-animated-scrapyard-wall",
@@ -663,6 +673,16 @@
                        "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
                        "created":  "2026-08-04",
                        "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-trickshot-wall-clean-hd-v1",
+                       "file":  "img/environment/scrapyard-trickshot-wall-clean-hd.png",
+                       "role":  "runtime-animated-scrapyard-trickshot-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD trickshot-wall sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta-key removal and four rising cyan energy phases; dedicated floor-mounted design with no border-wall artwork reused.",
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
@@ -686,6 +706,36 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "factory-crane-platform-clean-hd-v1",
+                       "file":  "img/environment/factory-crane-platform-clean-hd.png",
+                       "role":  "runtime-animated-factory-crane-platform",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD crane-platform sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta-key removal; four native synchronized winch and orange guidance-light phases.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-jump-window-clean-hd-v1",
+                       "file":  "img/environment/factory-jump-window-clean-hd.png",
+                       "role":  "runtime-animated-factory-jump-window",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD jump-window sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Explicit magenta-key removal; four guidance phases with a permanently transparent central opening.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-trickshot-wall-clean-hd-v1",
+                       "file":  "img/environment/factory-trickshot-wall-clean-hd.png",
+                       "role":  "runtime-animated-factory-trickshot-wall",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD trickshot-wall sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta-key removal and four rising orange energy phases; dedicated floor-mounted design with no border-wall artwork reused.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "factory-wall-platform-clean-hd-v1",
                        "file":  "img/environment/factory-wall-platform-clean-hd.png",
                        "role":  "runtime-factory-wall-platform",
@@ -703,6 +753,16 @@
                        "origin":  "OpenAI built-in image generation from a new thin Clean-HD wall prompt",
                        "created":  "2026-08-04",
                        "modifications":  "Four animation frames prepared for seamless vertical tiling.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-jump-window-clean-hd-v1",
+                       "file":  "img/environment/launch-tower-jump-window-clean-hd.png",
+                       "role":  "runtime-animated-launch-tower-jump-window",
+                       "status":  "prototype",
+                       "origin":  "OpenAI built-in image generation from a new isolated Clean-HD jump-window sprite prompt",
+                       "created":  "2026-08-04",
+                       "modifications":  "Magenta-key removal; four cyan guidance phases with a permanently transparent central opening.",
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {

@@ -14,7 +14,10 @@ export class AnimatedBiomeWall extends DrawableObject {
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
-    Object.assign(this, data, { width: WALL_WIDTH });
+    const width = data.role === "early-trickshot-wall"
+      ? data.width
+      : WALL_WIDTH;
+    Object.assign(this, data, { width });
     this.animationTime = data.phaseOffset ?? 0;
     this.animationFrameSeconds = data.animationFrameSeconds ??
       DEFAULT_FRAME_SECONDS;
@@ -38,6 +41,11 @@ export class AnimatedBiomeWall extends DrawableObject {
   /** Draws only wall modules intersecting the current camera view. */
   draw(context, world) {
     if (this.imageState !== "ready") return;
+    if (this.role === "early-trickshot-wall") {
+      this.#drawTrickshotWall(context);
+      this.#drawMeaningfulLight(context, this.y, this.y + this.height);
+      return;
+    }
     const camera = world.camera;
     const top = Math.max(this.y, camera.y - DRAW_PADDING);
     const bottom = Math.min(
@@ -56,6 +64,21 @@ export class AnimatedBiomeWall extends DrawableObject {
     }
     context.restore();
     this.#drawMeaningfulLight(context, top, bottom);
+  }
+
+  #drawTrickshotWall(context) {
+    this.setFrameIndex(0);
+    if (this.side === "left") {
+      this.drawCurrentFrame(
+        context, this.x, this.y, this.width, this.height,
+      );
+      return;
+    }
+    context.save();
+    context.translate(this.x * 2 + this.width, 0);
+    context.scale(-1, 1);
+    this.drawCurrentFrame(context, this.x, this.y, this.width, this.height);
+    context.restore();
   }
 
   /** Makes a successful wall rebound immediately readable. */
@@ -198,7 +221,7 @@ export class AnimatedBiomeWall extends DrawableObject {
   #drawGuidance(context, top, bottom) {
     const span = Math.max(1, bottom - top);
     const travel = (this.animationTime * 180) % span;
-    context.fillStyle = "#48f6f2";
+    context.fillStyle = this.guidanceColor ?? "#48f6f2";
     for (let index = 0; index < 3; index += 1) {
       const y = bottom - ((travel + index * 52) % span);
       context.globalAlpha = 0.2 + index * 0.09;
@@ -209,6 +232,8 @@ export class AnimatedBiomeWall extends DrawableObject {
   #validate(data) {
     const values = [data?.x, data?.y, data?.height];
     const hasValues = values.every(Number.isFinite) && data.height > 0;
+    const trickshotWidthIsValid = data?.role !== "early-trickshot-wall" ||
+      (Number.isFinite(data.width) && data.width > 0);
     const hasSide = data?.side === "left" || data?.side === "right";
     const reboundIsValid = data?.role !== "wall-bounce-choke" || [
       data.reboundHorizontalSpeedPixelsPerSecond,
@@ -227,6 +252,7 @@ export class AnimatedBiomeWall extends DrawableObject {
       (data.reboundDropVerticalRatio < data.reboundReleasedVerticalRatio &&
         data.reboundReleasedVerticalRatio < 1);
     if (typeof data?.id === "string" && hasValues && hasSide &&
+      trickshotWidthIsValid &&
       reboundIsValid && reboundRatiosAreValid) return;
     throw new TypeError("The animated biome wall definition is invalid.");
   }

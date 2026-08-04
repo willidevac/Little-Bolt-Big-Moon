@@ -136,10 +136,46 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "factory-crane-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-crane-platform-clean-hd.png",
+                       "frameWidth":  1086,
+                       "frameHeight":  362,
+                       "columns":  1,
+                       "rows":  4,
+                       "totalFrames":  4,
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-jump-window-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-jump-window-clean-hd.png",
+                       "frameWidth":  1774,
+                       "frameHeight":  221,
+                       "columns":  1,
+                       "rows":  4,
+                       "totalFrames":  4,
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "factory-trap-platform-clean-hd-v1",
                        "priority":  "P0",
                        "category":  "environment",
                        "file":  "img/environment/factory-trap-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "factory-trickshot-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/factory-trickshot-wall-clean-hd.png",
+                       "frameWidth":  384,
+                       "frameHeight":  1024,
+                       "columns":  4,
+                       "rows":  1,
+                       "totalFrames":  4,
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
@@ -175,6 +211,18 @@
                        "priority":  "P0",
                        "category":  "environment",
                        "file":  "img/environment/launch-tower-combat-platform-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "launch-tower-jump-window-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/launch-tower-jump-window-clean-hd.png",
+                       "frameWidth":  1536,
+                       "frameHeight":  256,
+                       "columns":  1,
+                       "rows":  4,
+                       "totalFrames":  4,
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
@@ -250,6 +298,18 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "scrapyard-crane-platform-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-crane-platform-clean-hd.png",
+                       "frameWidth":  1198,
+                       "frameHeight":  328,
+                       "columns":  1,
+                       "rows":  4,
+                       "totalFrames":  4,
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "scrapyard-floor-clean-hd-v1",
                        "priority":  "P0",
                        "category":  "environment",
@@ -296,6 +356,18 @@
                        "priority":  "P0",
                        "category":  "environment",
                        "file":  "img/environment/scrapyard-wall-clean-hd.png",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
+                       "id":  "scrapyard-trickshot-wall-clean-hd-v1",
+                       "priority":  "P0",
+                       "category":  "environment",
+                       "file":  "img/environment/scrapyard-trickshot-wall-clean-hd.png",
+                       "frameWidth":  429,
+                       "frameHeight":  915,
+                       "columns":  4,
+                       "rows":  1,
+                       "totalFrames":  4,
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {

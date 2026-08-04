@@ -21,7 +21,7 @@ import {
 } from "../../js/config/progression-route-config.js";
 const PLATFORM_HEIGHTS = Object.freeze({
   precision: 58, standard: 64, rest: 88,
-  trap: 70, falling: 74, spring: 82,
+  trap: 70, falling: 74, spring: 82, crane: 72,
 });
 const WALL_ENTRY_MINIMUM_OFFSET = 32;
 
@@ -150,7 +150,7 @@ export class ProgressionRouteBuilder {
       suggestedDirection: this.#getDirection(state.previous, x, width),
       requiresWallBounce: step.challenge?.id ?? null,
       preparesWallBounce: step.approachChallenge?.id ?? null,
-      ...this.#getMechanicData(mechanic),
+      ...this.#getMechanicData(mechanic, step.biome.id, index),
     });
   }
 
@@ -168,7 +168,7 @@ export class ProgressionRouteBuilder {
   }
 
   #getMechanic(profile, index) {
-    return ["spring", "trap", "falling"].find((mechanic) => {
+    return ["spring", "trap", "falling", "crane"].find((mechanic) => {
       const schedule = profile.mechanics[mechanic];
       return schedule && index % schedule[0] === schedule[1];
     }) ?? null;
@@ -186,15 +186,16 @@ export class ProgressionRouteBuilder {
     if (role === "rest") return profile.widths[3];
     if (role === "precision") return profile.widths[2];
     if (role === "spring") return profile.widths[1];
+    if (role === "crane") return profile.widths[0];
     if (role === "trap" || role === "falling") return profile.widths[0];
     return profile.widths[0];
   }
 
-  #getMechanicData(mechanic) {
+  #getMechanicData(mechanic, biomeId, index) {
     if (mechanic === "trap") return {
       trap: Object.freeze({
-        safeSeconds: 1.35, warningSeconds: 0.65,
-        activeSeconds: 0.85, damage: 14,
+        safeSeconds: 1.8, warningSeconds: 1.35,
+        activeSeconds: 0.8, landingGraceSeconds: 0.85, damage: 12,
       }),
     };
     if (mechanic === "falling") return {
@@ -207,6 +208,16 @@ export class ProgressionRouteBuilder {
       bounceSpeedPixelsPerSecond: 1360,
       bounceHorizontalSpeedPixelsPerSecond: 400,
       bounceDirection: "right",
+    };
+    if (mechanic === "crane") return {
+      crane: Object.freeze({
+        axis: index % 2 === 0 ? "horizontal" : "vertical",
+        travelPixels: biomeId === "scrapyard" ? 68 : 84,
+        cycleSeconds: biomeId === "scrapyard" ? 5.8 : 5.2,
+        cableLengthPixels: biomeId === "scrapyard" ? 250 : 220,
+        animationFrameSeconds: biomeId === "scrapyard" ? 0.24 : 0.2,
+        surfaceRatio: biomeId === "scrapyard" ? 0.46 : 0.5,
+      }),
     };
     return {};
   }

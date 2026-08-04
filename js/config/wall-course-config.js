@@ -39,6 +39,27 @@ export function getWallSpriteConfig(biomeId) {
   });
 }
 
+/** Returns the dedicated four-frame sprite for an early trickshot wall. */
+export function getTrickshotWallSpriteConfig(biomeId) {
+  const frameSize = TRICKSHOT_WALL_FRAME_SIZES[biomeId];
+  if (!frameSize) {
+    throw new RangeError(`Unknown trickshot-wall biome: ${biomeId}`);
+  }
+  return Object.freeze({
+    source: getAssetPath(
+      "environment", `${biomeId}-trickshot-wall-clean-hd.png`,
+    ),
+    frameWidth: frameSize.width,
+    frameHeight: frameSize.height,
+    frameCount: 4,
+  });
+}
+
+const TRICKSHOT_WALL_FRAME_SIZES = Object.freeze({
+  scrapyard: Object.freeze({ width: 429, height: 915 }),
+  factory: Object.freeze({ width: 384, height: 1024 }),
+});
+
 /** Returns the new wall-mounted platform sprite definition for one biome. */
 export function getWallPlatformSpriteConfig(biomeId) {
   assertBiome(biomeId);

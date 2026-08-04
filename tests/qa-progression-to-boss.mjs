@@ -24,8 +24,9 @@ assert.ok(GAME_CONFIG.character.jumpChargeSeconds <= 0.7);
 assert.ok(GAME_CONFIG.character.maximumJumpSpeedPixelsPerSecond >= 1200);
 assert.equal(GAME_CONFIG.character.maximumJumpHorizontalSpeedPixelsPerSecond, 600);
 assert.ok(widths.every((width, index) => index === 0 || width < widths[index - 1]));
+assert.equal(countMechanic(generated, "scrapyard", "crane"), 3);
 assert.equal(generated.filter(({ biomeId, mechanic }) => {
-  return biomeId === "scrapyard" && mechanic;
+  return biomeId === "scrapyard" && mechanic && mechanic !== "crane";
 }).length, 0);
 assertBiomeMechanics(generated);
 assertEarlyRouteVariation(generated);
@@ -44,6 +45,7 @@ function averageWidth(platforms, biomeId) {
 
 function assertBiomeMechanics(platforms) {
   assert.ok(countMechanic(platforms, "factory", "trap") >= 8);
+  assert.ok(countMechanic(platforms, "factory", "crane") >= 4);
   assert.ok(countMechanic(platforms, "launch-tower", "falling") >= 8);
   assert.ok(countMechanic(platforms, "launch-tower", "spring") >= 3);
   for (const biome of ["space-station", "moon"]) {
