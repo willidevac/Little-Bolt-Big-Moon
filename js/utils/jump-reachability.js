@@ -43,6 +43,7 @@ export function evaluateJumpWindow(lower, upper, physics, character,
   });
 }
 
+/** Returns the descending flight duration for a charged jump or null. */
 export function getDescendingFlightSeconds(rise, ratio, physics, character) {
   if (!Number.isFinite(rise) || rise < 0) return null;
   const verticalSpeed = interpolate(

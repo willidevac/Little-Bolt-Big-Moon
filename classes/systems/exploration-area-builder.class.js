@@ -19,6 +19,7 @@ const BRANCH_EDGE_X = Object.freeze({ left: 80, right: 1040 });
 
 /** Adds ambiguous scouting branches and future combat staging floors. */
 export class ExplorationAreaBuilder {
+  /** @param {number} worldWidth */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("Die Breite der Erkundungsbereiche ist ungültig.");

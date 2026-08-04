@@ -5,6 +5,8 @@ import { BossArenaFloor } from
 import { BossArenaGate } from
   "../environment/boss-arena-gate.class.js";
 import { MechanicPlatformBuilder } from "./mechanic-platform-builder.class.js";
+import { ProgressionRoutePositioner } from
+  "./progression-route-positioner.class.js";
 import {
   getScrapyardPrototypePlatformSpriteConfig,
   getWallPlatformSpriteConfig,
@@ -17,27 +19,11 @@ import {
   WALL_CHALLENGE_ENTRY_OFFSET,
   WALL_CHALLENGE_EXIT_OFFSET,
 } from "../../js/config/progression-route-config.js";
-import { GAME_CONFIG } from "../../js/config/game-config.js";
-import { evaluateJumpWindow } from "../../js/utils/jump-reachability.js";
-
 const PLATFORM_HEIGHTS = Object.freeze({
   precision: 58, standard: 64, rest: 88,
   trap: 70, falling: 74, spring: 82,
 });
-const RESERVED_CLEARANCE = 144;
-const MAXIMUM_HORIZONTAL_EDGE_GAP = 410;
 const WALL_ENTRY_MINIMUM_OFFSET = 32;
-const MINIMUM_SAFE_FRAMES = Object.freeze({
-  scrapyard: 7, factory: 6, "launch-tower": 5,
-  "space-station": 4, moon: 3,
-});
-const DESIRED_CHARGE_RATIOS = Object.freeze({
-  scrapyard: Object.freeze([0.34, 0.48, 0.62, 0.76]),
-  factory: Object.freeze([0.28, 0.5, 0.7, 0.86]),
-  "launch-tower": Object.freeze([0.24, 0.46, 0.68, 0.9]),
-  "space-station": Object.freeze([0.2, 0.44, 0.7, 0.92]),
-  moon: Object.freeze([0.18, 0.42, 0.72, 0.94]),
-});
 
 /** Builds the complete increasingly difficult jump route to the final boss. */
 export class ProgressionRouteBuilder {
@@ -48,6 +34,9 @@ export class ProgressionRouteBuilder {
     }
     this.worldWidth = worldWidth;
     this.mechanics = new MechanicPlatformBuilder();
+    this.positioner = new ProgressionRoutePositioner(
+      worldWidth, BOSS_ARENA.approachY,
+    );
   }
 
   /** Returns all intermediate floors plus the final boss floor. */
@@ -145,7 +134,7 @@ export class ProgressionRouteBuilder {
       : null;
     const role = mechanic ?? stableRole;
     const width = isBossEntranceLift ? 240 : this.#getWidth(profile, role);
-    const x = this.#getX(
+    const x = this.positioner.findPlatformX(
       state.previous, step, profile, index, width, reservedPlatforms,
     );
     return Object.freeze({
@@ -199,109 +188,6 @@ export class ProgressionRouteBuilder {
     if (role === "spring") return profile.widths[1];
     if (role === "trap" || role === "falling") return profile.widths[0];
     return profile.widths[0];
-  }
-
-  #getX(previous, step, profile, index, width, reservedPlatforms) {
-    if (step.y === BOSS_ARENA.approachY) {
-      return Math.round((this.worldWidth - width) / 2);
-    }
-    if (step.challenge) return Math.round((this.worldWidth - width) / 2);
-    if (step.approachChallenge) {
-      return this.#getWallApproachX(
-        previous, step.y, step.approachChallenge, width, reservedPlatforms,
-      );
-    }
-    const laneCandidates = profile.lanes.map((lane, offset) => {
-      const candidate = profile.lanes[(index + offset) % profile.lanes.length];
-      return Math.min(Math.max(56, candidate), this.worldWidth - width - 56);
-    });
-    const searchCandidates = Array.from(
-      { length: Math.floor((this.worldWidth - width - 112) / 16) + 1 },
-      (_, candidateIndex) => 56 + candidateIndex * 16,
-    );
-    const candidates = [...new Set([...laneCandidates, ...searchCandidates])]
-      .filter((x) => this.#hasReservedClearance(
-        x, step.y, width, reservedPlatforms,
-      ));
-    const lane = this.#selectReachableX(
-      previous, step, profile, index, width, candidates,
-    ) ?? Math.round((this.worldWidth - width) / 2);
-    return Math.min(Math.max(56, lane), this.worldWidth - width - 56);
-  }
-
-  #selectReachableX(previous, step, profile, index, width, candidates) {
-    const minimumFrames = MINIMUM_SAFE_FRAMES[step.biome.id];
-    const ratios = DESIRED_CHARGE_RATIOS[step.biome.id];
-    const desiredRatio = ratios[index % ratios.length];
-    const wantsLongTransfer = ["scrapyard", "factory"].includes(step.biome.id) &&
-      index % 11 === 7;
-    return candidates.map((x, order) => {
-      const target = { x, y: step.y, width };
-      const window = evaluateJumpWindow(
-        previous, target, GAME_CONFIG.physics, GAME_CONFIG.character,
-      );
-      const ratiosForWindow = window.samples.map(({ ratio }) => ratio);
-      const centerRatio = ratiosForWindow.length
-        ? ratiosForWindow.reduce((total, ratio) => total + ratio, 0) /
-          ratiosForWindow.length
-        : 2;
-      const centerDistance = Math.abs(
-        x + width / 2 - (previous.x + previous.width / 2),
-      );
-      const longTransferPenalty = wantsLongTransfer && centerDistance < 360
-        ? 10000
-        : 0;
-      const score = longTransferPenalty +
-        Math.abs(centerRatio - desiredRatio) * 1000 + order;
-      return { x, window, score };
-    }).filter(({ window }) => window.frameCount >= minimumFrames)
-      .sort((first, second) => first.score - second.score)[0]?.x ?? null;
-  }
-
-  #getWallApproachX(previous, y, challenge, width, reservedPlatforms) {
-    const anchorId = `${challenge.id}-${challenge.entrySide}-wall`;
-    const entry = reservedPlatforms.find((platform) => {
-      return platform.anchorStructureId === anchorId;
-    });
-    if (!entry) return Math.round((this.worldWidth - width) / 2);
-    const target = challenge.entrySide === "left"
-      ? entry.x + entry.width + 64
-      : entry.x - width - 64;
-    const candidates = Array.from(
-      { length: Math.floor((this.worldWidth - width - 112) / 8) + 1 },
-      (_, index) => 56 + index * 8,
-    ).filter((x) => this.#hasReservedClearance(
-      x, y, width, reservedPlatforms,
-    )).map((x) => ({
-      x,
-      routeWindow: evaluateJumpWindow(
-        previous, { x, y, width }, GAME_CONFIG.physics, GAME_CONFIG.character,
-      ),
-      entryWindow: evaluateJumpWindow(
-        { x, y, width }, entry, GAME_CONFIG.physics, GAME_CONFIG.character,
-      ),
-    })).filter(({ routeWindow, entryWindow }) => {
-      return routeWindow.frameCount >= MINIMUM_SAFE_FRAMES[challenge.biomeId] &&
-        entryWindow.frameCount >= 6;
-    }).sort((first, second) => {
-      return Math.abs(first.x - target) - Math.abs(second.x - target);
-    });
-    return candidates[0]?.x ?? this.#clampToReach(previous, target, width);
-  }
-
-  #clampToReach(previous, target, width) {
-    const minimum = previous.x - width - MAXIMUM_HORIZONTAL_EDGE_GAP;
-    const maximum = previous.x + previous.width + MAXIMUM_HORIZONTAL_EDGE_GAP;
-    return Math.min(Math.max(56, target, minimum),
-      maximum, this.worldWidth - width - 56);
-  }
-
-  #hasReservedClearance(x, y, width, reservedPlatforms) {
-    return reservedPlatforms.every((platform) => {
-      if (Math.abs(platform.y - y) >= RESERVED_CLEARANCE) return true;
-      return x + width + 32 <= platform.x ||
-        x >= platform.x + platform.width + 32;
-    });
   }
 
   #getMechanicData(mechanic) {

@@ -148,6 +148,7 @@ export class AnimatedBiomeWall extends DrawableObject {
     return collisionDirection === innerDirection;
   }
 
+  /** Returns whether the character currently touches this wall. */
   wasTouchedBy(character) {
     return this.contactSeconds > 0 && this.contactTarget === character;
   }

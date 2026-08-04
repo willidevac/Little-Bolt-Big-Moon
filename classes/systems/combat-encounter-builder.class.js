@@ -28,6 +28,7 @@ const REQUIRED_STAGE_INDICES = new Set([2, 4, 6, 7]);
 
 /** Populates the eight wide platforms with increasingly difficult encounters. */
 export class CombatEncounterBuilder {
+  /** @param {number} worldWidth */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("Die Weltbreite der Kampfbegegnungen ist ungültig.");

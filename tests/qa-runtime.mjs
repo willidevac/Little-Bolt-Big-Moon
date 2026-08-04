@@ -19,10 +19,7 @@ const sourceFiles = [
   ...(await listFiles(path.join(ROOT, "js"), SOURCE_EXTENSIONS)),
   path.join(ROOT, "script.js"),
 ];
-const styleFiles = [
-  ...(await listFiles(path.join(ROOT, "styles"), STYLE_EXTENSIONS)),
-  path.join(ROOT, "style.css"),
-];
+const styleFiles = await getReachableStylesheets();
 
 await assertNoDebugOutput(sourceFiles);
 await assertRelativeImports(sourceFiles);
@@ -34,6 +31,7 @@ const allRuntimeAssets = new Set([
 ]);
 await assertFiles([...allRuntimeAssets]);
 await assertAssetInventory(allRuntimeAssets);
+await assertSupportingFileInventory(allRuntimeAssets, styleFiles);
 
 console.log(
   `QA-001: ${sourceFiles.length} Dateien und alle Runtime-Assets geprüft.`,
@@ -47,6 +45,22 @@ async function listFiles(directory, extensions) {
     return extensions.has(path.extname(file)) ? [file] : [];
   }));
   return nested.flat();
+}
+
+async function getReachableStylesheets() {
+  const reachable = new Set();
+  const pending = [path.join(ROOT, "style.css")];
+  while (pending.length) {
+    const file = pending.pop();
+    if (reachable.has(file)) continue;
+    reachable.add(file);
+    const css = await fs.readFile(file, "utf8");
+    const imports = css.matchAll(/@import\s+url\(["']([^"']+)["']\)/g);
+    [...imports].forEach((match) => {
+      pending.push(path.resolve(path.dirname(file), match[1]));
+    });
+  }
+  return [...reachable].sort();
 }
 
 async function assertNoDebugOutput(files) {
@@ -184,9 +198,40 @@ async function assertAssetInventory(runtimeAssets) {
   assert.ok(expected.every((file) => credited.has(file)));
 }
 
+async function assertSupportingFileInventory(runtimeAssets, stylesheets) {
+  const expectedStyles = stylesheets.map(relative).sort();
+  const onDiskStyles = [
+    ...(await listFiles(path.join(ROOT, "styles"), STYLE_EXTENSIONS)),
+    path.join(ROOT, "style.css"),
+  ].map(relative).sort();
+  assert.deepEqual(onDiskStyles, expectedStyles, "Ungenutzte CSS-Datei gefunden");
+  await assertHtmlFragmentInventory();
+  const expectedAudio = [...runtimeAssets].filter(isAudioAsset)
+    .map(relative).sort();
+  const onDiskAudio = (await listFiles(
+    path.join(ROOT, "audio"), new Set([".mp3", ".ogg", ".wav"]),
+  )).map(relative).sort();
+  assert.deepEqual(onDiskAudio, expectedAudio, "Ungenutzte Audiodatei gefunden");
+}
+
+async function assertHtmlFragmentInventory() {
+  const indexSource = await fs.readFile(path.join(ROOT, "index.html"), "utf8");
+  const declared = [...indexSource.matchAll(/data-html-fragment=["']([^"']+)["']/g)]
+    .map((match) => path.resolve(ROOT, match[1])).map(relative).sort();
+  const onDisk = (await listFiles(
+    path.join(ROOT, "html"), new Set([".html"]),
+  )).map(relative).sort();
+  assert.deepEqual(onDisk, declared, "Ungenutztes HTML-Fragment gefunden");
+}
+
 function isManifestAsset(file) {
   return file.startsWith(path.join(ROOT, "img")) &&
     [".png", ".ttf"].includes(path.extname(file));
+}
+
+function isAudioAsset(file) {
+  return file.startsWith(path.join(ROOT, "audio")) &&
+    [".mp3", ".ogg", ".wav"].includes(path.extname(file));
 }
 
 function resolveAsset(category, fileName) {
