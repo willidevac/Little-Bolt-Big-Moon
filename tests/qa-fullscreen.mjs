@@ -84,4 +84,4 @@ assertLanguageAndFallback();
 await assertResponsiveContract();
 controller.destroy();
 
-console.log("UI-005: Vollbildzyklus, Fallback und ResponsivitÃ¤t bestanden.");
+console.log("UI-005: Vollbildzyklus, Fallback und Responsivität bestanden.");

@@ -19,10 +19,10 @@ import {
   WALL_CHALLENGE_ENTRY_OFFSET,
   WALL_CHALLENGE_EXIT_OFFSET,
 } from "../../js/config/progression-route-config.js";
-const PLATFORM_HEIGHTS = Object.freeze({
-  precision: 58, standard: 64, rest: 88,
-  trap: 70, falling: 74, spring: 82, crane: 72,
-});
+import { PLATFORM_MECHANIC_CONFIG } from
+  "../../js/config/world-content-config.js";
+
+const PLATFORM_HEIGHTS = PLATFORM_MECHANIC_CONFIG.heights;
 const WALL_ENTRY_MINIMUM_OFFSET = 32;
 
 /** Builds the complete increasingly difficult jump route to the final boss. */
@@ -193,33 +193,30 @@ export class ProgressionRouteBuilder {
 
   #getMechanicData(mechanic, biomeId, index) {
     if (mechanic === "trap") return {
-      trap: Object.freeze({
-        safeSeconds: 1.8, warningSeconds: 1.35,
-        activeSeconds: 0.8, landingGraceSeconds: 0.85, damage: 12,
-      }),
+      trap: PLATFORM_MECHANIC_CONFIG.trap,
     };
     if (mechanic === "falling") return {
-      fall: Object.freeze({
-        warningDelaySeconds: 1, speedPixelsPerSecond: 560,
-        maximumDropPixels: 920, respawnDelaySeconds: 2.4,
-      }),
+      fall: PLATFORM_MECHANIC_CONFIG.falling,
     };
-    if (mechanic === "spring") return {
-      bounceSpeedPixelsPerSecond: 1360,
-      bounceHorizontalSpeedPixelsPerSecond: 400,
-      bounceDirection: "right",
-    };
+    if (mechanic === "spring") return PLATFORM_MECHANIC_CONFIG.spring;
     if (mechanic === "crane") return {
       crane: Object.freeze({
         axis: index % 2 === 0 ? "horizontal" : "vertical",
-        travelPixels: biomeId === "scrapyard" ? 68 : 84,
-        cycleSeconds: biomeId === "scrapyard" ? 5.8 : 5.2,
-        cableLengthPixels: biomeId === "scrapyard" ? 250 : 220,
-        animationFrameSeconds: biomeId === "scrapyard" ? 0.24 : 0.2,
-        surfaceRatio: biomeId === "scrapyard" ? 0.46 : 0.5,
+        travelPixels: this.#getCraneValue("travelPixels", biomeId),
+        cycleSeconds: this.#getCraneValue("cycleSeconds", biomeId),
+        cableLengthPixels: this.#getCraneValue("cableLengthPixels", biomeId),
+        animationFrameSeconds: this.#getCraneValue(
+          "animationFrameSeconds", biomeId,
+        ),
+        surfaceRatio: this.#getCraneValue("surfaceRatio", biomeId),
       }),
     };
     return {};
+  }
+
+  #getCraneValue(property, biomeId) {
+    const values = PLATFORM_MECHANIC_CONFIG.crane[property];
+    return values[biomeId] ?? values.default;
   }
 
   #configureSpringLaunches(platforms) {

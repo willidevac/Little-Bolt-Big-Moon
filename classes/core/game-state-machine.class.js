@@ -7,6 +7,9 @@ export const GAME_STATES = Object.freeze({
   LOST: "lost",
 });
 
+/** @typedef {typeof GAME_STATES[keyof typeof GAME_STATES]} GameState */
+
+/** @type {Readonly<Record<GameState, ReadonlyArray<GameState>>>} */
 const ALLOWED_TRANSITIONS = Object.freeze({
   [GAME_STATES.HOME]: Object.freeze([GAME_STATES.PLAYING]),
   [GAME_STATES.PLAYING]: Object.freeze([
@@ -38,11 +41,13 @@ const ALLOWED_TRANSITIONS = Object.freeze({
  * Guards the current game state and permits only valid transitions.
  */
 export class GameStateMachine {
+  /** @type {GameState} */
   #currentState;
+  /** @type {Set<(state:GameState) => void>} */
   #listeners;
 
   /**
-   * @param {string} [initialState=GAME_STATES.HOME]
+   * @param {GameState} [initialState=GAME_STATES.HOME]
    */
   constructor(initialState = GAME_STATES.HOME) {
     this.#validateState(initialState);
@@ -52,7 +57,7 @@ export class GameStateMachine {
 
   /**
    * Checks whether a specific state is active.
-   * @param {string} state
+   * @param {GameState} state
    * @returns {boolean}
    */
   is(state) {
@@ -61,7 +66,7 @@ export class GameStateMachine {
 
   /**
    * Notifies an observer about future state changes.
-   * @param {(state:string) => void} listener
+   * @param {(state:GameState) => void} listener
    * @returns {() => void}
    */
   onChange(listener) {
@@ -74,7 +79,7 @@ export class GameStateMachine {
 
   /**
    * Transitions to an allowed state.
-   * @param {string} nextState
+   * @param {GameState} nextState
    * @returns {boolean} Whether the state changed.
    */
   transitionTo(nextState) {
@@ -88,7 +93,7 @@ export class GameStateMachine {
 
   /**
    * Returns the current state.
-   * @returns {string}
+   * @returns {GameState}
    */
   getState() {
     return this.#currentState;
@@ -100,7 +105,7 @@ export class GameStateMachine {
 
   /**
    * Checks whether a state belongs to the state model.
-   * @param {string} state
+   * @param {GameState} state
    */
   #validateState(state) {
     if (Object.hasOwn(ALLOWED_TRANSITIONS, state)) return;
@@ -109,7 +114,7 @@ export class GameStateMachine {
 
   /**
    * Prevents invalid transitions between states.
-   * @param {string} nextState
+   * @param {GameState} nextState
    */
   #validateTransition(nextState) {
     const allowedStates = ALLOWED_TRANSITIONS[this.#currentState];

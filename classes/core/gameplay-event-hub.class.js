@@ -16,17 +16,23 @@ export const GAMEPLAY_EVENTS = Object.freeze({
   WAVE_COMPLETE: "waveComplete",
 });
 
+/** @typedef {typeof GAMEPLAY_EVENTS[keyof typeof GAMEPLAY_EVENTS]} GameplayEventType */
+/** @typedef {Readonly<Record<string, unknown>>} GameplayEventDetail */
+/** @typedef {Readonly<{type:GameplayEventType, detail:GameplayEventDetail}>} GameplayEvent */
+
+/** @type {Set<GameplayEventType>} */
 const KNOWN_EVENTS = new Set(Object.values(GAMEPLAY_EVENTS));
 
 /**
  * Distributes immutable gameplay events without audio or UI knowledge.
  */
 export class GameplayEventHub {
+  /** @type {Set<(event:GameplayEvent) => void>} */
   #listeners = new Set();
 
   /**
    * Registers an observer and returns its unsubscribe function.
-   * @param {(event: Readonly<object>) => void} listener
+   * @param {(event:GameplayEvent) => void} listener
    * @returns {() => void}
    */
   on(listener) {
@@ -39,8 +45,8 @@ export class GameplayEventHub {
 
   /**
    * Distributes a known event with an immutable copy of its details.
-   * @param {string} type
-   * @param {Readonly<object>} [detail={}]
+   * @param {GameplayEventType} type
+   * @param {GameplayEventDetail} [detail={}]
    */
   emit(type, detail = {}) {
     if (!KNOWN_EVENTS.has(type) || !detail || typeof detail !== "object") {

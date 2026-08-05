@@ -14,7 +14,7 @@
 }
 
 .record-summary dt {
-  color: #c6b899;
+  color: var(--color-muted);
   font-family: "Silkscreen", monospace;
   font-size: clamp(0.42rem, 0.55vw, 0.55rem);
   line-height: 1.3;

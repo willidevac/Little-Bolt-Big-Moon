@@ -10,6 +10,7 @@ const spark = { id: "spark" };
 assert.equal(registry.add("actors", byte), true);
 assert.equal(registry.add("actors", byte), false);
 assertSnapshot(registry, "actors", [byte]);
+assertDetachedGroups(registry, byte);
 assertDeferredChanges(registry, byte, drone, spark);
 assertClearDuringProcessing(registry, drone);
 assertValidation(registry);
@@ -21,6 +22,13 @@ function assertSnapshot(target, groupName, expected) {
   assert.deepEqual(snapshot, expected);
   assert.equal(Object.isFrozen(snapshot), true);
   assert.throws(() => snapshot.push({}), TypeError);
+}
+
+function assertDetachedGroups(target, actor) {
+  const groups = target.getGroupsSnapshot();
+  groups.set("actors", []);
+  assertSnapshot(target, "actors", [actor]);
+  assert.throws(() => groups.get("effects").push({}), TypeError);
 }
 
 function assertDeferredChanges(target, current, next, effect) {

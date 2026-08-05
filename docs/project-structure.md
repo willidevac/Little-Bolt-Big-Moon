@@ -5,6 +5,8 @@ Spiel/
 ├── index.html                 Hauptseite
 ├── style.css                  zentraler CSS-Einstieg
 ├── script.js                  zentraler JavaScript-Einstieg
+├── package.json               reproduzierbare Entwicklungsbefehle
+├── tools/                     kleiner lokaler Entwicklungsserver
 ├── html/
 │   ├── fragments/             kleine, statische Bereiche der Hauptseite
 │   └── pages/                 eigenständige Zusatzseiten
@@ -18,6 +20,7 @@ Spiel/
 │   └── ui/                    Bildschirme, Dialoge, HUD-Status und Rückmeldungen
 ├── js/
 │   ├── config/                feste Werte und Assetpfade
+│   ├── app/                   Composition Root und Game-Fabrik
 │   ├── factories/             übersichtliche Verdrahtung von Spielsystemen
 │   ├── levels/                Levelaufbau
 │   ├── ui/                    DOM-Bildschirme und Dialoge
@@ -45,3 +48,22 @@ Spiel/
 - Funktionen bleiben klein und erfüllen jeweils eine Aufgabe.
 - Keine JavaScript-Datei überschreitet 400 Zeilen.
 - Namen bleiben englisch und verwenden konsistentes `camelCase`.
+
+## Abhängigkeitsrichtung
+
+```text
+script.js
+  → js/app
+    → factories und level
+      → classes/core und classes/systems
+        → entities, environment und gemeinsame config
+```
+
+`classes/core/` importiert keine Module aus `js/app/`, `js/factories/`,
+`js/levels/` oder `js/ui/`. `qa-architecture-boundaries.mjs` sichert diese
+Grenze sowie das Verbot versteckter UI-Singletons automatisch ab.
+
+Die Struktur folgt KISS: Eine neue Schicht entsteht nur, wenn sie eine
+konkrete Abhängigkeit oder einen Lebenszyklus sichtbar macht. Kleine reine
+Hilfsfunktionen bleiben Funktionen; Klassen werden nur für Objekte mit eigenem
+Zustand und Verhalten verwendet.

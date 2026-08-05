@@ -154,6 +154,6 @@ export class FallingPlatform extends Platform {
       fall?.respawnDelaySeconds,
     ];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
-    throw new TypeError(`Der Fall von Plattform ${this.id} ist ungueltig.`);
+    throw new TypeError(`Der Fall von Plattform ${this.id} ist ungültig.`);
   }
 }

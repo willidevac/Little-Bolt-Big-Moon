@@ -10,10 +10,6 @@ import { Keyboard } from "../input/keyboard.class.js";
 import { RunStats } from "../systems/run-stats.class.js";
 import { RunStatsSynchronizer } from
   "../systems/run-stats-synchronizer.class.js";
-import { createLevelOne } from "../../js/levels/level-01.js";
-import { createGameCombatSystems } from "../../js/factories/game-combat-systems.js";
-import { createRunResetController } from
-  "../../js/factories/run-reset-controller.js";
 
 /**
  * Entry point for game initialization and lifecycle management.
@@ -23,19 +19,29 @@ export class Game {
   #runResetController;
   #runStatsSynchronizer;
   #stateMachine;
+  #dependencies;
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {Readonly<object>} config
-   * @param {EventTarget} [inputTarget=globalThis]
+   * @param {EventTarget} inputTarget
+   * @param {Readonly<{
+   *   createLevel: () => Readonly<object>,
+   *   createCombatSystems: (config:Readonly<object>, game:Game) => Readonly<object>,
+   *   createResetController: (game:Game, createWorld:() => World) => object
+   * }>} dependencies
    */
-  constructor(canvas, config, inputTarget = globalThis) {
+  constructor(canvas, config, inputTarget, dependencies) {
     this.gameCanvas = new GameCanvas(canvas);
     this.canvas = this.gameCanvas.element;
     this.context = this.gameCanvas.context;
     this.config = config;
+    this.#dependencies = dependencies;
     this.#initializeRuntime(inputTarget);
-    Object.assign(this, createGameCombatSystems(config, this));
-    this.#runResetController = createRunResetController(
+    const systems = dependencies.createCombatSystems(config, this);
+    this.combatSystem = systems.combatSystem;
+    this.weaponSystem = systems.weaponSystem;
+    this.upgradeFlow = systems.upgradeFlow;
+    this.#runResetController = dependencies.createResetController(
       this, () => this.#createWorld(),
     );
   }
@@ -131,6 +137,15 @@ export class Game {
   stop() {
     if (!this.#gameLoop.stop()) return;
     this.gameCanvas.setLoopState("stopped");
+  }
+
+  /** Stops the game and releases browser-facing runtime resources. */
+  destroy() {
+    this.stop();
+    this.keyboard.unbind();
+    this.world.destroy();
+    this.gameCanvas.clear();
+    this.isInitialized = false;
   }
 
   /**
@@ -280,7 +295,7 @@ export class Game {
       this.context,
       this.config,
       this.keyboard,
-      createLevelOne(this.config.enemies),
+      this.#dependencies.createLevel(),
       this.gameplayEvents,
     );
   }

@@ -228,7 +228,7 @@ export class Enemy extends MovableObject {
       return Number.isFinite(offset) && offset >= 0;
     });
     if (hasValidValues) return offsets;
-    throw new TypeError("Die BodenabstÃ¤nde der Gegnerdarstellung sind ungÃ¼ltig.");
+    throw new TypeError("Die Bodenabstände der Gegnerdarstellung sind ungültig.");
   }
 
   #setEnemyData(data) {

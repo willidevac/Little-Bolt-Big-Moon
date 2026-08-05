@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2022"
+  },
+  "include": [
+    "classes/core/game-loop.class.js",
+    "classes/core/game-state-machine.class.js",
+    "classes/core/gameplay-event-hub.class.js",
+    "classes/core/world-entity-registry.class.js",
+    "js/utils/format.js",
+    "js/utils/jump-reachability.js",
+    "js/utils/math.js"
+  ],
+  "exclude": ["node_modules", "tests"]
+}

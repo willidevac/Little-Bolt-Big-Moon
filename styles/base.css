@@ -26,6 +26,17 @@
   --color-orange: #cf6f28;
   --color-cyan: #32e1df;
   --color-shadow: #02070d;
+  --color-ink: #06141e;
+  --color-muted: #c6b899;
+  --color-line: #8aa0aa;
+  --layer-hud: 5;
+  --layer-touch: 7;
+  --layer-screen: 10;
+  --layer-dialog: 20;
+  --layer-review: 24;
+  --layer-notice: 25;
+  --layer-modal: 30;
+  --layer-story: 40;
 }
 
 * {

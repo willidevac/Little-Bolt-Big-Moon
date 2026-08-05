@@ -2,19 +2,27 @@
  * Schedules animation frames and provides a capped elapsed frame time.
  */
 export class GameLoop {
-  #animationFrameId;
+  /** @type {number|null} */
+  #animationFrameId = null;
+  /** @type {FrameRequestCallback} */
   #boundFrame;
+  /** @type {(handle:number) => void} */
   #cancelFrame;
-  #isRunning;
+  /** @type {boolean} */
+  #isRunning = false;
+  /** @type {number} */
   #maximumDeltaTimeMilliseconds;
+  /** @type {(deltaTimeSeconds:number) => void} */
   #onFrame;
-  #previousTimestamp;
+  /** @type {number|null} */
+  #previousTimestamp = null;
+  /** @type {(callback:FrameRequestCallback) => number} */
   #requestFrame;
 
   /**
    * @param {number} maximumDeltaTimeMilliseconds
    * @param {(deltaTimeSeconds:number) => void} onFrame
-   * @param {Readonly<object>} [frameTarget=globalThis]
+   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} [frameTarget=globalThis]
    */
   constructor(maximumDeltaTimeMilliseconds, onFrame, frameTarget = globalThis) {
     this.#validateConfig(maximumDeltaTimeMilliseconds, onFrame, frameTarget);
@@ -52,6 +60,7 @@ export class GameLoop {
     this.#previousTimestamp = null;
   }
 
+  /** @param {number} timestamp */
   #runFrame(timestamp) {
     if (!this.#isRunning) return;
     this.#animationFrameId = null;
@@ -61,6 +70,7 @@ export class GameLoop {
     this.#requestNextFrame();
   }
 
+  /** @param {number} timestamp */
   #calculateDeltaTime(timestamp) {
     if (this.#previousTimestamp === null) return 0;
     const elapsed = Math.max(0, timestamp - this.#previousTimestamp);
@@ -84,6 +94,11 @@ export class GameLoop {
     this.#previousTimestamp = null;
   }
 
+  /**
+   * @param {number} maximumDelta
+   * @param {(deltaTimeSeconds:number) => void} onFrame
+   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} frameTarget
+   */
   #validateConfig(maximumDelta, onFrame, frameTarget) {
     const hasDelta = Number.isFinite(maximumDelta) && maximumDelta > 0;
     const hasCallback = typeof onFrame === "function";

@@ -20,9 +20,9 @@ globalThis.requestAnimationFrame = (callback) => {
 };
 globalThis.cancelAnimationFrame = () => {};
 
-const { Game } = await import("../classes/core/game.class.js");
+const { createGame } = await import("../js/app/create-game.js");
 const { GAME_CONFIG } = await import("../js/config/game-config.js");
-const game = new Game(createCanvas(), GAME_CONFIG, new EventTarget());
+const game = createGame(createCanvas(), GAME_CONFIG, new EventTarget());
 const states = [];
 game.onStateChange((state) => states.push(state));
 

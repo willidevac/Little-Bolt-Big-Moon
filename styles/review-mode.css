@@ -59,7 +59,7 @@
 
 .review-banner {
   position: absolute;
-  z-index: 24;
+  z-index: var(--layer-review);
   top: 0.6rem;
   left: 50%;
   display: flex;

@@ -126,6 +126,7 @@ export class ScreenController {
     this.unsubscribeLanguage?.();
     this.unsubscribe = null;
     this.unsubscribeLanguage = null;
+    this.storySequences?.destroy();
   }
 
   /**

@@ -1,38 +1,11 @@
 import { AnchoredCollectable } from
   "../entities/collectables/anchored-collectable.class.js";
+import { ITEM_PLACEMENT_CONFIG } from
+  "../../js/config/world-content-config.js";
 
-const ITEM_WIDTHS = Object.freeze({
-  gear: 64, energy: 64, arcCharge: 48,
-  boltThrower: 64, arcCannon: 96, storyBadge: 64,
-});
-
-const ITEM_PLAN = Object.freeze({
-  scrapyard: Object.freeze([
-    item("gear", 0.01), item("energy", 0.22), badge("left", 0.38),
-    item("gear", 0.54), weapon("boltThrower", 0.74), item("energy", 0.9),
-  ]),
-  factory: Object.freeze([
-    item("gear", 0.08), item("energy", 0.18), item("arcCharge", 0.32),
-    item("gear", 0.46), weapon("arcCannon", 0.62, 3),
-    item("energy", 0.77), item("gear", 0.92),
-  ]),
-  "launch-tower": Object.freeze([
-    item("gear", 0.1), item("arcCharge", 0.25), item("energy", 0.42),
-    item("gear", 0.58), item("arcCharge", 0.75), item("energy", 0.9),
-  ]),
-  "space-station": Object.freeze([
-    item("gear", 0.1), item("energy", 0.26), item("arcCharge", 0.43),
-    item("gear", 0.6), item("energy", 0.76), item("arcCharge", 0.9),
-  ]),
-  moon: Object.freeze([
-    item("gear", 0.08), item("energy", 0.22), item("arcCharge", 0.36),
-    item("gear", 0.5), item("energy", 0.64), badge("right", 0.78),
-    item("arcCharge", 0.9),
-  ]),
-});
-const SEARCH_REWARD_TYPES = Object.freeze([
-  "energy", "gear", "arcCharge", "energy", "arcCharge",
-]);
+const ITEM_WIDTHS = ITEM_PLACEMENT_CONFIG.widths;
+const ITEM_PLAN = ITEM_PLACEMENT_CONFIG.plan;
+const SEARCH_REWARD_TYPES = ITEM_PLACEMENT_CONFIG.searchRewardTypes;
 
 /** Places useful pickups safely on the newly generated route. */
 export class ItemPlacementBuilder {
@@ -137,22 +110,4 @@ export class ItemPlacementBuilder {
     });
     return new AnchoredCollectable(data, anchor);
   }
-}
-
-function item(type, position) {
-  const amount = type === "energy" ? 25 : 1;
-  return Object.freeze({ type, visualType: type, amount, position });
-}
-
-function weapon(weaponId, position, amount = 1) {
-  return Object.freeze({
-    type: "weapon", visualType: weaponId, weaponId, amount, position,
-  });
-}
-
-function badge(badgePart, position) {
-  return Object.freeze({
-    type: "storyBadge", visualType: "storyBadge",
-    badgePart, amount: 1, position,
-  });
 }

@@ -2,15 +2,11 @@ import {
   FullscreenController,
 } from "../../classes/ui/fullscreen-controller.class.js";
 
-let fullscreenController = null;
-
-/** Creates the fullscreen controller exactly once. */
+/** Creates the fullscreen controller. */
 export function initializeFullscreen(root = document.querySelector("[data-game-root]")) {
-  if (fullscreenController) return fullscreenController;
   const button = root?.querySelector("[data-fullscreen-toggle]");
   if (!(root instanceof HTMLElement) || !(button instanceof HTMLButtonElement)) {
     throw new Error("Die Vollbildsteuerung ist unvollständig.");
   }
-  fullscreenController = new FullscreenController(document, root, button).initialize();
-  return fullscreenController;
+  return new FullscreenController(document, root, button).initialize();
 }

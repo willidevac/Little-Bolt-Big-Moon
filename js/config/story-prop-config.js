@@ -37,3 +37,23 @@ export const STORY_PROP_CONFIGS = Object.freeze({
     "story-luma-containment-clean-hd.png", 220, 192, "#65efff",
   ),
 });
+
+/** Semantic story targets that stay stable when route IDs change. */
+export const STORY_PLAN = Object.freeze([
+  clue("abandonedCompanionCradle", "scrapyard", 146500,
+    "Lumas verlassene Ladestation"),
+  clue("sealedLumaTransport", "factory", 116000,
+    "Luma wurde durch die Fabrik transportiert"),
+  clue("launchTraceConsole", "launch-tower", 86000,
+    "Der Transport flog zum Mond"),
+  clue("stationDetentionPod", "space-station", 56000,
+    "Luma war auf der Station gefangen"),
+  clue("fortressRouteBeacon", "moon", 26000,
+    "Die Spur führt zur Wächterfestung"),
+  clue("lumaContainmentCapsule", "moon", 600,
+    "Luma wartet in der Bossarena"),
+]);
+
+function clue(type, biomeId, targetY, storyBeat) {
+  return Object.freeze({ type, biomeId, targetY, storyBeat });
+}

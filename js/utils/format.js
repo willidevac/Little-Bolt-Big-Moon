@@ -13,7 +13,9 @@ export function formatScore(score) {
  * @returns {string}
  */
 export function formatTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) return "–";
+  if (typeof seconds !== "number" || !Number.isFinite(seconds) || seconds < 0) {
+    return "–";
+  }
   const wholeSeconds = Math.floor(seconds);
   const minutes = Math.floor(wholeSeconds / 60);
   const remainingSeconds = String(wholeSeconds % 60).padStart(2, "0");

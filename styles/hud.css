@@ -1,6 +1,6 @@
 .game-hud {
   position: absolute;
-  z-index: 5;
+  z-index: var(--layer-hud);
   inset: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -61,7 +61,7 @@
   width: clamp(5rem, 14vw, 11rem);
   height: clamp(0.5rem, 1vw, 0.8rem);
   padding: 2px;
-  border: 1px solid #8aa0aa;
+  border: 1px solid var(--color-line);
   background: #02070d;
 }
 
@@ -100,7 +100,7 @@
 .hud-journey {
   position: relative;
   flex-wrap: wrap;
-  color: #c6b899;
+  color: var(--color-muted);
   font-size: clamp(0.45rem, 0.6vw, 0.58rem);
   text-transform: uppercase;
 }
@@ -351,7 +351,7 @@
 .hud-boss__bar {
   height: clamp(0.55rem, 1.2vw, 0.85rem);
   padding: 2px;
-  border: 1px solid #8aa0aa;
+  border: 1px solid var(--color-line);
   background: #02070d;
 }
 
@@ -417,7 +417,7 @@
 }
 
 .hud-label {
-  color: #c6b899;
+  color: var(--color-muted);
   font-size: clamp(0.48rem, 0.65vw, 0.62rem);
   text-transform: uppercase;
 }

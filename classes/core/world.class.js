@@ -215,7 +215,11 @@ export class World {
   /** Draws all entities in a fixed layer order. */
   draw() {
     if (!this.isInitialized) return;
-    this.#renderer.draw(this.#entityRegistry.getGroupsView(), this.camera, this);
+    this.#renderer.draw(
+      this.#entityRegistry.getGroupsSnapshot(),
+      this.camera,
+      this,
+    );
   }
 
   /** Removes all active and queued entities. */
@@ -320,6 +324,6 @@ export class World {
   }
 
   #getGroup(groupName) {
-    return this.#entityRegistry.getGroupView(groupName);
+    return this.#entityRegistry.getSnapshot(groupName);
   }
 }

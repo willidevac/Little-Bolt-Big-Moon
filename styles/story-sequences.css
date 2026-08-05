@@ -1,6 +1,6 @@
 .story-sequence {
   position: absolute;
-  z-index: 40;
+  z-index: var(--layer-story);
   inset: 0;
   overflow: hidden;
   background:

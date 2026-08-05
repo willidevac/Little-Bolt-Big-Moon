@@ -5,7 +5,6 @@ import { TRANSLATION_CATALOG } from "../js/i18n/translation-catalog.js";
 import { createLevelOne } from "../js/levels/level-01.js";
 import { GameplayEventHub, GAMEPLAY_EVENTS } from
   "../classes/core/gameplay-event-hub.class.js";
-import { WORLD_ENTITY_GROUPS } from "../classes/core/world-entity-groups.js";
 import { WorldEventReporter } from
   "../classes/systems/world-event-reporter.class.js";
 import { WaveManager } from "../classes/systems/wave-manager.class.js";

@@ -7,15 +7,17 @@ import {
 } from "../../js/config/wall-course-config.js";
 import { getProgressionProfile } from
   "../../js/config/progression-route-config.js";
+import { EXPLORATION_CONFIG } from
+  "../../js/config/world-content-config.js";
 
-const SEARCH_TARGETS = Object.freeze([135000, 108000, 74000, 46000, 17000]);
-const COMBAT_TARGETS = Object.freeze([
-  124000, 108000, 92000, 76000, 60000, 44000, 28000, 12000,
-]);
-const SEARCH_WIDTHS = Object.freeze([190, 160]);
-const COMBAT_WIDTHS = Object.freeze([520, 560, 620, 580, 660, 600, 680, 700]);
-const SIDE_MARGIN = 64;
-const BRANCH_EDGE_X = Object.freeze({ left: 80, right: 1040 });
+const {
+  searchTargets: SEARCH_TARGETS,
+  combatTargets: COMBAT_TARGETS,
+  searchWidths: SEARCH_WIDTHS,
+  combatWidths: COMBAT_WIDTHS,
+  sideMargin: SIDE_MARGIN,
+  branchEdgeX: BRANCH_EDGE_X,
+} = EXPLORATION_CONFIG;
 
 /** Adds ambiguous scouting branches and future combat staging floors. */
 export class ExplorationAreaBuilder {

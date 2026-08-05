@@ -36,7 +36,7 @@ export class Platform extends DrawableObject {
    */
   setFrameDisplacement(x, y) {
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      throw new TypeError("Die Plattformbewegung ist ungueltig.");
+      throw new TypeError("Die Plattformbewegung ist ungültig.");
     }
     this.frameDisplacementX = x;
     this.frameDisplacementY = y;

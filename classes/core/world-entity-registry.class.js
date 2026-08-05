@@ -2,10 +2,15 @@
  * Manages entity groups and safely defers changes until the end of a frame.
  */
 export class WorldEntityRegistry {
+  /** @type {ReadonlyArray<string>} */
   #groupNames;
+  /** @type {Map<string, object[]>} */
   #groups;
+  /** @type {Map<string, Set<object>>} */
   #pendingAdditions;
+  /** @type {Map<string, Set<object>>} */
   #pendingRemovals;
+  /** @type {boolean} */
   #isProcessing;
 
   /**
@@ -14,9 +19,9 @@ export class WorldEntityRegistry {
   constructor(groupNames) {
     this.#validateGroupNames(groupNames);
     this.#groupNames = Object.freeze([...groupNames]);
-    this.#groups = this.#createGroupMap(Array);
-    this.#pendingAdditions = this.#createGroupMap(Set);
-    this.#pendingRemovals = this.#createGroupMap(Set);
+    this.#groups = new Map(groupNames.map((name) => [name, []]));
+    this.#pendingAdditions = this.#createPendingMap();
+    this.#pendingRemovals = this.#createPendingMap();
     this.#isProcessing = false;
   }
 
@@ -29,8 +34,8 @@ export class WorldEntityRegistry {
   add(groupName, entity) {
     this.#validateEntity(groupName, entity);
     const entities = this.#getGroup(groupName);
-    const additions = this.#pendingAdditions.get(groupName);
-    const removals = this.#pendingRemovals.get(groupName);
+    const additions = this.#getPending(this.#pendingAdditions, groupName);
+    const removals = this.#getPending(this.#pendingRemovals, groupName);
     if (removals.delete(entity)) return true;
     if (entities.includes(entity) || additions.has(entity)) return false;
     if (this.#isProcessing) additions.add(entity);
@@ -46,7 +51,7 @@ export class WorldEntityRegistry {
    */
   remove(groupName, entity) {
     this.#validateEntity(groupName, entity);
-    const additions = this.#pendingAdditions.get(groupName);
+    const additions = this.#getPending(this.#pendingAdditions, groupName);
     if (additions.delete(entity)) return true;
     const entities = this.#getGroup(groupName);
     if (!entities.includes(entity)) return false;
@@ -65,20 +70,13 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * Returns the immutable live view used by the world coordinator.
-   * @param {string} groupName
-   * @returns {ReadonlyArray<object>}
-   */
-  getGroupView(groupName) {
-    return this.#getGroup(groupName);
-  }
-
-  /**
-   * Returns the read-only group view for internal world systems.
+   * Returns detached group snapshots without exposing the registry's arrays.
    * @returns {ReadonlyMap<string, ReadonlyArray<object>>}
    */
-  getGroupsView() {
-    return this.#groups;
+  getGroupsSnapshot() {
+    return new Map(this.#groupNames.map((groupName) => {
+      return [groupName, this.getSnapshot(groupName)];
+    }));
   }
 
   /**
@@ -104,13 +102,25 @@ export class WorldEntityRegistry {
     else this.#groups.forEach((entities) => entities.splice(0));
   }
 
-  #createGroupMap(CollectionType) {
-    return new Map(this.#groupNames.map((name) => [name, new CollectionType()]));
+  /** @returns {Map<string, Set<object>>} */
+  #createPendingMap() {
+    return new Map(this.#groupNames.map((name) => [name, new Set()]));
   }
 
+  /** @param {string} groupName @returns {object[]} */
   #getGroup(groupName) {
     this.#validateGroupName(groupName);
-    return this.#groups.get(groupName);
+    return /** @type {object[]} */ (this.#groups.get(groupName));
+  }
+
+  /**
+   * @param {Map<string, Set<object>>} groups
+   * @param {string} groupName
+   * @returns {Set<object>}
+   */
+  #getPending(groups, groupName) {
+    this.#validateGroupName(groupName);
+    return /** @type {Set<object>} */ (groups.get(groupName));
   }
 
   #applyPendingChanges() {
@@ -120,8 +130,9 @@ export class WorldEntityRegistry {
     });
   }
 
+  /** @param {string} groupName */
   #applyRemovals(groupName) {
-    const removals = this.#pendingRemovals.get(groupName);
+    const removals = this.#getPending(this.#pendingRemovals, groupName);
     if (removals.size === 0) return;
     const remaining = this.#getGroup(groupName).filter((entity) => {
       return !removals.has(entity);
@@ -130,8 +141,9 @@ export class WorldEntityRegistry {
     removals.clear();
   }
 
+  /** @param {string} groupName */
   #applyAdditions(groupName) {
-    const additions = this.#pendingAdditions.get(groupName);
+    const additions = this.#getPending(this.#pendingAdditions, groupName);
     if (additions.size === 0) return;
     this.#getGroup(groupName).push(...additions);
     additions.clear();
@@ -139,29 +151,33 @@ export class WorldEntityRegistry {
 
   #queueAllEntitiesForRemoval() {
     this.#groupNames.forEach((groupName) => {
-      const removals = this.#pendingRemovals.get(groupName);
+      const removals = this.#getPending(this.#pendingRemovals, groupName);
       this.#getGroup(groupName).forEach((entity) => removals.add(entity));
     });
   }
 
+  /** @param {string} groupName @param {object} entity */
   #queueRemoval(groupName, entity) {
-    const removals = this.#pendingRemovals.get(groupName);
+    const removals = this.#getPending(this.#pendingRemovals, groupName);
     if (removals.has(entity)) return false;
     removals.add(entity);
     return true;
   }
 
+  /** @param {string} groupName @param {object} entity */
   #validateEntity(groupName, entity) {
     this.#validateGroupName(groupName);
     if (entity && typeof entity === "object") return;
     throw new TypeError("Eine Entität muss ein Objekt sein.");
   }
 
+  /** @param {string} groupName */
   #validateGroupName(groupName) {
     if (this.#groups.has(groupName)) return;
     throw new RangeError(`Unbekannte Entitätsgruppe: ${groupName}`);
   }
 
+  /** @param {ReadonlyArray<string>} groupNames */
   #validateGroupNames(groupNames) {
     if (!Array.isArray(groupNames)) {
       throw new TypeError("Entitätsgruppen müssen als Liste übergeben werden.");
@@ -172,6 +188,10 @@ export class WorldEntityRegistry {
     throw new TypeError("Entitätsgruppen müssen eindeutige Namen besitzen.");
   }
 
+  /**
+   * @param {ReadonlyArray<string>} groupOrder
+   * @param {(entity:object) => void} callback
+   */
   #validateProcess(groupOrder, callback) {
     if (!Array.isArray(groupOrder) || typeof callback !== "function") {
       throw new TypeError("Die Entitätsverarbeitung ist ungültig.");

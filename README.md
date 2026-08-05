@@ -5,6 +5,33 @@
 > Ein kleiner aussortierter Roboter. Ein riesiger Turm. Ein Freund, der auf
 > dem Mond wartet.
 
+## Schnellstart
+
+Voraussetzung ist Node.js 22 oder neuer.
+
+```bash
+npm install
+npm run dev
+```
+
+Danach läuft das Spiel unter `http://127.0.0.1:4173`. Ein lokaler Server ist
+nötig, weil die Oberfläche HTML-Fragmente und native ES-Module lädt.
+
+Die vollständige technische Abnahme startet mit:
+
+```bash
+npm run check
+```
+
+| Befehl | Zweck |
+| --- | --- |
+| `npm run dev` | kleiner lokaler Node-Server ohne Framework |
+| `npm test` | vollständiges, automatisch entdecktes Release-Gate |
+| `npm run lint` | ESLint für Produktions- und Testcode |
+| `npm run typecheck` | strikte Typprüfung der deterministischen Kernmodule |
+| `npm run test:architecture` | Import- und Architekturgrenzen |
+| `npm run test:release` | zentrale Spieler- und UI-Wege |
+
 **Little Bolt, Big Moon** ist ein schwieriges vertikales
 2D-Präzisionsspiel für HTML5 Canvas. Byte klettert vom Schrottplatz durch
 eine verlassene Fabrik, über den Wolken und durch eine alte Raumstation bis
@@ -82,6 +109,17 @@ Violett, Mondblau und Cyan. Der Mond wird im Hintergrund immer größer.
 - HTML und CSS für Menüs und responsive Oberfläche
 - `localStorage` für Einstellungen und lokale Rekorde
 
+Das Projekt folgt bewusst dem KISS-Prinzip: kein Framework, kein Bundler und
+keine unnötige Runtime-Abhängigkeit. `script.js` delegiert an eine zentrale
+Composition Root. Gameplayklassen kennen weder DOM-Bootstrap noch konkrete
+UI-Initialisierung. Levelinhalt und Balancingpläne liegen getrennt von den
+Builder-Algorithmen in Konfigurationsmodulen.
+
+Die Typprüfung wird schrittweise eingesetzt. Aktuell werden die besonders
+deterministischen und wiederverwendbaren Kernmodule strikt geprüft; eine
+Komplettmigration zu TypeScript wäre für dieses native Canvas-Projekt derzeit
+mehr Komplexität als Nutzen.
+
 Alle Klassen werden nach Verantwortung gegliedert. `script.js` bleibt ein
 kleiner Einstiegspunkt und enthält keine Gameplaylogik.
 
@@ -89,8 +127,8 @@ kleiner Einstiegspunkt und enthält keine Gameplaylogik.
 
 Das Spiel ist vom Startbildschirm bis zum Ende spielbar. Der aktuelle Stand
 ist ein Release-Kandidat: Gameplay, Gegner, Upgrades, Audio, responsive
-Steuerung und Abschlusssequenz sind umgesetzt. Pflicht-Checkliste, Balancing,
-Clean Code und lokale Release-Wege wurden vollständig geprüft.
+Steuerung und Abschlusssequenz sind umgesetzt. Die nachvollziehbaren Befehle
+oben prüfen die automatisierten Qualitäts-, Architektur- und Release-Verträge.
 
 ## Extras über die Pflichtanforderungen
 
@@ -108,6 +146,7 @@ Clean Code und lokale Release-Wege wurden vollständig geprüft.
 - [`docs/asset-licensing.md`](docs/asset-licensing.md) – Herkunft und Nutzung
 - [`docs/project-structure.md`](docs/project-structure.md) – Ordner und Zuständigkeiten
 - [`docs/quality-audit.md`](docs/quality-audit.md) – sichtbare und technische Abnahme
+- [`tests/README.md`](tests/README.md) – Testebenen und Release-Gates
 - [`data/asset-credits.json`](data/asset-credits.json) – Assetnachweise
 
 ## Asset-Hinweis

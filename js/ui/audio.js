@@ -4,21 +4,17 @@ import {
 } from "../../classes/systems/game-audio-controller.class.js";
 import { GAME_CONFIG } from "../config/game-config.js";
 
-let audioController = null;
-
 /**
- * Creates the central audio controller exactly once.
+ * Creates the central audio controller.
  * @param {import("../../classes/core/game.class.js").Game} game
  * @param {EventTarget} [eventTarget=document]
  * @returns {GameAudioController}
  */
 export function initializeAudio(game, eventTarget = document) {
-  if (audioController) return audioController;
   const audioManager = new AudioManager(GAME_CONFIG.audio).initialize();
-  audioController = new GameAudioController(
+  return new GameAudioController(
     game,
     audioManager,
     eventTarget,
   ).initialize();
-  return audioController;
 }

@@ -33,6 +33,7 @@ export class ReviewModeController {
     this.storage = storage;
     this.versionClicks = 0;
     this.flight = null;
+    this.unsubscribers = [];
     this.#assignElements();
     this.#bindEvents();
   }
@@ -66,6 +67,7 @@ export class ReviewModeController {
 
   /** Binds the hidden unlock flow exactly once. */
   initialize() {
+    if (this.unsubscribers.length > 0) return this;
     this.version.textContent = this.config.versionLabel;
     this.version.addEventListener("click", this.boundVersionClick);
     this.form.addEventListener("submit", this.boundSubmit);
@@ -74,11 +76,29 @@ export class ReviewModeController {
     this.cancelButton.addEventListener("click", this.boundCancel);
     this.biomeControl.addEventListener("change", this.boundBiomeChange);
     this.teleportButton.addEventListener("click", this.boundHeightTeleport);
-    this.game.onStateChange(this.boundStateChange);
-    this.game.onHudChange(this.boundHudChange);
+    this.unsubscribers.push(
+      this.game.onStateChange(this.boundStateChange),
+      this.game.onHudChange(this.boundHudChange),
+    );
     globalThis.addEventListener?.("resize", this.boundReviewLayout);
     if (this.#hasStoredAccess()) this.start();
     return this;
+  }
+
+  /** Removes all review-mode bindings and temporary state. */
+  destroy() {
+    this.version.removeEventListener("click", this.boundVersionClick);
+    this.form.removeEventListener("submit", this.boundSubmit);
+    this.startButton.removeEventListener("click", this.boundSubmit);
+    this.exitButton.removeEventListener("click", this.boundExit);
+    this.cancelButton.removeEventListener("click", this.boundCancel);
+    this.biomeControl.removeEventListener("change", this.boundBiomeChange);
+    this.teleportButton.removeEventListener("click", this.boundHeightTeleport);
+    globalThis.removeEventListener?.("resize", this.boundReviewLayout);
+    this.unsubscribers.forEach((unsubscribe) => unsubscribe());
+    this.unsubscribers.length = 0;
+    this.flight?.disable();
+    this.flight = null;
   }
 
   /** Counts activations of the unobtrusive version number. */

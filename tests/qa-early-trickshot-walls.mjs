@@ -31,8 +31,8 @@ assert.ok(walls.every(({ spriteConfig }) => {
     spriteConfig.source.endsWith("-trickshot-wall-clean-hd.png");
 }));
 
-for (const biomeId of ["scrapyard", "factory"]) {
-  const wall = walls.find(({ biomeId }) => biomeId === biomeId);
+for (const targetBiomeId of ["scrapyard", "factory"]) {
+  const wall = walls.find(({ biomeId }) => biomeId === targetBiomeId);
   const relativeSource = wall.spriteConfig.source.replace(/^\.\//, "../");
   const image = await fs.readFile(new URL(relativeSource, import.meta.url));
   const imageWidth = image.readUInt32BE(16);

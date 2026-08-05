@@ -8,6 +8,8 @@ const FORBIDDEN_PATTERNS = Object.freeze([
   ["Debugausgabe", /\bconsole\.(?:log|debug|warn|error)\s*\(|\bdebugger\b/],
   ["var-Deklaration", /\bvar\s+/],
   ["lockerer Vergleich", /(?<![=!])==(?!=)|(?<!!)!=(?!=)/],
+  ["Kodierungsrest", /Ã|Â|â/u],
+  ["ASCII-Ersatz für Umlaut", /\b(?:ungueltig|fuer|Waechter)\b/],
 ]);
 const productionFiles = [
   ...(await collectFiles("classes")),
@@ -52,7 +54,7 @@ function findUndocumentedPublicDeclarations(file, source) {
   );
   const methods = file.endsWith(".class.js")
     ? source.matchAll(
-      /^  (?!(?:if|for|while|switch|catch|with)\b)(?!#)(?:static\s+)?(?:async\s+)?(?:get\s+|set\s+)?[A-Za-z_$][\w$]*\s*\([^)]*\)\s*\{/gm,
+      /^ {2}(?!(?:if|for|while|switch|catch|with)\b)(?!#)(?:static\s+)?(?:async\s+)?(?:get\s+|set\s+)?[A-Za-z_$][\w$]*\s*\([^)]*\)\s*\{/gm,
     )
     : [];
   const declarations = [...exports, ...methods];

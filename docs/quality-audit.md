@@ -1,6 +1,6 @@
 # Qualitäts- und Sichtprüfung
 
-Stand: 4. August 2026
+Stand: 5. August 2026
 
 ## Prüfumfang
 
@@ -70,13 +70,13 @@ aus `GAME_CONFIG` und überprüft sichere Eingabefenster bei 60 FPS.
 - Nach dem Bossabschluss erscheint der fehlende Schritt und ist sicher erreichbar.
 - Die fünf Bosse benötigen mit vollem Bolzenmagazin und Reparaturschlüssel
   höchstens 7, 9, 9, 12 und 20 Treffer; die Lichtbogenkanone verkürzt späte Kämpfe.
-- Alle 71 eigenständigen QA-Dateien laufen ohne Fehler durch.
+- Alle automatisch entdeckten QA-Dateien laufen ohne Fehler durch.
 
 ## Clean-Code-Endaudit
 
 Der gesamte Produktionscode wurde nach den verbindlichen Kursregeln geprüft.
-Die größte Produktionsdatei bleibt mit 387 physischen Zeilen deutlich unter
-der festen Grenze. Die zuvor übergroße Routenklasse wurde in Aufbau und
+Die größte Produktionsdatei bleibt unter der festen Grenze. Die zuvor
+übergroße Routenklasse wurde in Aufbau und
 horizontale Positionssuche mit getrennten Verantwortungen aufgeteilt.
 
 - Keine JavaScript-Datei überschreitet 400 Zeilen.
@@ -84,12 +84,28 @@ horizontale Positionssuche mit getrennten Verantwortungen aufgeteilt.
 - Produktionscode enthält keine Debugausgaben oder `debugger`-Anweisungen.
 - Es existieren keine offenen `TODO`-, `FIXME`-, `HACK`- oder `XXX`-Marker.
 - Produktionscode verwendet weder `var` noch lockere Gleichheitsvergleiche.
-- Alle 135 Produktionsdateien sind vom Spieleinstieg erreichbar und besitzen
+- Alle Produktionsdateien sind vom Spieleinstieg erreichbar und besitzen
   verwendete sowie eindeutige Imports.
 - Zustände, HUD-Feedback, Bodenbewegung, Run-Neustart, Weltaufbau und
   Laufwert-Synchronisierung besitzen getrennte Verantwortungen und eigene Tests.
 - `qa-clean-code.mjs` sichert Dateigrenze, JSDoc, Wartungsmarker,
   Debugausgaben, Deklarationsstil und strikte Vergleiche automatisch ab.
+
+## Architektur- und Toolchain-Abnahme
+
+- `npm run check` bündelt Lint, strikte Core-Typprüfung und das vollständige
+  Release-Gate in einem reproduzierbaren Befehl.
+- Die zentrale Composition Root besitzt den vollständigen UI-Lebenszyklus;
+  versteckte Controller-Singletons und der frühere globale Spielzugriff wurden
+  entfernt.
+- Das Entity-Register gibt ausschließlich abgetrennte Snapshots aus und legt
+  keine veränderbaren internen Arrays oder Maps mehr offen.
+- `classes/core/` importiert keine konkreten App-, UI-, Level- oder
+  Factorymodule. Ein eigener Architekturtest bewacht diese Richtung.
+- Storyziele werden semantisch über Biom und Zielhöhe gewählt, nicht mehr über
+  fragile, generierte Routen-IDs.
+- Ein echter Browser-Smoke-Test hat Fragmentladen, Startseite, Intro,
+  Gameplaystart und Pause ohne Konsolenfehler geprüft.
 
 ## Release-Abnahme
 
