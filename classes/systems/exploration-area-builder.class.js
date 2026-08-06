@@ -21,7 +21,10 @@ const {
 
 /** Adds ambiguous scouting branches and future combat staging floors. */
 export class ExplorationAreaBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("Die Breite der Erkundungsbereiche ist ungültig.");
@@ -29,7 +32,12 @@ export class ExplorationAreaBuilder {
     this.worldWidth = worldWidth;
   }
 
-  /** @returns {ReadonlyArray<SpriteSurfacePlatform>} */
+  /**
+   * Runs build with validated construction inputs.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} firstWeapon First weapon used while build.
+   * @returns {ReadonlyArray<SpriteSurfacePlatform>}
+   */
   build(platforms, firstWeapon) {
     this.#validateInputs(platforms, firstWeapon);
     const route = platforms.filter(({ routeRole }) => routeRole === "main")
@@ -44,7 +52,13 @@ export class ExplorationAreaBuilder {
     ]);
   }
 
-  /** Creates search area. */
+  /**
+   * Creates search area.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while create search area.
+   * @param {number} targetY Target y used while create search area.
+   * @param {number} areaIndex Area index used while create search area.
+   */
   #createSearchArea(route, reservedPlatforms, targetY, areaIndex) {
     const placements = this.#findStableIndices(route, targetY, 3)
       .map((baseIndex) => this.#getSearchPlacement(route, baseIndex))
@@ -60,7 +74,15 @@ export class ExplorationAreaBuilder {
     );
   }
 
-  /** Creates search platforms. */
+  /**
+   * Creates search platforms.
+   * @param {string} areaId Area id used while create search platforms.
+   * @param {Readonly<object>} base Base used while create search platforms.
+   * @param {Readonly<object>} correct Correct used while create search platforms.
+   * @param {Readonly<object>} upper Upper used while create search platforms.
+   * @param {number} firstX First x used while create search platforms.
+   * @param {number} secondX Second x used while create search platforms.
+   */
   #createSearchPlatforms(areaId, base, correct, upper, firstX, secondX) {
     return [
       this.#createSearchPlatform(areaId, 1, base, correct, firstX,
@@ -70,7 +92,11 @@ export class ExplorationAreaBuilder {
     ];
   }
 
-  /** Returns search placement. */
+  /**
+   * Returns search placement.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {number} baseIndex Base index used while get search placement.
+   */
   #getSearchPlacement(route, baseIndex) {
     const base = route[baseIndex];
     const correct = route[baseIndex + 1];
@@ -85,7 +111,11 @@ export class ExplorationAreaBuilder {
     return { base, correct, upper, firstX, secondX };
   }
 
-  /** Checks whether search clearance. */
+  /**
+   * Checks whether search clearance.
+   * @param {Readonly<object>} placement Placement used while has search clearance.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while has search clearance.
+   */
   #hasSearchClearance(placement, reservedPlatforms) {
     const candidates = [
       { x: placement.firstX, y: placement.correct.y, width: SEARCH_WIDTHS[0] },
@@ -100,7 +130,11 @@ export class ExplorationAreaBuilder {
     ));
   }
 
-  /** Performs walls. */
+  /**
+   * Performs walls.
+   * @param {Readonly<object>} candidate Candidate used while clears walls.
+   * @param {ReadonlyArray<object>} wallFeatures Wall features used while clears walls.
+   */
   #clearsWalls(candidate, wallFeatures) {
     return wallFeatures.every((feature) => {
       if (Math.abs(feature.y - candidate.y) >= 144) return true;
@@ -109,7 +143,17 @@ export class ExplorationAreaBuilder {
     });
   }
 
-  /** Creates search platform. */
+  /**
+   * Creates search platform.
+   * @param {string} areaId Area id used while create search platform.
+   * @param {Readonly<object>} branchOrder Branch order used while create search platform.
+   * @param {Readonly<object>} base Base used while create search platform.
+   * @param {Readonly<object>} parallel Parallel used while create search platform.
+   * @param {Readonly<object>} x X used while create search platform.
+   * @param {Readonly<object>} y Y used while create search platform.
+   * @param {Readonly<object>} width Width used while create search platform.
+   * @param {boolean} isDeadEnd Is dead end used while create search platform.
+   */
   #createSearchPlatform(areaId, branchOrder, base, parallel, x, y, width,
     isDeadEnd) {
     const biomeId = parallel.biomeId;
@@ -118,7 +162,10 @@ export class ExplorationAreaBuilder {
     return new SpriteSurfacePlatform(data, this.#getSprite(biomeId));
   }
 
-  /** Creates search data. */
+  /**
+   * Creates search data.
+   * @param {Readonly<object>} value Value used while create search data.
+   */
   #createSearchData(value) {
     const { areaId, branchOrder, base, parallel, x, y, width, isDeadEnd,
       biomeId } = value;
@@ -134,7 +181,13 @@ export class ExplorationAreaBuilder {
     });
   }
 
-  /** Creates combat stage. */
+  /**
+   * Creates combat stage.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {number} targetY Target y used while create combat stage.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {number} weaponY Weapon y used while create combat stage.
+   */
   #createCombatStage(route, targetY, index, weaponY) {
     const candidates = this.#getCombatCandidates(route, targetY, weaponY);
     const desiredWidth = COMBAT_WIDTHS[index];
@@ -148,7 +201,12 @@ export class ExplorationAreaBuilder {
     return new SpriteSurfacePlatform(data, sprite);
   }
 
-  /** Returns combat candidates. */
+  /**
+   * Returns combat candidates.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {number} targetY Target y used while get combat candidates.
+   * @param {number} weaponY Weapon y used while get combat candidates.
+   */
   #getCombatCandidates(route, targetY, weaponY) {
     return route.filter((platform) => platform.y < weaponY &&
       !platform.mechanic && !platform.requiresWallBounce &&
@@ -156,7 +214,14 @@ export class ExplorationAreaBuilder {
       Math.abs(first.y - targetY) - Math.abs(second.y - targetY));
   }
 
-  /** Creates combat data. */
+  /**
+   * Creates combat data.
+   * @param {Readonly<object>} anchor Platform used as the placement anchor.
+   * @param {Readonly<object>} x X used while create combat data.
+   * @param {Readonly<object>} width Width used while create combat data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} sprite Sprite definition assigned to the created object.
+   */
   #createCombatData(anchor, x, width, index, sprite) {
     return Object.freeze({
       id: `combat-stage-${index + 1}`,
@@ -170,7 +235,11 @@ export class ExplorationAreaBuilder {
     });
   }
 
-  /** Returns combat placement. */
+  /**
+   * Returns combat placement.
+   * @param {Readonly<object>} anchor Platform used as the placement anchor.
+   * @param {number} desiredWidth Desired width used while get combat placement.
+   */
   #getCombatPlacement(anchor, desiredWidth) {
     const leftSpace = anchor.x - SIDE_MARGIN * 2;
     const rightStart = anchor.x + anchor.width + SIDE_MARGIN;
@@ -184,7 +253,12 @@ export class ExplorationAreaBuilder {
     return null;
   }
 
-  /** Finds stable indices. */
+  /**
+   * Finds stable indices.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {number} targetY Target y used while find stable indices.
+   * @param {Readonly<object>} lookAhead Look ahead used while find stable indices.
+   */
   #findStableIndices(route, targetY, lookAhead) {
     return route.map((platform, index) => ({ platform, index }))
       .filter(({ platform, index }) => {
@@ -197,13 +271,22 @@ export class ExplorationAreaBuilder {
       }).map(({ index }) => index);
   }
 
-  /** Returns opposite side. */
+  /**
+   * Returns opposite side.
+   * @param {Readonly<object>} platform Platform inspected or extended by the builder.
+   */
   #getOppositeSide(platform) {
     return platform.x + platform.width / 2 < this.worldWidth / 2
       ? "right" : "left";
   }
 
-  /** Clamps branch x. */
+  /**
+   * Clamps branch x.
+   * @param {ReadonlyArray<object>} previous Previous used while clamp branch x.
+   * @param {Readonly<object>} side Side used while clamp branch x.
+   * @param {Readonly<object>} width Width used while clamp branch x.
+   * @param {number} [inset=0] Inset used while clamp branch x.
+   */
   #clampBranchX(previous, side, width, inset = 0) {
     const target = BRANCH_EDGE_X[side] + (side === "left" ? inset : -inset);
     const minimum = previous.x - width - 410;
@@ -212,14 +295,21 @@ export class ExplorationAreaBuilder {
       maximum, this.worldWidth - width - SIDE_MARGIN));
   }
 
-  /** Returns sprite. */
+  /**
+   * Returns sprite.
+   * @param {string} biomeId Biome id used while get sprite.
+   */
   #getSprite(biomeId) {
     return biomeId === "scrapyard"
       ? getScrapyardPrototypePlatformSpriteConfig("precision")
       : getWallPlatformSpriteConfig(biomeId);
   }
 
-  /** Validates inputs. */
+  /**
+   * Validates inputs.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} firstWeapon First weapon used while validate inputs.
+   */
   #validateInputs(platforms, firstWeapon) {
     const hasPlatforms = Array.isArray(platforms) && platforms.length > 0;
     const hasWeapon = firstWeapon?.weaponId === "boltThrower" &&
@@ -229,12 +319,19 @@ export class ExplorationAreaBuilder {
   }
 }
 
-/** Performs x. */
+/**
+ * Performs x.
+ * @param {Readonly<object>} platform Platform inspected or extended by the builder.
+ */
 function centerX(platform) {
   return platform.x + platform.width / 2;
 }
 
-/** Performs gap. */
+/**
+ * Performs gap.
+ * @param {Readonly<object>} first First used while horizontal gap.
+ * @param {Readonly<object>} second Second used while horizontal gap.
+ */
 function horizontalGap(first, second) {
   return Math.max(0,
     second.x - (first.x + first.width),

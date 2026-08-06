@@ -28,7 +28,10 @@ const REQUIRED_STAGE_INDICES = new Set([2, 4, 6, 7]);
 
 /** Populates the eight wide platforms with increasingly difficult encounters. */
 export class CombatEncounterBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("Die Weltbreite der Kampfbegegnungen ist ungültig.");
@@ -36,7 +39,12 @@ export class CombatEncounterBuilder {
     this.worldWidth = worldWidth;
   }
 
-  /** @returns {Readonly<{enemies:ReadonlyArray,combatZones:ReadonlyArray}>} */
+  /**
+   * Runs build with validated construction inputs.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} enemyConfig Enemy configuration used for encounter creation.
+   * @returns {Readonly<{enemies:ReadonlyArray,combatZones:ReadonlyArray}>}
+   */
   build(platforms, enemyConfig) {
     this.#validateInputs(platforms, enemyConfig);
     const stages = this.#getStages(platforms);
@@ -51,14 +59,23 @@ export class CombatEncounterBuilder {
     });
   }
 
-  /** Returns stages. */
+  /**
+   * Returns stages.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   */
   #getStages(platforms) {
     return platforms.filter(({ kind }) => kind === "combat-staging-platform")
       .sort((first, second) => this.#getStageNumber(first) -
         this.#getStageNumber(second));
   }
 
-  /** Creates encounter. */
+  /**
+   * Creates encounter.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {number} stageIndex Stage index used while create encounter.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   */
   #createEncounter(stage, stageIndex, config, platforms) {
     const profile = ENCOUNTER_PROFILES[stageIndex];
     const enemies = this.#createEnemies(profile, stage, stageIndex, config);
@@ -66,7 +83,13 @@ export class CombatEncounterBuilder {
     return Object.freeze({ enemies: Object.freeze(enemies), zone });
   }
 
-  /** Creates enemies. */
+  /**
+   * Creates enemies.
+   * @param {Readonly<object>} profile Profile used while create enemies.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {number} stageIndex Stage index used while create enemies.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   */
   #createEnemies(profile, stage, stageIndex, config) {
     const groundCount = profile.filter((type) => type !== "droneGuard").length;
     const droneCount = profile.length - groundCount;
@@ -82,7 +105,13 @@ export class CombatEncounterBuilder {
     return enemies;
   }
 
-  /** Creates zone. */
+  /**
+   * Creates zone.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {number} stageIndex Stage index used while create zone.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {ReadonlyArray<object>} enemies Enemies used while create zone.
+   */
   #createZone(stage, stageIndex, platforms, enemies) {
     return new CombatZone(Object.freeze({
       id: `${stage.id}-zone`,
@@ -97,7 +126,12 @@ export class CombatEncounterBuilder {
     }));
   }
 
-  /** Returns unlock platform id. */
+  /**
+   * Returns unlock platform id.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {number} stageIndex Stage index used while get unlock platform id.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   */
   #getUnlockPlatformId(stage, stageIndex, platforms) {
     if (!REQUIRED_STAGE_INDICES.has(stageIndex)) return null;
     const anchor = platforms.find(({ id }) => {
@@ -111,7 +145,15 @@ export class CombatEncounterBuilder {
     throw new RangeError(`${stage.id} hat keinen fairen Kampfausgang.`);
   }
 
-  /** Creates enemy. */
+  /**
+   * Creates enemy.
+   * @param {Readonly<object>} type Type used while create enemy.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {number} stageIndex Stage index used while create enemy.
+   * @param {number} enemyIndex Enemy index used while create enemy.
+   * @param {Readonly<object>} placement Placement used while create enemy.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   */
   #createEnemy(type, stage, stageIndex, enemyIndex, placement, config) {
     const EnemyClass = ENEMY_CLASSES[type];
     const enemy = new EnemyClass(Object.freeze({
@@ -127,7 +169,12 @@ export class CombatEncounterBuilder {
     return enemy;
   }
 
-  /** Returns ground placement. */
+  /**
+   * Returns ground placement.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} count Count used while get ground placement.
+   */
   #getGroundPlacement(stage, index, count) {
     const patrolStart = stage.x + PLATFORM_MARGIN;
     const usableWidth = stage.width - PLATFORM_MARGIN * 2;
@@ -142,7 +189,12 @@ export class CombatEncounterBuilder {
     });
   }
 
-  /** Returns drone placement. */
+  /**
+   * Returns drone placement.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} count Count used while get drone placement.
+   */
   #getDronePlacement(stage, index, count) {
     const patrolMinX = Math.round(stage.x + PLATFORM_MARGIN);
     const patrolMaxX = Math.round(stage.x + stage.width - PLATFORM_MARGIN);
@@ -155,12 +207,19 @@ export class CombatEncounterBuilder {
     });
   }
 
-  /** Returns stage number. */
+  /**
+   * Returns stage number.
+   * @param {Readonly<object>} stage Combat or traversal stage being created.
+   */
   #getStageNumber(stage) {
     return Number.parseInt(stage.id.replace("combat-stage-", ""), 10);
   }
 
-  /** Validates inputs. */
+  /**
+   * Validates inputs.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   */
   #validateInputs(platforms, config) {
     const stages = Array.isArray(platforms) ? platforms.filter(({ kind }) => {
       return kind === "combat-staging-platform";

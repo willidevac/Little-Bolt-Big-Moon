@@ -47,7 +47,10 @@ export class FinalBossBuilder {
     }), GAME_CONFIG.enemies.moonWarden);
   }
 
-  /** Creates zone. */
+  /**
+   * Creates zone.
+   * @param {ReadonlyArray<object>} boss Boss used while create zone.
+   */
   #createZone(boss) {
     return new CombatZone(Object.freeze({
       id: "moon-warden-final-zone", x: 0, y: 0,

@@ -6,7 +6,12 @@ import {
 
 /** Places the six non-colliding story beats on quiet, stable route surfaces. */
 export class StoryPropBuilder {
-  /** @returns {ReadonlyArray<StoryProp>} */
+  /**
+   * Runs build with validated construction inputs.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {ReadonlyArray<object>} [occupiedObjects=[]] Occupied objects used while build.
+   * @returns {ReadonlyArray<StoryProp>}
+   */
   build(platforms, occupiedObjects = []) {
     if (!Array.isArray(platforms) || platforms.length === 0) {
       throw new TypeError("Storyobjekte brauchen eine gebaute Plattformroute.");
@@ -22,7 +27,14 @@ export class StoryPropBuilder {
     return Object.freeze(storyProps);
   }
 
-  /** Builds prop. */
+  /**
+   * Builds prop.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} occupied Occupied used while build prop.
+   * @param {Readonly<object>} used Used used while build prop.
+   */
   #buildProp(platforms, definition, index, occupied, used) {
     const config = STORY_PROP_CONFIGS[definition.type];
     const anchor = this.#selectAnchor(
@@ -32,7 +44,14 @@ export class StoryPropBuilder {
     return this.#create(definition, index, config, anchor);
   }
 
-  /** Selects anchor. */
+  /**
+   * Selects anchor.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   * @param {ReadonlyArray<object>} occupiedAnchorIds Occupied anchor ids used while select anchor.
+   * @param {ReadonlyArray<object>} usedAnchorIds Used anchor ids used while select anchor.
+   */
   #selectAnchor(platforms, definition, config, occupiedAnchorIds, usedAnchorIds) {
     const minimumWidth = config.sprite.frameWidth * config.renderScale + 24;
     const candidates = this.#getCandidates(platforms, definition, minimumWidth,
@@ -41,7 +60,14 @@ export class StoryPropBuilder {
     throw new RangeError(`Keine sichere Plattform für ${definition.type}.`);
   }
 
-  /** Returns candidates. */
+  /**
+   * Returns candidates.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   * @param {number} minimumWidth Minimum width used while get candidates.
+   * @param {Readonly<object>} occupied Occupied used while get candidates.
+   * @param {Readonly<object>} used Used used while get candidates.
+   */
   #getCandidates(platforms, definition, minimumWidth, occupied, used) {
     return platforms.filter((platform) => {
       const hasSafeRole = platform.routeRole === "main" ||
@@ -55,7 +81,14 @@ export class StoryPropBuilder {
     });
   }
 
-  /** Checks whether eligible. */
+  /**
+   * Checks whether eligible.
+   * @param {Readonly<object>} platform Platform inspected or extended by the builder.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   * @param {number} minimumWidth Minimum width used while is eligible.
+   * @param {Readonly<object>} occupied Occupied used while is eligible.
+   * @param {Readonly<object>} used Used used while is eligible.
+   */
   #isEligible(platform, definition, minimumWidth, occupied, used) {
     return platform.biomeId === definition.biomeId &&
       platform.width >= minimumWidth && !platform.mechanic &&
@@ -64,7 +97,13 @@ export class StoryPropBuilder {
       typeof platform.getFrameDisplacement === "function";
   }
 
-  /** Creates operation. */
+  /**
+   * Creates operation.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} config Configuration values used by the builder.
+   * @param {Readonly<object>} anchor Platform used as the placement anchor.
+   */
   #create(definition, index, config, anchor) {
     const width = config.sprite.frameWidth * config.renderScale;
     const data = Object.freeze({

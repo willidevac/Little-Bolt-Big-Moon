@@ -27,7 +27,10 @@ const WALL_ENTRY_MINIMUM_OFFSET = 32;
 
 /** Builds the complete increasingly difficult jump route to the final boss. */
 export class ProgressionRouteBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("The progression world width is invalid.");
@@ -39,7 +42,12 @@ export class ProgressionRouteBuilder {
     );
   }
 
-  /** Returns all intermediate floors plus the final boss floor. */
+  /**
+   * Returns all intermediate floors plus the final boss floor.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while build.
+   * @param {Readonly<object>} previousPlatform Previously placed platform used as the route origin.
+   */
   build(sections, reservedPlatforms, previousPlatform) {
     this.#validateInputs(sections, reservedPlatforms, previousPlatform);
     const biomes = this.#groupBiomes(sections);
@@ -53,7 +61,10 @@ export class ProgressionRouteBuilder {
     return Object.freeze(platforms);
   }
 
-  /** Creates state. */
+  /**
+   * Creates state.
+   * @param {Readonly<object>} previousPlatform Previously placed platform used as the route origin.
+   */
   #createState(previousPlatform) {
     return {
       y: previousPlatform.y,
@@ -65,7 +76,12 @@ export class ProgressionRouteBuilder {
     };
   }
 
-  /** Creates next. */
+  /**
+   * Creates next.
+   * @param {Readonly<object>} state State used while create next.
+   * @param {ReadonlyArray<object>} biomes Biome definitions used to divide the route.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while create next.
+   */
   #createNext(state, biomes, reservedPlatforms) {
     const step = this.#getNextStep(state, biomes);
     const profile = getProgressionProfile(step.biome.id);
@@ -80,7 +96,11 @@ export class ProgressionRouteBuilder {
     return platform;
   }
 
-  /** Returns next step. */
+  /**
+   * Returns next step.
+   * @param {Readonly<object>} state State used while get next step.
+   * @param {ReadonlyArray<object>} biomes Biome definitions used to divide the route.
+   */
   #getNextStep(state, biomes) {
     if (state.pendingChallenge) return this.#exitWallChallenge(state, biomes);
     const biome = this.#findBiome(biomes, state.y - 1);
@@ -93,7 +113,11 @@ export class ProgressionRouteBuilder {
       approachChallenge: challenge };
   }
 
-  /** Schedules challenge. */
+  /**
+   * Schedules challenge.
+   * @param {Readonly<object>} state State used while schedule challenge.
+   * @param {number} initialY Initial y used while schedule challenge.
+   */
   #scheduleChallenge(state, initialY) {
     let y = initialY;
     const challenge = this.#findUpcomingChallenge(state.y, y);
@@ -105,7 +129,11 @@ export class ProgressionRouteBuilder {
     return { y, challenge };
   }
 
-  /** Performs wall challenge. */
+  /**
+   * Performs wall challenge.
+   * @param {Readonly<object>} state State used while exit wall challenge.
+   * @param {ReadonlyArray<object>} biomes Biome definitions used to divide the route.
+   */
   #exitWallChallenge(state, biomes) {
     const challenge = state.pendingChallenge;
     state.pendingChallenge = null;
@@ -114,7 +142,11 @@ export class ProgressionRouteBuilder {
       approachChallenge: null };
   }
 
-  /** Finds upcoming challenge. */
+  /**
+   * Finds upcoming challenge.
+   * @param {number} currentY Current y used while find upcoming challenge.
+   * @param {number} nextY Next y used while find upcoming challenge.
+   */
   #findUpcomingChallenge(currentY, nextY) {
     return WALL_BOUNCE_CHALLENGES.find((challenge) => {
       const approachY = challenge.y + challenge.height +
@@ -123,7 +155,14 @@ export class ProgressionRouteBuilder {
     }) ?? null;
   }
 
-  /** Creates definition. */
+  /**
+   * Creates definition.
+   * @param {Readonly<object>} state State used while create definition.
+   * @param {Readonly<object>} step Step used while create definition.
+   * @param {Readonly<object>} profile Profile used while create definition.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while create definition.
+   */
   #createDefinition(state, step, profile, index, reservedPlatforms) {
     const isBossEntranceLift = step.y === BOSS_ARENA.approachY;
     const stableRole = this.#getRouteRole(step, profile, index);
@@ -138,14 +177,26 @@ export class ProgressionRouteBuilder {
       { isBossEntranceLift, mechanic, role, width, x });
   }
 
-  /** Returns route role. */
+  /**
+   * Returns route role.
+   * @param {Readonly<object>} step Step used while get route role.
+   * @param {Readonly<object>} profile Profile used while get route role.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getRouteRole(step, profile, index) {
     if (step.challenge) return "rest";
     if (step.approachChallenge) return "standard";
     return this.#getStableRole(profile, index);
   }
 
-  /** Schedules mechanic. */
+  /**
+   * Schedules mechanic.
+   * @param {Readonly<object>} state State used while schedule mechanic.
+   * @param {Readonly<object>} step Step used while schedule mechanic.
+   * @param {Readonly<object>} profile Profile used while schedule mechanic.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {string} stableRole Stable role used while schedule mechanic.
+   */
   #scheduleMechanic(state, step, profile, index, stableRole) {
     const mechanicsAllowed = !step.challenge && !step.approachChallenge &&
       stableRole !== "rest";
@@ -158,7 +209,14 @@ export class ProgressionRouteBuilder {
     return mechanic;
   }
 
-  /** Creates route data. */
+  /**
+   * Creates route data.
+   * @param {Readonly<object>} state State used while create route data.
+   * @param {Readonly<object>} step Step used while create route data.
+   * @param {Readonly<object>} profile Profile used while create route data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {ReadonlyArray<object>} values Values used while create route data.
+   */
   #createRouteData(state, step, profile, index, values) {
     const { isBossEntranceLift, mechanic, role, width, x } = values;
     return Object.freeze({
@@ -174,7 +232,10 @@ export class ProgressionRouteBuilder {
     });
   }
 
-  /** Performs operation. */
+  /**
+   * Performs operation.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   */
   #instantiate(definition) {
     if (definition.mechanic) return this.mechanics.create(definition);
     if (definition.kind === "boss-entrance-lift") {
@@ -188,7 +249,11 @@ export class ProgressionRouteBuilder {
     return new SpriteSurfacePlatform(definition, sprite);
   }
 
-  /** Returns mechanic. */
+  /**
+   * Returns mechanic.
+   * @param {Readonly<object>} profile Profile used while get mechanic.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getMechanic(profile, index) {
     return ["spring", "trap", "falling", "crane"].find((mechanic) => {
       const schedule = profile.mechanics[mechanic];
@@ -196,7 +261,11 @@ export class ProgressionRouteBuilder {
     }) ?? null;
   }
 
-  /** Returns stable role. */
+  /**
+   * Returns stable role.
+   * @param {Readonly<object>} profile Profile used while get stable role.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getStableRole(profile, index) {
     if (index > 0 && index % profile.restEvery === 0) return "rest";
     if (index % profile.precisionEvery === profile.precisionEvery - 1) {
@@ -205,7 +274,11 @@ export class ProgressionRouteBuilder {
     return "standard";
   }
 
-  /** Returns width. */
+  /**
+   * Returns width.
+   * @param {Readonly<object>} profile Profile used while get width.
+   * @param {Readonly<object>} role Role used while get width.
+   */
   #getWidth(profile, role) {
     if (role === "rest") return profile.widths[3];
     if (role === "precision") return profile.widths[2];
@@ -215,7 +288,12 @@ export class ProgressionRouteBuilder {
     return profile.widths[0];
   }
 
-  /** Returns mechanic data. */
+  /**
+   * Returns mechanic data.
+   * @param {Readonly<object>} mechanic Mechanic used while get mechanic data.
+   * @param {string} biomeId Biome id used while get mechanic data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getMechanicData(mechanic, biomeId, index) {
     if (mechanic === "trap") return {
       trap: PLATFORM_MECHANIC_CONFIG.trap,
@@ -228,7 +306,11 @@ export class ProgressionRouteBuilder {
     return {};
   }
 
-  /** Returns crane data. */
+  /**
+   * Returns crane data.
+   * @param {string} biomeId Biome id used while get crane data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getCraneData(biomeId, index) {
     return { crane: Object.freeze({
       axis: index % 2 === 0 ? "horizontal" : "vertical",
@@ -240,13 +322,20 @@ export class ProgressionRouteBuilder {
     }) };
   }
 
-  /** Returns crane value. */
+  /**
+   * Returns crane value.
+   * @param {Readonly<object>} property Property used while get crane value.
+   * @param {string} biomeId Biome id used while get crane value.
+   */
   #getCraneValue(property, biomeId) {
     const values = PLATFORM_MECHANIC_CONFIG.crane[property];
     return values[biomeId] ?? values.default;
   }
 
-  /** Configures spring launches. */
+  /**
+   * Configures spring launches.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   */
   #configureSpringLaunches(platforms) {
     const route = platforms.filter(({ routeRole }) => routeRole === "main");
     route.forEach((platform, index) => {
@@ -255,7 +344,11 @@ export class ProgressionRouteBuilder {
     });
   }
 
-  /** Configures spring. */
+  /**
+   * Configures spring.
+   * @param {Readonly<object>} platform Platform inspected or extended by the builder.
+   * @param {Readonly<object>} target Target used while configure spring.
+   */
   #configureSpring(platform, target) {
     const sourceCenter = platform.x + platform.width / 2;
     const targetCenter = target.x + target.width / 2;
@@ -267,7 +360,10 @@ export class ProgressionRouteBuilder {
     platform.springTargetId = target.id;
   }
 
-  /** Creates boss floors. */
+  /**
+   * Creates boss floors.
+   * @param {Readonly<object>} state State used while create boss floors.
+   */
   #createBossFloors(state) {
     const gapLeft = BOSS_ARENA.entranceCenterX -
       BOSS_ARENA.entranceWidth / 2;
@@ -280,7 +376,12 @@ export class ProgressionRouteBuilder {
     return Object.freeze([left, gate, right]);
   }
 
-  /** Creates boss gate. */
+  /**
+   * Creates boss gate.
+   * @param {Readonly<object>} common Common used while create boss gate.
+   * @param {Readonly<object>} routeOrder Route order used while create boss gate.
+   * @param {Readonly<object>} x X used while create boss gate.
+   */
   #createBossGate(common, routeOrder, x) {
     return new BossArenaGate(Object.freeze({
       ...common, id: "moon-warden-arena-floor", routeRole: "main",
@@ -300,7 +401,12 @@ export class ProgressionRouteBuilder {
     };
   }
 
-  /** Creates boss side floor. */
+  /**
+   * Creates boss side floor.
+   * @param {Readonly<object>} side Side used while create boss side floor.
+   * @param {Readonly<object>} common Common used while create boss side floor.
+   * @param {Readonly<object>} gap Gap used while create boss side floor.
+   */
   #createBossSideFloor(side, common, gap) {
     const isLeft = side === "left";
     const x = isLeft ? BOSS_ARENA.floorX : gap;
@@ -311,26 +417,42 @@ export class ProgressionRouteBuilder {
       routeRole: "boss-arena-support", routeOrder: null, x, width }));
   }
 
-  /** Returns direction. */
+  /**
+   * Returns direction.
+   * @param {ReadonlyArray<object>} previous Previous used while get direction.
+   * @param {Readonly<object>} x X used while get direction.
+   * @param {Readonly<object>} width Width used while get direction.
+   */
   #getDirection(previous, x, width) {
     const previousCenter = previous.x + previous.width / 2;
     return x + width / 2 < previousCenter ? "left" : "right";
   }
 
-  /** Takes biome index. */
+  /**
+   * Takes biome index.
+   * @param {Readonly<object>} state State used while take biome index.
+   * @param {string} biomeId Biome id used while take biome index.
+   */
   #takeBiomeIndex(state, biomeId) {
     const index = state.biomeSteps.get(biomeId) ?? 0;
     state.biomeSteps.set(biomeId, index + 1);
     return index;
   }
 
-  /** Finds biome. */
+  /**
+   * Finds biome.
+   * @param {ReadonlyArray<object>} biomes Biome definitions used to divide the route.
+   * @param {Readonly<object>} y Y used while find biome.
+   */
   #findBiome(biomes, y) {
     return biomes.find((biome) => y >= biome.topY && y <= biome.bottomY) ??
       biomes.at(-1);
   }
 
-  /** Performs biomes. */
+  /**
+   * Performs biomes.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   #groupBiomes(sections) {
     const grouped = new Map();
     sections.forEach((section) => {
@@ -344,7 +466,12 @@ export class ProgressionRouteBuilder {
     return [...grouped.values()];
   }
 
-  /** Validates inputs. */
+  /**
+   * Validates inputs.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   * @param {ReadonlyArray<object>} reservedPlatforms Reserved platforms used while validate inputs.
+   * @param {Readonly<object>} previousPlatform Previously placed platform used as the route origin.
+   */
   #validateInputs(sections, reservedPlatforms, previousPlatform) {
     const hasSections = Array.isArray(sections) && sections.length > 0;
     const hasReserved = Array.isArray(reservedPlatforms);

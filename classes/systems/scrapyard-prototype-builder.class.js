@@ -19,7 +19,10 @@ export class ScrapyardPrototypeBuilder {
     }));
   }
 
-  /** Creates platform. */
+  /**
+   * Creates platform.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   */
   #createPlatform(definition) {
     const role = SCRAPYARD_PLATFORM_ROLES[definition.platformRole];
     const data = Object.freeze({ ...definition,

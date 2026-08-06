@@ -18,7 +18,10 @@ const TYPES = Object.freeze({
 
 /** Adds only the first controlled introduction of each advanced platform. */
 export class MechanicPlatformBuilder {
-  /** Creates one mechanic platform from route data. */
+  /**
+   * Creates one mechanic platform from route data.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   */
   create(definition) {
     const PlatformType = TYPES[definition.mechanic];
     if (!PlatformType) {
@@ -33,7 +36,10 @@ export class MechanicPlatformBuilder {
     return new PlatformType(data, spriteConfig);
   }
 
-  /** Returns sprite config. */
+  /**
+   * Returns sprite config.
+   * @param {Readonly<object>} definition Definition used to create the requested object.
+   */
   #getSpriteConfig(definition) {
     return definition.mechanic === "crane"
       ? getCranePlatformSpriteConfig(definition.biomeId)

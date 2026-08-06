@@ -23,6 +23,18 @@ const TARGET_PATHS = Object.freeze([
   "classes/systems/structure-collision-system.class.js",
   "classes/systems/upgrade-manager.class.js",
   "classes/systems/world-event-reporter.class.js",
+  "classes/systems/combat-encounter-builder.class.js",
+  "classes/systems/early-trickshot-wall-builder.class.js",
+  "classes/systems/exploration-area-builder.class.js",
+  "classes/systems/final-boss-builder.class.js",
+  "classes/systems/item-placement-builder.class.js",
+  "classes/systems/jump-window-builder.class.js",
+  "classes/systems/mechanic-platform-builder.class.js",
+  "classes/systems/progression-route-builder.class.js",
+  "classes/systems/scrapyard-prototype-builder.class.js",
+  "classes/systems/sparse-wall-platform-builder.class.js",
+  "classes/systems/story-prop-builder.class.js",
+  "classes/systems/thin-wall-builder.class.js",
 ]);
 
 const files = (await Promise.all(TARGET_PATHS.map(collectFiles))).flat();

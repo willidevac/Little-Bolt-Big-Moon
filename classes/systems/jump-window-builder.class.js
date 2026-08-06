@@ -10,7 +10,10 @@ const MINIMUM_WING_WIDTH = 96;
 
 /** Places sparse animated openings directly across valid jump trajectories. */
 export class JumpWindowBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= 0) {
       throw new TypeError("The jump-window world width is invalid.");
@@ -18,7 +21,11 @@ export class JumpWindowBuilder {
     this.worldWidth = worldWidth;
   }
 
-  /** Returns factory and launch-tower windows without route obstruction. */
+  /**
+   * Returns factory and launch-tower windows without route obstruction.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   * @param {ReadonlyArray<object>} platforms Platforms available for route construction.
+   */
   build(sections, platforms) {
     const route = platforms.filter(({ routeRole }) => routeRole === "main")
       .sort((first, second) => first.routeOrder - second.routeOrder);
@@ -29,7 +36,12 @@ export class JumpWindowBuilder {
     return Object.freeze(windows);
   }
 
-  /** Builds biome. */
+  /**
+   * Builds biome.
+   * @param {string} biomeId Biome id used while build biome.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   */
   #buildBiome(biomeId, biome, route) {
     const profile = getJumpWindowProfile(biomeId);
     const pairs = this.#getCandidatePairs(route, biomeId);
@@ -41,7 +53,13 @@ export class JumpWindowBuilder {
     });
   }
 
-  /** Selects pair. */
+  /**
+   * Selects pair.
+   * @param {ReadonlyArray<object>} pairs Pairs used while select pair.
+   * @param {Readonly<object>} selected Selected used while select pair.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   * @param {Readonly<object>} ratio Ratio used while select pair.
+   */
   #selectPair(pairs, selected, biome, ratio) {
     const targetY = biome.bottomY - (biome.bottomY - biome.topY) * ratio;
     return pairs.filter(({ upper }) => !selected.has(upper.id))
@@ -49,7 +67,11 @@ export class JumpWindowBuilder {
         Math.abs(second.midpointY - targetY))[0];
   }
 
-  /** Returns candidate pairs. */
+  /**
+   * Returns candidate pairs.
+   * @param {ReadonlyArray<object>} route Ordered route entries created so far.
+   * @param {string} biomeId Biome id used while get candidate pairs.
+   */
   #getCandidatePairs(route, biomeId) {
     return route.slice(0, -1).map((lower, index) => ({
       lower,
@@ -64,7 +86,13 @@ export class JumpWindowBuilder {
     });
   }
 
-  /** Creates window. */
+  /**
+   * Creates window.
+   * @param {string} biomeId Biome id used while create window.
+   * @param {Readonly<object>} profile Profile used while create window.
+   * @param {Readonly<object>} pair Pair used while create window.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #createWindow(biomeId, profile, pair, index) {
     const lowerCenter = pair.lower.x + pair.lower.width / 2;
     const upperCenter = pair.upper.x + pair.upper.width / 2;
@@ -79,7 +107,15 @@ export class JumpWindowBuilder {
     return new JumpWindowStructure(data, profile.sprite);
   }
 
-  /** Creates window data. */
+  /**
+   * Creates window data.
+   * @param {string} biomeId Biome id used while create window data.
+   * @param {Readonly<object>} profile Profile used while create window data.
+   * @param {Readonly<object>} pair Pair used while create window data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} center Center used while create window data.
+   * @param {Readonly<object>} halfOpening Half opening used while create window data.
+   */
   #createWindowData(biomeId, profile, pair, index, center, halfOpening) {
     return Object.freeze({
       ...this.#getWindowIdentity(biomeId, pair, index),
@@ -88,7 +124,12 @@ export class JumpWindowBuilder {
     });
   }
 
-  /** Returns window identity. */
+  /**
+   * Returns window identity.
+   * @param {string} biomeId Biome id used while get window identity.
+   * @param {Readonly<object>} pair Pair used while get window identity.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getWindowIdentity(biomeId, pair, index) {
     return {
       id: `${biomeId}-jump-window-${index + 1}`,
@@ -97,7 +138,13 @@ export class JumpWindowBuilder {
     };
   }
 
-  /** Returns window geometry. */
+  /**
+   * Returns window geometry.
+   * @param {Readonly<object>} profile Profile used while get window geometry.
+   * @param {Readonly<object>} pair Pair used while get window geometry.
+   * @param {Readonly<object>} center Center used while get window geometry.
+   * @param {Readonly<object>} halfOpening Half opening used while get window geometry.
+   */
   #getWindowGeometry(profile, pair, center, halfOpening) {
     return { x: 0,
       y: Math.round(pair.midpointY - profile.height / 2),
@@ -107,7 +154,11 @@ export class JumpWindowBuilder {
     };
   }
 
-  /** Returns window style. */
+  /**
+   * Returns window style.
+   * @param {Readonly<object>} profile Profile used while get window style.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #getWindowStyle(profile, index) {
     return {
       animationFrameSeconds: profile.animationFrameSeconds,
@@ -120,7 +171,10 @@ export class JumpWindowBuilder {
     };
   }
 
-  /** Returns biome bounds. */
+  /**
+   * Returns biome bounds.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   #getBiomeBounds(sections) {
     const bounds = new Map();
     sections.forEach((section) => {
@@ -129,7 +183,11 @@ export class JumpWindowBuilder {
     return bounds;
   }
 
-  /** Includes section. */
+  /**
+   * Includes section.
+   * @param {ReadonlyArray<object>} bounds Bounds used while include section.
+   * @param {Readonly<object>} section Route or biome section currently being built.
+   */
   #includeSection(bounds, section) {
     const current = bounds.get(section.tileset) ?? {
       id: section.tileset, topY: section.topY, bottomY: section.bottomY,

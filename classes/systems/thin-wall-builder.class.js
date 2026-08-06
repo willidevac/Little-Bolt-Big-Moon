@@ -13,7 +13,10 @@ const BIOME_WALL_SPEEDS = Object.freeze({
 
 /** Builds one continuous 48-pixel wall pair for each biome. */
 export class ThinWallBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     if (!Number.isFinite(worldWidth) || worldWidth <= WALL_WIDTH * 2) {
       throw new RangeError("The thin-wall world width is invalid.");
@@ -21,7 +24,10 @@ export class ThinWallBuilder {
     this.worldWidth = worldWidth;
   }
 
-  /** Returns biome boundaries plus sparse late-game rebound shafts. */
+  /**
+   * Returns biome boundaries plus sparse late-game rebound shafts.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   build(sections) {
     const biomeBounds = this.#getBiomeBounds(sections);
     const boundaries = biomeBounds.flatMap((biome, index) =>
@@ -32,7 +38,10 @@ export class ThinWallBuilder {
     return Object.freeze([...boundaries, ...reboundWalls]);
   }
 
-  /** Returns rebound challenges belonging to the supplied biomes. */
+  /**
+   * Returns rebound challenges belonging to the supplied biomes.
+   * @param {ReadonlyArray<object>} biomes Biome definitions used to divide the route.
+   */
   #getChallengesFor(biomes) {
     const biomeIds = new Set(biomes.map(({ id }) => id));
     return WALL_BOUNCE_CHALLENGES.filter(({ biomeId }) => {
@@ -40,19 +49,32 @@ export class ThinWallBuilder {
     });
   }
 
-  /** Creates boundary pair. */
+  /**
+   * Creates boundary pair.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #createBoundaryPair(biome, index) {
     return [this.#createWall(biome, "left", index),
       this.#createWall(biome, "right", index)];
   }
 
-  /** Creates rebound pair. */
+  /**
+   * Creates rebound pair.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   */
   #createReboundPair(challenge, index) {
     return [this.#createReboundWall(challenge, "left", challenge.leftX, index),
       this.#createReboundWall(challenge, "right", challenge.rightX, index)];
   }
 
-  /** Creates wall. */
+  /**
+   * Creates wall.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   * @param {Readonly<object>} side Side used while create wall.
+   * @param {number} biomeIndex Biome index used while create wall.
+   */
   #createWall(biome, side, biomeIndex) {
     const data = Object.freeze({
       id: `${biome.id}-${side}-thin-wall`,
@@ -67,7 +89,13 @@ export class ThinWallBuilder {
     return new AnimatedBiomeWall(data, getWallSpriteConfig(biome.id));
   }
 
-  /** Creates rebound wall. */
+  /**
+   * Creates rebound wall.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   * @param {Readonly<object>} side Side used while create rebound wall.
+   * @param {Readonly<object>} x X used while create rebound wall.
+   * @param {number} challengeIndex Challenge index used while create rebound wall.
+   */
   #createReboundWall(challenge, side, x, challengeIndex) {
     const data = Object.freeze({
       ...this.#getReboundIdentity(challenge, side, x),
@@ -79,7 +107,12 @@ export class ThinWallBuilder {
     return new AnimatedBiomeWall(data, getWallSpriteConfig(challenge.biomeId));
   }
 
-  /** Returns rebound identity. */
+  /**
+   * Returns rebound identity.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   * @param {Readonly<object>} side Side used while get rebound identity.
+   * @param {Readonly<object>} x X used while get rebound identity.
+   */
   #getReboundIdentity(challenge, side, x) {
     return {
       id: `${challenge.id}-${side}-wall`,
@@ -90,7 +123,10 @@ export class ThinWallBuilder {
     };
   }
 
-  /** Returns rebound motion. */
+  /**
+   * Returns rebound motion.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   */
   #getReboundMotion(challenge) {
     return {
       reboundHorizontalSpeedPixelsPerSecond:
@@ -103,7 +139,10 @@ export class ThinWallBuilder {
     };
   }
 
-  /** Returns exit assist. */
+  /**
+   * Returns exit assist.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   */
   #getExitAssist(challenge) {
     return {
       exitTargetCenterX: challenge.exitTargetCenterX,
@@ -117,7 +156,10 @@ export class ThinWallBuilder {
     };
   }
 
-  /** Returns biome bounds. */
+  /**
+   * Returns biome bounds.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   #getBiomeBounds(sections) {
     const bounds = new Map();
     sections.forEach((section) => {

@@ -54,12 +54,18 @@ const ACCENTS = Object.freeze({
 
 /** Builds rare wall features, not the later intermediate jump route. */
 export class SparseWallPlatformBuilder {
-  /** @param {number} worldWidth */
+  /**
+   * Creates the configured builder.
+   * @param {number} worldWidth Total playable world width in pixels.
+   */
   constructor(worldWidth) {
     this.worldWidth = worldWidth;
   }
 
-  /** Returns one safe floor plus twelve landmark wall platforms per biome. */
+  /**
+   * Returns one safe floor plus twelve landmark wall platforms per biome.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   build(sections) {
     const platforms = [this.#createFloor()];
     this.#groupBiomes(sections).forEach((biome) => {
@@ -68,7 +74,10 @@ export class SparseWallPlatformBuilder {
     return Object.freeze(platforms);
   }
 
-  /** Creates biome features. */
+  /**
+   * Creates biome features.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   */
   #createBiomeFeatures(biome) {
     const profile = getWallFeatureProfile(biome.id);
     const entrances = WALL_BOUNCE_CHALLENGES.filter((challenge) =>
@@ -81,7 +90,11 @@ export class SparseWallPlatformBuilder {
     });
   }
 
-  /** Creates feature slots. */
+  /**
+   * Creates feature slots.
+   * @param {Readonly<object>} biome Biome definition used for world placement.
+   * @param {ReadonlyArray<object>} entrances Entrances used while create feature slots.
+   */
   #createFeatureSlots(biome, entrances) {
     const ratios = FEATURE_RATIOS_BY_BIOME[biome.id] ?? FEATURE_RATIOS;
     const slots = ratios.map((ratio, index) => ({
@@ -95,7 +108,11 @@ export class SparseWallPlatformBuilder {
     return slots;
   }
 
-  /** Performs entrance. */
+  /**
+   * Performs entrance.
+   * @param {ReadonlyArray<object>} slots Slots used while assign entrance.
+   * @param {Readonly<object>} entrance Entrance used while assign entrance.
+   */
   #assignEntrance(slots, entrance) {
     const targetY = entrance.y + entrance.height;
     const available = slots
@@ -121,7 +138,15 @@ export class SparseWallPlatformBuilder {
     return new SpriteSurfacePlatform(data, getStartFloorSpriteConfig());
   }
 
-  /** Creates wall feature. */
+  /**
+   * Creates wall feature.
+   * @param {string} biomeId Biome id used while create wall feature.
+   * @param {Readonly<object>} side Side used while create wall feature.
+   * @param {Readonly<object>} width Width used while create wall feature.
+   * @param {Readonly<object>} y Y used while create wall feature.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} entrance Entrance used while create wall feature.
+   */
   #createWallFeature(biomeId, side, width, y, index, entrance) {
     const innerX = WALL_WIDTH - WALL_OVERLAP;
     const x = entrance
@@ -135,7 +160,16 @@ export class SparseWallPlatformBuilder {
     return new SpriteSurfacePlatform(data, getWallPlatformSpriteConfig(biomeId));
   }
 
-  /** Creates feature data. */
+  /**
+   * Creates feature data.
+   * @param {string} biomeId Biome id used while create feature data.
+   * @param {Readonly<object>} side Side used while create feature data.
+   * @param {Readonly<object>} width Width used while create feature data.
+   * @param {Readonly<object>} y Y used while create feature data.
+   * @param {Readonly<object>} index Zero-based route or stage index.
+   * @param {Readonly<object>} entrance Entrance used while create feature data.
+   * @param {Readonly<object>} x X used while create feature data.
+   */
   #createFeatureData(biomeId, side, width, y, index, entrance, x) {
     return Object.freeze({
       id: `${biomeId}-${side}-wall-feature-${index + 1}`,
@@ -151,20 +185,32 @@ export class SparseWallPlatformBuilder {
     });
   }
 
-  /** Returns rebound platform x. */
+  /**
+   * Returns rebound platform x.
+   * @param {Readonly<object>} challenge Challenge definition used to create the feature.
+   * @param {Readonly<object>} side Side used while get rebound platform x.
+   * @param {Readonly<object>} width Width used while get rebound platform x.
+   */
   #getReboundPlatformX(challenge, side, width) {
     if (side === "left") return challenge.leftX + WALL_WIDTH - WALL_OVERLAP;
     return challenge.rightX + WALL_OVERLAP - width;
   }
 
-  /** Resolves width. */
+  /**
+   * Resolves width.
+   * @param {Readonly<object>} profile Profile used while resolve width.
+   * @param {Readonly<object>} role Role used while resolve width.
+   */
   #resolveWidth(profile, role) {
     if (role === "cross") return profile.crossWidth;
     if (role === "small") return profile.smallWidth;
     return profile.standardWidths[role];
   }
 
-  /** Performs biomes. */
+  /**
+   * Performs biomes.
+   * @param {ReadonlyArray<object>} sections Route sections used to distribute world features.
+   */
   #groupBiomes(sections) {
     const grouped = new Map();
     sections.forEach((section) => {
@@ -176,7 +222,11 @@ export class SparseWallPlatformBuilder {
     }));
   }
 
-  /** Includes section. */
+  /**
+   * Includes section.
+   * @param {Readonly<object>} grouped Grouped used while include section.
+   * @param {Readonly<object>} section Route or biome section currently being built.
+   */
   #includeSection(grouped, section) {
     const current = grouped.get(section.tileset) ?? {
       id: section.tileset, topY: section.topY, bottomY: section.bottomY,
