@@ -1,5 +1,6 @@
 import { PLATFORM_MECHANIC_CONFIG } from "./world-content-config.js";
 import {
+  TUTORIAL_COMBAT_ZONE_ID,
   TUTORIAL_PRACTICE_TARGET_ID,
   TUTORIAL_WEAPON_ID,
 } from "./tutorial-config.js";
@@ -53,6 +54,37 @@ export const TUTORIAL_PRACTICE_TARGET_DEFINITION = Object.freeze({
 export const TUTORIAL_PRACTICE_TARGET_PROFILE = Object.freeze({
   speedPixelsPerSecond: 20,
   maximumHealth: 18,
+});
+
+export const TUTORIAL_COMBAT_ENEMY_DEFINITIONS = Object.freeze([
+  Object.freeze({
+    id: "tutorial-combat-crawler", type: "scrapCrawler",
+    x: 540, y: 26, patrolMinX: 470, patrolMaxX: 690, startDirection: 1,
+  }),
+  Object.freeze({
+    id: "tutorial-combat-drone", type: "droneGuard",
+    x: 740, y: 30, patrolMinX: 690, patrolMaxX: 910, startDirection: -1,
+  }),
+]);
+
+export const TUTORIAL_COMBAT_PROFILES = Object.freeze({
+  scrapCrawler: Object.freeze({
+    speedPixelsPerSecond: 34, maximumHealth: 36,
+    contactDamage: 8, attackCooldownSeconds: 1.8,
+  }),
+  droneGuard: Object.freeze({
+    speedPixelsPerSecond: 44, maximumHealth: 36,
+    contactDamage: 8, attackCooldownSeconds: 2,
+    hoverAmplitudePixels: 8, hoverCyclesPerSecond: 0.3,
+    verticalTrackingSpeedPixelsPerSecond: 54,
+    verticalTrackingRangePixels: 70,
+  }),
+});
+
+export const TUTORIAL_COMBAT_ZONE_DEFINITION = Object.freeze({
+  id: TUTORIAL_COMBAT_ZONE_ID,
+  x: 830, y: 0, width: 90, height: 250,
+  enemyIds: Object.freeze(TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map(({ id }) => id)),
 });
 
 /** Creates one tutorial use of an existing production platform mechanic. */

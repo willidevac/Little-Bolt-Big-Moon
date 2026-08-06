@@ -17,6 +17,10 @@ import { initializeTutorialMechanicsTracker } from
   "../factories/tutorial-mechanics-tracker.js";
 import { initializeTutorialCombatBasicsTracker } from
   "../factories/tutorial-combat-basics-tracker.js";
+import { initializeTutorialCombatTracker } from
+  "../factories/tutorial-combat-tracker.js";
+import { initializeTutorialCheckpointController } from
+  "../factories/tutorial-checkpoint-controller.js";
 import { initializeTutorialPrompt } from "../ui/tutorial-prompt.js";
 
 /**
@@ -47,17 +51,27 @@ function configureCanvas(canvas) {
 
 /** Creates controllers. */
 function createControllers(game, audio, storage, localization) {
-  const tutorial = initializeTutorialDirector(game);
-  const movement = initializeTutorialMovementTracker(game, tutorial);
-  const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
-  const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
+  const tutorialControllers = createTutorialControllers(game);
   return [
-    localization, audio, tutorial, movement, mechanics, combatBasics,
-    initializeTutorialPrompt(tutorial),
+    localization, audio, ...tutorialControllers,
     initializeScreens(game), initializeHud(game),
     initializeStorage(game, audio, document.body, storage),
     initializeTouchControls(game), initializeReviewMode(game),
     initializeFullscreen(),
+  ];
+}
+
+/** Creates tutorial orchestration in dependency order. */
+function createTutorialControllers(game) {
+  const tutorial = initializeTutorialDirector(game);
+  const movement = initializeTutorialMovementTracker(game, tutorial);
+  const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
+  const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
+  const combat = initializeTutorialCombatTracker(game, tutorial);
+  const checkpoints = initializeTutorialCheckpointController(game, tutorial);
+  return [
+    tutorial, movement, mechanics, combatBasics, combat, checkpoints,
+    initializeTutorialPrompt(tutorial),
   ];
 }
 

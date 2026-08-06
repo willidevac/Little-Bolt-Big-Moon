@@ -264,7 +264,7 @@ export class Game {
     this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_HURT);
     if (character?.isDead) {
       this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);
-      this.lose();
+      if (this.world.character === character) this.lose();
     }
     return accepted;
   }
@@ -290,6 +290,18 @@ export class Game {
     this.#setGameState(GAME_STATES.PLAYING);
     this.gameCanvas.setLoopState("running");
     if (!this.isRunning) this.start();
+  }
+
+  /**
+   * Rebuilds an active run at a supplied safe position without ending it.
+   * @param {Readonly<{x:number,y:number}>} position
+   * @returns {boolean}
+   */
+  restartWorldAt(position) {
+    if (!this.#isPlaying()) return false;
+    this.#runResetController.restart(this.world, position);
+    this.#gameLoop.resetClock();
+    return true;
   }
 
   /** Updates process frame. */
@@ -391,9 +403,10 @@ export class Game {
 
   /** Handles death zone. */
   #handleDeathZone() {
-    if (this.world.character?.die()) {
+    const character = this.world.character;
+    if (character?.die()) {
       this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);
     }
-    this.lose();
+    if (this.world.character === character) this.lose();
   }
 }

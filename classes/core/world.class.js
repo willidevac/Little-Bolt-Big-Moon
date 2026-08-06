@@ -184,6 +184,23 @@ export class World {
   }
 
   /**
+   * Places the fresh character at a validated alternate run start.
+   * @param {Readonly<{x:number,y:number}>} position
+   * @returns {boolean}
+   */
+  placeCharacterAt(position) {
+    const values = [position?.x, position?.y];
+    if (!this.character || !values.every(Number.isFinite)) return false;
+    Object.assign(this.character, {
+      x: position.x, y: position.y, velocityX: 0, velocityY: 0,
+    });
+    this.character.setOnGround(false);
+    this.camera.reset(this.character);
+    this.#fallTracker.reset(this.character);
+    return true;
+  }
+
+  /**
    * Converts a new ranged attack into a projectile.
    * @param {Readonly<object>|null} attack
    * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}

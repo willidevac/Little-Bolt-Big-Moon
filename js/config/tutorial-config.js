@@ -33,3 +33,13 @@ export const TUTORIAL_PLATFORM_MECHANICS = Object.freeze([
 
 export const TUTORIAL_WEAPON_ID = "boltThrower";
 export const TUTORIAL_PRACTICE_TARGET_ID = "tutorial-practice-target";
+export const TUTORIAL_COMBAT_ZONE_ID = "tutorial-combat-zone";
+
+export const TUTORIAL_CHECKPOINTS = Object.freeze({
+  movement: Object.freeze({ x: 560, y: 1353 }),
+  chargedJump: Object.freeze({ x: 180, y: 1135 }),
+  wallRebound: Object.freeze({ x: 650, y: 915 }),
+  weaponPickup: Object.freeze({ x: 160, y: 255 }),
+  practiceTarget: Object.freeze({ x: 500, y: 35 }),
+  combat: Object.freeze({ x: 500, y: 35 }),
+});

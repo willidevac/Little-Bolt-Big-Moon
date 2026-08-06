@@ -10,15 +10,17 @@ export class RunResetController {
   /**
    * Replaces an old world with a completely reset new world.
    * @param {import("../core/world.class.js").World} currentWorld
+   * @param {Readonly<{x:number,y:number}>|null} [startPosition=null]
    * @returns {import("../core/world.class.js").World}
    */
-  restart(currentWorld) {
+  restart(currentWorld, startPosition = null) {
     const { keyboard, createWorld, replaceWorld } = this.#dependencies;
     currentWorld.destroy();
     keyboard.reset();
     const nextWorld = createWorld();
     replaceWorld(nextWorld);
     nextWorld.initialize();
+    if (startPosition) nextWorld.placeCharacterAt(startPosition);
     this.#resetSystems(nextWorld);
     return nextWorld;
   }

@@ -24,6 +24,14 @@ assert.deepEqual(commands, [
   "stats:42", "weapon", "combat", "upgrade",
 ]);
 
+commands.length = 0;
+const checkpoint = Object.freeze({ x: 320, y: 180 });
+assert.equal(controller.restart(newWorld, checkpoint), newWorld);
+assert.deepEqual(commands, [
+  "destroy:new", "keyboard", "create:new", "replace:new", "initialize:new",
+  "place:320:180", "stats:42", "weapon", "combat", "upgrade",
+]);
+
 console.log("CLEAN-012: Ein Run-Neustart folgt einer festen Reihenfolge.");
 
 function createWorld(name, startY, commands) {
@@ -32,6 +40,7 @@ function createWorld(name, startY, commands) {
     level: { playerStart: { y: startY } },
     destroy: () => commands.push(`destroy:${name}`),
     initialize: () => commands.push(`initialize:${name}`),
+    placeCharacterAt: ({ x, y }) => commands.push(`place:${x}:${y}`),
   };
 }
 

@@ -8,6 +8,10 @@ import { AnchoredCollectable } from
   "../../classes/entities/collectables/anchored-collectable.class.js";
 import { ScrapCrawler } from
   "../../classes/entities/enemies/scrap-crawler.class.js";
+import { DroneGuard } from
+  "../../classes/entities/enemies/drone-guard.class.js";
+import { CombatZone } from
+  "../../classes/environment/combat-zone.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 import { GAME_CONFIG } from "../config/game-config.js";
 import {
@@ -17,6 +21,9 @@ import {
 import {
   TUTORIAL_LEVEL_CONFIG,
   TUTORIAL_PLATFORM_DEFINITIONS,
+  TUTORIAL_COMBAT_ENEMY_DEFINITIONS,
+  TUTORIAL_COMBAT_PROFILES,
+  TUTORIAL_COMBAT_ZONE_DEFINITION,
   TUTORIAL_PRACTICE_TARGET_DEFINITION,
   TUTORIAL_PRACTICE_TARGET_PROFILE,
   TUTORIAL_WEAPON_PICKUP_DEFINITION,
@@ -39,7 +46,7 @@ function createLevelResult(sections, platforms, training) {
     structures: new ThinWallBuilder(TUTORIAL_LEVEL_CONFIG.width).build(sections),
     platforms, collectables: training.collectables,
     storyProps: Object.freeze([]),
-    hazards: Object.freeze([]), combatZones: Object.freeze([]),
+    hazards: Object.freeze([]), combatZones: training.combatZones,
     enemies: training.enemies,
   });
 }
@@ -50,9 +57,13 @@ function createTrainingContent(platforms, enemyConfig) {
     return id === TUTORIAL_WEAPON_PICKUP_DEFINITION.anchorPlatformId;
   });
   if (!anchor) throw new RangeError("Der Tutorial-Kampfbereich fehlt.");
+  const combatEnemies = createCombatEnemies(enemyConfig);
   return Object.freeze({
     collectables: Object.freeze([createWeaponPickup(anchor)]),
-    enemies: Object.freeze([createPracticeTarget(anchor, enemyConfig)]),
+    enemies: Object.freeze([
+      createPracticeTarget(anchor, enemyConfig), ...combatEnemies,
+    ]),
+    combatZones: Object.freeze([new CombatZone(TUTORIAL_COMBAT_ZONE_DEFINITION)]),
   });
 }
 
@@ -70,6 +81,18 @@ function createPracticeTarget(anchor, enemyConfig) {
   target.anchorPlatformId = anchor.id;
   target.y = anchor.y - target.height;
   return target;
+}
+
+/** Creates the mild crawler and drone through their production classes. */
+function createCombatEnemies(enemyConfig) {
+  const enemyClasses = { scrapCrawler: ScrapCrawler, droneGuard: DroneGuard };
+  return TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map((definition) => {
+    const EnemyClass = enemyClasses[definition.type];
+    const profile = Object.freeze({
+      ...enemyConfig[definition.type], ...TUTORIAL_COMBAT_PROFILES[definition.type],
+    });
+    return new EnemyClass(definition, profile);
+  });
 }
 
 /** Creates the tutorial background section from an existing panorama. */

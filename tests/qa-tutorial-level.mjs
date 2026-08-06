@@ -39,10 +39,11 @@ function assertSafeJumps(platforms) {
 
 /** Verifies that only later combat and completion content stays deferred. */
 function assertDeferredContent(tutorial) {
-  ["storyProps", "hazards", "combatZones"]
+  ["storyProps", "hazards"]
     .forEach((property) => assert.deepEqual(tutorial[property], []));
   assert.equal(tutorial.collectables.length, 1);
-  assert.equal(tutorial.enemies.length, 1);
+  assert.equal(tutorial.enemies.length, 3);
+  assert.equal(tutorial.combatZones.length, 1);
 }
 
 /** Verifies that the public menu selection can create the tutorial. */
