@@ -136,8 +136,9 @@ export class World {
     if (!this.isInitialized) return;
     this.eventReporter.capture(this.character, this.bossFight.getSnapshot());
     const groundMovables = this.#getGroundMovables();
+    const previousBounds = this.#captureFrameBounds(groundMovables);
     this.#updateMovingEntities(groundMovables, deltaTimeSeconds);
-    this.#resolveInteractions(groundMovables, deltaTimeSeconds);
+    this.#resolveInteractions(groundMovables, deltaTimeSeconds, previousBounds);
     this.#updateWorldSystems(deltaTimeSeconds);
     this.eventReporter.report(this.character, this.bossFight.getSnapshot());
   }
@@ -151,12 +152,14 @@ export class World {
   }
 
   /** Returns resolve interactions. */
-  #resolveInteractions(movableObjects, deltaTimeSeconds) {
+  #resolveInteractions(movableObjects, deltaTimeSeconds, previousBounds) {
     this.#damageEvents.push(...this.#projectileSystem.resolve(this));
     this.#resolveEnemyCombat(deltaTimeSeconds);
     this.#collisionManager.resetGroundStates(movableObjects);
     this.#resolveStructureCollisions(deltaTimeSeconds);
-    this.#resolvePlatformLandings(movableObjects, deltaTimeSeconds);
+    this.#resolvePlatformLandings(
+      movableObjects, deltaTimeSeconds, previousBounds,
+    );
     this.#resolveCollectablePickups();
     this.#resolveHazardHits();
   }
@@ -260,12 +263,13 @@ export class World {
   }
 
   /** Returns resolve platform landings. */
-  #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
+  #resolvePlatformLandings(movableObjects, deltaTimeSeconds, previousBounds) {
     const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     const landings = this.#collisionManager.resolvePlatformLandings(
       movableObjects,
       platforms,
       deltaTimeSeconds,
+      previousBounds,
     );
     landings.forEach((landing) => this.#reportPlatformActivation(landing));
   }
@@ -296,6 +300,12 @@ export class World {
     const enemies = this.#getGroup(WORLD_ENTITY_GROUPS.ENEMIES);
     const groundEnemies = enemies.filter((enemy) => enemy.isAffectedByGravity);
     return [...characters, ...groundEnemies];
+  }
+
+  /** Captures movable and platform geometry before either group advances. */
+  #captureFrameBounds(movableObjects) {
+    const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
+    return this.#collisionManager.captureBounds([...movableObjects, ...platforms]);
   }
 
   /** Updates entity groups. */

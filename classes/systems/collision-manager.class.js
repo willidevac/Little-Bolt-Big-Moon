@@ -53,19 +53,34 @@ export class CollisionManager {
   }
 
   /**
+   * Captures exact collision bounds before any movement in the current frame.
+   * @param {ReadonlyArray<object>} movableObjects
+   * @returns {Map<object, Readonly<object>>}
+   */
+  captureBounds(movableObjects) {
+    return new Map(movableObjects.map((movableObject) => {
+      const bounds = this.#getCollisionBounds(movableObject);
+      return [movableObject, Object.freeze({ ...bounds })];
+    }));
+  }
+
+  /**
    * Places falling objects on the first crossed platform surface.
    * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
    * @param {ReadonlyArray<import("../environment/platform.class.js").Platform>} platforms
    * @param {number} deltaTimeSeconds
+   * @param {Map<object, Readonly<object>>|null} [previousBounds=null]
    * @returns {ReadonlyArray<Readonly<object>>} New landing contacts.
    */
-  resolvePlatformLandings(movableObjects, platforms, deltaTimeSeconds) {
+  resolvePlatformLandings(movableObjects, platforms, deltaTimeSeconds,
+    previousBounds = null) {
     const landings = [];
     movableObjects.forEach((movableObject) => {
       const platform = this.#findLandingPlatform(
         movableObject,
         platforms,
         deltaTimeSeconds,
+        previousBounds,
       );
       if (platform) landings.push(this.#landOnPlatform(movableObject, platform));
     });
@@ -73,29 +88,57 @@ export class CollisionManager {
   }
 
   /** Returns find landing platform. */
-  #findLandingPlatform(movableObject, platforms, deltaTimeSeconds) {
-    let landingPlatform = null;
-    platforms.forEach((platform) => {
-      if (!this.#canLandOn(movableObject, platform, deltaTimeSeconds)) return;
-      const platformTop = this.#getCollisionBounds(platform).y;
-      const landingTop = landingPlatform
-        ? this.#getCollisionBounds(landingPlatform).y
-        : Infinity;
-      if (platformTop < landingTop) landingPlatform = platform;
-    });
-    return landingPlatform;
+  #findLandingPlatform(movableObject, platforms, deltaTimeSeconds,
+    previousBounds) {
+    return platforms.reduce((landingPlatform, platform) => {
+      const canLand = this.#canLandOn(
+        movableObject, platform, deltaTimeSeconds, previousBounds,
+      );
+      return canLand
+        ? this.#getHigherPlatform(landingPlatform, platform)
+        : landingPlatform;
+    }, null);
+  }
+
+  /** Returns the platform with the higher current landing surface. */
+  #getHigherPlatform(currentPlatform, candidatePlatform) {
+    if (!currentPlatform) return candidatePlatform;
+    const currentTop = this.#getCollisionBounds(currentPlatform).y;
+    const candidateTop = this.#getCollisionBounds(candidatePlatform).y;
+    return candidateTop < currentTop ? candidatePlatform : currentPlatform;
   }
 
   /** Checks the land on condition. */
-  #canLandOn(movableObject, platform, deltaTimeSeconds) {
+  #canLandOn(movableObject, platform, deltaTimeSeconds, previousBounds) {
     if (movableObject.velocityY < 0 || platform.isCollidable === false) return false;
     const movableBounds = this.#getCollisionBounds(movableObject);
     const platformBounds = this.#getCollisionBounds(platform);
     if (!this.#hasHorizontalOverlap(movableBounds, platformBounds)) return false;
+    return this.#hasCrossedSurface(
+      movableObject, movableBounds, platform, platformBounds,
+      deltaTimeSeconds, previousBounds,
+    );
+  }
+
+  /** Checks relative movement across the platform's current top surface. */
+  #hasCrossedSurface(movableObject, movableBounds, platform, platformBounds,
+    deltaTimeSeconds, previousBounds) {
     const currentBottom = movableBounds.y + movableBounds.height;
-    const previousBottom = currentBottom - movableObject.velocityY * deltaTimeSeconds;
-    const toleratedPlatformTop = platformBounds.y + this.landingTolerancePixels;
-    return previousBottom <= toleratedPlatformTop && currentBottom >= platformBounds.y;
+    const previousBottom = this.#getPreviousBottom(
+      movableObject, movableBounds, deltaTimeSeconds, previousBounds,
+    );
+    const previousTop = previousBounds?.get(platform)?.y ?? platformBounds.y;
+    return previousBottom <= previousTop + this.landingTolerancePixels &&
+      currentBottom >= platformBounds.y;
+  }
+
+  /** Returns the exact or velocity-derived bottom before this frame. */
+  #getPreviousBottom(movableObject, currentBounds, deltaTimeSeconds,
+    previousBounds) {
+    const previous = previousBounds?.get(movableObject);
+    if (previous) return previous.y + previous.height;
+    return currentBounds.y + currentBounds.height -
+      movableObject.velocityY * deltaTimeSeconds;
   }
 
   /** Checks the horizontal overlap condition. */
