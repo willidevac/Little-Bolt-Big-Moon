@@ -38,8 +38,8 @@ export class CharacterHitState {
 
   /**
    * Starts the hurt state and invulnerability after a valid hit.
-   * @param {number} hurtSeconds
-   * @param {number} invulnerabilitySeconds
+   * @param {number} hurtSeconds Hurt seconds used while receive hit.
+   * @param {number} invulnerabilitySeconds Invulnerability seconds used while receive hit.
    * @returns {boolean} Whether the hit was accepted.
    */
   receiveHit(hurtSeconds, invulnerabilitySeconds) {
@@ -70,7 +70,7 @@ export class CharacterHitState {
 
   /**
    * Updates the hurt and invulnerability timers.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
@@ -85,7 +85,7 @@ export class CharacterHitState {
 
   /**
    * Sets a finite or permanent invulnerability duration.
-   * @param {number} seconds
+   * @param {number} seconds Seconds used while set invulnerability.
    */
   setInvulnerability(seconds) {
     const isDuration = Number.isFinite(seconds) && seconds >= 0;
@@ -95,12 +95,20 @@ export class CharacterHitState {
     this.#invulnerabilitySecondsRemaining = seconds;
   }
 
-  /** Performs the reduce timer operation. */
+  /**
+   * Performs the reduce timer operation.
+   * @param {Readonly<object>} timer Timer used while reduce timer.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #reduceTimer(timer, deltaTimeSeconds) {
     return Math.max(0, timer - deltaTimeSeconds);
   }
 
-  /** Validates durations. */
+  /**
+   * Validates durations.
+   * @param {number} hurtSeconds Hurt seconds used while validate durations.
+   * @param {number} invulnerabilitySeconds Invulnerability seconds used while validate durations.
+   */
   #validateDurations(hurtSeconds, invulnerabilitySeconds) {
     const values = [hurtSeconds, invulnerabilitySeconds];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;

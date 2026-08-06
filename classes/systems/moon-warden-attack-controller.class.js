@@ -16,6 +16,7 @@ export class MoonWardenAttackController {
   #source;
 
   /**
+   * Creates the configured system.
    * @param {string} source Unique boss ID.
    * @param {Readonly<object>} config Boss attack values.
    */
@@ -36,7 +37,7 @@ export class MoonWardenAttackController {
 
   /**
    * Begins the next attack pattern against a fixed target position.
-   * @param {Readonly<{x:number,y:number}>} target
+   * @param {Readonly<{x:number,y:number}>} target Target entity inspected or modified by the system.
    * @returns {Readonly<object>}
    */
   begin(target) {
@@ -63,10 +64,10 @@ export class MoonWardenAttackController {
 
   /**
    * Counts down the warning time and creates attacks when they are due.
-   * @param {number} deltaTimeSeconds
-   * @param {number} phase
-   * @param {Readonly<object>} bounds
-   * @param {Readonly<{x:number,y:number}>} rangedOrigin
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {number} phase Phase used while update.
+   * @param {ReadonlyArray<object>} bounds Bounds used while update.
+   * @param {Readonly<{x:number,y:number}>} rangedOrigin Ranged origin used while update.
    * @returns {boolean} Whether the attack was released.
    */
   update(deltaTimeSeconds, phase, bounds, rangedOrigin) {
@@ -93,7 +94,10 @@ export class MoonWardenAttackController {
     return events;
   }
 
-  /** Performs the release shockwaves operation. */
+  /**
+   * Performs the release shockwaves operation.
+   * @param {ReadonlyArray<object>} bounds Bounds used while release shockwaves.
+   */
   #releaseShockwaves(bounds) {
     const originY = bounds.y + bounds.height;
     this.#attackEvents.push(
@@ -102,7 +106,11 @@ export class MoonWardenAttackController {
     );
   }
 
-  /** Performs the release moon bolts operation. */
+  /**
+   * Performs the release moon bolts operation.
+   * @param {Readonly<object>} phase Phase used while release moon bolts.
+   * @param {Readonly<object>} origin Origin used while release moon bolts.
+   */
   #releaseMoonBolts(phase, origin) {
     const target = this.#pendingAttack.target;
     const baseAngle = Math.atan2(target.y - origin.y, target.x - origin.x);
@@ -114,7 +122,14 @@ export class MoonWardenAttackController {
     });
   }
 
-  /** Creates event. */
+  /**
+   * Creates event.
+   * @param {Readonly<object>} kind Kind used while create event.
+   * @param {number} directionX Direction x used while create event.
+   * @param {number} directionY Direction y used while create event.
+   * @param {number} originX Origin x used while create event.
+   * @param {number} originY Origin y used while create event.
+   */
   #createEvent(kind, directionX, directionY, originX, originY) {
     const damage = kind === "shockwave"
       ? this.#config.shockwaveDamage
@@ -126,7 +141,13 @@ export class MoonWardenAttackController {
     });
   }
 
-  /** Validates update. */
+  /**
+   * Validates update.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} phase Phase used while validate update.
+   * @param {ReadonlyArray<object>} bounds Bounds used while validate update.
+   * @param {Readonly<object>} rangedOrigin Ranged origin used while validate update.
+   */
   #validateUpdate(deltaTimeSeconds, phase, bounds, rangedOrigin) {
     const hasTime = Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
     const hasPhase = Object.hasOwn(RANGED_SPREAD_RADIANS, phase);
@@ -136,7 +157,11 @@ export class MoonWardenAttackController {
     throw new TypeError("Die Aktualisierung des Bossangriffs ist ungültig.");
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} source Source entity or definition used by the operation.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(source, config) {
     const values = [
       config?.attackReleaseSeconds,
@@ -150,18 +175,28 @@ export class MoonWardenAttackController {
     throw new TypeError("Die Angriffskonfiguration des Mondwächters ist ungültig.");
   }
 
-  /** Validates point. */
+  /**
+   * Validates point.
+   * @param {Readonly<object>} point Point used while validate point.
+   * @param {Readonly<object>} label Label used while validate point.
+   */
   #validatePoint(point, label) {
     if (this.#hasPoint(point)) return;
     throw new TypeError(`${label} des Mondwächters ist ungültig.`);
   }
 
-  /** Checks the point condition. */
+  /**
+   * Checks the point condition.
+   * @param {Readonly<object>} point Point used while has point.
+   */
   #hasPoint(point) {
     return Number.isFinite(point?.x) && Number.isFinite(point?.y);
   }
 
-  /** Checks the rectangle condition. */
+  /**
+   * Checks the rectangle condition.
+   * @param {ReadonlyArray<object>} bounds Bounds used while has rectangle.
+   */
   #hasRectangle(bounds) {
     return this.#hasPoint(bounds) &&
       Number.isFinite(bounds.width) && bounds.width > 0 &&

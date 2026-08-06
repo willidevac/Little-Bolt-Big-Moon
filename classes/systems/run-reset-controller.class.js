@@ -2,15 +2,18 @@
 export class RunResetController {
   #dependencies;
 
-  /** @param {Readonly<object>} dependencies */
+  /**
+   * Creates the configured system.
+   * @param {ReadonlyArray<object>} dependencies Dependencies used while constructor.
+   */
   constructor(dependencies) {
     this.#dependencies = Object.freeze({ ...dependencies });
   }
 
   /**
    * Replaces an old world with a completely reset new world.
-   * @param {import("../core/world.class.js").World} currentWorld
-   * @param {Readonly<{x:number,y:number}>|null} [startPosition=null]
+   * @param {import("../core/world.class.js").World} currentWorld Current world used while restart.
+   * @param {Readonly<{x:number,y:number}>|null} [startPosition=null] Start position used while restart.
    * @returns {import("../core/world.class.js").World}
    */
   restart(currentWorld, startPosition = null) {
@@ -25,7 +28,10 @@ export class RunResetController {
     return nextWorld;
   }
 
-  /** Clears systems. */
+  /**
+   * Clears systems.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #resetSystems(world) {
     const systems = this.#dependencies;
     const startY = world.level?.playerStart?.y ?? 0;

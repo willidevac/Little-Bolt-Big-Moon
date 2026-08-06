@@ -1,4 +1,7 @@
-/** Creates browser audio. */
+/**
+ * Creates browser audio.
+ * @param {Readonly<object>} source Source entity or definition used by the operation.
+ */
 const createBrowserAudio = (source) => new Audio(source);
 /** Returns current time. */
 const getCurrentTime = () => globalThis.performance?.now() ?? Date.now();
@@ -12,9 +15,10 @@ export class AudioManager {
   #lastEffectTimes = new Map();
 
   /**
-   * @param {Readonly<object>} config
-   * @param {(source:string) => HTMLAudioElement} [createAudio]
-   * @param {() => number} [now]
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {(source:string) => HTMLAudioElement} [createAudio] Factory used to create browser audio elements.
+   * @param {() => number} [now] Clock function returning the current timestamp.
    */
   constructor(config, createAudio = createBrowserAudio, now = getCurrentTime) {
     this.#validateConfig(config);
@@ -56,7 +60,7 @@ export class AudioManager {
 
   /**
    * Plays an effect only within its fixed pool and timing interval.
-   * @param {string} id
+   * @param {string} id Id used while play effect.
    * @returns {boolean}
    */
   playEffect(id) {
@@ -71,7 +75,7 @@ export class AudioManager {
 
   /**
    * Selects a music track and starts it once audio is unlocked.
-   * @param {string} id
+   * @param {string} id Id used while play music.
    */
   playMusic(id) {
     this.#getMusicTrack(id);
@@ -105,7 +109,7 @@ export class AudioManager {
 
   /**
    * Mutes all prepared voices together.
-   * @param {boolean} isMuted
+   * @param {boolean} isMuted Is muted used while set muted.
    */
   setMuted(isMuted) {
     this.isMuted = Boolean(isMuted);
@@ -117,7 +121,7 @@ export class AudioManager {
 
   /**
    * Changes the music volume to a value between zero and one.
-   * @param {number} volume
+   * @param {number} volume Volume used while set music volume.
    */
   setMusicVolume(volume) {
     this.musicVolume = this.#toVolume(volume);
@@ -128,7 +132,7 @@ export class AudioManager {
 
   /**
    * Changes all effect volumes to a value between zero and one.
-   * @param {number} volume
+   * @param {number} volume Volume used while set effects volume.
    */
   setEffectsVolume(volume) {
     this.effectsVolume = this.#toVolume(volume);
@@ -148,7 +152,10 @@ export class AudioManager {
     this.currentMusicId = null;
   }
 
-  /** Creates effect pool. */
+  /**
+   * Creates effect pool.
+   * @param {Readonly<object>} definition Definition used while create effect pool.
+   */
   #createEffectPool(definition) {
     const voices = Array.from(
       { length: definition.maximumVoices },
@@ -157,7 +164,10 @@ export class AudioManager {
     return Object.freeze({ definition, voices: Object.freeze(voices) });
   }
 
-  /** Performs the to volume operation. */
+  /**
+   * Performs the to volume operation.
+   * @param {Readonly<object>} value Value used while to volume.
+   */
   #toVolume(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError("Die Lautstärke muss eine Zahl sein.");
@@ -165,7 +175,11 @@ export class AudioManager {
     return Math.min(1, Math.max(0, value));
   }
 
-  /** Creates track. */
+  /**
+   * Creates track.
+   * @param {Readonly<object>} definition Definition used while create track.
+   * @param {ReadonlyArray<object>} loops Loops used while create track.
+   */
   #createTrack(definition, loops) {
     const audio = this.createAudio(definition.source);
     audio.preload = "auto";
@@ -177,13 +191,20 @@ export class AudioManager {
     return audio;
   }
 
-  /** Checks the play effect condition. */
+  /**
+   * Checks the play effect condition.
+   * @param {Readonly<object>} id Id used while can play effect.
+   * @param {Readonly<object>} pool Pool used while can play effect.
+   */
   #canPlayEffect(id, pool) {
     const previous = this.#lastEffectTimes.get(id) ?? Number.NEGATIVE_INFINITY;
     return this.now() - previous >= pool.definition.minimumIntervalMilliseconds;
   }
 
-  /** Performs the play operation. */
+  /**
+   * Performs the play operation.
+   * @param {Readonly<object>} audio Audio service controlled by the system.
+   */
   #play(audio) {
     try {
       const result = audio.play();
@@ -194,7 +215,10 @@ export class AudioManager {
     }
   }
 
-  /** Performs the rewind operation. */
+  /**
+   * Performs the rewind operation.
+   * @param {Readonly<object>} audio Audio service controlled by the system.
+   */
   #rewind(audio) {
     try {
       audio.currentTime = 0;
@@ -203,14 +227,20 @@ export class AudioManager {
     }
   }
 
-  /** Returns effect pool. */
+  /**
+   * Returns effect pool.
+   * @param {Readonly<object>} id Id used while get effect pool.
+   */
   #getEffectPool(id) {
     const pool = this.#effectPools.get(id);
     if (pool) return pool;
     throw new RangeError(`Unbekannter Audioeffekt: ${id}`);
   }
 
-  /** Returns music track. */
+  /**
+   * Returns music track.
+   * @param {Readonly<object>} id Id used while get music track.
+   */
   #getMusicTrack(id) {
     const track = this.#musicTracks.get(id);
     if (track) return track;
@@ -240,7 +270,10 @@ export class AudioManager {
     });
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(config) {
     const groups = [config?.music, config?.effects];
     const definitions = groups.flatMap((group) => Object.values(group ?? {}));
@@ -251,7 +284,10 @@ export class AudioManager {
     throw new TypeError("Die Audiokonfiguration ist unvollständig.");
   }
 
-  /** Checks the valid definition condition. */
+  /**
+   * Checks the valid definition condition.
+   * @param {Readonly<object>} definition Definition used while is valid definition.
+   */
   #isValidDefinition(definition) {
     const hasSource = typeof definition?.source === "string" && definition.source;
     const hasVolume = Number.isFinite(definition?.volume) &&

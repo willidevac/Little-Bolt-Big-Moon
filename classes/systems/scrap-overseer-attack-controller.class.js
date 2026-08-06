@@ -10,7 +10,11 @@ export class ScrapOverseerAttackController {
   #pendingAttack = null;
   #source;
 
-  /** @param {string} source @param {Readonly<object>} config */
+  /**
+   * Creates the configured system.
+   * @param {string} source Source entity or definition used by the operation.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   constructor(source, config) {
     this.#validateConfig(source, config);
     this.#source = source;
@@ -20,7 +24,10 @@ export class ScrapOverseerAttackController {
   /** @returns {boolean} Whether a shot is being announced. */
   get hasPendingAttack() { return this.#pendingAttack !== null; }
 
-  /** Begins one announced volley toward a fixed target position. */
+  /**
+   * Begins one announced volley toward a fixed target position.
+   * @param {Readonly<object>} target Target entity inspected or modified by the system.
+   */
   begin(target) {
     this.#validatePoint(target, "Angriffsziel");
     if (this.#pendingAttack) return null;
@@ -40,7 +47,12 @@ export class ScrapOverseerAttackController {
     });
   }
 
-  /** Counts down and releases one phase-dependent bolt volley. */
+  /**
+   * Counts down and releases one phase-dependent bolt volley.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} phase Phase used while update.
+   * @param {Readonly<object>} origin Origin used while update.
+   */
   update(deltaTimeSeconds, phase, origin) {
     if (!this.#pendingAttack) return false;
     this.#validateUpdate(deltaTimeSeconds, phase, origin);
@@ -61,7 +73,11 @@ export class ScrapOverseerAttackController {
     return events;
   }
 
-  /** Creates every bolt in the current phase spread. */
+  /**
+   * Creates every bolt in the current phase spread.
+   * @param {Readonly<object>} phase Phase used while release volley.
+   * @param {Readonly<object>} origin Origin used while release volley.
+   */
   #releaseVolley(phase, origin) {
     const target = this.#pendingAttack.target;
     const baseAngle = Math.atan2(target.y - origin.y, target.x - origin.x);
@@ -70,7 +86,11 @@ export class ScrapOverseerAttackController {
     });
   }
 
-  /** Creates one immutable neutral boss projectile event. */
+  /**
+   * Creates one immutable neutral boss projectile event.
+   * @param {Readonly<object>} origin Origin used while create event.
+   * @param {Readonly<object>} angle Angle used while create event.
+   */
   #createEvent(origin, angle) {
     return Object.freeze({
       kind: "overseerBolt",
@@ -81,7 +101,12 @@ export class ScrapOverseerAttackController {
     });
   }
 
-  /** Validates one countdown update. */
+  /**
+   * Validates one countdown update.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} phase Phase used while validate update.
+   * @param {Readonly<object>} origin Origin used while validate update.
+   */
   #validateUpdate(deltaTimeSeconds, phase, origin) {
     const hasTime = Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
     const hasPhase = Object.hasOwn(PHASE_SPREAD_RADIANS, phase);
@@ -89,7 +114,11 @@ export class ScrapOverseerAttackController {
     throw new TypeError("Der Schrott-Aufseher-Angriff ist ungültig.");
   }
 
-  /** Validates the immutable attack configuration. */
+  /**
+   * Validates the immutable attack configuration.
+   * @param {Readonly<object>} source Source entity or definition used by the operation.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(source, config) {
     const values = [config?.attackReleaseSeconds, config?.boltDamage];
     const hasSource = typeof source === "string" && source.length > 0;
@@ -98,13 +127,20 @@ export class ScrapOverseerAttackController {
     throw new TypeError("Die Schrott-Aufseher-Angriffe sind unvollständig.");
   }
 
-  /** Validates a required point with a focused error. */
+  /**
+   * Validates a required point with a focused error.
+   * @param {Readonly<object>} point Point used while validate point.
+   * @param {Readonly<object>} label Label used while validate point.
+   */
   #validatePoint(point, label) {
     if (this.#hasPoint(point)) return;
     throw new TypeError(`${label} des Schrott-Aufsehers ist ungültig.`);
   }
 
-  /** Checks a finite two-dimensional point. */
+  /**
+   * Checks a finite two-dimensional point.
+   * @param {Readonly<object>} point Point used while has point.
+   */
   #hasPoint(point) {
     return Number.isFinite(point?.x) && Number.isFinite(point?.y);
   }

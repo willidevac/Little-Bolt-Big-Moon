@@ -7,9 +7,10 @@ export class TutorialResourceTracker {
   #unsubscribers = [];
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./tutorial-director.class.js").TutorialDirector} director
-   * @param {Readonly<{stepId:string,requiredTypes:ReadonlyArray<string>}>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./tutorial-director.class.js").TutorialDirector} director Director used while constructor.
+   * @param {Readonly<{stepId:string,requiredTypes:ReadonlyArray<string>}>} config Configuration values used by the system.
    */
   constructor(game, director, config) {
     this.#validateDependencies(game, director, config);
@@ -38,7 +39,10 @@ export class TutorialResourceTracker {
     this.#collectedTypes.clear();
   }
 
-  /** Clears pickup evidence when the current tutorial run ends. */
+  /**
+   * Clears pickup evidence when the current tutorial run ends.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   handleProgress(snapshot) {
     if (snapshot.status !== TUTORIAL_STATUSES.INACTIVE) return false;
     const hadEvidence = this.#collectedTypes.size > 0;
@@ -46,7 +50,10 @@ export class TutorialResourceTracker {
     return hadEvidence;
   }
 
-  /** Records only required production pickups during an active tutorial. */
+  /**
+   * Records only required production pickups during an active tutorial.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   handleGameplayEvent(event) {
     if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) {
       return false;
@@ -58,7 +65,10 @@ export class TutorialResourceTracker {
     return this.#recordPickupType(type);
   }
 
-  /** Stores one required type and completes the lesson once the set is full. */
+  /**
+   * Stores one required type and completes the lesson once the set is full.
+   * @param {Readonly<object>} type Type used while record pickup type.
+   */
   #recordPickupType(type) {
     const previousSize = this.#collectedTypes.size;
     this.#collectedTypes.add(type);
@@ -68,7 +78,12 @@ export class TutorialResourceTracker {
     return this.#collectedTypes.size > previousSize;
   }
 
-  /** Validates event sources, director commands, and lesson configuration. */
+  /**
+   * Validates event sources, director commands, and lesson configuration.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} director Director used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.onChange === "function" &&

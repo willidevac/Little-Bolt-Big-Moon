@@ -7,9 +7,10 @@ export class TutorialMechanicsTracker {
   #unsubscribers = [];
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./tutorial-director.class.js").TutorialDirector} director
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./tutorial-director.class.js").TutorialDirector} director Director used while constructor.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(game, director, config) {
     this.#validateDependencies(game, director, config);
@@ -37,7 +38,10 @@ export class TutorialMechanicsTracker {
     this.#activatedMechanics.clear();
   }
 
-  /** Records mechanic evidence throughout the active tutorial run. */
+  /**
+   * Records mechanic evidence throughout the active tutorial run.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   handleGameplayEvent(event) {
     if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
     if (event.type === GAMEPLAY_EVENTS.PLAYER_WALL_REBOUND) {
@@ -48,7 +52,10 @@ export class TutorialMechanicsTracker {
     }
   }
 
-  /** Records one required platform mechanic without counting duplicates. */
+  /**
+   * Records one required platform mechanic without counting duplicates.
+   * @param {Readonly<object>} mechanic Mechanic used while record mechanic.
+   */
   #recordMechanic(mechanic) {
     if (!this.config.requiredMechanics.includes(mechanic)) return;
     this.#activatedMechanics.add(mechanic);
@@ -60,14 +67,22 @@ export class TutorialMechanicsTracker {
     }
   }
 
-  /** Clears mechanic evidence only after leaving the tutorial run. */
+  /**
+   * Clears mechanic evidence only after leaving the tutorial run.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   #handleProgress(snapshot) {
     if (snapshot.status === TUTORIAL_STATUSES.INACTIVE) {
       this.#activatedMechanics.clear();
     }
   }
 
-  /** Validates event sources, director commands, steps, and mechanic IDs. */
+  /**
+   * Validates event sources, director commands, steps, and mechanic IDs.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} director Director used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.onChange === "function" &&

@@ -7,8 +7,9 @@ const TRANSITION_HALF_HEIGHT_PIXELS = 600;
  */
 export class BackgroundRenderer {
   /**
-   * @param {ReadonlyArray<object>} sections
-   * @param {Readonly<{width:number, height:number}>} viewport
+   * Creates the configured system.
+   * @param {ReadonlyArray<object>} sections World sections used by the renderer.
+   * @param {Readonly<{width:number, height:number}>} viewport Viewport dimensions used for rendering.
    */
   constructor(sections = [], viewport) {
     this.#validateViewport(viewport);
@@ -21,8 +22,9 @@ export class BackgroundRenderer {
   }
 
   /**
-   * @param {CanvasRenderingContext2D} context
-   * @param {{y:number}} camera
+   * Runs draw with validated inputs.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {{y:number}} camera Camera supplying the current world offset.
    */
   draw(context, camera) {
     const transition = this.#getActiveTransition(camera);
@@ -30,14 +32,22 @@ export class BackgroundRenderer {
     this.zones.forEach((zone) => zone.draw(context, camera, this.viewport));
   }
 
-  /** Draws transition. */
+  /**
+   * Draws transition.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} camera Camera supplying the current world offset.
+   * @param {Readonly<object>} transition Transition used while draw transition.
+   */
   #drawTransition(context, camera, transition) {
     const { lowerZone, upperZone, progress } = transition;
     lowerZone.drawBlended(context, camera, this.viewport, 1 - progress);
     upperZone.drawBlended(context, camera, this.viewport, progress);
   }
 
-  /** Returns active transition. */
+  /**
+   * Returns active transition.
+   * @param {Readonly<object>} camera Camera supplying the current world offset.
+   */
   #getActiveTransition(camera) {
     const centerY = camera.y + this.viewport.height / 2;
     const lowerZone = this.zones.slice(0, -1).find((zone) => {
@@ -49,14 +59,21 @@ export class BackgroundRenderer {
     return Object.freeze({ lowerZone, upperZone, progress });
   }
 
-  /** Returns transition progress. */
+  /**
+   * Returns transition progress.
+   * @param {number} centerY Center y used while get transition progress.
+   * @param {number} boundaryY Boundary y used while get transition progress.
+   */
   #getTransitionProgress(centerY, boundaryY) {
     const halfHeight = TRANSITION_HALF_HEIGHT_PIXELS;
     const distanceFromLowerEdge = boundaryY + halfHeight - centerY;
     return Math.min(Math.max(distanceFromLowerEdge / (halfHeight * 2), 0), 1);
   }
 
-  /** Creates section zones. */
+  /**
+   * Creates section zones.
+   * @param {ReadonlyArray<object>} sections World sections used by the renderer.
+   */
   #createSectionZones(sections) {
     this.#validateSections(sections);
     const zones = new Map();
@@ -71,21 +88,31 @@ export class BackgroundRenderer {
     return [...zones.values()];
   }
 
-  /** Validates sections. */
+  /**
+   * Validates sections.
+   * @param {ReadonlyArray<object>} sections World sections used by the renderer.
+   */
   #validateSections(sections) {
     if (!Array.isArray(sections) || sections.length === 0) {
       throw new TypeError("Die Hintergrundabschnitte fehlen.");
     }
   }
 
-  /** Returns zone id. */
+  /**
+   * Returns zone id.
+   * @param {Readonly<object>} section Section used while get zone id.
+   */
   #getZoneId(section) {
     return section.backgroundLayers.length > 1
       ? section.backgroundId
       : section.id;
   }
 
-  /** Creates zone. */
+  /**
+   * Creates zone.
+   * @param {Readonly<object>} id Id used while create zone.
+   * @param {Readonly<object>} section Section used while create zone.
+   */
   #createZone(id, section) {
     return {
       id,
@@ -95,7 +122,11 @@ export class BackgroundRenderer {
     };
   }
 
-  /** Performs the merge zone operation. */
+  /**
+   * Performs the merge zone operation.
+   * @param {Readonly<object>} zone Zone used while merge zone.
+   * @param {Readonly<object>} section Section used while merge zone.
+   */
   #mergeZone(zone, section) {
     return {
       ...zone,
@@ -104,7 +135,10 @@ export class BackgroundRenderer {
     };
   }
 
-  /** Validates section. */
+  /**
+   * Validates section.
+   * @param {Readonly<object>} section Section used while validate section.
+   */
   #validateSection(section) {
     const hasId = typeof section?.id === "string" && section.id.length > 0;
     const hasLayers = Array.isArray(section?.backgroundLayers) &&
@@ -113,7 +147,10 @@ export class BackgroundRenderer {
     throw new TypeError("Ein Levelabschnitt benötigt einen Hintergrund.");
   }
 
-  /** Validates viewport. */
+  /**
+   * Validates viewport.
+   * @param {Readonly<{width:number,height:number}>} viewport Viewport dimensions used for rendering.
+   */
   #validateViewport(viewport) {
     const hasSize = Number.isFinite(viewport?.width) &&
       Number.isFinite(viewport?.height) &&

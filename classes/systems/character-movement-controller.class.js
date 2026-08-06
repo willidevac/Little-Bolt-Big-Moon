@@ -4,12 +4,18 @@ import { clamp } from "../../js/utils/math.js";
 export class CharacterMovementController {
   #character;
 
-  /** @param {import("../entities/character.class.js").Character} character Character to control. */
+  /**
+   * Creates the configured system.
+   * @param {import("../entities/character.class.js").Character} character Character to control.
+   */
   constructor(character) {
     this.#character = character;
   }
 
-  /** Updates Byte's facing direction from horizontal input. */
+  /**
+   * Updates Byte's facing direction from horizontal input.
+   * @param {Readonly<object>} input Current player input state.
+   */
   updateFacingDirection(input) {
     const direction = this.#getDirection(input);
     if (direction !== 0) this.#character.facingDirection = direction;
@@ -17,9 +23,9 @@ export class CharacterMovementController {
 
   /**
    * Accelerates or decelerates Byte during ground movement.
-   * @param {number} deltaTimeSeconds
-   * @param {Readonly<object>} input
-   * @param {Readonly<object>} config
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   updateGroundMovement(deltaTimeSeconds, input, config) {
     const direction = this.#getDirection(input);
@@ -30,6 +36,8 @@ export class CharacterMovementController {
 
   /**
    * Keeps Byte inside the world and reflects airborne wall impacts.
+   * @param {number} worldWidth World width used while keep inside world.
+   * @param {Readonly<object>} config Configuration values used by the system.
    * @returns {boolean} Whether Byte touched a world boundary.
    */
   keepInsideWorld(worldWidth, config) {
@@ -45,7 +53,11 @@ export class CharacterMovementController {
     return true;
   }
 
-  /** Reflects an airborne horizontal impact back into playable space. */
+  /**
+   * Reflects an airborne horizontal impact back into playable space.
+   * @param {Readonly<object>} direction Direction used while reflect wall impact.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   reflectWallImpact(direction, config) {
     if (direction !== -1 && direction !== 1) {
       throw new RangeError("A wall-impact direction must be -1 or 1.");
@@ -58,7 +70,12 @@ export class CharacterMovementController {
     this.#character.facingDirection = direction;
   }
 
-  /** Allows deliberate left/right correction briefly after a shaft rebound. */
+  /**
+   * Allows deliberate left/right correction briefly after a shaft rebound.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   updateWallReboundControl(deltaTimeSeconds, input, config) {
     const direction = this.#getDirection(input);
     if (direction === 0) return;
@@ -78,14 +95,22 @@ export class CharacterMovementController {
     this.#character.velocityX = 0;
   }
 
-  /** Returns wall bounce speed. */
+  /**
+   * Returns wall bounce speed.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #getWallBounceSpeed(config) {
     const retainedSpeed = Math.abs(this.#character.velocityX) *
       config.wallBounceHorizontalRetention;
     return Math.max(config.minimumWallBounceSpeedPixelsPerSecond, retainedSpeed);
   }
 
-  /** Performs the accelerate operation. */
+  /**
+   * Performs the accelerate operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} direction Direction used while accelerate.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #accelerate(deltaTimeSeconds, direction, config) {
     const acceleration = config.horizontalAccelerationPixelsPerSecondSquared;
     const maximumSpeed = config.maximumHorizontalSpeedPixelsPerSecond;
@@ -96,7 +121,11 @@ export class CharacterMovementController {
     );
   }
 
-  /** Applies braking. */
+  /**
+   * Applies braking.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #applyBraking(deltaTimeSeconds, config) {
     const braking = config.horizontalBrakingPixelsPerSecondSquared * deltaTimeSeconds;
     if (Math.abs(this.#character.velocityX) <= braking) {
@@ -106,7 +135,11 @@ export class CharacterMovementController {
     this.#character.velocityX -= Math.sign(this.#character.velocityX) * braking;
   }
 
-  /** Returns boundary direction. */
+  /**
+   * Returns boundary direction.
+   * @param {number} minimumX Minimum x used while get boundary direction.
+   * @param {number} maximumX Maximum x used while get boundary direction.
+   */
   #getBoundaryDirection(minimumX, maximumX) {
     const velocity = this.#character.velocityX;
     const hitsLeft = this.#character.x < minimumX ||
@@ -118,12 +151,19 @@ export class CharacterMovementController {
     return 0;
   }
 
-  /** Checks the moving outward condition. */
+  /**
+   * Checks the moving outward condition.
+   * @param {string} inwardDirection Inward direction used while is moving outward.
+   */
   #isMovingOutward(inwardDirection) {
     return this.#character.velocityX * inwardDirection < 0;
   }
 
-  /** Validates world bounds. */
+  /**
+   * Validates world bounds.
+   * @param {number} worldWidth World width used while validate world bounds.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateWorldBounds(worldWidth, config) {
     const inset = config?.wallInsetPixels;
     const hasWidth = Number.isFinite(worldWidth) && worldWidth > this.#character.width;
@@ -133,7 +173,10 @@ export class CharacterMovementController {
     throw new RangeError("The visible wall boundaries are invalid.");
   }
 
-  /** Validates wall bounce config. */
+  /**
+   * Validates wall bounce config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateWallBounceConfig(config) {
     const retention = config?.wallBounceHorizontalRetention;
     const minimumSpeed = config?.minimumWallBounceSpeedPixelsPerSecond;
@@ -142,7 +185,10 @@ export class CharacterMovementController {
     throw new TypeError("The wall-bounce configuration is invalid.");
   }
 
-  /** Returns direction. */
+  /**
+   * Returns direction.
+   * @param {Readonly<object>} input Current player input state.
+   */
   #getDirection(input) {
     return Number(input.right) - Number(input.left);
   }

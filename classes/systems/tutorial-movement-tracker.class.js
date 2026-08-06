@@ -9,9 +9,10 @@ export class TutorialMovementTracker {
   #unsubscribers = [];
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./tutorial-director.class.js").TutorialDirector} director
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./tutorial-director.class.js").TutorialDirector} director Director used while constructor.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(game, director, config) {
     this.#validateDependencies(game, director, config);
@@ -38,7 +39,10 @@ export class TutorialMovementTracker {
     this.#resetObservations();
   }
 
-  /** Records movement evidence throughout the active tutorial run. */
+  /**
+   * Records movement evidence throughout the active tutorial run.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   handleGameplayEvent(event) {
     if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
     if (event.type === GAMEPLAY_EVENTS.PLAYER_MOVE) {
@@ -51,7 +55,10 @@ export class TutorialMovementTracker {
     if (event.type === GAMEPLAY_EVENTS.PLAYER_LAND) this.#handleLanding();
   }
 
-  /** Records a movement only when Byte visibly faces its direction. */
+  /**
+   * Records a movement only when Byte visibly faces its direction.
+   * @param {Readonly<object>} movement Movement used while handle movement.
+   */
   #handleMovement(movement) {
     const { direction, facingDirection } = movement;
     if (![-1, 1].includes(direction) || facingDirection !== direction) return;
@@ -61,7 +68,10 @@ export class TutorialMovementTracker {
     }
   }
 
-  /** Remembers the greatest visible charge of the current jump. */
+  /**
+   * Remembers the greatest visible charge of the current jump.
+   * @param {Readonly<object>} charge Charge used while handle charge.
+   */
   #handleCharge(charge) {
     if (!Number.isFinite(charge.percent)) return;
     this.#maximumChargePercent = Math.max(
@@ -83,7 +93,10 @@ export class TutorialMovementTracker {
     if (stepId) this.director.recordStepCompletion(stepId);
   }
 
-  /** Maps one measured jump charge to its matching lesson. */
+  /**
+   * Maps one measured jump charge to its matching lesson.
+   * @param {number} chargePercent Charge percent used while get jump step id.
+   */
   #getJumpStepId(chargePercent) {
     if (chargePercent <= this.config.shortMaximumPercent) {
       return this.config.shortJumpStepId;
@@ -94,7 +107,10 @@ export class TutorialMovementTracker {
     return null;
   }
 
-  /** Clears run evidence only when the tutorial becomes inactive. */
+  /**
+   * Clears run evidence only when the tutorial becomes inactive.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   #handleProgress(snapshot) {
     if (snapshot.status === TUTORIAL_STATUSES.INACTIVE) {
       this.#resetObservations();
@@ -108,7 +124,12 @@ export class TutorialMovementTracker {
     this.#pendingJumpStepId = null;
   }
 
-  /** Validates event sources, director commands, and thresholds. */
+  /**
+   * Validates event sources, director commands, and thresholds.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} director Director used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.onChange === "function" &&

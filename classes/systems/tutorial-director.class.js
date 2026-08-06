@@ -18,8 +18,9 @@ export class TutorialDirector {
   #unsubscribeState = null;
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {Readonly<{levelId:string, steps:ReadonlyArray<string>}>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {Readonly<{levelId:string, steps:ReadonlyArray<string>}>} config Configuration values used by the system.
    */
   constructor(game, config) {
     this.#validateDependencies(game, config);
@@ -49,7 +50,7 @@ export class TutorialDirector {
 
   /**
    * Observes tutorial progress snapshots.
-   * @param {(snapshot:Readonly<object>) => void} listener
+   * @param {(snapshot:Readonly<object>) => void} listener Listener used while on change.
    * @returns {() => void}
    */
   onChange(listener) {
@@ -73,7 +74,7 @@ export class TutorialDirector {
 
   /**
    * Starts or resets progress when the surrounding game state changes.
-   * @param {string} state
+   * @param {string} state State used while handle game state.
    * @returns {boolean}
    */
   handleGameState(state) {
@@ -94,7 +95,7 @@ export class TutorialDirector {
 
   /**
    * Completes exactly the currently active step.
-   * @param {string} stepId
+   * @param {string} stepId Step id used while complete step.
    * @returns {boolean}
    */
   completeStep(stepId) {
@@ -105,7 +106,7 @@ export class TutorialDirector {
 
   /**
    * Buffers valid future lesson evidence until all earlier steps are complete.
-   * @param {string} stepId
+   * @param {string} stepId Step id used while record step completion.
    * @returns {boolean} Whether new evidence was accepted.
    */
   recordStepCompletion(stepId) {
@@ -145,7 +146,10 @@ export class TutorialDirector {
     this.#notifyChange();
   }
 
-  /** Checks whether evidence belongs to this run's current or future lessons. */
+  /**
+   * Checks whether evidence belongs to this run's current or future lessons.
+   * @param {string} stepId Step id used while is pending step.
+   */
   #isPendingStep(stepId) {
     if (this.#status !== TUTORIAL_STATUSES.ACTIVE) return false;
     const stepIndex = this.#steps.indexOf(stepId);
@@ -158,7 +162,11 @@ export class TutorialDirector {
     this.#listeners.forEach((listener) => listener(snapshot));
   }
 
-  /** Validates dependencies and the complete ordered step contract. */
+  /**
+   * Validates dependencies and the complete ordered step contract.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, config) {
     const hasGame = typeof game?.onStateChange === "function" &&
       typeof game?.state === "string";

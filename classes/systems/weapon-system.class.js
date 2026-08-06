@@ -8,10 +8,11 @@ import {
  */
 export class WeaponSystem {
   /**
-   * @param {Readonly<object>} config
-   * @param {Readonly<object>} input
-   * @param {import("./run-stats.class.js").RunStats} runStats
-   * @param {import("../core/gameplay-event-hub.class.js").GameplayEventHub} gameplayEvents
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {import("./run-stats.class.js").RunStats} runStats Run statistics updated by the operation.
+   * @param {import("../core/gameplay-event-hub.class.js").GameplayEventHub} gameplayEvents Event hub receiving gameplay notifications.
    */
   constructor(config, input, runStats, gameplayEvents) {
     this.#validateDependencies(config, input, runStats, gameplayEvents);
@@ -26,8 +27,8 @@ export class WeaponSystem {
 
   /**
    * Updates cooldowns and processes new key presses.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../entities/character.class.js").Character} character
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {import("../entities/character.class.js").Character} character Player character processed by the system.
    * @returns {Readonly<object>|null}
    */
   update(deltaTimeSeconds, character) {
@@ -53,7 +54,7 @@ export class WeaponSystem {
 
   /**
    * Executes an allowed attack and starts Byte's animation.
-   * @param {import("../entities/character.class.js").Character} character
+   * @param {import("../entities/character.class.js").Character} character Player character processed by the system.
    * @returns {Readonly<object>|null}
    */
   attack(character) {
@@ -83,8 +84,8 @@ export class WeaponSystem {
 
   /**
    * Unlocks exactly one known weapon and selects it immediately.
-   * @param {string} weaponId
-   * @param {number} starterAmmo
+   * @param {string} weaponId Weapon id used while unlock weapon.
+   * @param {number} starterAmmo Starter ammo used while unlock weapon.
    * @returns {boolean}
    */
   unlockWeapon(weaponId, starterAmmo) {
@@ -102,15 +103,18 @@ export class WeaponSystem {
 
   /**
    * Upgrades exactly one known weapon.
-   * @param {string} weaponId
-   * @param {number} amount
+   * @param {string} weaponId Weapon id used while increase damage.
+   * @param {number} amount Amount used while increase damage.
    * @returns {Readonly<object>}
    */
   increaseDamage(weaponId, amount) {
     return this.#getWeapon(weaponId).increaseDamage(amount);
   }
 
-  /** Handles gameplay event. */
+  /**
+   * Handles gameplay event.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   #handleGameplayEvent(event) {
     const pickup = event?.detail;
     if (event?.type !== GAMEPLAY_EVENTS.PICKUP || pickup?.type !== "weapon") {
@@ -126,21 +130,30 @@ export class WeaponSystem {
     });
   }
 
-  /** Returns weapon. */
+  /**
+   * Returns weapon.
+   * @param {string} weaponId Weapon id used while get weapon.
+   */
   #getWeapon(weaponId) {
     const weapon = this.weapons.find((candidate) => candidate.id === weaponId);
     if (weapon) return weapon;
     throw new RangeError(`Unbekannte Waffe: ${weaponId}`);
   }
 
-  /** Performs the emit weapon change operation. */
+  /**
+   * Performs the emit weapon change operation.
+   * @param {Readonly<object>} weapon Weapon processed by the system.
+   */
   #emitWeaponChange(weapon) {
     const snapshot = this.#createSnapshot(weapon);
     this.gameplayEvents.emit(GAMEPLAY_EVENTS.WEAPON_CHANGED, snapshot);
     return snapshot;
   }
 
-  /** Creates snapshot. */
+  /**
+   * Creates snapshot.
+   * @param {Readonly<object>} weapon Weapon processed by the system.
+   */
   #createSnapshot(weapon) {
     return Object.freeze({
       ...weapon.getSnapshot(),
@@ -148,7 +161,11 @@ export class WeaponSystem {
     });
   }
 
-  /** Performs the grant starter ammo operation. */
+  /**
+   * Performs the grant starter ammo operation.
+   * @param {Readonly<object>} weapon Weapon processed by the system.
+   * @param {Readonly<object>} amount Amount used while grant starter ammo.
+   */
   #grantStarterAmmo(weapon, amount) {
     if (weapon.ammoCost === 0) return;
     this.runStats.applyPickups([{
@@ -157,25 +174,40 @@ export class WeaponSystem {
     }]);
   }
 
-  /** Checks the attack condition. */
+  /**
+   * Checks the attack condition.
+   * @param {Readonly<object>} weapon Weapon processed by the system.
+   */
   #canAttack(weapon) {
     if (weapon.ammoCost === 0) return weapon.canAttack();
     return weapon.canAttack(this.runStats.getResourceAmount(weapon.ammoType));
   }
 
-  /** Performs the spend ammunition operation. */
+  /**
+   * Performs the spend ammunition operation.
+   * @param {Readonly<object>} weapon Weapon processed by the system.
+   */
   #spendAmmunition(weapon) {
     if (weapon.ammoCost === 0) return true;
     return this.runStats.spendResource(weapon.ammoType, weapon.ammoCost);
   }
 
-  /** Validates starter ammo. */
+  /**
+   * Validates starter ammo.
+   * @param {number} starterAmmo Starter ammo used while validate starter ammo.
+   */
   #validateStarterAmmo(starterAmmo) {
     if (Number.isInteger(starterAmmo) && starterAmmo > 0) return;
     throw new TypeError("Die Startmunition des Waffenfunds ist ungültig.");
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {Readonly<object>} runStats Run statistics updated by the operation.
+   * @param {Readonly<object>} gameplayEvents Event hub receiving gameplay notifications.
+   */
   #validateDependencies(config, input, runStats, gameplayEvents) {
     const hasInput = typeof input?.consumePress === "function";
     const hasStats = typeof runStats?.spendResource === "function" &&
@@ -188,7 +220,10 @@ export class WeaponSystem {
     throw new TypeError("Das Waffensystem ist unvollständig konfiguriert.");
   }
 
-  /** Checks the valid weapon order condition. */
+  /**
+   * Checks the valid weapon order condition.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #hasValidWeaponOrder(config) {
     const definitions = config?.definitions;
     const order = config?.order;

@@ -11,7 +11,11 @@ const MAXIMUM_ACTIVE_BURSTS = 24;
 
 /** Connects existing gameplay events to short canvas effects. */
 export class VisualFeedbackSystem {
-  /** @param {object} events Event source. @param {() => object|null} getTarget Target provider. */
+  /**
+   * Creates the configured system.
+   * @param {object} events Event source.
+   * @param {() => object|null} getTarget Target provider.
+   */
   constructor(events, getTarget) {
     if (typeof events?.on !== "function" || typeof getTarget !== "function") {
       throw new TypeError("Dem visuellen Feedback fehlen Ereignisse oder Ziel.");
@@ -21,12 +25,18 @@ export class VisualFeedbackSystem {
     this.unsubscribe = events.on((event) => this.#handleEvent(event));
   }
 
-  /** Updates bursts and removes those that have fully faded. */
+  /**
+   * Updates bursts and removes those that have fully faded.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     this.bursts = this.bursts.filter((burst) => burst.update(deltaTimeSeconds));
   }
 
-  /** Draws all active bursts in world coordinates. */
+  /**
+   * Draws all active bursts in world coordinates.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     this.bursts.forEach((burst) => burst.draw(context));
   }
@@ -37,7 +47,10 @@ export class VisualFeedbackSystem {
     this.bursts.length = 0;
   }
 
-  /** Handles event. */
+  /**
+   * Handles event.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   #handleEvent(event) {
     const burstType = BURST_BY_EVENT[event.type];
     const target = this.getTarget();

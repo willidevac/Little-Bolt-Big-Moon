@@ -12,9 +12,10 @@ export class TutorialCheckpointController {
   #unsubscribers = [];
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./tutorial-director.class.js").TutorialDirector} director
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./tutorial-director.class.js").TutorialDirector} director Director used while constructor.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(game, director, config) {
     this.#validateDependencies(game, director, config);
@@ -46,7 +47,10 @@ export class TutorialCheckpointController {
     this.#isRecovering = false;
   }
 
-  /** Stores only the latest configured tutorial step and position. */
+  /**
+   * Stores only the latest configured tutorial step and position.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   handleProgress(snapshot) {
     if (snapshot.status === "inactive") {
       this.#checkpoint = null;
@@ -60,7 +64,10 @@ export class TutorialCheckpointController {
     });
   }
 
-  /** Restarts the current section for actual falls or defeats. */
+  /**
+   * Restarts the current section for actual falls or defeats.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   handleGameplayEvent(event) {
     if (!RECOVERY_EVENTS.has(event.type) || !this.#checkpoint) return false;
     return this.#recover();
@@ -94,7 +101,12 @@ export class TutorialCheckpointController {
     return this.game.world.waveManager.restoreZone(zoneId, this.game.world);
   }
 
-  /** Validates recovery commands, progress observations, and configuration. */
+  /**
+   * Validates recovery commands, progress observations, and configuration.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} director Director used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function" &&
       typeof game?.restartWorldAt === "function" &&
@@ -108,7 +120,10 @@ export class TutorialCheckpointController {
     throw new TypeError("Die Tutorial-Checkpoints sind unvollständig.");
   }
 
-  /** Checks checkpoint positions and weapon recovery configuration. */
+  /**
+   * Checks checkpoint positions and weapon recovery configuration.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #hasRecoveryConfig(config) {
     const hasCheckpoints = config?.checkpoints &&
       Object.values(config.checkpoints).every(this.#isValidPosition);
@@ -117,7 +132,11 @@ export class TutorialCheckpointController {
     return Boolean(hasCheckpoints && hasWeapon);
   }
 
-  /** Checks encounter recovery commands and every configured zone identity. */
+  /**
+   * Checks encounter recovery commands and every configured zone identity.
+   * @param {Readonly<object>} game Game used while has encounter config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #hasEncounterConfig(game, config) {
     const ids = Object.values(config?.encounterSteps ?? {});
     const hasIds = config?.encounterSteps && ids.every((id) => {
@@ -127,7 +146,10 @@ export class TutorialCheckpointController {
       typeof game?.world?.waveManager?.restoreZone === "function";
   }
 
-  /** Checks whether a checkpoint position is finite. */
+  /**
+   * Checks whether a checkpoint position is finite.
+   * @param {Readonly<object>} position Position used while is valid position.
+   */
   #isValidPosition(position) {
     return [position?.x, position?.y].every(Number.isFinite);
   }

@@ -17,8 +17,9 @@ const DEFAULT_RECORDS = Object.freeze({
  */
 export class GameStorage {
   /**
-   * @param {Storage|null} storage
-   * @param {Readonly<{key:string, version:number}>} config
+   * Creates the configured system.
+   * @param {Storage|null} storage Storage service used for persisted state.
+   * @param {Readonly<{key:string, version:number}>} config Configuration values used by the system.
    */
   constructor(storage, config) {
     this.#validateConfig(config);
@@ -46,8 +47,8 @@ export class GameStorage {
 
   /**
    * Applies the best values from a completed run.
-   * @param {Readonly<object>} run
-   * @param {boolean} isVictory
+   * @param {Readonly<object>} run Run used while record run.
+   * @param {boolean} isVictory Is victory used while record run.
    * @returns {Readonly<object>}
    */
   recordRun(run, isVictory) {
@@ -61,7 +62,12 @@ export class GameStorage {
     return this.getSnapshot();
   }
 
-  /** Creates run record. */
+  /**
+   * Creates run record.
+   * @param {Readonly<object>} score Score used while create run record.
+   * @param {Readonly<object>} height Height used while create run record.
+   * @param {number} victoryTime Victory time used while create run record.
+   */
   #createRunRecord(score, height, victoryTime) {
     return {
       ...this.data,
@@ -73,7 +79,7 @@ export class GameStorage {
 
   /**
    * Stores whether audio should be muted.
-   * @param {boolean} isMuted
+   * @param {boolean} isMuted Is muted used while set muted.
    * @returns {Readonly<object>}
    */
   setMuted(isMuted) {
@@ -84,8 +90,8 @@ export class GameStorage {
 
   /**
    * Stores a volume between 0 and 100 percent.
-   * @param {"music"|"effects"} group
-   * @param {number} value
+   * @param {"music"|"effects"} group Group used while set volume.
+   * @param {number} value Value used while set volume.
    * @returns {Readonly<object>}
    */
   setVolume(group, value) {
@@ -97,7 +103,7 @@ export class GameStorage {
 
   /**
    * Stores a supported interface language.
-   * @param {string} language
+   * @param {string} language Language used while set language.
    * @returns {Readonly<object>}
    */
   setLanguage(language) {
@@ -136,7 +142,10 @@ export class GameStorage {
     }
   }
 
-  /** Performs the sanitize operation. */
+  /**
+   * Performs the sanitize operation.
+   * @param {Readonly<object>} savedData Saved data used while sanitize.
+   */
   #sanitize(savedData) {
     const source = savedData && typeof savedData === "object" ? savedData : {};
     return {
@@ -151,7 +160,10 @@ export class GameStorage {
     };
   }
 
-  /** Performs the sanitize volumes operation. */
+  /**
+   * Performs the sanitize volumes operation.
+   * @param {Readonly<object>} source Source entity or definition used by the operation.
+   */
   #sanitizeVolumes(source) {
     return {
       musicVolume: this.#toPercentage(
@@ -168,44 +180,66 @@ export class GameStorage {
     return { ...DEFAULT_RECORDS, version: this.version };
   }
 
-  /** Returns best time. */
+  /**
+   * Returns best time.
+   * @param {number} victoryTime Victory time used while get best time.
+   */
   #getBestTime(victoryTime) {
     if (victoryTime === null) return this.data.bestTimeSeconds;
     if (this.data.bestTimeSeconds === null) return victoryTime;
     return Math.min(this.data.bestTimeSeconds, victoryTime);
   }
 
-  /** Performs the to integer operation. */
+  /**
+   * Performs the to integer operation.
+   * @param {Readonly<object>} value Value used while to integer.
+   */
   #toInteger(value) {
     return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
   }
 
-  /** Performs the to optional time operation. */
+  /**
+   * Performs the to optional time operation.
+   * @param {Readonly<object>} value Value used while to optional time.
+   */
   #toOptionalTime(value) {
     return Number.isFinite(value) && value >= 0 ? Math.floor(value) : null;
   }
 
-  /** Performs the to percentage operation. */
+  /**
+   * Performs the to percentage operation.
+   * @param {Readonly<object>} value Value used while to percentage.
+   * @param {number} [fallback=0] Fallback used while to percentage.
+   */
   #toPercentage(value, fallback = 0) {
     if (!Number.isFinite(value)) return fallback;
     return Math.min(100, Math.max(0, Math.round(value)));
   }
 
-  /** Returns volume property. */
+  /**
+   * Returns volume property.
+   * @param {Readonly<object>} group Group used while get volume property.
+   */
   #getVolumeProperty(group) {
     if (group === "music") return "musicVolume";
     if (group === "effects") return "effectsVolume";
     throw new RangeError(`Unbekannte Lautstärkegruppe: ${group}`);
   }
 
-  /** Performs the sanitize language operation. */
+  /**
+   * Performs the sanitize language operation.
+   * @param {Readonly<object>} language Language used while sanitize language.
+   */
   #sanitizeLanguage(language) {
     return LOCALIZATION_CONFIG.languages.includes(language)
       ? language
       : LOCALIZATION_CONFIG.defaultLanguage;
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(config) {
     const hasKey = typeof config?.key === "string" && config.key.length > 0;
     const hasVersion = Number.isInteger(config?.version) && config.version > 0;

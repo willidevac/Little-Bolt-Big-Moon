@@ -5,7 +5,8 @@ const FRAME_TIME_EPSILON_SECONDS = 1e-9;
  */
 export class AnimationController {
   /**
-   * @param {Readonly<Record<string, Readonly<object>>>} clips
+   * Creates the configured system.
+   * @param {Readonly<Record<string, Readonly<object>>>} clips Animation clips keyed by state identifier.
    */
   constructor(clips) {
     if (!this.#areValidClips(clips)) {
@@ -19,7 +20,7 @@ export class AnimationController {
 
   /**
    * Restarts a clip only when the state changes.
-   * @param {string} state
+   * @param {string} state State used while set state.
    * @returns {number} The first or current frame of the clip.
    */
   setState(state) {
@@ -33,8 +34,8 @@ export class AnimationController {
 
   /**
    * Processes elapsed game time and returns the visible sprite frame.
-   * @param {string} state
-   * @param {number} deltaTimeSeconds
+   * @param {string} state State used while update.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    * @returns {number}
    */
   update(state, deltaTimeSeconds) {
@@ -55,7 +56,10 @@ export class AnimationController {
     return clip.startFrame + this.frameOffset;
   }
 
-  /** Updates advance. */
+  /**
+   * Updates advance.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #advance(deltaTimeSeconds) {
     const clip = this.#getClip(this.state);
     if (clip.frameCount === 1 || this.#hasFinished(clip)) return;
@@ -69,14 +73,21 @@ export class AnimationController {
     this.#applyFrameSteps(frameSteps, clip);
   }
 
-  /** Returns completed frame steps. */
+  /**
+   * Returns completed frame steps.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #getCompletedFrameSteps(clip) {
     return Math.floor(
       (this.elapsedSeconds + FRAME_TIME_EPSILON_SECONDS) / clip.frameDurationSeconds,
     );
   }
 
-  /** Applies frame steps. */
+  /**
+   * Applies frame steps.
+   * @param {ReadonlyArray<object>} frameSteps Frame steps used while apply frame steps.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #applyFrameSteps(frameSteps, clip) {
     const nextOffset = this.frameOffset + frameSteps;
     this.frameOffset = clip.loop
@@ -84,19 +95,28 @@ export class AnimationController {
       : Math.min(nextOffset, clip.frameCount - 1);
   }
 
-  /** Checks the finished condition. */
+  /**
+   * Checks the finished condition.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #hasFinished(clip) {
     return !clip.loop && this.frameOffset === clip.frameCount - 1;
   }
 
-  /** Returns clip. */
+  /**
+   * Returns clip.
+   * @param {Readonly<object>} state State used while get clip.
+   */
   #getClip(state) {
     const clip = this.clips[state];
     if (!clip) throw new RangeError(`Unbekannter Animationszustand: ${state}`);
     return clip;
   }
 
-  /** Performs the are valid clips operation. */
+  /**
+   * Performs the are valid clips operation.
+   * @param {Readonly<Record<string, Readonly<object>>>} clips Animation clips keyed by state identifier.
+   */
   #areValidClips(clips) {
     if (!clips || typeof clips !== "object") return false;
     const entries = Object.entries(clips);
@@ -105,7 +125,11 @@ export class AnimationController {
     });
   }
 
-  /** Checks the valid clip condition. */
+  /**
+   * Checks the valid clip condition.
+   * @param {Readonly<object>} state State used while is valid clip.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #isValidClip(state, clip) {
     if (state.length === 0 || !clip || typeof clip !== "object") return false;
     const hasValidFrames =
@@ -116,7 +140,10 @@ export class AnimationController {
     return hasValidFrames && this.#hasValidTiming(clip);
   }
 
-  /** Checks the valid timing condition. */
+  /**
+   * Checks the valid timing condition.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #hasValidTiming(clip) {
     return (
       Number.isFinite(clip.frameDurationSeconds) &&
@@ -125,7 +152,10 @@ export class AnimationController {
     );
   }
 
-  /** Checks the valid delta time condition. */
+  /**
+   * Checks the valid delta time condition.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

@@ -12,10 +12,10 @@ export class PrecisionJumpController {
 
   /**
    * Updates the charge and returns at most one new jump impulse.
-   * @param {number} deltaTimeSeconds
-   * @param {Readonly<object>} input
-   * @param {boolean} isOnGround
-   * @param {Readonly<object>} config
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {boolean} isOnGround Is on ground used while update.
+   * @param {Readonly<object>} config Configuration values used by the system.
    * @returns {Readonly<object>|null}
    */
   update(deltaTimeSeconds, input, isOnGround, config) {
@@ -37,7 +37,7 @@ export class PrecisionJumpController {
 
   /**
    * Extends charge time to provide finer jump increments.
-   * @param {number} amountSeconds
+   * @param {number} amountSeconds Amount seconds used while increase control.
    */
   increaseControl(amountSeconds) {
     if (!Number.isFinite(amountSeconds) || amountSeconds <= 0) {
@@ -46,14 +46,22 @@ export class PrecisionJumpController {
     this.controlBonusSeconds += amountSeconds;
   }
 
-  /** @param {Readonly<object>} config @returns {number} */
+  /**
+   * Runs get charge ratio with validated inputs.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @returns {number}
+   */
   getChargeRatio(config) {
     if (!this.isCharging) return 0;
     const duration = config.jumpChargeSeconds + this.controlBonusSeconds;
     return clamp(this.chargeSeconds / duration, 0, 1);
   }
 
-  /** Performs the charge operation. */
+  /**
+   * Performs the charge operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current player input state.
+   */
   #charge(deltaTimeSeconds, input) {
     if (!this.wasJumpHeld) this.isCharging = true;
     this.wasJumpHeld = true;
@@ -63,7 +71,11 @@ export class PrecisionJumpController {
     return null;
   }
 
-  /** Performs the release operation. */
+  /**
+   * Performs the release operation.
+   * @param {Readonly<object>} input Current player input state.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #release(input, config) {
     const shouldLaunch = this.wasJumpHeld && this.isCharging;
     this.wasJumpHeld = false;
@@ -74,7 +86,10 @@ export class PrecisionJumpController {
     return this.#createLaunch(ratio, direction, config);
   }
 
-  /** Updates in air. */
+  /**
+   * Updates in air.
+   * @param {boolean} isHeld Is held used while update in air.
+   */
   #updateInAir(isHeld) {
     this.chargeSeconds = 0;
     this.isCharging = false;
@@ -82,18 +97,29 @@ export class PrecisionJumpController {
     return null;
   }
 
-  /** Returns direction. */
+  /**
+   * Returns direction.
+   * @param {Readonly<object>} input Current player input state.
+   */
   #getDirection(input) {
     return Number(input.right) - Number(input.left);
   }
 
-  /** Performs the consume press operation. */
+  /**
+   * Performs the consume press operation.
+   * @param {Readonly<object>} input Current player input state.
+   */
   #consumePress(input) {
     if (typeof input.consumePress !== "function") return false;
     return input.consumePress("jump");
   }
 
-  /** Creates launch. */
+  /**
+   * Creates launch.
+   * @param {Readonly<object>} ratio Ratio used while create launch.
+   * @param {Readonly<object>} direction Direction used while create launch.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #createLaunch(ratio, direction, config) {
     const verticalRange = config.maximumJumpSpeedPixelsPerSecond -
       config.minimumJumpSpeedPixelsPerSecond;

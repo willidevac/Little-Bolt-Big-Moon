@@ -14,9 +14,10 @@ export class WaveManager {
   #isInitialized;
 
   /**
-   * @param {ReadonlyArray<CombatZone>} combatZones
-   * @param {ReadonlyArray<object>} enemies
-   * @param {ReadonlyArray<object>} platforms
+   * Creates the configured system.
+   * @param {ReadonlyArray<CombatZone>} combatZones Combat zones managed during the level.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {ReadonlyArray<object>} platforms Platforms managed during the level.
    */
   constructor(combatZones = [], enemies = [], platforms = []) {
     this.#validateCollections(combatZones, enemies, platforms);
@@ -35,7 +36,7 @@ export class WaveManager {
 
   /**
    * Adds only enemies without an arena assignment to the safe starting area.
-   * @param {import("../core/world.class.js").World} world
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    * @returns {boolean}
    */
   initialize(world) {
@@ -52,7 +53,7 @@ export class WaveManager {
 
   /**
    * Completes active encounters and triggers the next reached zone.
-   * @param {import("../core/world.class.js").World} world
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    */
   update(world) {
     if (!this.#isInitialized) return;
@@ -77,7 +78,7 @@ export class WaveManager {
 
   /**
    * Returns the state of a specific arena.
-   * @param {string} zoneId
+   * @param {string} zoneId Zone id used while get zone snapshot.
    * @returns {Readonly<object>}
    */
   getZoneSnapshot(zoneId) {
@@ -86,7 +87,11 @@ export class WaveManager {
     throw new RangeError(`Unbekannte Kampfzone: ${zoneId}`);
   }
 
-  /** Restores one deferred encounter and silently satisfies prerequisites. */
+  /**
+   * Restores one deferred encounter and silently satisfies prerequisites.
+   * @param {string} zoneId Zone id used while restore zone.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   restoreZone(zoneId, world) {
     const zone = this.#zones.find(({ id }) => id === zoneId);
     if (!zone) throw new RangeError(`Unbekannte Kampfzone: ${zoneId}`);
@@ -95,7 +100,11 @@ export class WaveManager {
     return this.#activate(zone, world);
   }
 
-  /** Performs the activate operation. */
+  /**
+   * Performs the activate operation.
+   * @param {Readonly<object>} zone Zone used while activate.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #activate(zone, world) {
     if (!zone.activate()) return false;
     zone.enemyIds.forEach((enemyId) => {
@@ -107,7 +116,11 @@ export class WaveManager {
     return true;
   }
 
-  /** Silently marks an earlier zone complete and removes its remaining actors. */
+  /**
+   * Silently marks an earlier zone complete and removes its remaining actors.
+   * @param {Readonly<object>} zone Zone used while restore prerequisite.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #restorePrerequisite(zone, world) {
     if (!zone.triggerZoneId) return;
     const prerequisite = this.#zones.find(({ id }) => id === zone.triggerZoneId);
@@ -117,7 +130,11 @@ export class WaveManager {
     this.#removeZoneActors(prerequisite, world);
   }
 
-  /** Removes enemies and defeat triggers belonging to a restored prior zone. */
+  /**
+   * Removes enemies and defeat triggers belonging to a restored prior zone.
+   * @param {Readonly<object>} zone Zone used while remove zone actors.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #removeZoneActors(zone, world) {
     const ids = new Set([...zone.enemyIds, zone.triggerEnemyId].filter(Boolean));
     world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)
@@ -125,20 +142,30 @@ export class WaveManager {
       .forEach((enemy) => world.removeEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy));
   }
 
-  /** Checks the ended condition. */
+  /**
+   * Checks the ended condition.
+   * @param {Readonly<object>} zone Zone used while has ended.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #hasEnded(zone, world) {
     const activeEnemyIds = this.#getActiveEnemyIds(world);
     return zone.enemyIds.every((enemyId) => !activeEnemyIds.has(enemyId));
   }
 
-  /** Returns currently active enemy identities. */
+  /**
+   * Returns currently active enemy identities.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #getActiveEnemyIds(world) {
     return new Set(
       world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).map(({ id }) => id),
     );
   }
 
-  /** Returns living enemy identities for defeat-triggered encounters. */
+  /**
+   * Returns living enemy identities for defeat-triggered encounters.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #getLivingEnemyIds(world) {
     return new Set(
       world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)
@@ -153,7 +180,11 @@ export class WaveManager {
       .map(({ id }) => id));
   }
 
-  /** Performs the complete operation. */
+  /**
+   * Performs the complete operation.
+   * @param {Readonly<object>} zone Zone used while complete.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #complete(zone, world) {
     if (!zone.complete()) return;
     const completion = Object.freeze({
@@ -165,7 +196,10 @@ export class WaveManager {
     world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, completion);
   }
 
-  /** Performs the lock progression platforms operation. */
+  /**
+   * Performs the lock progression platforms operation.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #lockProgressionPlatforms(world) {
     this.#zones.forEach((zone) => {
       const platform = this.#getUnlockPlatform(zone);
@@ -173,19 +207,29 @@ export class WaveManager {
     });
   }
 
-  /** Performs the unlock progression platform operation. */
+  /**
+   * Performs the unlock progression platform operation.
+   * @param {Readonly<object>} zone Zone used while unlock progression platform.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #unlockProgressionPlatform(zone, world) {
     const platform = this.#getUnlockPlatform(zone);
     if (platform) world.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
 
-  /** Returns unlock platform. */
+  /**
+   * Returns unlock platform.
+   * @param {Readonly<object>} zone Zone used while get unlock platform.
+   */
   #getUnlockPlatform(zone) {
     if (!zone.unlockPlatformId) return null;
     return this.#platformsById.get(zone.unlockPlatformId) ?? null;
   }
 
-  /** Performs the complete finished zones operation. */
+  /**
+   * Performs the complete finished zones operation.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #completeFinishedZones(world) {
     this.#zones.filter((zone) => {
       return zone.state === COMBAT_ZONE_STATES.ACTIVE &&
@@ -200,7 +244,12 @@ export class WaveManager {
     return new Set(this.#zones.flatMap((zone) => zone.enemyIds));
   }
 
-  /** Validates collections. */
+  /**
+   * Validates collections.
+   * @param {ReadonlyArray<object>} combatZones Combat zones managed during the level.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {ReadonlyArray<object>} platforms Platforms managed during the level.
+   */
   #validateCollections(combatZones, enemies, platforms) {
     const hasZones = Array.isArray(combatZones) &&
       combatZones.every((zone) => zone instanceof CombatZone);

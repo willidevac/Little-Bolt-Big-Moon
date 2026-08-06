@@ -18,9 +18,10 @@ const CULLING_PADDING = 128;
 /** Draws the visible section of the game world. */
 export class WorldRenderer {
   /**
-   * @param {CanvasRenderingContext2D} context
-   * @param {Readonly<object>} config
-   * @param {ReadonlyArray<object>} sections
+   * Creates the configured system.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {ReadonlyArray<object>} sections World sections used by the renderer.
    */
   constructor(context, config, sections) {
     this.context = context;
@@ -30,7 +31,12 @@ export class WorldRenderer {
     this.jumpChargeIndicator = new JumpChargeIndicator(config.canvas);
   }
 
-  /** Draws the background and game objects in their fixed order. */
+  /**
+   * Draws the background and game objects in their fixed order.
+   * @param {ReadonlyArray<object>} entityGroups Entity groups used while draw.
+   * @param {Readonly<object>} camera Camera supplying the current world offset.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   draw(entityGroups, camera, world) {
     this.background.draw(this.context, camera);
     this.context.save();
@@ -45,7 +51,12 @@ export class WorldRenderer {
     }
   }
 
-  /** Draws entities. */
+  /**
+   * Draws entities.
+   * @param {ReadonlyArray<object>} entityGroups Entity groups used while draw entities.
+   * @param {Readonly<object>} camera Camera supplying the current world offset.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #drawEntities(entityGroups, camera, world) {
     DRAW_ORDER.forEach((groupName) => {
       entityGroups.get(groupName).forEach((entity) => {
@@ -55,7 +66,11 @@ export class WorldRenderer {
     });
   }
 
-  /** Checks the visible condition. */
+  /**
+   * Checks the visible condition.
+   * @param {Readonly<object>} entity Entity used while is visible.
+   * @param {Readonly<object>} camera Camera supplying the current world offset.
+   */
   #isVisible(entity, camera) {
     const left = camera.x - CULLING_PADDING;
     const top = camera.y - CULLING_PADDING;

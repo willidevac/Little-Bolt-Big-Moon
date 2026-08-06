@@ -8,8 +8,9 @@ const BIOME_ACTIONS = Object.freeze([
 /** Moves Byte during an unlocked review run without a separate physics loop. */
 export class ReviewFlightController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(game, config) {
     this.#validate(game, config);
@@ -35,7 +36,10 @@ export class ReviewFlightController {
     return true;
   }
 
-  /** @param {number} deltaTimeSeconds */
+  /**
+   * Runs update with validated inputs.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!this.isEnabled || !Number.isFinite(deltaTimeSeconds)) return;
     this.#applyBiomeJump();
@@ -49,7 +53,10 @@ export class ReviewFlightController {
     this.game.runStats.updateHeight(this.character.y);
   }
 
-  /** @param {number} biomeIndex */
+  /**
+   * Runs teleport to with validated inputs.
+   * @param {number} biomeIndex Biome index used while teleport to.
+   */
   teleportTo(biomeIndex) {
     const target = this.config.reviewTargets[biomeIndex];
     if (!this.#isValidTarget(target)) return false;
@@ -61,7 +68,10 @@ export class ReviewFlightController {
     return true;
   }
 
-  /** Teleports Byte to a measured height above the run start. */
+  /**
+   * Teleports Byte to a measured height above the run start.
+   * @param {ReadonlyArray<object>} heightMeters Height meters used while teleport to height.
+   */
   teleportToHeight(heightMeters) {
     if (!Number.isFinite(heightMeters) || heightMeters < 0) return false;
     const startY = this.game.world.level.playerStart.y;
@@ -82,7 +92,12 @@ export class ReviewFlightController {
     });
   }
 
-  /** Applies flight. */
+  /**
+   * Applies flight.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} direction Direction used while apply flight.
+   * @param {boolean} isFast Is fast used while apply flight.
+   */
   #applyFlight(deltaTimeSeconds, direction, isFast) {
     const { x: directionX, y: directionY } = direction;
     const length = Math.hypot(directionX, directionY);
@@ -118,13 +133,19 @@ export class ReviewFlightController {
     this.#stopCharacter();
   }
 
-  /** Returns speed. */
+  /**
+   * Returns speed.
+   * @param {boolean} isFast Is fast used while get speed.
+   */
   #getSpeed(isFast) {
     const speed = this.config.flightSpeedPixelsPerSecond;
     return isFast ? speed * this.config.fastMultiplier : speed;
   }
 
-  /** Collects camera follow. */
+  /**
+   * Collects camera follow.
+   * @param {boolean} isFast Is fast used while sync camera follow.
+   */
   #syncCameraFollow(isFast) {
     const multiplier = isFast ? this.config.fastMultiplier : 1;
     this.game.world.camera.setFollowSpeedMultiplier?.(multiplier);
@@ -137,22 +158,35 @@ export class ReviewFlightController {
     this.character.setOnGround(false);
   }
 
-  /** Performs the clamp x operation. */
+  /**
+   * Performs the clamp x operation.
+   * @param {Readonly<object>} x X used while clamp x.
+   */
   #clampX(x) {
     return clamp(x, 0, this.game.config.world.width - this.character.width);
   }
 
-  /** Performs the clamp y operation. */
+  /**
+   * Performs the clamp y operation.
+   * @param {Readonly<object>} y Y used while clamp y.
+   */
   #clampY(y) {
     return clamp(y, 0, this.game.config.world.height - this.character.height);
   }
 
-  /** Checks the valid target condition. */
+  /**
+   * Checks the valid target condition.
+   * @param {Readonly<object>} target Target entity inspected or modified by the system.
+   */
   #isValidTarget(target) {
     return Number.isFinite(target?.x) && Number.isFinite(target?.y);
   }
 
-  /** Validates the flight state. */
+  /**
+   * Validates the flight state.
+   * @param {Readonly<object>} game Game used while validate.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validate(game, config) {
     const hasGame = game?.world?.character && game?.keyboard && game?.runStats;
     const hasHeightScale = Number.isFinite(

@@ -25,7 +25,8 @@ export class BossFightManager {
   #wasVictoryDelivered;
 
   /**
-   * @param {ReadonlyArray<object>} enemies
+   * Creates the configured system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
    */
   constructor(enemies = []) {
     this.#validateEnemies(enemies);
@@ -39,7 +40,7 @@ export class BossFightManager {
 
   /**
    * Selects the nearby boss and detects the removed final boss.
-   * @param {import("../core/world.class.js").World} world
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    */
   update(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
@@ -74,7 +75,11 @@ export class BossFightManager {
     return true;
   }
 
-  /** Returns find nearest active boss. */
+  /**
+   * Returns find nearest active boss.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {Readonly<object>} target Target entity inspected or modified by the system.
+   */
   #findNearestActiveBoss(enemies, target) {
     const activeBosses = this.#bosses.filter((boss) => {
       return boss.isActive && enemies.includes(boss);
@@ -86,7 +91,11 @@ export class BossFightManager {
     }, null);
   }
 
-  /** Returns distance squared. */
+  /**
+   * Returns distance squared.
+   * @param {Readonly<object>} entity Entity used while get distance squared.
+   * @param {Readonly<object>} target Target entity inspected or modified by the system.
+   */
   #getDistanceSquared(entity, target) {
     if (!target) return 0;
     const entityX = entity.x + entity.width / 2;
@@ -96,7 +105,10 @@ export class BossFightManager {
     return (entityX - targetX) ** 2 + (entityY - targetY) ** 2;
   }
 
-  /** Checks the near active boss condition. */
+  /**
+   * Checks the near active boss condition.
+   * @param {Readonly<object>} target Target entity inspected or modified by the system.
+   */
   #isNearActiveBoss(target) {
     if (!this.#activeBoss) return false;
     const maximumDistanceSquared = BOSS_TRACKING_DISTANCE_PIXELS ** 2;
@@ -104,7 +116,10 @@ export class BossFightManager {
       maximumDistanceSquared;
   }
 
-  /** Performs the queue final victory operation. */
+  /**
+   * Performs the queue final victory operation.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   */
   #queueFinalVictory(enemies) {
     if (!this.#finalBoss || this.#isVictoryQueued || this.#wasVictoryDelivered) {
       return;
@@ -113,7 +128,10 @@ export class BossFightManager {
     if (this.#finalBoss.isDead && wasRemoved) this.#isVictoryQueued = true;
   }
 
-  /** Validates enemies. */
+  /**
+   * Validates enemies.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   */
   #validateEnemies(enemies) {
     if (!Array.isArray(enemies)) {
       throw new TypeError("Die Bossgegner müssen als Liste vorliegen.");

@@ -3,7 +3,8 @@
  */
 export class CombatSystem {
   /**
-   * @param {Readonly<object>} combatConfig
+   * Creates the configured system.
+   * @param {Readonly<object>} combatConfig Combat configuration used to resolve damage.
    */
   constructor(combatConfig) {
     this.config = combatConfig;
@@ -12,9 +13,9 @@ export class CombatSystem {
 
   /**
    * Processes exactly one valid hit.
-   * @param {Readonly<{amount:number, direction:number}>} hit
-   * @param {import("../entities/character.class.js").Character} character
-   * @param {import("./run-stats.class.js").RunStats} runStats
+   * @param {Readonly<{amount:number, direction:number}>} hit Hit data resolved by the combat system.
+   * @param {import("../entities/character.class.js").Character} character Player character processed by the system.
+   * @param {import("./run-stats.class.js").RunStats} runStats Run statistics updated by the operation.
    * @returns {boolean} Whether Byte accepted the hit.
    */
   applyHit(hit, character, runStats) {
@@ -54,7 +55,10 @@ export class CombatSystem {
     });
   }
 
-  /** Validates hit. */
+  /**
+   * Validates hit.
+   * @param {Readonly<object>} hit Hit data resolved by the combat system.
+   */
   #validateHit(hit) {
     const hasDamage = Number.isFinite(hit?.amount) && hit.amount > 0;
     const hasDirection = Number.isFinite(hit?.direction) &&

@@ -9,8 +9,9 @@ import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
  */
 export class ProjectileSystem {
   /**
-   * @param {Readonly<object>} config
-   * @param {import("./collision-manager.class.js").CollisionManager} collisionManager
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {import("./collision-manager.class.js").CollisionManager} collisionManager Collision manager used while constructor.
    */
   constructor(config, collisionManager) {
     this.#validateDependencies(config, collisionManager);
@@ -20,8 +21,8 @@ export class ProjectileSystem {
 
   /**
    * Converts only ranged attacks into a world object.
-   * @param {Readonly<object>|null} attack
-   * @param {import("../core/world.class.js").World} world
+   * @param {Readonly<object>|null} attack Attack used while spawn.
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    * @returns {import("../entities/weapons/projectile.class.js").Projectile|null}
    */
   spawn(attack, world) {
@@ -31,7 +32,10 @@ export class ProjectileSystem {
     return projectile;
   }
 
-  /** Creates player projectile. */
+  /**
+   * Creates player projectile.
+   * @param {Readonly<object>} attack Attack used while create player projectile.
+   */
   #createPlayerProjectile(attack) {
     if (attack.projectileKind === "arc") {
       return new ArcProjectile(attack, this.config.playerArc);
@@ -41,7 +45,7 @@ export class ProjectileSystem {
 
   /**
    * Checks the first enemy along the flight path and safely removes bolts.
-   * @param {import("../core/world.class.js").World} world
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    */
   resolve(world) {
     this.#spawnBossProjectiles(world);
@@ -55,7 +59,13 @@ export class ProjectileSystem {
     return Object.freeze(characterHits);
   }
 
-  /** Returns resolve projectile. */
+  /**
+   * Returns resolve projectile.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   * @param {ReadonlyArray<object>} characterHits Character hits used while resolve projectile.
+   */
   #resolveProjectile(projectile, enemies, world, characterHits) {
     if (projectile.team === "player") {
       this.#resolveEnemyHit(projectile, enemies, world);
@@ -66,7 +76,10 @@ export class ProjectileSystem {
     if (hit) characterHits.push(hit);
   }
 
-  /** Performs the spawn boss projectiles operation. */
+  /**
+   * Performs the spawn boss projectiles operation.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #spawnBossProjectiles(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     enemies.forEach((enemy) => {
@@ -81,7 +94,12 @@ export class ProjectileSystem {
     });
   }
 
-  /** Returns resolve enemy hit. */
+  /**
+   * Returns resolve enemy hit.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #resolveEnemyHit(projectile, enemies, world) {
     if (projectile.isExpired) return;
     const target = this.#findFirstTarget(projectile, enemies);
@@ -91,7 +109,13 @@ export class ProjectileSystem {
     projectile.expire();
   }
 
-  /** Performs the damage chained target operation. */
+  /**
+   * Performs the damage chained target operation.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {Readonly<object>} firstTarget First target used while damage chained target.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #damageChainedTarget(projectile, firstTarget, enemies, world) {
     if (typeof projectile.createSecondaryHit !== "function") return false;
     const target = this.#findChainedTarget(projectile, firstTarget, enemies);
@@ -102,7 +126,12 @@ export class ProjectileSystem {
     );
   }
 
-  /** Returns find chained target. */
+  /**
+   * Returns find chained target.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {Readonly<object>} firstTarget First target used while find chained target.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   */
   #findChainedTarget(projectile, firstTarget, enemies) {
     const origin = this.#getCenter(firstTarget);
     const candidates = enemies
@@ -113,13 +142,20 @@ export class ProjectileSystem {
     return candidates[0]?.enemy ?? null;
   }
 
-  /** Returns distance. */
+  /**
+   * Returns distance.
+   * @param {Readonly<object>} origin Origin used while get distance.
+   * @param {Readonly<object>} entity Entity used while get distance.
+   */
   #getDistance(origin, entity) {
     const target = this.#getCenter(entity);
     return Math.hypot(target.x - origin.x, target.y - origin.y);
   }
 
-  /** Returns center. */
+  /**
+   * Returns center.
+   * @param {Readonly<object>} entity Entity used while get center.
+   */
   #getCenter(entity) {
     const bounds = typeof entity.getCollisionBounds === "function"
       ? entity.getCollisionBounds()
@@ -130,7 +166,11 @@ export class ProjectileSystem {
     };
   }
 
-  /** Returns resolve character hit. */
+  /**
+   * Returns resolve character hit.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {Readonly<object>} character Player character processed by the system.
+   */
   #resolveCharacterHit(projectile, character) {
     if (projectile.isExpired || !character || character.isDead) return null;
     const wasHit = this.collisionManager.areOverlapping(
@@ -142,12 +182,20 @@ export class ProjectileSystem {
     return projectile.createHit();
   }
 
-  /** Clears projectile. */
+  /**
+   * Clears projectile.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #removeProjectile(projectile, world) {
     world.removeEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
   }
 
-  /** Returns find first target. */
+  /**
+   * Returns find first target.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   */
   #findFirstTarget(projectile, enemies) {
     const targets = enemies.filter((enemy) => {
       return this.#isTargetHit(projectile, enemy);
@@ -158,7 +206,11 @@ export class ProjectileSystem {
     return targets[0] ?? null;
   }
 
-  /** Checks the target hit condition. */
+  /**
+   * Checks the target hit condition.
+   * @param {Readonly<object>} projectile Projectile processed by the system.
+   * @param {Readonly<object>} enemy Enemy entity processed by the operation.
+   */
   #isTargetHit(projectile, enemy) {
     if (enemy.isDead) return false;
     return this.collisionManager.areOverlapping(
@@ -167,14 +219,21 @@ export class ProjectileSystem {
     );
   }
 
-  /** Returns x. */
+  /**
+   * Returns x.
+   * @param {Readonly<object>} entity Entity used while get x.
+   */
   #getX(entity) {
     return typeof entity.getCollisionBounds === "function"
       ? entity.getCollisionBounds().x
       : entity.x;
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {Readonly<object>} collisionManager Collision manager used while validate dependencies.
+   */
   #validateDependencies(config, collisionManager) {
     const hasPlayerConfig = config?.playerBolt && config?.playerArc &&
       typeof config.playerBolt === "object" &&

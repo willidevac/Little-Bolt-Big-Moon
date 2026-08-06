@@ -18,9 +18,10 @@ export class EnemyCombatState {
   #isDead;
 
   /**
-   * @param {Readonly<object>} config
-   * @param {Readonly<Record<string, Readonly<object>>>} animations
-   * @param {string} defaultAttackState
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {Readonly<Record<string, Readonly<object>>>} animations Animation states available to the combat state.
+   * @param {string} defaultAttackState Default attack state used while constructor.
    */
   constructor(config, animations, defaultAttackState) {
     this.#validateConfig(config);
@@ -72,7 +73,7 @@ export class EnemyCombatState {
 
   /**
    * Updates all timers and returns the locked animation state.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    * @returns {string|null}
    */
   update(deltaTimeSeconds) {
@@ -88,7 +89,7 @@ export class EnemyCombatState {
 
   /**
    * Reduces health and reports the new hurt or death state.
-   * @param {Readonly<{amount:number}>} hit
+   * @param {Readonly<{amount:number}>} hit Hit data resolved by the combat system.
    * @returns {"hurt"|"dead"|null}
    */
   receiveHit(hit) {
@@ -105,8 +106,8 @@ export class EnemyCombatState {
 
   /**
    * Starts an existing attack clip with a shared cooldown.
-   * @param {string} animationState
-   * @param {Readonly<object>} clip
+   * @param {string} animationState Animation state used while start attack.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
    * @returns {boolean}
    */
   startAttack(animationState, clip) {
@@ -119,7 +120,7 @@ export class EnemyCombatState {
 
   /**
    * Replaces the attack cooldown with a validated duration.
-   * @param {number} seconds
+   * @param {number} seconds Seconds used while set attack cooldown.
    */
   setAttackCooldown(seconds) {
     if (!Number.isFinite(seconds) || seconds < 0) {
@@ -130,8 +131,8 @@ export class EnemyCombatState {
 
   /**
    * Creates an immutable contact hit.
-   * @param {string} source
-   * @param {number} direction
+   * @param {string} source Source entity or definition used by the operation.
+   * @param {number} direction Direction used while create contact hit.
    * @returns {Readonly<{amount:number,direction:number,source:string}>}
    */
   createContactHit(source, direction) {
@@ -143,7 +144,10 @@ export class EnemyCombatState {
     return Object.freeze({ amount: this.#contactDamage, direction, source });
   }
 
-  /** Applies state durations. */
+  /**
+   * Applies state durations.
+   * @param {Readonly<Record<string, string>>} animations Animation states available to the combat state.
+   */
   #setStateDurations(animations) {
     this.#hurtStateSeconds = this.#getAnimationDuration(animations.hurt);
     this.#attackStateSeconds = this.#getAnimationDuration(
@@ -171,7 +175,11 @@ export class EnemyCombatState {
     return null;
   }
 
-  /** Performs the reduce state timer operation. */
+  /**
+   * Performs the reduce state timer operation.
+   * @param {Readonly<object>} state State used while reduce state timer.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #reduceStateTimer(state, deltaTimeSeconds) {
     if (state === "dead") return this.#reduceDeathTimer(deltaTimeSeconds);
     if (state === "hurt") return this.#reduceHurtTimer(deltaTimeSeconds);
@@ -181,7 +189,10 @@ export class EnemyCombatState {
     );
   }
 
-  /** Performs the reduce death timer operation. */
+  /**
+   * Performs the reduce death timer operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #reduceDeathTimer(deltaTimeSeconds) {
     this.#deathSecondsRemaining = this.#reduce(
       this.#deathSecondsRemaining,
@@ -189,7 +200,10 @@ export class EnemyCombatState {
     );
   }
 
-  /** Performs the reduce hurt timer operation. */
+  /**
+   * Performs the reduce hurt timer operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #reduceHurtTimer(deltaTimeSeconds) {
     this.#hurtSecondsRemaining = this.#reduce(
       this.#hurtSecondsRemaining,
@@ -197,7 +211,11 @@ export class EnemyCombatState {
     );
   }
 
-  /** Performs the reduce operation. */
+  /**
+   * Performs the reduce operation.
+   * @param {Readonly<object>} value Value used while reduce.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #reduce(value, deltaTimeSeconds) {
     return Math.max(0, value - deltaTimeSeconds);
   }
@@ -210,7 +228,10 @@ export class EnemyCombatState {
     this.#deathSecondsRemaining = this.#deathStateSeconds;
   }
 
-  /** Returns animation duration. */
+  /**
+   * Returns animation duration.
+   * @param {Readonly<object>} clip Animation clip used for the requested state.
+   */
   #getAnimationDuration(clip) {
     const values = [clip?.frameCount, clip?.frameDurationSeconds];
     if (values.every((value) => Number.isFinite(value) && value > 0)) {
@@ -219,7 +240,10 @@ export class EnemyCombatState {
     throw new TypeError("Der Gegner-Kampfzustand hat keine gültige Animation.");
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(config) {
     const values = [
       config?.maximumHealth,
@@ -230,7 +254,11 @@ export class EnemyCombatState {
     throw new TypeError("Die Kampfwerte des Gegners sind ungültig.");
   }
 
-  /** Validates attack state. */
+  /**
+   * Validates attack state.
+   * @param {Readonly<Record<string, string>>} animations Animation states available to the combat state.
+   * @param {string} defaultAttackState Default attack state used while validate attack state.
+   */
   #validateAttackState(animations, defaultAttackState) {
     if (animations?.hurt && animations?.dead && animations[defaultAttackState]) {
       return;
@@ -238,7 +266,10 @@ export class EnemyCombatState {
     throw new RangeError(`Unbekannter Standardangriff: ${defaultAttackState}`);
   }
 
-  /** Validates hit. */
+  /**
+   * Validates hit.
+   * @param {Readonly<object>} hit Hit data resolved by the combat system.
+   */
   #validateHit(hit) {
     if (Number.isFinite(hit?.amount) && hit.amount > 0) return;
     throw new TypeError("Der Gegnertreffer ist ungültig.");

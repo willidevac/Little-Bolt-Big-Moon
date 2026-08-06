@@ -10,8 +10,8 @@ export class CharacterAttackState {
 
   /**
    * Starts a new attack animation when none is already running.
-   * @param {string} animationState
-   * @param {number} durationSeconds
+   * @param {string} animationState Animation state used while start.
+   * @param {number} durationSeconds Duration seconds used while start.
    * @returns {boolean}
    */
   start(animationState, durationSeconds) {
@@ -24,7 +24,7 @@ export class CharacterAttackState {
 
   /**
    * Reduces the remaining animation time.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     if (!this.isActive || !Number.isFinite(deltaTimeSeconds)) return;
@@ -48,7 +48,11 @@ export class CharacterAttackState {
     return this.animationState !== null;
   }
 
-  /** Validates attack. */
+  /**
+   * Validates attack.
+   * @param {string} animationState Animation state used while validate attack.
+   * @param {number} durationSeconds Duration seconds used while validate attack.
+   */
   #validateAttack(animationState, durationSeconds) {
     const hasState = animationState === "melee" || animationState === "shoot";
     const hasDuration = Number.isFinite(durationSeconds) && durationSeconds > 0;

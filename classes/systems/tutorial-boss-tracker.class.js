@@ -6,9 +6,10 @@ export class TutorialBossTracker {
   #unsubscribe = null;
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./tutorial-director.class.js").TutorialDirector} director
-   * @param {Readonly<{stepId:string,bossId:string}>} config
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./tutorial-director.class.js").TutorialDirector} director Director used while constructor.
+   * @param {Readonly<{stepId:string,bossId:string}>} config Configuration values used by the system.
    */
   constructor(game, director, config) {
     this.#validateDependencies(game, director, config);
@@ -32,7 +33,10 @@ export class TutorialBossTracker {
     this.#unsubscribe = null;
   }
 
-  /** Records only the real configured boss defeat during the tutorial. */
+  /**
+   * Records only the real configured boss defeat during the tutorial.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   handleGameplayEvent(event) {
     if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) {
       return false;
@@ -43,7 +47,12 @@ export class TutorialBossTracker {
     return this.director.recordStepCompletion(this.config.stepId);
   }
 
-  /** Validates event source, director command, and tutorial identities. */
+  /**
+   * Validates event source, director command, and tutorial identities.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} director Director used while validate dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.getSnapshot === "function" &&

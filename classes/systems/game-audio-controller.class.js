@@ -28,9 +28,10 @@ const PICKUP_EFFECTS = Object.freeze({
  */
 export class GameAudioController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("./audio-manager.class.js").AudioManager} audio
-   * @param {EventTarget} eventTarget
+   * Creates the configured system.
+   * @param {import("../core/game.class.js").Game} game Game used while constructor.
+   * @param {import("./audio-manager.class.js").AudioManager} audio Audio service controlled by the system.
+   * @param {EventTarget} eventTarget Event target used while constructor.
    */
   constructor(game, audio, eventTarget) {
     this.#validateDependencies(game, audio, eventTarget);
@@ -67,7 +68,7 @@ export class GameAudioController {
 
   /**
    * Controls music and end sounds through the authoritative game state.
-   * @param {string} state
+   * @param {string} state State used while handle state change.
    */
   handleStateChange(state) {
     if (state === GAME_STATES.PLAYING) return this.#playGameplayMusic();
@@ -85,7 +86,7 @@ export class GameAudioController {
 
   /**
    * Maps a gameplay event to exactly one controlled effect.
-   * @param {Readonly<{type:string, detail:Readonly<object>}>} event
+   * @param {Readonly<{type:string, detail:Readonly<object>}>} event Gameplay event handled by the system.
    */
   handleGameplayEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE) {
@@ -98,7 +99,7 @@ export class GameAudioController {
 
   /**
    * Applies the global setting and resumes music only during gameplay.
-   * @param {boolean} isMuted
+   * @param {boolean} isMuted Is muted used while set muted.
    */
   setMuted(isMuted) {
     this.audio.setMuted(isMuted);
@@ -107,17 +108,26 @@ export class GameAudioController {
     }
   }
 
-  /** @param {number} volume */
+  /**
+   * Runs set music volume with validated inputs.
+   * @param {number} volume Volume used while set music volume.
+   */
   setMusicVolume(volume) {
     this.audio.setMusicVolume(volume);
   }
 
-  /** @param {number} volume */
+  /**
+   * Runs set effects volume with validated inputs.
+   * @param {number} volume Volume used while set effects volume.
+   */
   setEffectsVolume(volume) {
     this.audio.setEffectsVolume(volume);
   }
 
-  /** Handles detailed event. */
+  /**
+   * Handles detailed event.
+   * @param {Readonly<object>} event Gameplay event handled by the system.
+   */
   #handleDetailedEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.PLAYER_ATTACK) {
       return this.#playMappedEffect(ATTACK_EFFECTS, event.detail.weaponId);
@@ -147,13 +157,20 @@ export class GameAudioController {
     this.audio.playMusic(this.isBossActive ? "boss" : "climb");
   }
 
-  /** Plays mapped effect. */
+  /**
+   * Plays mapped effect.
+   * @param {Readonly<object>} mapping Mapping used while play mapped effect.
+   * @param {Readonly<object>} key Key used while play mapped effect.
+   */
   #playMappedEffect(mapping, key) {
     const effect = mapping[key];
     return effect ? this.audio.playEffect(effect) : false;
   }
 
-  /** Plays enemy defeat. */
+  /**
+   * Plays enemy defeat.
+   * @param {Readonly<object>} detail Detail used while play enemy defeat.
+   */
   #playEnemyDefeat(detail) {
     return this.audio.playEffect(detail.isBoss ? "bossDeath" : "enemyDeath");
   }
@@ -165,7 +182,10 @@ export class GameAudioController {
     if (this.game.state === GAME_STATES.PLAYING) this.audio.playMusic("boss");
   }
 
-  /** Performs wave. */
+  /**
+   * Performs wave.
+   * @param {Readonly<object>} detail Detail used while complete wave.
+   */
   #completeWave(detail) {
     const played = this.audio.playEffect("waveComplete");
     if (!detail.unlockPlatformId) return played;
@@ -174,7 +194,12 @@ export class GameAudioController {
     return played;
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} game Game used while validate dependencies.
+   * @param {Readonly<object>} audio Audio service controlled by the system.
+   * @param {Readonly<object>} eventTarget Event target used while validate dependencies.
+   */
   #validateDependencies(game, audio, eventTarget) {
     const hasGame = typeof game?.onStateChange === "function" &&
       typeof game?.onGameplayEvent === "function";

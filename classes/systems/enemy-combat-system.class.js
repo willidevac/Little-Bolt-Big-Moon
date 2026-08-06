@@ -7,8 +7,9 @@ export class EnemyCombatSystem {
   #defeatedEnemies;
 
   /**
-   * @param {Readonly<object>} config
-   * @param {import("./collision-manager.class.js").CollisionManager} collisionManager
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {import("./collision-manager.class.js").CollisionManager} collisionManager Collision manager used while constructor.
    */
   constructor(config, collisionManager) {
     this.#validateDependencies(config, collisionManager);
@@ -19,8 +20,8 @@ export class EnemyCombatSystem {
 
   /**
    * Applies a melee attack to every enemy it actually touches.
-   * @param {Readonly<object>|null} attack
-   * @param {import("../core/world.class.js").World} world
+   * @param {Readonly<object>|null} attack Attack used while resolve player attack.
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
    * @returns {number} Number of enemies hit.
    */
   resolvePlayerAttack(attack, world) {
@@ -33,8 +34,8 @@ export class EnemyCombatSystem {
 
   /**
    * Checks for a stomp before harmful side contact and cleans up defeated enemies.
-   * @param {import("../core/world.class.js").World} world
-   * @param {number} deltaTimeSeconds
+   * @param {import("../core/world.class.js").World} world Active world providing entities and runtime state.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    * @returns {Readonly<object>|null} Possible contact hit against Byte.
    */
   resolve(world, deltaTimeSeconds) {
@@ -47,7 +48,11 @@ export class EnemyCombatSystem {
     return hit;
   }
 
-  /** Returns resolve character contact. */
+  /**
+   * Returns resolve character contact.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #resolveCharacterContact(world, deltaTimeSeconds) {
     const enemies = this.#getLivingEnemies(world);
     const stompTarget = this.#findStompTarget(
@@ -70,14 +75,21 @@ export class EnemyCombatSystem {
     return enemies;
   }
 
-  /** Returns melee targets. */
+  /**
+   * Returns melee targets.
+   * @param {Readonly<object>} hitbox Hitbox used while get melee targets.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #getMeleeTargets(hitbox, world) {
     return this.#getLivingEnemies(world).filter((enemy) => {
       return this.collisionManager.areOverlapping(hitbox, enemy);
     });
   }
 
-  /** Creates player hit. */
+  /**
+   * Creates player hit.
+   * @param {Readonly<object>} attack Attack used while create player hit.
+   */
   #createPlayerHit(attack) {
     return Object.freeze({
       amount: attack.damage,
@@ -86,7 +98,12 @@ export class EnemyCombatSystem {
     });
   }
 
-  /** Returns find stomp target. */
+  /**
+   * Returns find stomp target.
+   * @param {Readonly<object>} character Player character processed by the system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #findStompTarget(character, enemies, deltaTimeSeconds) {
     return enemies.find((enemy) => {
       return this.collisionManager.isStompCollision(
@@ -97,7 +114,12 @@ export class EnemyCombatSystem {
     });
   }
 
-  /** Returns resolve stomp. */
+  /**
+   * Returns resolve stomp.
+   * @param {Readonly<object>} character Player character processed by the system.
+   * @param {Readonly<object>} enemy Enemy entity processed by the operation.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #resolveStomp(character, enemy, world) {
     world.eventReporter.damageEnemy(enemy, Object.freeze({
       amount: this.config.stompDamage,
@@ -108,7 +130,11 @@ export class EnemyCombatSystem {
     return null;
   }
 
-  /** Returns resolve contact. */
+  /**
+   * Returns resolve contact.
+   * @param {Readonly<object>} character Player character processed by the system.
+   * @param {ReadonlyArray<object>} enemies Enemy entities managed by the system.
+   */
   #resolveContact(character, enemies) {
     const attacker = enemies.find((enemy) => {
       return this.collisionManager.areOverlapping(character, enemy);
@@ -116,7 +142,10 @@ export class EnemyCombatSystem {
     return attacker?.attack(character) ?? null;
   }
 
-  /** Clears defeated. */
+  /**
+   * Clears defeated.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #removeDefeated(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     enemies.filter((enemy) => enemy.isReadyForRemoval).forEach((enemy) => {
@@ -128,14 +157,21 @@ export class EnemyCombatSystem {
     });
   }
 
-  /** Returns living enemies. */
+  /**
+   * Returns living enemies.
+   * @param {Readonly<object>} world Active world providing entities and runtime state.
+   */
   #getLivingEnemies(world) {
     return world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).filter((enemy) => {
       return !enemy.isDead;
     });
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {Readonly<object>} collisionManager Collision manager used while validate dependencies.
+   */
   #validateDependencies(config, collisionManager) {
     const values = [
       config?.stompDamage,
