@@ -198,6 +198,10 @@ async function assertSafariTouchCss() {
   assert.match(baseCss, /-webkit-tap-highlight-color:\s*transparent/);
   assert.match(baseCss, /\.legal-section \*[\s\S]*?user-select:\s*text/);
   assert.match(touchCss, /touch-action:\s*none/);
+  assert.match(touchCss, /position:\s*fixed/);
+  assert.match(touchCss, /safe-area-inset-bottom/);
+  assert.match(touchCss, /hover:\s*none/);
+  assert.match(touchCss, /pointer:\s*coarse/);
 }
 
 function createPointer(target, pointerId, pointerType = "touch", button = 0) {

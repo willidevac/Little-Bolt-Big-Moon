@@ -1,17 +1,22 @@
 .touch-controls {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: var(--layer-touch);
   right: 0;
   bottom: 0;
   left: 0;
   align-items: end;
   justify-content: space-between;
-  padding: clamp(0.4rem, 2vw, 0.8rem);
+  padding:
+    0.4rem
+    max(0.4rem, env(safe-area-inset-right))
+    max(0.4rem, env(safe-area-inset-bottom))
+    max(0.4rem, env(safe-area-inset-left));
   pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .touch-controls__group {
@@ -55,10 +60,17 @@
   outline-offset: 2px;
 }
 
-@container game-shell (max-width: 1066px) {
+@media (hover: none) and (pointer: coarse) {
   .touch-controls:not([hidden]) {
     display: flex;
   }
+
+  .fullscreen-button {
+    display: none;
+  }
+}
+
+@container game-shell (max-width: 1066px) {
 
   .hud-resources {
     grid-column: 1 / -1;

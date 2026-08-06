@@ -1,0 +1,95 @@
+<nav
+  class="touch-controls"
+  aria-label="Touch-Steuerung"
+  data-i18n-aria-label="touch.label"
+  data-touch-controls
+  hidden
+>
+  <div class="touch-controls__group touch-controls__group--move">
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Nach links laufen"
+      data-i18n-aria-label="touch.left"
+      aria-pressed="false"
+      data-input-action="left"
+    >
+      ◀
+    </button>
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Nach rechts laufen"
+      data-i18n-aria-label="touch.right"
+      aria-pressed="false"
+      data-input-action="right"
+    >
+      ▶
+    </button>
+  </div>
+
+  <div class="touch-controls__group touch-controls__group--action">
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Sprung laden und beim Loslassen springen"
+      data-i18n-aria-label="touch.jump"
+      aria-pressed="false"
+      data-input-action="jump"
+    >
+      ↑
+    </button>
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Angreifen"
+      data-i18n-aria-label="touch.attack"
+      aria-pressed="false"
+      data-input-action="attack"
+      data-combat-control
+      disabled
+      hidden
+    >
+      F
+    </button>
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Waffe wechseln"
+      data-i18n-aria-label="touch.switchWeapon"
+      aria-pressed="false"
+      data-input-action="weaponSwitch"
+      data-combat-control
+      disabled
+      hidden
+    >
+      Q
+    </button>
+  </div>
+
+  <div
+    class="touch-controls__group touch-controls__group--review"
+    data-review-control
+  >
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Nach unten fliegen"
+      data-i18n-aria-label="review.flyDown"
+      aria-pressed="false"
+      data-input-action="down"
+    >
+      ↓
+    </button>
+    <button
+      class="touch-control"
+      type="button"
+      aria-label="Schnell fliegen"
+      data-i18n-aria-label="review.flyFast"
+      aria-pressed="false"
+      data-input-action="fast"
+    >
+      ×3
+    </button>
+  </div>
+</nav>

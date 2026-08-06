@@ -39,6 +39,9 @@ async function assertResponsiveContract() {
   assert.match(html, /data-fullscreen-toggle[\s\S]*?aria-pressed="false"|aria-pressed="false"[\s\S]*?data-fullscreen-toggle/);
   assert.match(screens, /\.utility-buttons[\s\S]+display:\s*flex/);
   assert.match(responsive, /max-width:\s*1066px[\s\S]+\.utility-button/);
+  const touch = await fs.readFile("styles/touch-controls.css", "utf8");
+  assert.match(touch, /hover:\s*none[\s\S]*pointer:\s*coarse/);
+  assert.match(touch, /\.fullscreen-button\s*{[\s\S]*display:\s*none/);
 }
 
 function createFullscreenRoot(documentTarget) {

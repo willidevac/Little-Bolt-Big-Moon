@@ -15,7 +15,7 @@ const fragmentPaths = [...entry.matchAll(
 
 assert.deepEqual(rootHtmlFiles, ["index.html"]);
 assert.ok(entry.split(/\r?\n/).length <= 40);
-assert.equal(fragmentPaths.length, 5);
+assert.equal(fragmentPaths.length, 6);
 await Promise.all(fragmentPaths.map(assertNonEmptyFile));
 assert.match(loader, /Promise\.all/);
 assert.match(loader, /placeholder\.replaceWith/);
@@ -23,7 +23,7 @@ assert.match(markup, /data-game-canvas/);
 assert.match(markup, /data-game-screen="home"/);
 assert.match(markup, /data-game-dialog="settings"/);
 
-console.log("HTML-001: Kurzer Einstieg und fünf geprüfte Fragmente bestanden.");
+console.log("HTML-001: Kurzer Einstieg und sechs geprüfte Fragmente bestanden.");
 
 async function assertNonEmptyFile(relativePath) {
   const content = await fs.readFile(path.join(ROOT, relativePath), "utf8");
