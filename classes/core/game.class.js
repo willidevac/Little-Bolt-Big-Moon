@@ -83,6 +83,14 @@ export class Game {
   /** @returns {string} The active level identifier. */
   get levelId() { return this.#dependencies.levelSelection.activeLevelId; }
 
+  /**
+   * @param {string} levelId
+   * @returns {boolean} Whether a level can be started.
+   */
+  isLevelAvailable(levelId) {
+    return this.#dependencies.levelSelection.hasLevel(levelId);
+  }
+
   /** @returns {number} Byte's current height loss in world pixels. */
   get heightLossPixels() { return this.world.getHeightLossPixels(); }
 

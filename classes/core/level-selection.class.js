@@ -19,6 +19,16 @@ export class LevelSelection {
   get activeLevelId() { return this.#activeLevelId; }
 
   /**
+   * Checks whether a level factory is registered.
+   * @param {string} levelId
+   * @returns {boolean}
+   */
+  hasLevel(levelId) {
+    return Object.hasOwn(this.#factories, levelId) &&
+      typeof this.#factories[levelId] === "function";
+  }
+
+  /**
    * Selects the factory used for the next world creation.
    * @param {string} levelId
    * @returns {boolean} Whether the selection changed.
@@ -37,9 +47,7 @@ export class LevelSelection {
 
   /** Rejects unknown public level identifiers. */
   #assertKnownLevel(levelId) {
-    const isFactory = Object.hasOwn(this.#factories, levelId) &&
-      typeof this.#factories[levelId] === "function";
-    if (isFactory) return;
+    if (this.hasLevel(levelId)) return;
     throw new RangeError(`Unbekanntes Level: ${levelId}`);
   }
 }

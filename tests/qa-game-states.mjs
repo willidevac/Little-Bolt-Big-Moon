@@ -23,7 +23,7 @@ globalThis.cancelAnimationFrame = () => {};
 const { createGame } = await import("../js/app/create-game.js");
 const { GAME_CONFIG } = await import("../js/config/game-config.js");
 const { GAME_LEVEL_IDS } = await import(
-  "../js/levels/game-level-selection.js"
+  "../js/config/level-config.js"
 );
 const game = createGame(createCanvas(), GAME_CONFIG, new EventTarget());
 const states = [];

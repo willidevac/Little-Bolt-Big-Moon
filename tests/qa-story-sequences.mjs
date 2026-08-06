@@ -41,15 +41,15 @@ function assertAudioIndependence() {
 }
 
 function assertIntro() {
-  assert.equal(controller.playIntro(), true);
-  assert.equal(controller.playIntro(), false);
+  assert.equal(controller.playIntro("main"), true);
+  assert.equal(controller.playIntro("main"), false);
   assert.equal(nodes.view.hidden, false);
   assert.equal(nodes.view.dataset.sequence, "intro");
   root.dispatchEvent(createKeyEvent("Tab"));
   assert.ok(nodes.skip.focusCount >= 2);
   nodes.skip.dispatchEvent(new Event("click"));
   assert.equal(nodes.view.hidden, true);
-  assert.equal(game.resetCount, 1);
+  assert.deepEqual(game.startedLevels, ["main"]);
 }
 
 function assertOutro() {
@@ -57,7 +57,7 @@ function assertOutro() {
   assert.equal(nodes.view.dataset.sequence, "outro");
   root.dispatchEvent(createKeyEvent("Escape"));
   assert.equal(nodes.view.hidden, true);
-  assert.equal(game.resetCount, 1);
+  assert.deepEqual(game.startedLevels, ["main"]);
 }
 
 function assertRestartEscape() {
@@ -84,7 +84,7 @@ function createNodes() {
 class FakeGame {
   constructor() {
     this.listeners = new Set();
-    this.resetCount = 0;
+    this.startedLevels = [];
   }
 
   onStateChange(listener) {
@@ -92,8 +92,8 @@ class FakeGame {
     return () => this.listeners.delete(listener);
   }
 
-  reset() {
-    this.resetCount += 1;
+  startLevel(levelId) {
+    this.startedLevels.push(levelId);
     this.emit(GAME_STATES.PLAYING);
   }
 

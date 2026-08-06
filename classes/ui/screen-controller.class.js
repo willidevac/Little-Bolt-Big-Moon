@@ -3,6 +3,7 @@ import { formatScore } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 import { GameDialogController } from "./game-dialog-controller.class.js";
 import { UpgradeOptionView } from "./upgrade-option-view.class.js";
+import { GAME_LEVEL_IDS } from "../../js/config/level-config.js";
 
 const SELECTORS = Object.freeze({
   home: '[data-game-screen="home"]',
@@ -18,6 +19,7 @@ const SELECTORS = Object.freeze({
   upgradeCopy: "[data-upgrade-copy]",
   upgradeOptions: "[data-upgrade-options]",
   start: '[data-ui-action="start"]',
+  tutorial: '[data-ui-action="tutorial"]',
   resume: '[data-ui-action="resume"]',
   mute: '[data-ui-action="mute"]',
 });
@@ -80,10 +82,16 @@ export class ScreenController {
     this.upgradeEyebrow = getRequiredElement(this.root, SELECTORS.upgradeEyebrow);
     this.upgradeCopy = getRequiredElement(this.root, SELECTORS.upgradeCopy);
     this.upgradeOptions = getRequiredElement(this.root, SELECTORS.upgradeOptions);
-    this.startButton = getRequiredElement(this.root, SELECTORS.start);
+    this.#assignMenuButtons();
     this.resumeButton = getRequiredElement(this.root, SELECTORS.resume);
     this.muteButton = getRequiredElement(this.root, SELECTORS.mute);
     this.#assignEndElements();
+  }
+
+  /** Applies home menu buttons. */
+  #assignMenuButtons() {
+    this.startButton = getRequiredElement(this.root, SELECTORS.start);
+    this.tutorialButton = getRequiredElement(this.root, SELECTORS.tutorial);
   }
 
   /** Applies end elements. */
@@ -109,13 +117,14 @@ export class ScreenController {
    */
   initialize() {
     if (this.unsubscribe) return this;
+    this.#syncLevelAvailability();
     this.root.addEventListener("click", this.boundClick);
     this.root.addEventListener("keydown", this.boundDialogKeydown);
     this.unsubscribe = this.game.onStateChange((state) => this.render(state));
     this.unsubscribeLanguage = onLanguageChange(() => {
       this.render(this.game.state, false);
     });
-    this.render(this.game.state, false);
+    this.render(this.game.state);
     return this;
   }
 
@@ -189,8 +198,7 @@ export class ScreenController {
    */
   createActions() {
     return Object.freeze({
-      /** Performs the start operation. */
-      start: () => this.startRun(),
+      ...this.#createLevelActions(),
       /** Performs the controls operation. */
       controls: () => this.dialogController.open("controls"),
       /** Applies settings. */
@@ -212,11 +220,27 @@ export class ScreenController {
     });
   }
 
-  /** Begins the run after the short wordless opening sequence. */
-  startRun() {
-    if (this.storySequences) return this.storySequences.playIntro();
-    this.game.reset();
-    return true;
+  /** Creates actions that enter selectable levels. */
+  #createLevelActions() {
+    return {
+      /** Performs the start operation. */
+      start: () => this.startRun(GAME_LEVEL_IDS.MAIN),
+      /** Performs the tutorial operation. */
+      tutorial: () => this.startRun(GAME_LEVEL_IDS.TUTORIAL),
+    };
+  }
+
+  /**
+   * Begins a selected available level.
+   * @param {string} levelId
+   * @returns {boolean}
+   */
+  startRun(levelId) {
+    if (!this.game.isLevelAvailable(levelId)) return false;
+    if (levelId === GAME_LEVEL_IDS.MAIN && this.storySequences) {
+      return this.storySequences.playIntro(levelId);
+    }
+    return this.game.startLevel(levelId);
   }
 
   /**
@@ -224,12 +248,24 @@ export class ScreenController {
    * @param {string} state
    */
   focusScreen(state) {
-    if (state === GAME_STATES.HOME) this.startButton.focus();
+    if (state === GAME_STATES.HOME) this.#getHomeFocusTarget().focus();
     if (state === GAME_STATES.PAUSED) this.resumeButton.focus();
     if (state === GAME_STATES.UPGRADING) {
       this.upgradeOptions.querySelector("button")?.focus();
     }
     if (END_SCREEN_CONTENT[state]) this.endTitle.focus();
+  }
+
+  /** Disables menu routes whose level factories do not exist yet. */
+  #syncLevelAvailability() {
+    this.tutorialButton.disabled = !this.game.isLevelAvailable(
+      GAME_LEVEL_IDS.TUTORIAL,
+    );
+  }
+
+  /** Returns the recommended usable home action. */
+  #getHomeFocusTarget() {
+    return this.tutorialButton.disabled ? this.startButton : this.tutorialButton;
   }
 
   /** Draws render end screen. */

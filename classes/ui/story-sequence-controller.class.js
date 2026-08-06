@@ -57,10 +57,13 @@ export class StorySequenceController {
 
   /**
    * Displays the wordless opening and then begins a fresh run.
+   * @param {string} levelId
    * @returns {boolean}
    */
-  playIntro() {
-    return this.#play(SEQUENCES.INTRO, () => this.game.reset());
+  playIntro(levelId) {
+    return this.#play(SEQUENCES.INTRO, () => {
+      this.game.startLevel(levelId);
+    });
   }
 
   /**

@@ -11,6 +11,8 @@ const selection = new LevelSelection({
 }, "main");
 
 assert.equal(selection.activeLevelId, "main");
+assert.equal(selection.hasLevel("main"), true);
+assert.equal(selection.hasLevel("missing"), false);
 assert.deepEqual(selection.createLevel(), { id: "main" });
 assert.equal(selection.select("tutorial"), true);
 assert.equal(selection.activeLevelId, "tutorial");

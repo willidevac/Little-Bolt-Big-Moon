@@ -1,11 +1,7 @@
 import { LevelSelection } from
   "../../classes/core/level-selection.class.js";
+import { GAME_LEVEL_IDS } from "../config/level-config.js";
 import { createLevelOne } from "./level-01.js";
-
-export const GAME_LEVEL_IDS = Object.freeze({
-  MAIN: "main",
-  TUTORIAL: "tutorial",
-});
 
 /**
  * Creates the production level selection at the application boundary.

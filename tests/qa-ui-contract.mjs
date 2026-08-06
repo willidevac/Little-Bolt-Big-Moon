@@ -27,6 +27,7 @@ const expectedActions = [
   "resume",
   "settings",
   "start",
+  "tutorial",
 ];
 
 assert.deepEqual([...new Set(actions)].sort(), expectedActions);
