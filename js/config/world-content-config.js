@@ -1,4 +1,8 @@
 /** Performs the freeze list operation. */
+/**
+ * Freezes every entry in a configuration list and then freezes the list.
+ * @param {ReadonlyArray<object>} values Configuration entries to freeze.
+ */
 const freezeList = (values) => Object.freeze(values.map(Object.freeze));
 
 export const EXPLORATION_CONFIG = Object.freeze({
@@ -73,17 +77,30 @@ export const PLATFORM_MECHANIC_CONFIG = Object.freeze({
   }),
 });
 
-/** Performs the item operation. */
+/**
+ * Creates an energy or gear pickup definition.
+ * @param {string} type Pickup type and visual identifier.
+ * @param {{x: number, y: number}} position World position of the pickup.
+ */
 function item(type, position) {
   return { type, visualType: type, amount: type === "energy" ? 25 : 1, position };
 }
 
-/** Performs the weapon operation. */
+/**
+ * Creates a weapon pickup definition.
+ * @param {string} weaponId Weapon granted by the pickup.
+ * @param {{x: number, y: number}} position World position of the pickup.
+ * @param {number} [amount=1] Ammunition or weapon quantity granted.
+ */
 function weapon(weaponId, position, amount = 1) {
   return { type: "weapon", visualType: weaponId, weaponId, amount, position };
 }
 
-/** Performs the badge operation. */
+/**
+ * Creates a collectible story-badge part.
+ * @param {string} badgePart Badge segment granted by the pickup.
+ * @param {{x: number, y: number}} position World position of the pickup.
+ */
 function badge(badgePart, position) {
   return {
     type: "storyBadge", visualType: "storyBadge",

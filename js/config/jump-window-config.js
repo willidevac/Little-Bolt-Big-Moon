@@ -29,7 +29,10 @@ const PROFILES = Object.freeze({
   }),
 });
 
-/** Returns placement and native sprite geometry for one jump-window biome. */
+/**
+ * Returns placement and native sprite geometry for one jump-window biome.
+ * @param {string} biomeId Biome whose jump-window profile should be returned.
+ */
 export function getJumpWindowProfile(biomeId) {
   const result = PROFILES[biomeId];
   if (result) return result;
@@ -41,7 +44,11 @@ export function getJumpWindowBiomeIds() {
   return Object.freeze(Object.keys(PROFILES));
 }
 
-/** Performs the profile operation. */
+/**
+ * Creates an immutable jump-window profile with copied nested collections.
+ * @param {string} biomeId Biome represented by the profile.
+ * @param {object} data Raw placement, timing, and sprite geometry values.
+ */
 function profile(biomeId, data) {
   return Object.freeze({
     ...data,

@@ -11,7 +11,10 @@ const CRANE_PLATFORM_SPRITES = Object.freeze({
   factory: sprite("factory-crane-platform-clean-hd.png", 1086, 362, 4),
 });
 
-/** Returns the native vertical four-frame crane sprite for one early biome. */
+/**
+ * Returns the native vertical four-frame crane sprite for one early biome.
+ * @param {string} biomeId Early biome whose crane artwork should be returned.
+ */
 export function getCranePlatformSpriteConfig(biomeId) {
   const config = CRANE_PLATFORM_SPRITES[biomeId];
   if (config) return config;
@@ -59,7 +62,13 @@ export const MECHANIC_PLATFORM_INTRODUCTIONS = Object.freeze([
   }),
 ]);
 
-/** Performs the sprite operation. */
+/**
+ * Creates an immutable platform sprite definition.
+ * @param {string} fileName Environment sprite file name.
+ * @param {number} frameWidth Native sprite-frame width in pixels.
+ * @param {number} frameHeight Native sprite-frame height in pixels.
+ * @param {number} [frameCount=1] Number of frames in the sprite sheet.
+ */
 function sprite(fileName, frameWidth, frameHeight, frameCount = 1) {
   return Object.freeze({
     source: getAssetPath("environment", fileName),

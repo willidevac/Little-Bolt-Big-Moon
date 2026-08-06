@@ -29,12 +29,28 @@ export const SCRAPYARD_PROTOTYPE_PLATFORMS = Object.freeze([
 
 export const SCRAPYARD_PROTOTYPE_WALLS = Object.freeze([]);
 
-/** Performs the role operation. */
+/**
+ * Creates an immutable visual role for a scrapyard platform.
+ * @param {string} id Stable platform-role identifier.
+ * @param {number} frameWidth Native sprite-frame width in pixels.
+ * @param {number} frameHeight Native sprite-frame height in pixels.
+ * @param {string} accentColor CSS color used to accent the platform.
+ */
 function role(id, frameWidth, frameHeight, accentColor) {
   return Object.freeze({ id, frameWidth, frameHeight, accentColor });
 }
 
-/** Performs the platform operation. */
+/**
+ * Creates one mandatory platform on the prototype route.
+ * @param {string} id Stable platform identifier.
+ * @param {string} platformRole Visual and gameplay role of the platform.
+ * @param {number} x Horizontal world position in pixels.
+ * @param {number} y Vertical world position in pixels.
+ * @param {number} width Collision width in pixels.
+ * @param {number} height Collision height in pixels.
+ * @param {number} routeOrder Position on the mandatory route.
+ * @param {string|null} [suggestedDirection=null] Suggested next movement direction.
+ */
 function platform(id, platformRole, x, y, width, height, routeOrder,
   suggestedDirection = null) {
   return Object.freeze({
@@ -43,7 +59,16 @@ function platform(id, platformRole, x, y, width, height, routeOrder,
   });
 }
 
-/** Performs the optional operation. */
+/**
+ * Creates one optional support platform beside the main route.
+ * @param {string} id Stable platform identifier.
+ * @param {string} platformRole Visual and gameplay role of the platform.
+ * @param {number} x Horizontal world position in pixels.
+ * @param {number} y Vertical world position in pixels.
+ * @param {number} width Collision width in pixels.
+ * @param {number} height Collision height in pixels.
+ * @param {string} routeRole Purpose of the optional route segment.
+ */
 function optional(id, platformRole, x, y, width, height, routeRole) {
   return Object.freeze({
     id, platformRole, x, y, width, height, routeOrder: null,

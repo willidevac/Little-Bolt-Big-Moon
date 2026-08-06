@@ -37,7 +37,13 @@ export const CHARACTER_STATES = Object.freeze({
   DEAD: "dead",
 });
 
-/** Creates animation clip. */
+/**
+ * Creates an immutable character-animation clip.
+ * @param {number} startFrame First sprite-sheet frame of the clip.
+ * @param {number} frameCount Number of consecutive frames in the clip.
+ * @param {number} frameDurationSeconds Display duration of each frame in seconds.
+ * @param {boolean} [loop=true] Whether the clip restarts after its final frame.
+ */
 const createAnimationClip = (
   startFrame,
   frameCount,

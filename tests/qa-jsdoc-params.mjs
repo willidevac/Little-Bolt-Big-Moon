@@ -10,6 +10,7 @@ const TARGET_PATHS = Object.freeze([
   "classes/environment",
   "classes/ui",
   "classes/systems",
+  "js/config",
 ]);
 
 const files = (await Promise.all(TARGET_PATHS.map(collectFiles))).flat();

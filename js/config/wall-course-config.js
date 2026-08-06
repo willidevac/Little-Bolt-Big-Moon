@@ -28,7 +28,10 @@ export const WALL_BOUNCE_CHALLENGES = Object.freeze([
     420, 812, "right", 840, 1040),
 ]);
 
-/** Returns the new animated wall sprite-sheet definition for one biome. */
+/**
+ * Returns the new animated wall sprite-sheet definition for one biome.
+ * @param {string} biomeId Biome whose wall artwork should be returned.
+ */
 export function getWallSpriteConfig(biomeId) {
   assertBiome(biomeId);
   return Object.freeze({
@@ -39,7 +42,10 @@ export function getWallSpriteConfig(biomeId) {
   });
 }
 
-/** Returns the dedicated four-frame sprite for an early trickshot wall. */
+/**
+ * Returns the dedicated four-frame sprite for an early trickshot wall.
+ * @param {string} biomeId Early biome whose trickshot wall should be returned.
+ */
 export function getTrickshotWallSpriteConfig(biomeId) {
   const frameSize = TRICKSHOT_WALL_FRAME_SIZES[biomeId];
   if (!frameSize) {
@@ -60,7 +66,10 @@ const TRICKSHOT_WALL_FRAME_SIZES = Object.freeze({
   factory: Object.freeze({ width: 384, height: 1024 }),
 });
 
-/** Returns the new wall-mounted platform sprite definition for one biome. */
+/**
+ * Returns the new wall-mounted platform sprite definition for one biome.
+ * @param {string} biomeId Biome whose wall-platform artwork should be returned.
+ */
 export function getWallPlatformSpriteConfig(biomeId) {
   assertBiome(biomeId);
   return Object.freeze({
@@ -73,7 +82,10 @@ export function getWallPlatformSpriteConfig(biomeId) {
   });
 }
 
-/** Returns one native extra-wide combat platform without runtime stretching. */
+/**
+ * Returns one native extra-wide combat platform without runtime stretching.
+ * @param {string} biomeId Biome whose combat-platform artwork should be returned.
+ */
 export function getCombatPlatformSpriteConfig(biomeId) {
   assertBiome(biomeId);
   const frameHeight = COMBAT_PLATFORM_HEIGHTS[biomeId];
@@ -97,20 +109,31 @@ export function getStartFloorSpriteConfig() {
   });
 }
 
-/** Returns one new sprite definition for the scrapyard route prototype. */
+/**
+ * Returns one new sprite definition for the scrapyard route prototype.
+ * @param {string} role Visual role of the requested platform sprite.
+ */
 export function getScrapyardPrototypePlatformSpriteConfig(role) {
   const config = SCRAPYARD_PROTOTYPE_PLATFORM_SPRITES[role];
   if (!config) throw new RangeError(`Unknown scrapyard platform role: ${role}`);
   return config;
 }
 
-/** Returns the rare wall-feature dimensions for one biome. */
+/**
+ * Returns the rare wall-feature dimensions for one biome.
+ * @param {string} biomeId Biome whose feature dimensions should be returned.
+ */
 export function getWallFeatureProfile(biomeId) {
   assertBiome(biomeId);
   return BIOME_PROFILES[biomeId];
 }
 
-/** Creates profile. */
+/**
+ * Creates immutable width choices for a biome's wall course.
+ * @param {number} crossWidth Width of a cross-shaft platform in pixels.
+ * @param {ReadonlyArray<number>} standardWidths Standard platform widths in pixels.
+ * @param {number} smallWidth Width of a precision platform in pixels.
+ */
 function createProfile(crossWidth, standardWidths, smallWidth) {
   return Object.freeze({
     crossWidth,
@@ -119,7 +142,18 @@ function createProfile(crossWidth, standardWidths, smallWidth) {
   });
 }
 
-/** Creates choke. */
+/**
+ * Creates one wall-rebound challenge and its movement assistance values.
+ * @param {string} id Stable challenge identifier.
+ * @param {string} biomeId Biome containing the challenge.
+ * @param {number} y Vertical start position in pixels.
+ * @param {number} height Challenge height in pixels.
+ * @param {number} leftX Horizontal position of the left boundary.
+ * @param {number} rightX Horizontal position of the right boundary.
+ * @param {string} entrySide Side from which the character enters.
+ * @param {number} reboundHorizontalSpeedPixelsPerSecond Horizontal rebound speed.
+ * @param {number} reboundVerticalSpeedPixelsPerSecond Vertical rebound speed.
+ */
 function createChoke(id, biomeId, y, height, leftX, rightX, entrySide,
   reboundHorizontalSpeedPixelsPerSecond,
   reboundVerticalSpeedPixelsPerSecond) {
@@ -135,7 +169,10 @@ function createChoke(id, biomeId, y, height, leftX, rightX, entrySide,
   });
 }
 
-/** Validates assert biome. */
+/**
+ * Rejects biome identifiers without a wall-course profile.
+ * @param {string} biomeId Biome identifier to validate.
+ */
 function assertBiome(biomeId) {
   if (BIOME_PROFILES[biomeId]) return;
   throw new RangeError(`Unknown wall-course biome: ${biomeId}`);
@@ -157,7 +194,12 @@ const COMBAT_PLATFORM_HEIGHTS = Object.freeze({
   moon: 213,
 });
 
-/** Performs the platform sprite operation. */
+/**
+ * Creates a sprite definition for one scrapyard platform role.
+ * @param {string} role Visual role encoded in the sprite file name.
+ * @param {number} frameWidth Native sprite-frame width in pixels.
+ * @param {number} frameHeight Native sprite-frame height in pixels.
+ */
 function platformSprite(role, frameWidth, frameHeight) {
   return Object.freeze({
     source: getAssetPath(

@@ -146,7 +146,17 @@ export const TUTORIAL_BOSS_ZONE_DEFINITION = Object.freeze({
   enemyIds: Object.freeze([TUTORIAL_BOSS_ID]),
 });
 
-/** Creates one tutorial use of an existing production platform mechanic. */
+/**
+ * Creates one tutorial use of an existing production platform mechanic.
+ * @param {string} id Stable platform identifier.
+ * @param {string} mechanic Mechanic demonstrated by the platform.
+ * @param {number} x Horizontal world position in pixels.
+ * @param {number} y Vertical world position in pixels.
+ * @param {number} width Collision width in pixels.
+ * @param {number} height Collision height in pixels.
+ * @param {number} routeOrder Position on the tutorial route.
+ * @param {Readonly<Record<string, number>>} config Mechanic-specific tuning values.
+ */
 function defineMechanicPlatform(id, mechanic, x, y, width, height,
   routeOrder, config) {
   const configKey = mechanic === "falling" ? "fall" : mechanic;
@@ -159,7 +169,16 @@ function defineMechanicPlatform(id, mechanic, x, y, width, height,
   });
 }
 
-/** Creates one immutable platform definition. */
+/**
+ * Creates one immutable tutorial-platform definition.
+ * @param {string} id Stable platform identifier.
+ * @param {string} platformRole Visual and gameplay role of the platform.
+ * @param {number} x Horizontal world position in pixels.
+ * @param {number} y Vertical world position in pixels.
+ * @param {number} width Collision width in pixels.
+ * @param {number} height Collision height in pixels.
+ * @param {number} routeOrder Position on the tutorial route.
+ */
 function definePlatform(id, platformRole, x, y, width, height, routeOrder) {
   return Object.freeze({
     id, platformRole, x, y, width, height, routeOrder,

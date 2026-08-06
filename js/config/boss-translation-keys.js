@@ -9,7 +9,7 @@ export const BOSS_TRANSLATION_KEYS = Object.freeze({
 
 /**
  * Returns the stable translation key for a visible boss name.
- * @param {string} name
+ * @param {string} name Visible boss name to resolve.
  * @returns {string}
  */
 export function getBossTranslationKey(name) {

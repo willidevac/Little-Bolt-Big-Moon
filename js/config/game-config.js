@@ -251,13 +251,23 @@ const STORAGE_CONFIG = Object.freeze({
   version: 1,
 });
 
-/** Creates music. */
+/**
+ * Creates an immutable music-track definition.
+ * @param {string} fileName Audio file name below the music directory.
+ * @param {number} volume Playback volume from zero to one.
+ */
 const createMusic = (fileName, volume) => Object.freeze({
   source: getAssetPath("audio", `music/${fileName}`),
   volume,
 });
 
-/** Creates effect. */
+/**
+ * Creates an immutable sound-effect definition.
+ * @param {string} fileName Audio file name below the sound-effects directory.
+ * @param {number} volume Playback volume from zero to one.
+ * @param {number} [maximumVoices=2] Maximum simultaneous instances.
+ * @param {number} [minimumIntervalMilliseconds=80] Minimum delay between plays.
+ */
 const createEffect = (
   fileName,
   volume,

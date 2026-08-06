@@ -1,6 +1,12 @@
 import { getAssetPath } from "./asset-paths.js";
 
-/** Creates visual. */
+/**
+ * Creates an immutable visual definition for a story prop.
+ * @param {string} file Sprite file below the props asset directory.
+ * @param {number} frameWidth Native sprite-frame width in pixels.
+ * @param {number} frameHeight Native sprite-frame height in pixels.
+ * @param {string} glowColor CSS color used for the discovery glow.
+ */
 function createVisual(file, frameWidth, frameHeight, glowColor) {
   return Object.freeze({
     sprite: Object.freeze({
@@ -50,7 +56,13 @@ export const STORY_PLAN = Object.freeze([
     "Luma wartet in der Bossarena"),
 ]);
 
-/** Performs the clue operation. */
+/**
+ * Creates one chronological story clue placement.
+ * @param {string} type Story-prop configuration identifier.
+ * @param {string} biomeId Biome containing the clue.
+ * @param {number} targetY Vertical world position in pixels.
+ * @param {string} storyBeat Short narrative meaning of the clue.
+ */
 function clue(type, biomeId, targetY, storyBeat) {
   return Object.freeze({ type, biomeId, targetY, storyBeat });
 }

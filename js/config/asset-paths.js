@@ -15,8 +15,8 @@ export const ASSET_PATHS = Object.freeze({
 
 /**
  * Builds an asset path from a known category and file name.
- * @param {string} category
- * @param {string} fileName
+ * @param {string} category Asset category whose directory should be used.
+ * @param {string} fileName File name relative to the category directory.
  * @returns {string}
  */
 export function getAssetPath(category, fileName) {

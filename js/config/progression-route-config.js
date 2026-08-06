@@ -80,14 +80,20 @@ const PROFILES = Object.freeze({
   }),
 });
 
-/** Returns the immutable jump profile for one biome. */
+/**
+ * Returns the immutable jump profile for one biome.
+ * @param {string} biomeId Biome whose route profile should be returned.
+ */
 export function getProgressionProfile(biomeId) {
   const result = PROFILES[biomeId];
   if (result) return result;
   throw new RangeError(`Unknown progression biome: ${biomeId}`);
 }
 
-/** Performs the profile operation. */
+/**
+ * Freezes a progression profile and copies its nested collections.
+ * @param {object} data Raw spacing, lane, platform, and mechanic values.
+ */
 function profile(data) {
   return Object.freeze({
     ...data,
