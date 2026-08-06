@@ -14,6 +14,7 @@ export function initializeScreens(game) {
   return createControllers(game, root);
 }
 
+/** Creates controllers. */
 function createControllers(game, root) {
   const storySequenceController = new StorySequenceController(game, root);
   const screenController = new ScreenController(

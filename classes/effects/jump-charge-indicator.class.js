@@ -36,6 +36,7 @@ export class JumpChargeIndicator {
     return true;
   }
 
+  /** Returns position. */
   #getPosition(character, camera) {
     const centeredX = character.x + character.width / 2 - BAR_WIDTH / 2;
     const minimumX = camera.x + VIEWPORT_PADDING;
@@ -48,11 +49,13 @@ export class JumpChargeIndicator {
     return Object.freeze({ x, y });
   }
 
+  /** Draws track. */
   #drawTrack(context, { x, y }) {
     context.fillStyle = TRACK_COLOR;
     context.fillRect(x, y, BAR_WIDTH, BAR_HEIGHT);
   }
 
+  /** Draws fill. */
   #drawFill(context, { x, y }, percent) {
     const innerWidth = BAR_WIDTH - BAR_BORDER * 2;
     context.fillStyle = percent >= 100 ? FULL_CHARGE_COLOR : CHARGE_COLOR;
@@ -64,6 +67,7 @@ export class JumpChargeIndicator {
     );
   }
 
+  /** Draws border. */
   #drawBorder(context, { x, y }) {
     context.strokeStyle = BORDER_COLOR;
     context.lineWidth = BAR_BORDER;

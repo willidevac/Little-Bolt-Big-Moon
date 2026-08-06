@@ -1,16 +1,12 @@
 import { getAssetPath } from "./asset-paths.js";
 
+/** Creates visual. */
 function createVisual(file, frameWidth, frameHeight, glowColor) {
   return Object.freeze({
     sprite: Object.freeze({
-      source: getAssetPath("props", file),
-      frameWidth,
-      frameHeight,
-      frameCount: 1,
+      source: getAssetPath("props", file), frameWidth, frameHeight, frameCount: 1,
     }),
-    renderScale: 1,
-    frameIndex: 0,
-    animation: null,
+    renderScale: 1, frameIndex: 0, animation: null,
     groundOffsets: Object.freeze([4]),
     glowColor,
   });
@@ -54,6 +50,7 @@ export const STORY_PLAN = Object.freeze([
     "Luma wartet in der Bossarena"),
 ]);
 
+/** Performs the clue operation. */
 function clue(type, biomeId, targetY, storyBeat) {
   return Object.freeze({ type, biomeId, targetY, storyBeat });
 }

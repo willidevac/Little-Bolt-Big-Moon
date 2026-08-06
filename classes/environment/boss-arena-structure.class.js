@@ -38,6 +38,7 @@ export class BossArenaStructure extends DrawableObject {
     ]);
   }
 
+  /** Draws floor energy. */
   #drawFloorEnergy(context) {
     const pulse = (Math.sin(this.lightTime * 3.2) + 1) / 2;
     context.save();
@@ -49,6 +50,7 @@ export class BossArenaStructure extends DrawableObject {
     context.restore();
   }
 
+  /** Draws entrance signal. */
   #drawEntranceSignal(context) {
     const travel = (this.lightTime * 120) % 126;
     context.save();
@@ -56,15 +58,21 @@ export class BossArenaStructure extends DrawableObject {
     context.fillStyle = "#58eaff";
     for (let index = 0; index < 3; index += 1) {
       const y = this.floorY + 148 - ((travel + index * 42) % 126);
-      context.globalAlpha = 0.2 + index * 0.09;
-      context.fillRect(this.entranceCenterX - this.entranceWidth / 2 + 10,
-        y, 5, 18);
-      context.fillRect(this.entranceCenterX + this.entranceWidth / 2 - 15,
-        y, 5, 18);
+      this.#drawEntranceLights(context, index, y);
     }
     context.restore();
   }
 
+  /** Draws entrance lights. */
+  #drawEntranceLights(context, index, y) {
+    context.globalAlpha = 0.2 + index * 0.09;
+    context.fillRect(this.entranceCenterX - this.entranceWidth / 2 + 10,
+      y, 5, 18);
+    context.fillRect(this.entranceCenterX + this.entranceWidth / 2 - 15,
+      y, 5, 18);
+  }
+
+  /** Draws wall flow. */
   #drawWallFlow(context) {
     const travel = (this.lightTime * 150) % 330;
     context.save();
@@ -79,17 +87,14 @@ export class BossArenaStructure extends DrawableObject {
     context.restore();
   }
 
+  /** Performs operation. */
   #collider(x, y, width, height) {
     return Object.freeze({ x, y, width, height, owner: this });
   }
 
+  /** Validates operation. */
   #validate(data) {
-    const numbers = [
-      data?.x, data?.y, data?.width, data?.height, data?.floorY,
-      data?.innerLeftX, data?.innerRightX, data?.wallThickness,
-      data?.ceilingBottomY, data?.roofThickness, data?.entranceCenterX,
-      data?.entranceWidth,
-    ];
+    const numbers = this.#getGeometryValues(data);
     const hasNumbers = numbers.every(Number.isFinite);
     const hasGeometry = data?.innerLeftX < data?.innerRightX &&
       data?.ceilingBottomY < data?.floorY && data?.wallThickness > 0 &&
@@ -97,5 +102,13 @@ export class BossArenaStructure extends DrawableObject {
     if (typeof data?.id === "string" && data.id && hasNumbers &&
       hasGeometry) return;
     throw new TypeError("Die Architektur der Bossarena ist ungültig.");
+  }
+
+  /** Returns geometry values. */
+  #getGeometryValues(data) {
+    return [data?.x, data?.y, data?.width, data?.height, data?.floorY,
+      data?.innerLeftX, data?.innerRightX, data?.wallThickness,
+      data?.ceilingBottomY, data?.roofThickness, data?.entranceCenterX,
+      data?.entranceWidth];
   }
 }

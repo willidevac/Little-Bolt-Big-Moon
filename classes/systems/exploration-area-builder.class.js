@@ -44,17 +44,24 @@ export class ExplorationAreaBuilder {
     ]);
   }
 
+  /** Creates search area. */
   #createSearchArea(route, reservedPlatforms, targetY, areaIndex) {
     const placements = this.#findStableIndices(route, targetY, 3)
       .map((baseIndex) => this.#getSearchPlacement(route, baseIndex))
-      .filter((placement) => this.#hasSearchClearance(
-        placement, reservedPlatforms,
-      ));
+      .filter((placement) => this.#hasSearchClearance(placement,
+        reservedPlatforms));
     const placement = placements[0];
     if (!placement) throw new RangeError("Der Suchbereich ist visuell blockiert.");
     const { base, correct, upper, firstX, secondX } = placement;
     correct.searchPathCue = centerX(upper) < centerX(correct) ? "left" : "right";
     const areaId = `search-area-${areaIndex + 1}`;
+    return this.#createSearchPlatforms(
+      areaId, base, correct, upper, firstX, secondX,
+    );
+  }
+
+  /** Creates search platforms. */
+  #createSearchPlatforms(areaId, base, correct, upper, firstX, secondX) {
     return [
       this.#createSearchPlatform(areaId, 1, base, correct, firstX,
         correct.y, SEARCH_WIDTHS[0], false),
@@ -63,6 +70,7 @@ export class ExplorationAreaBuilder {
     ];
   }
 
+  /** Returns search placement. */
   #getSearchPlacement(route, baseIndex) {
     const base = route[baseIndex];
     const correct = route[baseIndex + 1];
@@ -77,6 +85,7 @@ export class ExplorationAreaBuilder {
     return { base, correct, upper, firstX, secondX };
   }
 
+  /** Checks whether search clearance. */
   #hasSearchClearance(placement, reservedPlatforms) {
     const candidates = [
       { x: placement.firstX, y: placement.correct.y, width: SEARCH_WIDTHS[0] },
@@ -84,20 +93,36 @@ export class ExplorationAreaBuilder {
     ];
     if (horizontalGap(candidates[0], placement.correct) < 64 ||
       horizontalGap(candidates[1], placement.upper) < 64) return false;
-    const wallFeatures = reservedPlatforms.filter(({ kind }) => {
-      return kind === "wall-feature-platform";
-    });
-    return candidates.every((candidate) => wallFeatures.every((feature) => {
+    const wallFeatures = reservedPlatforms.filter(({ kind }) =>
+      kind === "wall-feature-platform");
+    return candidates.every((candidate) => this.#clearsWalls(
+      candidate, wallFeatures,
+    ));
+  }
+
+  /** Performs walls. */
+  #clearsWalls(candidate, wallFeatures) {
+    return wallFeatures.every((feature) => {
       if (Math.abs(feature.y - candidate.y) >= 144) return true;
       return candidate.x + candidate.width + 32 <= feature.x ||
         candidate.x >= feature.x + feature.width + 32;
-    }));
+    });
   }
 
+  /** Creates search platform. */
   #createSearchPlatform(areaId, branchOrder, base, parallel, x, y, width,
     isDeadEnd) {
     const biomeId = parallel.biomeId;
-    const data = Object.freeze({
+    const data = this.#createSearchData({ areaId, branchOrder, base, parallel,
+      x, y, width, isDeadEnd, biomeId });
+    return new SpriteSurfacePlatform(data, this.#getSprite(biomeId));
+  }
+
+  /** Creates search data. */
+  #createSearchData(value) {
+    const { areaId, branchOrder, base, parallel, x, y, width, isDeadEnd,
+      biomeId } = value;
+    return Object.freeze({
       id: `${areaId}-branch-${branchOrder}`,
       kind: "search-route-platform", routeRole: "search-branch",
       routeOrder: null, searchAreaId: areaId, branchOrder, isDeadEnd,
@@ -107,15 +132,11 @@ export class ExplorationAreaBuilder {
       accentColor: getProgressionProfile(biomeId).accent,
       suggestedDirection: null,
     });
-    return new SpriteSurfacePlatform(data, this.#getSprite(biomeId));
   }
 
+  /** Creates combat stage. */
   #createCombatStage(route, targetY, index, weaponY) {
-    const candidates = route.filter((platform) => {
-      return platform.y < weaponY && !platform.mechanic &&
-        !platform.requiresWallBounce && !platform.preparesWallBounce;
-    }).sort((first, second) => Math.abs(first.y - targetY) -
-      Math.abs(second.y - targetY));
+    const candidates = this.#getCombatCandidates(route, targetY, weaponY);
     const desiredWidth = COMBAT_WIDTHS[index];
     const placement = candidates.map((anchor) => {
       return this.#getCombatPlacement(anchor, desiredWidth);
@@ -123,7 +144,21 @@ export class ExplorationAreaBuilder {
     if (!placement) throw new RangeError("Keine freie Fläche für Kampfplattform.");
     const { anchor, x, width } = placement;
     const sprite = getCombatPlatformSpriteConfig(anchor.biomeId);
-    const data = Object.freeze({
+    const data = this.#createCombatData(anchor, x, width, index, sprite);
+    return new SpriteSurfacePlatform(data, sprite);
+  }
+
+  /** Returns combat candidates. */
+  #getCombatCandidates(route, targetY, weaponY) {
+    return route.filter((platform) => platform.y < weaponY &&
+      !platform.mechanic && !platform.requiresWallBounce &&
+      !platform.preparesWallBounce).sort((first, second) =>
+      Math.abs(first.y - targetY) - Math.abs(second.y - targetY));
+  }
+
+  /** Creates combat data. */
+  #createCombatData(anchor, x, width, index, sprite) {
+    return Object.freeze({
       id: `combat-stage-${index + 1}`,
       kind: "combat-staging-platform", routeRole: "combat-stage",
       routeOrder: null, anchorRoutePlatformId: anchor.id,
@@ -133,9 +168,9 @@ export class ExplorationAreaBuilder {
       accentColor: getProgressionProfile(anchor.biomeId).accent,
       suggestedDirection: null,
     });
-    return new SpriteSurfacePlatform(data, sprite);
   }
 
+  /** Returns combat placement. */
   #getCombatPlacement(anchor, desiredWidth) {
     const leftSpace = anchor.x - SIDE_MARGIN * 2;
     const rightStart = anchor.x + anchor.width + SIDE_MARGIN;
@@ -149,6 +184,7 @@ export class ExplorationAreaBuilder {
     return null;
   }
 
+  /** Finds stable indices. */
   #findStableIndices(route, targetY, lookAhead) {
     return route.map((platform, index) => ({ platform, index }))
       .filter(({ platform, index }) => {
@@ -161,11 +197,13 @@ export class ExplorationAreaBuilder {
       }).map(({ index }) => index);
   }
 
+  /** Returns opposite side. */
   #getOppositeSide(platform) {
     return platform.x + platform.width / 2 < this.worldWidth / 2
       ? "right" : "left";
   }
 
+  /** Clamps branch x. */
   #clampBranchX(previous, side, width, inset = 0) {
     const target = BRANCH_EDGE_X[side] + (side === "left" ? inset : -inset);
     const minimum = previous.x - width - 410;
@@ -174,12 +212,14 @@ export class ExplorationAreaBuilder {
       maximum, this.worldWidth - width - SIDE_MARGIN));
   }
 
+  /** Returns sprite. */
   #getSprite(biomeId) {
     return biomeId === "scrapyard"
       ? getScrapyardPrototypePlatformSpriteConfig("precision")
       : getWallPlatformSpriteConfig(biomeId);
   }
 
+  /** Validates inputs. */
   #validateInputs(platforms, firstWeapon) {
     const hasPlatforms = Array.isArray(platforms) && platforms.length > 0;
     const hasWeapon = firstWeapon?.weaponId === "boltThrower" &&
@@ -189,10 +229,12 @@ export class ExplorationAreaBuilder {
   }
 }
 
+/** Performs x. */
 function centerX(platform) {
   return platform.x + platform.width / 2;
 }
 
+/** Performs gap. */
 function horizontalGap(first, second) {
   return Math.max(0,
     second.x - (first.x + first.width),

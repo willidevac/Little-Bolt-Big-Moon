@@ -87,6 +87,7 @@ export function getProgressionProfile(biomeId) {
   throw new RangeError(`Unknown progression biome: ${biomeId}`);
 }
 
+/** Performs the profile operation. */
 function profile(data) {
   return Object.freeze({
     ...data,

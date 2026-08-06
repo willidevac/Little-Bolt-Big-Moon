@@ -30,12 +30,14 @@ export class BackgroundRenderer {
     this.zones.forEach((zone) => zone.draw(context, camera, this.viewport));
   }
 
+  /** Draws transition. */
   #drawTransition(context, camera, transition) {
     const { lowerZone, upperZone, progress } = transition;
     lowerZone.drawBlended(context, camera, this.viewport, 1 - progress);
     upperZone.drawBlended(context, camera, this.viewport, progress);
   }
 
+  /** Returns active transition. */
   #getActiveTransition(camera) {
     const centerY = camera.y + this.viewport.height / 2;
     const lowerZone = this.zones.slice(0, -1).find((zone) => {
@@ -47,12 +49,14 @@ export class BackgroundRenderer {
     return Object.freeze({ lowerZone, upperZone, progress });
   }
 
+  /** Returns transition progress. */
   #getTransitionProgress(centerY, boundaryY) {
     const halfHeight = TRANSITION_HALF_HEIGHT_PIXELS;
     const distanceFromLowerEdge = boundaryY + halfHeight - centerY;
     return Math.min(Math.max(distanceFromLowerEdge / (halfHeight * 2), 0), 1);
   }
 
+  /** Creates section zones. */
   #createSectionZones(sections) {
     this.#validateSections(sections);
     const zones = new Map();
@@ -67,18 +71,21 @@ export class BackgroundRenderer {
     return [...zones.values()];
   }
 
+  /** Validates sections. */
   #validateSections(sections) {
     if (!Array.isArray(sections) || sections.length === 0) {
       throw new TypeError("Die Hintergrundabschnitte fehlen.");
     }
   }
 
+  /** Returns zone id. */
   #getZoneId(section) {
     return section.backgroundLayers.length > 1
       ? section.backgroundId
       : section.id;
   }
 
+  /** Creates zone. */
   #createZone(id, section) {
     return {
       id,
@@ -88,6 +95,7 @@ export class BackgroundRenderer {
     };
   }
 
+  /** Performs the merge zone operation. */
   #mergeZone(zone, section) {
     return {
       ...zone,
@@ -96,6 +104,7 @@ export class BackgroundRenderer {
     };
   }
 
+  /** Validates section. */
   #validateSection(section) {
     const hasId = typeof section?.id === "string" && section.id.length > 0;
     const hasLayers = Array.isArray(section?.backgroundLayers) &&
@@ -104,6 +113,7 @@ export class BackgroundRenderer {
     throw new TypeError("Ein Levelabschnitt benötigt einen Hintergrund.");
   }
 
+  /** Validates viewport. */
   #validateViewport(viewport) {
     const hasSize = Number.isFinite(viewport?.width) &&
       Number.isFinite(viewport?.height) &&

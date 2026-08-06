@@ -210,11 +210,13 @@ export class RunStats {
     });
   }
 
+  /** Performs the increase capacity operation. */
   #increaseCapacity(type, amount) {
     this.#resources.increaseCapacity(type, amount);
     this.#notifyChange();
   }
 
+  /** Validates progress config. */
   #validateProgressConfig(config, startY) {
     this.#validateStartY(startY);
     const pixelsPerMeter = config?.heightPixelsPerMeter;
@@ -222,11 +224,13 @@ export class RunStats {
     throw new TypeError("Die Höhenberechnung des Laufs ist ungültig.");
   }
 
+  /** Validates start y. */
   #validateStartY(startY) {
     if (Number.isFinite(startY) && startY >= 0) return;
     throw new TypeError("Die Lauf-Starthöhe ist ungültig.");
   }
 
+  /** Returns boss signature. */
   #getBossSignature(snapshot) {
     return [
       snapshot.name, snapshot.health, snapshot.maximumHealth, snapshot.phase,
@@ -234,6 +238,7 @@ export class RunStats {
     ].join("|");
   }
 
+  /** Validates boss snapshot. */
   #validateBossSnapshot(snapshot) {
     const values = [snapshot?.health, snapshot?.maximumHealth, snapshot?.phase];
     const hasNumbers = values.every(Number.isFinite);
@@ -247,6 +252,7 @@ export class RunStats {
     throw new TypeError("Die Bossanzeige enthält ungültige Werte.");
   }
 
+  /** Performs the notify change operation. */
   #notifyChange() {
     const snapshot = this.getSnapshot();
     this.#listeners.forEach((listener) => listener(snapshot));

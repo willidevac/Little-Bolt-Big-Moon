@@ -16,6 +16,7 @@ export class Platform extends DrawableObject {
     this.loadSprite(tilesetConfig);
   }
 
+  /** Applies platform data. */
   #applyPlatformData(platformData, tilesetConfig) {
     this.id = platformData.id;
     this.x = platformData.x;
@@ -72,6 +73,7 @@ export class Platform extends DrawableObject {
     });
   }
 
+  /** Validates platform data. */
   #validatePlatformData(data, tilesetConfig) {
     if (typeof data?.id !== "string" || data.id.length === 0) {
       throw new TypeError("Eine Plattform benötigt eine ID.");
@@ -82,6 +84,7 @@ export class Platform extends DrawableObject {
     this.#validateTileFrames(data, tilesetConfig);
   }
 
+  /** Validates tile frames. */
   #validateTileFrames(data, tilesetConfig) {
     if (!Array.isArray(data.tileFrames) || data.tileFrames.length === 0) {
       throw new TypeError(`Plattform ${data.id} benötigt mindestens ein Feld.`);
@@ -94,6 +97,7 @@ export class Platform extends DrawableObject {
     this.#validateTilesetConfig(tilesetConfig);
   }
 
+  /** Validates tileset config. */
   #validateTilesetConfig(tilesetConfig) {
     if (!Number.isInteger(tilesetConfig?.renderScale) || tilesetConfig.renderScale <= 0) {
       throw new TypeError("Die Plattform-Skalierung ist ungültig.");

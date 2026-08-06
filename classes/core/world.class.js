@@ -67,6 +67,7 @@ export class World {
     this.#renderer = new WorldRenderer(context, config, level?.sections);
   }
 
+  /** Initializes entity state. */
   #initializeEntityState() {
     this.#entityRegistry = new WorldEntityRegistry(
       Object.values(WORLD_ENTITY_GROUPS),
@@ -76,6 +77,7 @@ export class World {
     this.#damageEvents = [];
   }
 
+  /** Initializes simulation. */
   #initializeSimulation(config) {
     this.#collisionManager = new CollisionManager(config.physics);
     this.#fallTracker = new FallTracker(config.world);
@@ -140,6 +142,7 @@ export class World {
     this.eventReporter.report(this.character, this.bossFight.getSnapshot());
   }
 
+  /** Updates moving entities. */
   #updateMovingEntities(movableObjects, deltaTimeSeconds) {
     this.#updateEntityGroups([WORLD_ENTITY_GROUPS.STRUCTURES], deltaTimeSeconds);
     this.#updateEntityGroups([WORLD_ENTITY_GROUPS.PLATFORMS], deltaTimeSeconds);
@@ -147,6 +150,7 @@ export class World {
     this.#updateEntityGroups(NON_PLATFORM_UPDATE_ORDER, deltaTimeSeconds);
   }
 
+  /** Returns resolve interactions. */
   #resolveInteractions(movableObjects, deltaTimeSeconds) {
     this.#damageEvents.push(...this.#projectileSystem.resolve(this));
     this.#resolveEnemyCombat(deltaTimeSeconds);
@@ -157,6 +161,7 @@ export class World {
     this.#resolveHazardHits();
   }
 
+  /** Updates world systems. */
   #updateWorldSystems(deltaTimeSeconds) {
     this.waveManager.update(this);
     this.bossFight.update(this);
@@ -237,6 +242,7 @@ export class World {
     this.isInitialized = false;
   }
 
+  /** Returns resolve platform landings. */
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
     const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     this.#collisionManager.resolvePlatformLandings(
@@ -246,6 +252,7 @@ export class World {
     );
   }
 
+  /** Returns resolve structure collisions. */
   #resolveStructureCollisions(deltaTimeSeconds) {
     if (!this.character) return;
     const structures = this.#getGroup(WORLD_ENTITY_GROUPS.STRUCTURES);
@@ -257,6 +264,7 @@ export class World {
     );
   }
 
+  /** Returns ground movables. */
   #getGroundMovables() {
     const characters = this.#getGroup(WORLD_ENTITY_GROUPS.CHARACTERS);
     const enemies = this.#getGroup(WORLD_ENTITY_GROUPS.ENEMIES);
@@ -264,6 +272,7 @@ export class World {
     return [...characters, ...groundEnemies];
   }
 
+  /** Updates entity groups. */
   #updateEntityGroups(groupOrder, deltaTimeSeconds) {
     this.#processEntities(groupOrder, (entity) => {
       if (typeof entity.update === "function") {
@@ -272,11 +281,13 @@ export class World {
     });
   }
 
+  /** Returns resolve enemy combat. */
   #resolveEnemyCombat(deltaTimeSeconds) {
     const hit = this.#enemyCombatSystem.resolve(this, deltaTimeSeconds);
     if (hit) this.#damageEvents.push(hit);
   }
 
+  /** Returns resolve collectable pickups. */
   #resolveCollectablePickups() {
     if (!this.character) return;
     const collectables = this.#getGroup(WORLD_ENTITY_GROUPS.COLLECTABLES);
@@ -287,6 +298,7 @@ export class World {
     overlaps.forEach((collectable) => this.#collect(collectable));
   }
 
+  /** Collects world entities. */
   #collect(collectable) {
     const pickup = collectable.getPickup();
     this.#collectedPickups.push(pickup);
@@ -294,6 +306,7 @@ export class World {
     this.removeEntity(WORLD_ENTITY_GROUPS.COLLECTABLES, collectable);
   }
 
+  /** Returns resolve hazard hits. */
   #resolveHazardHits() {
     if (!this.character) return;
     const hazard = this.#getDamageSources().find((candidate) => {
@@ -305,6 +318,7 @@ export class World {
     if (hit) this.#damageEvents.push(hit);
   }
 
+  /** Returns damage sources. */
   #getDamageSources() {
     return [
       ...this.#getGroup(WORLD_ENTITY_GROUPS.HAZARDS),
@@ -313,16 +327,19 @@ export class World {
     ];
   }
 
+  /** Returns damage sources from. */
   #getDamageSourcesFrom(groupName) {
     return this.#getGroup(groupName).filter((candidate) => {
       return typeof candidate.createHit === "function";
     });
   }
 
+  /** Updates process entities. */
   #processEntities(groupOrder, callback) {
     this.#entityRegistry.process(groupOrder, callback);
   }
 
+  /** Returns group. */
   #getGroup(groupName) {
     return this.#entityRegistry.getSnapshot(groupName);
   }

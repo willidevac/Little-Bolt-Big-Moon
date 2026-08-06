@@ -48,6 +48,7 @@ export class CharacterAttackState {
     return this.animationState !== null;
   }
 
+  /** Validates attack. */
   #validateAttack(animationState, durationSeconds) {
     const hasState = animationState === "melee" || animationState === "shoot";
     const hasDuration = Number.isFinite(durationSeconds) && durationSeconds > 0;

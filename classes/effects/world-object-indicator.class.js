@@ -53,6 +53,7 @@ export class WorldObjectIndicator {
     context.shadowBlur = this.config.shadowBlur;
   }
 
+  /** Applies ring style. */
   #applyRingStyle(context, pulse) {
     context.strokeStyle = this.config.color;
     context.lineWidth = 2;
@@ -60,6 +61,7 @@ export class WorldObjectIndicator {
     this.applyGlow(context);
   }
 
+  /** Returns ellipse. */
   #getEllipse(object, pulse) {
     const centerX = object.x + object.width / 2;
     const radiusX = object.width * this.config.radiusRatio + pulse * 3;

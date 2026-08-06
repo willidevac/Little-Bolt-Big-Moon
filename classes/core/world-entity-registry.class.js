@@ -123,6 +123,7 @@ export class WorldEntityRegistry {
     return /** @type {Set<object>} */ (groups.get(groupName));
   }
 
+  /** Applies pending changes. */
   #applyPendingChanges() {
     this.#groupNames.forEach((groupName) => {
       this.#applyRemovals(groupName);
@@ -149,6 +150,7 @@ export class WorldEntityRegistry {
     additions.clear();
   }
 
+  /** Performs the queue all entities for removal operation. */
   #queueAllEntitiesForRemoval() {
     this.#groupNames.forEach((groupName) => {
       const removals = this.#getPending(this.#pendingRemovals, groupName);

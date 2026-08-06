@@ -38,6 +38,13 @@ export class BossArenaGate extends DrawableObject {
     const pulse = (Math.sin(this.lightTime * 7) + 1) / 2;
     const visibleWidth = this.width * this.sealProgress;
     const left = this.x + (this.width - visibleWidth) / 2;
+    this.#prepareSeal(context, pulse, left, visibleWidth);
+    this.#drawStripes(context, left, visibleWidth);
+    context.restore();
+  }
+
+  /** Prepares seal. */
+  #prepareSeal(context, pulse, left, visibleWidth) {
     context.save();
     context.globalCompositeOperation = "lighter";
     context.globalAlpha = 0.38 + pulse * 0.2;
@@ -46,13 +53,16 @@ export class BossArenaGate extends DrawableObject {
     context.globalAlpha = 0.32 * this.sealProgress;
     context.strokeStyle = "#b9faff";
     context.lineWidth = 2;
+  }
+
+  /** Draws stripes. */
+  #drawStripes(context, left, visibleWidth) {
     for (let x = left + 10; x < left + visibleWidth; x += 18) {
       context.beginPath();
       context.moveTo(x, this.y - 4);
       context.lineTo(x + 9, this.y + 2);
       context.stroke();
     }
-    context.restore();
   }
 
   /** The energy seal never moves once deployed. */
@@ -60,6 +70,7 @@ export class BossArenaGate extends DrawableObject {
     return Object.freeze({ x: 0, y: 0 });
   }
 
+  /** Checks whether boss active. */
   #isBossActive(world) {
     if (typeof world?.getEntities !== "function") return false;
     return world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).some(({ id }) => {
@@ -67,6 +78,7 @@ export class BossArenaGate extends DrawableObject {
     });
   }
 
+  /** Validates operation. */
   #validate(data) {
     const values = [data?.x, data?.y, data?.width, data?.height];
     const hasValues = values.every(Number.isFinite) && data.width > 64 &&

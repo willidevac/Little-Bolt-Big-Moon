@@ -93,6 +93,7 @@ export class MoonWardenAttackController {
     return events;
   }
 
+  /** Performs the release shockwaves operation. */
   #releaseShockwaves(bounds) {
     const originY = bounds.y + bounds.height;
     this.#attackEvents.push(
@@ -101,6 +102,7 @@ export class MoonWardenAttackController {
     );
   }
 
+  /** Performs the release moon bolts operation. */
   #releaseMoonBolts(phase, origin) {
     const target = this.#pendingAttack.target;
     const baseAngle = Math.atan2(target.y - origin.y, target.x - origin.x);
@@ -112,6 +114,7 @@ export class MoonWardenAttackController {
     });
   }
 
+  /** Creates event. */
   #createEvent(kind, directionX, directionY, originX, originY) {
     const damage = kind === "shockwave"
       ? this.#config.shockwaveDamage
@@ -123,6 +126,7 @@ export class MoonWardenAttackController {
     });
   }
 
+  /** Validates update. */
   #validateUpdate(deltaTimeSeconds, phase, bounds, rangedOrigin) {
     const hasTime = Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
     const hasPhase = Object.hasOwn(RANGED_SPREAD_RADIANS, phase);
@@ -132,6 +136,7 @@ export class MoonWardenAttackController {
     throw new TypeError("Die Aktualisierung des Bossangriffs ist ungültig.");
   }
 
+  /** Validates config. */
   #validateConfig(source, config) {
     const values = [
       config?.attackReleaseSeconds,
@@ -145,15 +150,18 @@ export class MoonWardenAttackController {
     throw new TypeError("Die Angriffskonfiguration des Mondwächters ist ungültig.");
   }
 
+  /** Validates point. */
   #validatePoint(point, label) {
     if (this.#hasPoint(point)) return;
     throw new TypeError(`${label} des Mondwächters ist ungültig.`);
   }
 
+  /** Checks the point condition. */
   #hasPoint(point) {
     return Number.isFinite(point?.x) && Number.isFinite(point?.y);
   }
 
+  /** Checks the rectangle condition. */
   #hasRectangle(bounds) {
     return this.#hasPoint(bounds) &&
       Number.isFinite(bounds.width) && bounds.width > 0 &&

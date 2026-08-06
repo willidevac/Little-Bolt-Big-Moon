@@ -67,21 +67,28 @@ export class RunUpgradeFlow {
     this.#context = EMPTY_CONTEXT;
   }
 
+  /** Creates effects. */
   #createEffects() {
     const systems = this.#dependencies;
     return Object.freeze({
+      /** Performs the maximum energy operation. */
       maximumEnergy: (value) => systems.runStats.increaseMaximumEnergy(value),
+      /** Performs the wrench damage operation. */
       wrenchDamage: (value) => {
         systems.weaponSystem.increaseDamage("repairWrench", value);
       },
+      /** Performs the arc charge capacity operation. */
       arcChargeCapacity: (value) => systems.runStats.increaseArcChargeCapacity(value),
+      /** Performs the knockback resistance operation. */
       knockbackResistance: (value) => {
         systems.combatSystem.increaseKnockbackResistance(value);
       },
+      /** Performs the jump control operation. */
       jumpControl: (value) => systems.getCharacter().increaseJumpControl(value),
     });
   }
 
+  /** Validates dependencies. */
   #validateDependencies(dependencies) {
     const methods = [
       dependencies?.runStats?.increaseMaximumEnergy,

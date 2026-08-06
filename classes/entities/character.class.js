@@ -41,6 +41,7 @@ export class Character extends MovableObject {
     this.setFrameIndex(this.animationController.setState(this.state));
   }
 
+  /** Initializes state. */
   #initializeState() {
     this.jumpChargePercent = 0;
     this.state = CHARACTER_STATES.IDLE;
@@ -52,6 +53,7 @@ export class Character extends MovableObject {
     });
   }
 
+  /** Initializes controllers. */
   #initializeControllers() {
     this.jumpController = new PrecisionJumpController();
     this.attackState = new CharacterAttackState();
@@ -88,6 +90,7 @@ export class Character extends MovableObject {
     context.restore();
   }
 
+  /** Draws facing direction. */
   #drawFacingDirection(context) {
     if (this.facingDirection >= 0) {
       super.draw(context);
@@ -120,6 +123,7 @@ export class Character extends MovableObject {
     this.#updateAnimation(deltaTimeSeconds);
   }
 
+  /** Updates state timers. */
   #updateStateTimers(deltaTimeSeconds) {
     this.attackState.update(deltaTimeSeconds);
     this.#hitState.update(deltaTimeSeconds);
@@ -210,6 +214,16 @@ export class Character extends MovableObject {
 
   /** Starts one player-controlled rebound from a shaft's inner wall face. */
   beginControlledWallRebound(rebound) {
+    this.#validateControlledRebound(rebound);
+    const verticalRatio = this.#getReboundVerticalRatio(rebound);
+    this.velocityX = rebound.direction * rebound.horizontalSpeedPixelsPerSecond;
+    this.facingDirection = rebound.direction;
+    this.wallReboundControlSeconds = rebound.controlSeconds;
+    this.applyUpwardImpulse(rebound.verticalSpeedPixelsPerSecond * verticalRatio);
+  }
+
+  /** Validates controlled rebound. */
+  #validateControlledRebound(rebound) {
     const values = [
       rebound?.horizontalSpeedPixelsPerSecond,
       rebound?.verticalSpeedPixelsPerSecond,
@@ -221,18 +235,15 @@ export class Character extends MovableObject {
       !values.every((value) => Number.isFinite(value) && value > 0)) {
       throw new TypeError("Der steuerbare Wandabprall ist ungültig.");
     }
-    const verticalRatio = rebound.forceFullVertical
+  }
+
+  /** Returns rebound vertical ratio. */
+  #getReboundVerticalRatio(rebound) {
+    return rebound.forceFullVertical
       ? 1
       : this.wallReboundInput.down
         ? rebound.dropVerticalRatio
         : this.wallReboundInput.jump ? 1 : rebound.releasedVerticalRatio;
-    this.velocityX = rebound.direction *
-      rebound.horizontalSpeedPixelsPerSecond;
-    this.facingDirection = rebound.direction;
-    this.wallReboundControlSeconds = rebound.controlSeconds;
-    this.applyUpwardImpulse(
-      rebound.verticalSpeedPixelsPerSecond * verticalRatio,
-    );
   }
 
   /**
@@ -267,13 +278,10 @@ export class Character extends MovableObject {
     return true;
   }
 
+  /** Handles controls. */
   #handleControls(deltaTimeSeconds, input, config) {
     this.#syncWallReboundInput(input);
-    if (!this.isOnGround && this.wallReboundControlSeconds > 0) {
-      this.#movementController.updateWallReboundControl(
-        deltaTimeSeconds, input, config,
-      );
-    }
+    this.#updateWallReboundControl(deltaTimeSeconds, input, config);
     if (this.isOnGround) this.#movementController.updateFacingDirection(input);
     const launch = this.jumpController.update(
       deltaTimeSeconds, input, this.isOnGround, config,
@@ -285,6 +293,15 @@ export class Character extends MovableObject {
     }
   }
 
+  /** Updates wall rebound control. */
+  #updateWallReboundControl(deltaTimeSeconds, input, config) {
+    if (this.isOnGround || this.wallReboundControlSeconds <= 0) return;
+    this.#movementController.updateWallReboundControl(
+      deltaTimeSeconds, input, config,
+    );
+  }
+
+  /** Collects wall rebound input. */
   #syncWallReboundInput(input) {
     this.wallReboundInput.left = Boolean(input.left);
     this.wallReboundInput.right = Boolean(input.right);
@@ -293,6 +310,7 @@ export class Character extends MovableObject {
     if (this.isOnGround) this.wallReboundControlSeconds = 0;
   }
 
+  /** Initializes hurt state. */
   #prepareHurtState() {
     this.attackState.clear();
     this.inactivitySeconds = 0;
@@ -301,6 +319,7 @@ export class Character extends MovableObject {
     this.#changeState(CHARACTER_STATES.HURT);
   }
 
+  /** Applies knockback. */
   #applyKnockback(direction, config) {
     this.velocityX = Math.sign(direction) *
       config.knockbackHorizontalPixelsPerSecond;
@@ -308,16 +327,19 @@ export class Character extends MovableObject {
     this.setOnGround(false);
   }
 
+  /** Performs the launch operation. */
   #launch(launch) {
     this.velocityX = launch.velocityX;
     this.velocityY = launch.velocityY;
     this.setOnGround(false);
   }
 
+  /** Clears ground movement. */
   #stopGroundMovement() {
     this.velocityX = 0;
   }
 
+  /** Updates inactivity. */
   #updateInactivity(deltaTimeSeconds, input, config) {
     if (this.#hasActivity(input, config)) {
       this.inactivitySeconds = 0;
@@ -326,6 +348,7 @@ export class Character extends MovableObject {
     this.inactivitySeconds += deltaTimeSeconds;
   }
 
+  /** Checks the activity condition. */
   #hasActivity(input, config) {
     const hasInput = ACTIVITY_ACTIONS.some((action) => Boolean(input[action]));
     const threshold = config.movementStateThresholdPixelsPerSecond;
@@ -333,11 +356,13 @@ export class Character extends MovableObject {
     return hasInput || isMoving || this.isHurt;
   }
 
+  /** Updates jump charge. */
   #updateJumpCharge(config) {
     const ratio = this.jumpController.getChargeRatio(config);
     this.jumpChargePercent = Math.round(ratio * 100);
   }
 
+  /** Performs the change state operation. */
   #changeState(nextState) {
     if (this.state === nextState) return false;
     this.state = nextState;
@@ -345,23 +370,27 @@ export class Character extends MovableObject {
     return true;
   }
 
+  /** Updates animation. */
   #updateAnimation(deltaTimeSeconds) {
     const frameIndex = this.animationController.update(this.state, deltaTimeSeconds);
     this.setFrameIndex(frameIndex);
   }
 
+  /** Performs the maintain dead state operation. */
   #maintainDeadState(deltaTimeSeconds) {
     this.#stopMovement();
     this.#changeState(CHARACTER_STATES.DEAD);
     this.#updateAnimation(deltaTimeSeconds);
   }
 
+  /** Returns hit opacity. */
   #getHitOpacity() {
     if (!this.isInvulnerable || this.isDead) return 1;
     const blinkFrame = Math.floor(this.invulnerabilitySecondsRemaining * 12);
     return blinkFrame % 2 === 0 ? 0.35 : 1;
   }
 
+  /** Validates knockback. */
   #validateKnockback(direction, config) {
     const hasDirection = Number.isFinite(direction) && Math.sign(direction) !== 0;
     const values = [
@@ -373,6 +402,7 @@ export class Character extends MovableObject {
     throw new TypeError("Die Trefferreaktion ist ungültig.");
   }
 
+  /** Clears movement. */
   #stopMovement() {
     this.jumpController.reset();
     this.velocityX = 0;
@@ -381,6 +411,7 @@ export class Character extends MovableObject {
     this.accelerationY = 0;
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

@@ -87,6 +87,7 @@ export class FallingPlatform extends Platform {
     context.restore();
   }
 
+  /** Updates warning. */
   #updateWarning(deltaTimeSeconds, world) {
     this.warningElapsedSeconds += deltaTimeSeconds;
     this.warningSecondsRemaining -= deltaTimeSeconds;
@@ -97,6 +98,7 @@ export class FallingPlatform extends Platform {
     if (fallSeconds > 0) this.#fall(fallSeconds, world);
   }
 
+  /** Performs the fall operation. */
   #fall(deltaTimeSeconds, world) {
     const previousY = this.y;
     const maximumY = this.#getMaximumY(world);
@@ -108,6 +110,7 @@ export class FallingPlatform extends Platform {
     if (this.y >= maximumY) this.#beginRespawnWait();
   }
 
+  /** Returns maximum y. */
   #getMaximumY(world) {
     const worldHeight = world?.config?.world?.height;
     const dropY = this.initialY + this.maximumDropPixels;
@@ -115,11 +118,13 @@ export class FallingPlatform extends Platform {
     return Math.min(dropY, worldHeight + this.height);
   }
 
+  /** Performs the begin respawn wait operation. */
   #beginRespawnWait() {
     this.state = FALLING_PLATFORM_STATES.FALLEN;
     this.respawnSecondsRemaining = this.respawnDelaySeconds;
   }
 
+  /** Updates respawn. */
   #updateRespawn(deltaTimeSeconds) {
     this.respawnSecondsRemaining = Math.max(
       0, this.respawnSecondsRemaining - deltaTimeSeconds,
@@ -132,6 +137,7 @@ export class FallingPlatform extends Platform {
     this.state = FALLING_PLATFORM_STATES.STABLE;
   }
 
+  /** Returns warning shake. */
   #getWarningShake() {
     const angle = this.warningElapsedSeconds *
       WARNING_SHAKE_CYCLES_PER_SECOND *
@@ -139,6 +145,7 @@ export class FallingPlatform extends Platform {
     return Math.sin(angle) * WARNING_SHAKE_DISTANCE_PIXELS;
   }
 
+  /** Returns warning opacity. */
   #getWarningOpacity() {
     const angle = this.warningElapsedSeconds *
       WARNING_PULSE_CYCLES_PER_SECOND *
@@ -146,6 +153,7 @@ export class FallingPlatform extends Platform {
     return 0.7 + (Math.sin(angle) + 1) * 0.15;
   }
 
+  /** Validates fall. */
   #validateFall(fall) {
     const values = [
       fall?.warningDelaySeconds,

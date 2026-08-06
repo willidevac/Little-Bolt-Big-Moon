@@ -31,6 +31,7 @@ export class ProjectileSystem {
     return projectile;
   }
 
+  /** Creates player projectile. */
   #createPlayerProjectile(attack) {
     if (attack.projectileKind === "arc") {
       return new ArcProjectile(attack, this.config.playerArc);
@@ -54,6 +55,7 @@ export class ProjectileSystem {
     return Object.freeze(characterHits);
   }
 
+  /** Returns resolve projectile. */
   #resolveProjectile(projectile, enemies, world, characterHits) {
     if (projectile.team === "player") {
       this.#resolveEnemyHit(projectile, enemies, world);
@@ -64,6 +66,7 @@ export class ProjectileSystem {
     if (hit) characterHits.push(hit);
   }
 
+  /** Performs the spawn boss projectiles operation. */
   #spawnBossProjectiles(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     enemies.forEach((enemy) => {
@@ -78,6 +81,7 @@ export class ProjectileSystem {
     });
   }
 
+  /** Returns resolve enemy hit. */
   #resolveEnemyHit(projectile, enemies, world) {
     if (projectile.isExpired) return;
     const target = this.#findFirstTarget(projectile, enemies);
@@ -87,6 +91,7 @@ export class ProjectileSystem {
     projectile.expire();
   }
 
+  /** Performs the damage chained target operation. */
   #damageChainedTarget(projectile, firstTarget, enemies, world) {
     if (typeof projectile.createSecondaryHit !== "function") return false;
     const target = this.#findChainedTarget(projectile, firstTarget, enemies);
@@ -97,6 +102,7 @@ export class ProjectileSystem {
     );
   }
 
+  /** Returns find chained target. */
   #findChainedTarget(projectile, firstTarget, enemies) {
     const origin = this.#getCenter(firstTarget);
     const candidates = enemies
@@ -107,11 +113,13 @@ export class ProjectileSystem {
     return candidates[0]?.enemy ?? null;
   }
 
+  /** Returns distance. */
   #getDistance(origin, entity) {
     const target = this.#getCenter(entity);
     return Math.hypot(target.x - origin.x, target.y - origin.y);
   }
 
+  /** Returns center. */
   #getCenter(entity) {
     const bounds = typeof entity.getCollisionBounds === "function"
       ? entity.getCollisionBounds()
@@ -122,6 +130,7 @@ export class ProjectileSystem {
     };
   }
 
+  /** Returns resolve character hit. */
   #resolveCharacterHit(projectile, character) {
     if (projectile.isExpired || !character || character.isDead) return null;
     const wasHit = this.collisionManager.areOverlapping(
@@ -133,10 +142,12 @@ export class ProjectileSystem {
     return projectile.createHit();
   }
 
+  /** Clears projectile. */
   #removeProjectile(projectile, world) {
     world.removeEntity(WORLD_ENTITY_GROUPS.PROJECTILES, projectile);
   }
 
+  /** Returns find first target. */
   #findFirstTarget(projectile, enemies) {
     const targets = enemies.filter((enemy) => {
       return this.#isTargetHit(projectile, enemy);
@@ -147,6 +158,7 @@ export class ProjectileSystem {
     return targets[0] ?? null;
   }
 
+  /** Checks the target hit condition. */
   #isTargetHit(projectile, enemy) {
     if (enemy.isDead) return false;
     return this.collisionManager.areOverlapping(
@@ -155,12 +167,14 @@ export class ProjectileSystem {
     );
   }
 
+  /** Returns x. */
   #getX(entity) {
     return typeof entity.getCollisionBounds === "function"
       ? entity.getCollisionBounds().x
       : entity.x;
   }
 
+  /** Validates dependencies. */
   #validateDependencies(config, collisionManager) {
     const hasPlayerConfig = config?.playerBolt && config?.playerArc &&
       typeof config.playerBolt === "object" &&

@@ -110,6 +110,7 @@ export class RunScore {
     return this.combo.getSnapshot();
   }
 
+  /** Applies enemy. */
   #addEnemy(enemy) {
     const points = this.config.enemyPoints[enemy?.type];
     const hasIdentity = typeof enemy?.id === "string" && enemy.id;
@@ -122,6 +123,7 @@ export class RunScore {
     return true;
   }
 
+  /** Applies pickup. */
   #addPickup(pickup) {
     if (!pickup?.id) return false;
     this.#validatePickup(pickup);
@@ -134,6 +136,7 @@ export class RunScore {
     return true;
   }
 
+  /** Applies combat phase. */
   #addCombatPhase(phaseId) {
     if (typeof phaseId !== "string" || !phaseId) {
       throw new TypeError("Die abgeschlossene Kampfphase ist ungültig.");
@@ -144,6 +147,7 @@ export class RunScore {
     return true;
   }
 
+  /** Returns final bonus. */
   #getFinalBonus(isVictory, remainingEnergy) {
     const energyBonus = remainingEnergy * this.config.pointsPerRemainingEnergy;
     if (!isVictory) return energyBonus;
@@ -154,6 +158,7 @@ export class RunScore {
     return energyBonus + savedSeconds * this.config.pointsPerSavedSecond;
   }
 
+  /** Applies measured points. */
   #addMeasuredPoints(amount, pointsPerUnit) {
     if (!Number.isFinite(amount) || amount < 0) {
       throw new TypeError("Die Punkte-Einheit muss eine positive Zahl sein.");
@@ -161,14 +166,17 @@ export class RunScore {
     this.#addPoints(amount * pointsPerUnit);
   }
 
+  /** Applies points. */
   #addPoints(points) {
     this.value += Math.max(0, Math.floor(points));
   }
 
+  /** Applies combo points. */
   #addComboPoints(points) {
     this.#addPoints(points * this.combo.recordActivity());
   }
 
+  /** Validates pickup. */
   #validatePickup(pickup) {
     const hasIdentity = typeof pickup.id === "string" && pickup.id.length > 0;
     const hasType = typeof pickup.type === "string" && pickup.type.length > 0;
@@ -177,6 +185,7 @@ export class RunScore {
     throw new TypeError("Der Fund ist für die Wertung ungültig.");
   }
 
+  /** Validates final result. */
   #validateFinalResult(isVictory, remainingEnergy) {
     const hasResult = typeof isVictory === "boolean";
     const hasEnergy = Number.isFinite(remainingEnergy) && remainingEnergy >= 0;
@@ -184,11 +193,13 @@ export class RunScore {
     throw new TypeError("Das Laufergebnis ist für die Wertung ungültig.");
   }
 
+  /** Validates events. */
   #validateEvents(events, label) {
     if (Array.isArray(events)) return;
     throw new TypeError(`${label} müssen als Liste übergeben werden.`);
   }
 
+  /** Validates config. */
   #validateConfig(startingScore, config) {
     const { enemyPoints, combo, ...scalarValues } = config ?? {};
     const enemies = Object.values(enemyPoints ?? {});

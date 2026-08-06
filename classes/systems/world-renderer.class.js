@@ -45,6 +45,7 @@ export class WorldRenderer {
     }
   }
 
+  /** Draws entities. */
   #drawEntities(entityGroups, camera, world) {
     DRAW_ORDER.forEach((groupName) => {
       entityGroups.get(groupName).forEach((entity) => {
@@ -54,6 +55,7 @@ export class WorldRenderer {
     });
   }
 
+  /** Checks the visible condition. */
   #isVisible(entity, camera) {
     const left = camera.x - CULLING_PADDING;
     const top = camera.y - CULLING_PADDING;

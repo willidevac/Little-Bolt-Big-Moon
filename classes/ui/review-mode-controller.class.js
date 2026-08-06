@@ -38,6 +38,7 @@ export class ReviewModeController {
     this.#bindEvents();
   }
 
+  /** Performs the bind events operation. */
   #bindEvents() {
     this.boundVersionClick = this.handleVersionClick.bind(this);
     this.boundSubmit = this.handleSubmit.bind(this);
@@ -50,6 +51,7 @@ export class ReviewModeController {
     this.boundReviewLayout = this.syncReviewLayout.bind(this);
   }
 
+  /** Applies elements. */
   #assignElements() {
     this.version = this.#getElement(SELECTORS.version);
     this.dialog = this.#getElement(SELECTORS.dialog);
@@ -69,6 +71,15 @@ export class ReviewModeController {
   initialize() {
     if (this.unsubscribers.length > 0) return this;
     this.version.textContent = this.config.versionLabel;
+    this.#addDomListeners();
+    this.#addSubscriptions();
+    globalThis.addEventListener?.("resize", this.boundReviewLayout);
+    if (this.#hasStoredAccess()) this.start();
+    return this;
+  }
+
+  /** Applies dom listeners. */
+  #addDomListeners() {
     this.version.addEventListener("click", this.boundVersionClick);
     this.form.addEventListener("submit", this.boundSubmit);
     this.startButton.addEventListener("click", this.boundSubmit);
@@ -76,13 +87,14 @@ export class ReviewModeController {
     this.cancelButton.addEventListener("click", this.boundCancel);
     this.biomeControl.addEventListener("change", this.boundBiomeChange);
     this.teleportButton.addEventListener("click", this.boundHeightTeleport);
+  }
+
+  /** Applies subscriptions. */
+  #addSubscriptions() {
     this.unsubscribers.push(
       this.game.onStateChange(this.boundStateChange),
       this.game.onHudChange(this.boundHudChange),
     );
-    globalThis.addEventListener?.("resize", this.boundReviewLayout);
-    if (this.#hasStoredAccess()) this.start();
-    return this;
   }
 
   /** Removes all review-mode bindings and temporary state. */
@@ -185,6 +197,7 @@ export class ReviewModeController {
     this.biomeControl.value = String(this.#getCurrentTargetIndex());
   }
 
+  /** Performs the attach flight operation. */
   #attachFlight() {
     this.flight = new ReviewFlightController(this.game, this.config);
     this.game.world.addEntity(WORLD_ENTITY_GROUPS.DECORATIONS, this.flight);
@@ -193,16 +206,19 @@ export class ReviewModeController {
     this.#configureHeightControl();
   }
 
+  /** Performs the enable flight operation. */
   #enableFlight() {
     this.flight?.enable();
   }
 
+  /** Initializes height control. */
   #configureHeightControl() {
     const startY = this.game.world.level.playerStart.y;
     const scale = this.game.config.hud.heightPixelsPerMeter;
     this.heightControl.max = String(Math.floor(startY / scale));
   }
 
+  /** Returns current target index. */
   #getCurrentTargetIndex() {
     const y = this.game.world.character?.y;
     if (y <= this.config.bossArenaMaximumY) return 5;
@@ -212,15 +228,18 @@ export class ReviewModeController {
     return this.#getBiomeIds().indexOf(section?.backgroundId);
   }
 
+  /** Returns biome ids. */
   #getBiomeIds() {
     const ids = this.game.world.level.sections.map(({ backgroundId }) => backgroundId);
     return [...new Set(ids)];
   }
 
+  /** Checks the active condition. */
   #isActive() {
     return this.root.dataset.reviewMode === "true";
   }
 
+  /** Performs the show all enemies operation. */
   #showAllEnemies() {
     this.game.world.level.enemies
       .filter(({ isBoss }) => !isBoss)
@@ -229,6 +248,7 @@ export class ReviewModeController {
       });
   }
 
+  /** Performs the matches access code operation. */
   #matchesAccessCode(value) {
     const normalized = value.trim().toUpperCase();
     const hash = [...normalized].reduce((result, character) => {
@@ -237,14 +257,17 @@ export class ReviewModeController {
     return hash.toString(16).padStart(8, "0") === this.config.accessCodeHash;
   }
 
+  /** Checks the stored access condition. */
   #hasStoredAccess() {
     return this.storage?.getItem(this.config.storageKey) === "true";
   }
 
+  /** Performs the store access operation. */
   #storeAccess() {
     this.storage?.setItem(this.config.storageKey, "true");
   }
 
+  /** Returns element. */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
@@ -252,6 +275,7 @@ export class ReviewModeController {
   }
 }
 
+/** Returns session storage. */
 function getSessionStorage() {
   try {
     return globalThis.sessionStorage;

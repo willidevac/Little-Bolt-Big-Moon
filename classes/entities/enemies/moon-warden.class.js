@@ -114,6 +114,7 @@ export class MoonWarden extends Enemy {
     return activated;
   }
 
+  /** Draws attack telegraph. */
   #drawAttackTelegraph(context) {
     const pendingAttack = this.#attackController.getPendingSnapshot();
     if (!pendingAttack) return;
@@ -128,6 +129,7 @@ export class MoonWarden extends Enemy {
     context.restore();
   }
 
+  /** Draws shockwave warning. */
   #drawShockwaveWarning(context, progress) {
     const bounds = this.getCollisionBounds();
     context.strokeStyle = "#ff9b32";
@@ -140,6 +142,7 @@ export class MoonWarden extends Enemy {
     context.stroke();
   }
 
+  /** Draws moon bolt warning. */
   #drawMoonBoltWarning(context, target) {
     const origin = this.#getRangedOrigin(target);
     context.strokeStyle = "#65efff";
@@ -167,6 +170,7 @@ export class MoonWarden extends Enemy {
     if (this.#tryBeginAttack(target)) return;
   }
 
+  /** Performs the pursue during recovery operation. */
   #pursueDuringRecovery(deltaTimeSeconds, world) {
     this.#moveToward(world.character);
     super.update(deltaTimeSeconds, world);
@@ -174,12 +178,14 @@ export class MoonWarden extends Enemy {
     this.updateAnimation(deltaTimeSeconds);
   }
 
+  /** Performs the try begin attack operation. */
   #tryBeginAttack(target) {
     if (this.attackCooldownSecondsRemaining !== 0) return false;
     this.#beginNextAttack(target);
     return true;
   }
 
+  /** Checks the act condition. */
   #canAct(deltaTimeSeconds, target) {
     const movementState = Math.abs(this.velocityX) > 0 ? "move" : "idle";
     const canAct = this.updateEnemyState(deltaTimeSeconds, movementState);
@@ -222,6 +228,7 @@ export class MoonWarden extends Enemy {
     }
   }
 
+  /** Updates phase. */
   #updatePhase() {
     const healthRatio = this.health / this.maximumHealth;
     const phaseIndex = PHASES.findIndex((phase) => {
@@ -230,6 +237,7 @@ export class MoonWarden extends Enemy {
     this.phase = (phaseIndex < 0 ? PHASES.length - 1 : phaseIndex) + 1;
   }
 
+  /** Performs the begin next attack operation. */
   #beginNextAttack(target) {
     const pattern = this.#attackController.nextPattern;
     if (!this.startAttackState(pattern)) return;
@@ -237,6 +245,7 @@ export class MoonWarden extends Enemy {
     this.#attackController.begin(this.#getCenter(target));
   }
 
+  /** Updates pending attack. */
   #updatePendingAttack(deltaTimeSeconds, target) {
     if (!this.#attackController.hasPendingAttack ||
       this.isHurt || this.isDead || !target) return;
@@ -249,6 +258,7 @@ export class MoonWarden extends Enemy {
     this.setAttackCooldown(this.#getPhase().recoverySeconds);
   }
 
+  /** Returns ranged origin. */
   #getRangedOrigin(targetCenter) {
     const bounds = this.getCollisionBounds();
     const targetIsLeft = targetCenter.x < this.#getCenter(this).x;
@@ -258,6 +268,7 @@ export class MoonWarden extends Enemy {
     });
   }
 
+  /** Performs the move toward operation. */
   #moveToward(target) {
     if (!target) return;
     const distanceX = this.#getCenter(target).x - this.#getCenter(this).x;
@@ -271,10 +282,12 @@ export class MoonWarden extends Enemy {
       this.#getPhase().speedMultiplier;
   }
 
+  /** Returns phase. */
   #getPhase() {
     return PHASES[this.phase - 1];
   }
 
+  /** Returns center. */
   #getCenter(entity) {
     const bounds = typeof entity?.getCollisionBounds === "function"
       ? entity.getCollisionBounds()
@@ -285,6 +298,7 @@ export class MoonWarden extends Enemy {
     });
   }
 
+  /** Validates movement config. */
   #validateMovementConfig(config) {
     const values = [
       config?.speedPixelsPerSecond,

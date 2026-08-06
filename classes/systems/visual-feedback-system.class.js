@@ -37,6 +37,7 @@ export class VisualFeedbackSystem {
     this.bursts.length = 0;
   }
 
+  /** Handles event. */
   #handleEvent(event) {
     const burstType = BURST_BY_EVENT[event.type];
     const target = this.getTarget();

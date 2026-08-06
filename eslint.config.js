@@ -24,6 +24,16 @@ export default [
     }
   },
   {
+    files: ["script.js", "classes/**/*.js", "js/**/*.js"],
+    rules: {
+      "max-lines-per-function": ["error", {
+        "max": 14,
+        "skipBlankLines": true,
+        "skipComments": true
+      }]
+    }
+  },
+  {
     files: ["tests/**/*.mjs"],
     rules: {
       "no-console": "off",

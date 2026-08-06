@@ -69,6 +69,7 @@ export class CollisionManager {
     });
   }
 
+  /** Returns find landing platform. */
   #findLandingPlatform(movableObject, platforms, deltaTimeSeconds) {
     let landingPlatform = null;
     platforms.forEach((platform) => {
@@ -82,6 +83,7 @@ export class CollisionManager {
     return landingPlatform;
   }
 
+  /** Checks the land on condition. */
   #canLandOn(movableObject, platform, deltaTimeSeconds) {
     if (movableObject.velocityY < 0 || platform.isCollidable === false) return false;
     const movableBounds = this.#getCollisionBounds(movableObject);
@@ -93,6 +95,7 @@ export class CollisionManager {
     return previousBottom <= toleratedPlatformTop && currentBottom >= platformBounds.y;
   }
 
+  /** Checks the horizontal overlap condition. */
   #hasHorizontalOverlap(firstObject, secondObject) {
     return (
       firstObject.x < secondObject.x + secondObject.width &&
@@ -100,6 +103,7 @@ export class CollisionManager {
     );
   }
 
+  /** Checks the vertical overlap condition. */
   #hasVerticalOverlap(firstObject, secondObject) {
     return (
       firstObject.y < secondObject.y + secondObject.height &&
@@ -107,6 +111,7 @@ export class CollisionManager {
     );
   }
 
+  /** Performs the land on platform operation. */
   #landOnPlatform(movableObject, platform) {
     const movableBounds = this.#getCollisionBounds(movableObject);
     const platformBounds = this.#getCollisionBounds(platform);
@@ -118,6 +123,7 @@ export class CollisionManager {
     }
   }
 
+  /** Returns collision bounds. */
   #getCollisionBounds(object) {
     if (typeof object?.getCollisionBounds === "function") {
       return object.getCollisionBounds();
@@ -125,6 +131,7 @@ export class CollisionManager {
     return object;
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

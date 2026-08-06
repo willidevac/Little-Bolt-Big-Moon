@@ -117,6 +117,7 @@ export class GameAudioController {
     this.audio.setEffectsVolume(volume);
   }
 
+  /** Handles detailed event. */
   #handleDetailedEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.PLAYER_ATTACK) {
       return this.#playMappedEffect(ATTACK_EFFECTS, event.detail.weaponId);
@@ -141,25 +142,30 @@ export class GameAudioController {
     this.audio.destroy();
   }
 
+  /** Plays gameplay music. */
   #playGameplayMusic() {
     this.audio.playMusic(this.isBossActive ? "boss" : "climb");
   }
 
+  /** Plays mapped effect. */
   #playMappedEffect(mapping, key) {
     const effect = mapping[key];
     return effect ? this.audio.playEffect(effect) : false;
   }
 
+  /** Plays enemy defeat. */
   #playEnemyDefeat(detail) {
     return this.audio.playEffect(detail.isBoss ? "bossDeath" : "enemyDeath");
   }
 
+  /** Performs boss audio. */
   #activateBossAudio() {
     this.isBossActive = true;
     this.audio.playEffect("bossPhase");
     if (this.game.state === GAME_STATES.PLAYING) this.audio.playMusic("boss");
   }
 
+  /** Performs wave. */
   #completeWave(detail) {
     const played = this.audio.playEffect("waveComplete");
     if (!detail.unlockPlatformId) return played;
@@ -168,6 +174,7 @@ export class GameAudioController {
     return played;
   }
 
+  /** Validates dependencies. */
   #validateDependencies(game, audio, eventTarget) {
     const hasGame = typeof game?.onStateChange === "function" &&
       typeof game?.onGameplayEvent === "function";

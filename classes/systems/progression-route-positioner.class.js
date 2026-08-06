@@ -41,6 +41,7 @@ export class ProgressionRoutePositioner {
     );
   }
 
+  /** Finds route x. */
   #findRouteX(previous, step, profile, index, width, reservedPlatforms) {
     const laneCandidates = this.#createLaneCandidates(profile, index, width);
     const searchCandidates = this.#createSearchCandidates(width, 16);
@@ -54,6 +55,7 @@ export class ProgressionRoutePositioner {
     return this.#clampToWorld(lane, width);
   }
 
+  /** Creates lane candidates. */
   #createLaneCandidates(profile, index, width) {
     return profile.lanes.map((lane, offset) => {
       const candidate = profile.lanes[(index + offset) % profile.lanes.length];
@@ -61,35 +63,43 @@ export class ProgressionRoutePositioner {
     });
   }
 
+  /** Creates search candidates. */
   #createSearchCandidates(width, spacing) {
     const count = Math.floor((this.worldWidth - width - 112) / spacing) + 1;
     return Array.from({ length: count }, (_, index) => 56 + index * spacing);
   }
 
+  /** Selects reachable x. */
   #selectReachableX(previous, step, profile, index, width, candidates) {
     const minimumFrames = MINIMUM_SAFE_FRAMES[step.biome.id];
     const desiredRatio = this.#getDesiredChargeRatio(step.biome.id, index);
     const wantsLongTransfer = ["scrapyard", "factory"].includes(
       step.biome.id,
     ) && index % 11 === 7;
-    return candidates.map((x, order) => {
-      const window = evaluateJumpWindow(
-        previous, { x, y: step.y, width },
-        GAME_CONFIG.physics, GAME_CONFIG.character,
-      );
-      const score = this.#scoreCandidate(
-        previous, x, width, window, desiredRatio, wantsLongTransfer, order,
-      );
-      return { x, window, score };
-    }).filter(({ window }) => window.frameCount >= minimumFrames)
+    return candidates.map((x, order) => this.#evaluateCandidate(
+      previous, step.y, width, x, desiredRatio, wantsLongTransfer, order,
+    )).filter(({ window }) => window.frameCount >= minimumFrames)
       .sort((first, second) => first.score - second.score)[0]?.x ?? null;
   }
 
+  /** Evaluates candidate. */
+  #evaluateCandidate(previous, y, width, x, desiredRatio, long, order) {
+    const window = evaluateJumpWindow(
+      previous, { x, y, width }, GAME_CONFIG.physics, GAME_CONFIG.character,
+    );
+    const score = this.#scoreCandidate(
+      previous, x, width, window, desiredRatio, long, order,
+    );
+    return { x, window, score };
+  }
+
+  /** Returns desired charge ratio. */
   #getDesiredChargeRatio(biomeId, index) {
     const ratios = DESIRED_CHARGE_RATIOS[biomeId];
     return ratios[index % ratios.length];
   }
 
+  /** Scores candidate. */
   #scoreCandidate(previous, x, width, window, desiredRatio, long, order) {
     const ratios = window.samples.map(({ ratio }) => ratio);
     const centerRatio = ratios.length
@@ -103,29 +113,35 @@ export class ProgressionRoutePositioner {
       order;
   }
 
+  /** Finds wall approach x. */
   #findWallApproachX(previous, y, challenge, width, reservedPlatforms) {
     const entry = this.#findWallEntry(challenge, reservedPlatforms);
     if (!entry) return Math.round((this.worldWidth - width) / 2);
     const target = challenge.entrySide === "left"
       ? entry.x + entry.width + 64
       : entry.x - width - 64;
-    const candidates = this.#createSearchCandidates(width, 8)
+    const candidates = this.#getWallApproachCandidates(
+      previous, entry, y, width, reservedPlatforms, challenge,
+    );
+    return candidates.sort((first, second) =>
+      Math.abs(first.x - target) - Math.abs(second.x - target))[0]?.x ??
+      this.#clampToReach(previous, target, width);
+  }
+
+  /** Returns wall approach candidates. */
+  #getWallApproachCandidates(previous, entry, y, width, reserved, challenge) {
+    return this.#createSearchCandidates(width, 8)
       .filter((x) => this.#hasReservedClearance(
-        x, y, width, reservedPlatforms,
+        x, y, width, reserved,
       ))
-      .map((x) => this.#evaluateWallApproach(
-        previous, entry, x, y, width,
-      ))
+      .map((x) => this.#evaluateWallApproach(previous, entry, x, y, width))
       .filter(({ routeWindow, entryWindow }) => {
         return routeWindow.frameCount >= MINIMUM_SAFE_FRAMES[challenge.biomeId] &&
           entryWindow.frameCount >= 6;
-      })
-      .sort((first, second) => {
-        return Math.abs(first.x - target) - Math.abs(second.x - target);
       });
-    return candidates[0]?.x ?? this.#clampToReach(previous, target, width);
   }
 
+  /** Finds wall entry. */
   #findWallEntry(challenge, reservedPlatforms) {
     const anchorId = `${challenge.id}-${challenge.entrySide}-wall`;
     return reservedPlatforms.find((platform) => {
@@ -133,6 +149,7 @@ export class ProgressionRoutePositioner {
     });
   }
 
+  /** Evaluates wall approach. */
   #evaluateWallApproach(previous, entry, x, y, width) {
     return {
       x,
@@ -145,6 +162,7 @@ export class ProgressionRoutePositioner {
     };
   }
 
+  /** Clamps to reach. */
   #clampToReach(previous, target, width) {
     const minimum = previous.x - width - MAXIMUM_HORIZONTAL_EDGE_GAP;
     const maximum = previous.x + previous.width + MAXIMUM_HORIZONTAL_EDGE_GAP;
@@ -152,10 +170,12 @@ export class ProgressionRoutePositioner {
       maximum, this.worldWidth - width - 56);
   }
 
+  /** Clamps to world. */
   #clampToWorld(x, width) {
     return Math.min(Math.max(56, x), this.worldWidth - width - 56);
   }
 
+  /** Checks whether reserved clearance. */
   #hasReservedClearance(x, y, width, reservedPlatforms) {
     return reservedPlatforms.every((platform) => {
       if (Math.abs(platform.y - y) >= RESERVED_CLEARANCE) return true;

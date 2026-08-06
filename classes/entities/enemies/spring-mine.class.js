@@ -100,6 +100,7 @@ export class SpringMine extends Enemy {
     }
   }
 
+  /** Updates behavior. */
   #updateBehavior(deltaTimeSeconds, target) {
     if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
       if (this.isOnGround) this.#finishLeap();
@@ -112,6 +113,7 @@ export class SpringMine extends Enemy {
     this.#updateReadyState(deltaTimeSeconds, target);
   }
 
+  /** Updates ready state. */
   #updateReadyState(deltaTimeSeconds, target) {
     this.velocityX = 0;
     this.leapCooldownSecondsRemaining = Math.max(
@@ -121,6 +123,7 @@ export class SpringMine extends Enemy {
     if (this.#canPrepareLeap(target)) this.#prepareLeap(target);
   }
 
+  /** Checks whether prepare leap. */
   #canPrepareLeap(target) {
     if (!target || !this.isOnGround || this.leapCooldownSecondsRemaining > 0) {
       return false;
@@ -131,6 +134,7 @@ export class SpringMine extends Enemy {
       verticalDistance <= this.detectionHeightPixels;
   }
 
+  /** Prepares leap. */
   #prepareLeap(target) {
     const targetDirection = this.#getTargetCenterX(target) < this.#getCenterX()
       ? -1
@@ -142,6 +146,7 @@ export class SpringMine extends Enemy {
     this.startAttackState("attack");
   }
 
+  /** Launches operation. */
   #launch() {
     this.movementPhase = MOVEMENT_PHASES.AIRBORNE;
     this.velocityX = this.plannedDirection * this.jumpHorizontalSpeedPixelsPerSecond;
@@ -149,12 +154,14 @@ export class SpringMine extends Enemy {
     this.setAnimationState("jump");
   }
 
+  /** Finishes leap. */
   #finishLeap() {
     this.movementPhase = MOVEMENT_PHASES.READY;
     this.velocityX = 0;
     this.leapCooldownSecondsRemaining = this.jumpCooldownSeconds;
   }
 
+  /** Updates movement. */
   #updateMovement(deltaTimeSeconds, world, updateAnimation) {
     super.update(deltaTimeSeconds, world);
     if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
@@ -163,10 +170,12 @@ export class SpringMine extends Enemy {
     if (updateAnimation) this.updateAnimation(deltaTimeSeconds);
   }
 
+  /** Returns animation. */
   #getAnimation() {
     return this.movementPhase === MOVEMENT_PHASES.AIRBORNE ? "jump" : "idle";
   }
 
+  /** Draws warning. */
   #drawWarning(context) {
     const progress = 1 - this.attackSecondsRemaining / this.attackStateSeconds;
     const centerX = this.x + this.width / 2;
@@ -181,6 +190,7 @@ export class SpringMine extends Enemy {
     context.restore();
   }
 
+  /** Applies config. */
   #applyConfig(config) {
     this.jumpHorizontalSpeedPixelsPerSecond =
       config.jumpHorizontalSpeedPixelsPerSecond;
@@ -190,6 +200,7 @@ export class SpringMine extends Enemy {
     this.detectionHeightPixels = config.detectionHeightPixels;
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const values = [
       config?.jumpHorizontalSpeedPixelsPerSecond,
@@ -202,18 +213,22 @@ export class SpringMine extends Enemy {
     throw new TypeError("Die Bewegung der Sprungmine ist ungültig.");
   }
 
+  /** Returns center x. */
   #getCenterX() {
     return this.x + this.width / 2;
   }
 
+  /** Returns center y. */
   #getCenterY() {
     return this.y + this.height / 2;
   }
 
+  /** Returns target center x. */
   #getTargetCenterX(target) {
     return target.x + target.width / 2;
   }
 
+  /** Returns target center y. */
   #getTargetCenterY(target) {
     return target.y + target.height / 2;
   }

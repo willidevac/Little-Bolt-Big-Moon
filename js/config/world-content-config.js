@@ -1,3 +1,4 @@
+/** Performs the freeze list operation. */
 const freezeList = (values) => Object.freeze(values.map(Object.freeze));
 
 export const EXPLORATION_CONFIG = Object.freeze({
@@ -72,14 +73,17 @@ export const PLATFORM_MECHANIC_CONFIG = Object.freeze({
   }),
 });
 
+/** Performs the item operation. */
 function item(type, position) {
   return { type, visualType: type, amount: type === "energy" ? 25 : 1, position };
 }
 
+/** Performs the weapon operation. */
 function weapon(weaponId, position, amount = 1) {
   return { type: "weapon", visualType: weaponId, weaponId, amount, position };
 }
 
+/** Performs the badge operation. */
 function badge(badgePart, position) {
   return {
     type: "storyBadge", visualType: "storyBadge",

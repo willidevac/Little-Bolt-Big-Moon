@@ -66,6 +66,7 @@ export class LocalizationController {
     });
   }
 
+  /** Returns control. */
   #getControl() {
     const control = this.root.querySelector(LANGUAGE_SELECTOR);
     if (control instanceof HTMLSelectElement) return control;

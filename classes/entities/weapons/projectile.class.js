@@ -88,6 +88,7 @@ export class Projectile extends MovableObject {
     return true;
   }
 
+  /** Applies visual data. */
   #setVisualData(config) {
     this.width = config.sprite.frameWidth * config.renderScale;
     this.height = config.sprite.frameHeight * config.renderScale;
@@ -96,6 +97,7 @@ export class Projectile extends MovableObject {
     this.animationFrameCount = config.animationFrameCount;
   }
 
+  /** Applies runtime data. */
   #setRuntimeData(data, config) {
     const direction = this.#normalizeDirection(data.direction);
     this.team = data.team;
@@ -111,6 +113,7 @@ export class Projectile extends MovableObject {
     this.isExpired = false;
   }
 
+  /** Applies start position. */
   #setStartPosition(origin, originOffsetY) {
     this.x = this.velocityX >= 0 ? origin.x : origin.x - this.width;
     this.y = origin.y - this.height * originOffsetY;
@@ -118,6 +121,7 @@ export class Projectile extends MovableObject {
     this.previousY = this.y;
   }
 
+  /** Updates animation. */
   #updateAnimation(deltaTimeSeconds) {
     this.animationSeconds += deltaTimeSeconds;
     const offset = Math.floor(
@@ -126,6 +130,7 @@ export class Projectile extends MovableObject {
     this.setFrameIndex(this.animationStartFrame + offset);
   }
 
+  /** Updates lifetime. */
   #updateLifetime(deltaTimeSeconds) {
     const hasElapsed = deltaTimeSeconds + LIFETIME_EPSILON_SECONDS >=
       this.lifetimeSecondsRemaining;
@@ -134,6 +139,7 @@ export class Projectile extends MovableObject {
       : this.lifetimeSecondsRemaining - deltaTimeSeconds;
   }
 
+  /** Checks the outside world condition. */
   #isOutsideWorld(worldConfig) {
     if (this.lifetimeSecondsRemaining <= 0) return true;
     const padding = this.worldPaddingPixels;
@@ -144,6 +150,7 @@ export class Projectile extends MovableObject {
     return outsideX || outsideY;
   }
 
+  /** Returns previous bounds. */
   #getPreviousBounds(current) {
     return {
       x: this.previousX + (current.x - this.x),
@@ -153,6 +160,7 @@ export class Projectile extends MovableObject {
     };
   }
 
+  /** Performs the normalize direction operation. */
   #normalizeDirection(direction) {
     const length = Math.hypot(direction.x, direction.y);
     return Object.freeze({
@@ -161,6 +169,7 @@ export class Projectile extends MovableObject {
     });
   }
 
+  /** Validates inputs. */
   #validateInputs(data, runtime, visual) {
     const dataNumbers = [data?.damage, data?.origin?.x, data?.origin?.y,
       data?.direction?.x, data?.direction?.y];
@@ -176,10 +185,12 @@ export class Projectile extends MovableObject {
     throw new TypeError("Die Projektilkonfiguration ist unvollständig.");
   }
 
+  /** Checks the valid runtime condition. */
   #hasValidRuntime(values) {
     return values.every((value) => Number.isFinite(value) && value > 0);
   }
 
+  /** Checks the valid visual condition. */
   #hasValidVisual(config) {
     const values = [config?.renderScale, config?.originOffsetY,
       config?.animationStartFrame, config?.animationFrameCount];
@@ -195,6 +206,7 @@ export class Projectile extends MovableObject {
     return hasValues && config?.sprite && config?.collisionBox;
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

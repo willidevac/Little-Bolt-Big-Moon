@@ -77,17 +77,20 @@ export class GameLoop {
     return Math.min(elapsed, this.#maximumDeltaTimeMilliseconds) / 1000;
   }
 
+  /** Performs the request next frame operation. */
   #requestNextFrame() {
     if (!this.#isRunning || this.#animationFrameId !== null) return;
     this.#animationFrameId = this.#requestFrame(this.#boundFrame);
   }
 
+  /** Cancels the scheduled animation frame when present. */
   #cancelScheduledFrame() {
     if (this.#animationFrameId === null) return;
     this.#cancelFrame(this.#animationFrameId);
     this.#animationFrameId = null;
   }
 
+  /** Clears runtime. */
   #resetRuntime() {
     this.#isRunning = false;
     this.#animationFrameId = null;

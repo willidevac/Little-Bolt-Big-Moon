@@ -43,6 +43,7 @@ export class CombatSystem {
     this.knockbackMultiplier = 1;
   }
 
+  /** Returns reaction config. */
   #getReactionConfig() {
     return Object.freeze({
       ...this.config,
@@ -53,6 +54,7 @@ export class CombatSystem {
     });
   }
 
+  /** Validates hit. */
   #validateHit(hit) {
     const hasDamage = Number.isFinite(hit?.amount) && hit.amount > 0;
     const hasDirection = Number.isFinite(hit?.direction) &&

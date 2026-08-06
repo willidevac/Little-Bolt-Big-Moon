@@ -31,12 +31,14 @@ export class WorldSceneBuilder {
     return character;
   }
 
+  /** Applies level entities. */
   #addLevelEntities(world, groupName, propertyName) {
     const entities = this.level?.[propertyName];
     if (!Array.isArray(entities)) return;
     entities.forEach((entity) => world.addEntity(groupName, entity));
   }
 
+  /** Performs the ensure character operation. */
   #ensureCharacter(world) {
     const characters = world.getEntities(WORLD_ENTITY_GROUPS.CHARACTERS);
     if (characters.length > 0) return characters[0];
@@ -47,6 +49,7 @@ export class WorldSceneBuilder {
     return character;
   }
 
+  /** Performs the ensure platform operation. */
   #ensurePlatform(world) {
     const platforms = world.getEntities(WORLD_ENTITY_GROUPS.PLATFORMS);
     const structures = world.getEntities(WORLD_ENTITY_GROUPS.STRUCTURES);

@@ -29,10 +29,15 @@ export class MechanicPlatformBuilder {
       kind: definition.kind ?? "mechanic-platform",
       platformRole: definition.mechanic,
     });
-    const spriteConfig = definition.mechanic === "crane"
+    const spriteConfig = this.#getSpriteConfig(definition);
+    return new PlatformType(data, spriteConfig);
+  }
+
+  /** Returns sprite config. */
+  #getSpriteConfig(definition) {
+    return definition.mechanic === "crane"
       ? getCranePlatformSpriteConfig(definition.biomeId)
       : MECHANIC_PLATFORM_SPRITES[definition.mechanic];
-    return new PlatformType(data, spriteConfig);
   }
 
   /** @returns {ReadonlyArray<object>} The first gradual mechanic examples. */

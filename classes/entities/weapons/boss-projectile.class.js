@@ -55,6 +55,7 @@ export class BossProjectile extends Projectile {
   }
 }
 
+/** Creates projectile data. */
 function createProjectileData(attackEvent) {
   return {
     team: "enemy",

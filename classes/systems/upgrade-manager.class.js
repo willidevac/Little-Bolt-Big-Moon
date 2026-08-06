@@ -36,6 +36,7 @@ export class UpgradeManager {
     this.reset();
   }
 
+  /** Creates map. */
   #createMap(entries) {
     return new Map(
       entries.map((entry) => [entry.id, Object.freeze({ ...entry })]),
@@ -91,6 +92,7 @@ export class UpgradeManager {
     this.#selection = Object.freeze([]);
   }
 
+  /** Creates snapshot. */
   #createSnapshot(upgrade) {
     return Object.freeze({
       id: upgrade.id,
@@ -106,6 +108,7 @@ export class UpgradeManager {
     });
   }
 
+  /** Draws weighted. */
   #drawWeighted(upgrades) {
     const pool = [...upgrades];
     const selection = [];
@@ -116,6 +119,7 @@ export class UpgradeManager {
     return selection;
   }
 
+  /** Returns weighted index. */
   #getWeightedIndex(upgrades) {
     const weights = upgrades.map((upgrade) => this.#getWeight(upgrade));
     const target = this.#getRandomValue() * weights.reduce((sum, value) => sum + value, 0);
@@ -127,15 +131,18 @@ export class UpgradeManager {
     return weights.length - 1;
   }
 
+  /** Returns weight. */
   #getWeight(upgrade) {
     return this.#rarities.get(upgrade.rarity).weight;
   }
 
+  /** Validates dependencies. */
   #validateDependencies(data, effects, random) {
     if (this.#hasValidData(data) && this.#hasValidEffects(effects, random)) return;
     throw new TypeError("Die Upgrade-Daten sind unvollständig oder ungültig.");
   }
 
+  /** Checks the valid data condition. */
   #hasValidData(data) {
     const upgrades = data?.upgrades;
     const ids = Array.isArray(upgrades) ? upgrades.map((upgrade) => upgrade.id) : [];
@@ -150,12 +157,14 @@ export class UpgradeManager {
       this.#hasValidIconSheet(data.iconSheet);
   }
 
+  /** Checks the valid selection size condition. */
   #hasValidSelectionSize(selectionSize, upgradeCount) {
     return Number.isInteger(selectionSize) &&
       selectionSize > 0 &&
       selectionSize <= upgradeCount;
   }
 
+  /** Checks the valid effects condition. */
   #hasValidEffects(effects, random) {
     const hasEffects = REQUIRED_UPGRADE_IDS.every((id) => {
       return typeof effects?.[id] === "function";
@@ -163,12 +172,14 @@ export class UpgradeManager {
     return hasEffects && typeof random === "function";
   }
 
+  /** Returns random value. */
   #getRandomValue() {
     const value = this.#random();
     if (Number.isFinite(value) && value >= 0 && value < 1) return value;
     throw new RangeError("Die Zufallsfunktion muss einen Wert von 0 bis unter 1 liefern.");
   }
 
+  /** Checks the valid definitions condition. */
   #hasValidDefinitions(upgrades) {
     return upgrades.every((upgrade) => {
       const hasText = [upgrade.id, upgrade.name, upgrade.description].every((value) => {
@@ -182,6 +193,7 @@ export class UpgradeManager {
     });
   }
 
+  /** Checks the valid rarities condition. */
   #hasValidRarities(rarities) {
     if (!Array.isArray(rarities)) return false;
     const ids = rarities.map((rarity) => rarity.id);
@@ -191,6 +203,7 @@ export class UpgradeManager {
       rarities.every((rarity) => Number.isFinite(rarity.weight) && rarity.weight > 0);
   }
 
+  /** Checks the valid icon sheet condition. */
   #hasValidIconSheet(iconSheet) {
     return typeof iconSheet?.source === "string" &&
       Number.isFinite(iconSheet.frameWidth) &&

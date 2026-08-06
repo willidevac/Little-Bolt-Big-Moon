@@ -97,12 +97,14 @@ export class Weapon {
     });
   }
 
+  /** Creates attack. */
   #createAttack(character) {
     const direction = Math.sign(character.facingDirection) || 1;
     const origin = this.#createOrigin(character, direction);
     return Object.freeze(this.#createAttackDetails(origin, direction));
   }
 
+  /** Creates attack details. */
   #createAttackDetails(origin, direction) {
     return {
       weaponId: this.id,
@@ -118,11 +120,13 @@ export class Weapon {
     };
   }
 
+  /** Creates origin. */
   #createOrigin(character, direction) {
     const x = direction > 0 ? character.x + character.width : character.x;
     return Object.freeze({ x, y: character.y + this.attackOffsetY });
   }
 
+  /** Creates hitbox. */
   #createHitbox(origin, direction) {
     if (this.type !== "melee") return null;
     const x = direction > 0 ? origin.x : origin.x - this.attackWidth;
@@ -134,11 +138,13 @@ export class Weapon {
     });
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     if (this.#isValidConfig(config)) return;
     throw new TypeError("Die Waffenkonfiguration ist ungültig.");
   }
 
+  /** Checks the valid config condition. */
   #isValidConfig(config) {
     const hasAmmo = Number.isInteger(config?.ammoCost) && config.ammoCost >= 0;
     const hasAmmoType = config?.ammoCost === 0
@@ -154,16 +160,19 @@ export class Weapon {
     );
   }
 
+  /** Checks the valid projectile kind condition. */
   #hasValidProjectileKind(config) {
     if (config.type === "melee") return true;
     return PROJECTILE_KINDS.includes(config.projectileKind);
   }
 
+  /** Checks the valid text condition. */
   #hasValidText(config) {
     const textValues = [config?.id, config?.name, config?.animationState];
     return textValues.every((value) => typeof value === "string" && value);
   }
 
+  /** Checks the valid numbers condition. */
   #hasValidNumbers(config) {
     const numberValues = [
       config?.damage,
@@ -176,6 +185,7 @@ export class Weapon {
     return numberValues.every((value) => Number.isFinite(value) && value > 0);
   }
 
+  /** Validates character. */
   #validateCharacter(character) {
     const values = [
       character?.x,

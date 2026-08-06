@@ -37,15 +37,25 @@ export class Game {
     this.config = config;
     this.#dependencies = dependencies;
     this.#initializeRuntime(inputTarget);
-    const systems = dependencies.createCombatSystems(config, this);
+    this.#initializeCombatSystems(dependencies.createCombatSystems(config, this));
+    this.#initializeResetController(dependencies);
+  }
+
+  /** Initializes combat systems. */
+  #initializeCombatSystems(systems) {
     this.combatSystem = systems.combatSystem;
     this.weaponSystem = systems.weaponSystem;
     this.upgradeFlow = systems.upgradeFlow;
+  }
+
+  /** Initializes reset controller. */
+  #initializeResetController(dependencies) {
     this.#runResetController = dependencies.createResetController(
       this, () => this.#createWorld(),
     );
   }
 
+  /** Initializes runtime. */
   #initializeRuntime(inputTarget) {
     this.isInitialized = false;
     this.#stateMachine = new GameStateMachine();
@@ -259,6 +269,7 @@ export class Game {
     if (!this.isRunning) this.start();
   }
 
+  /** Updates process frame. */
   #processFrame(deltaTime) {
     this.#handleStateInput();
     if (this.#isPlaying()) this.update(deltaTime);
@@ -318,6 +329,7 @@ export class Game {
     return this.#stateMachine.transitionTo(nextState);
   }
 
+  /** Performs the reflect state operation. */
   #reflectState(state) {
     this.canvas.dataset.gameState = state;
   }
@@ -327,6 +339,7 @@ export class Game {
     if (this.keyboard.consumePress("pause")) this.togglePause();
   }
 
+  /** Performs the open wave upgrade operation. */
   #openWaveUpgrade() {
     if (!this.#isPlaying() || !this.upgradeFlow.openFrom(this.world)) return;
     this.keyboard.reset();
@@ -353,6 +366,7 @@ export class Game {
     return this.#setGameState(endState);
   }
 
+  /** Handles death zone. */
   #handleDeathZone() {
     if (this.world.character?.die()) {
       this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLAYER_DEATH);

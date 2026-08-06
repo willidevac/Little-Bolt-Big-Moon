@@ -29,64 +29,105 @@ export function createLevelOne(enemyConfig = GAME_CONFIG.enemies) {
   validateLevelData(levelData);
   const sections = Object.freeze(levelData.sections.map(createSection));
   const prototype = new ScrapyardPrototypeBuilder();
+  const routePlatforms = buildRoute(sections, prototype);
+  return assembleLevel(sections, prototype, routePlatforms, enemyConfig);
+}
+
+/** Creates build route. */
+function buildRoute(sections, prototype) {
   const prototypePlatforms = prototype.buildPlatforms();
   const wallPlatforms = new SparseWallPlatformBuilder(levelData.width)
     .build(sections);
-  const lastTutorialPlatform = prototypePlatforms
-    .filter(({ routeRole }) => routeRole === "main")
-    .sort((first, second) => first.routeOrder - second.routeOrder)
-    .at(-1);
+  const lastTutorialPlatform = getLastTutorialPlatform(prototypePlatforms);
   const progression = new ProgressionRouteBuilder(levelData.width).build(
     sections, wallPlatforms, lastTutorialPlatform,
   );
-  const routePlatforms = Object.freeze([
-    ...wallPlatforms,
-    ...prototypePlatforms,
-    ...progression,
-  ]);
+  return Object.freeze([...wallPlatforms, ...prototypePlatforms, ...progression]);
+}
+
+/** Returns last tutorial platform. */
+function getLastTutorialPlatform(platforms) {
+  return platforms.filter(({ routeRole }) => routeRole === "main")
+    .sort((first, second) => first.routeOrder - second.routeOrder).at(-1);
+}
+
+/** Creates assemble level. */
+function assembleLevel(sections, prototype, routePlatforms, enemyConfig) {
   const boss = new FinalBossBuilder().build();
-  const structures = Object.freeze([
+  const structures = createStructures(sections, prototype, routePlatforms, boss);
+  const { platforms, collectables } = createItems(routePlatforms);
+  const content = createLevelContent(platforms, collectables, enemyConfig);
+  return createLevelResult(
+    sections, structures, platforms, collectables,
+    content.storyProps, content.encounters, boss,
+  );
+}
+
+/** Creates items. */
+function createItems(routePlatforms) {
+  const itemPlacement = new ItemPlacementBuilder();
+  const routeCollectables = itemPlacement.build(routePlatforms);
+  const platforms = createPlatforms(routePlatforms, routeCollectables);
+  const collectables = createCollectables(
+    itemPlacement, platforms, routePlatforms, routeCollectables,
+  );
+  return Object.freeze({ platforms, collectables });
+}
+
+/** Creates level content. */
+function createLevelContent(platforms, collectables, enemyConfig) {
+  const storyProps = new StoryPropBuilder().build(platforms, collectables);
+  const encounters = new CombatEncounterBuilder(levelData.width)
+    .build(platforms, enemyConfig);
+  return Object.freeze({ storyProps, encounters });
+}
+
+/** Creates structures. */
+function createStructures(sections, prototype, routePlatforms, boss) {
+  return Object.freeze([
     ...new ThinWallBuilder(levelData.width).build(sections),
     ...new EarlyTrickshotWallBuilder().build(sections, routePlatforms),
     ...new JumpWindowBuilder(levelData.width).build(sections, routePlatforms),
     ...prototype.buildStructures(),
     ...boss.structures,
   ]);
-  const itemPlacement = new ItemPlacementBuilder();
-  const routeCollectables = itemPlacement.build(routePlatforms);
+}
+
+/** Creates platforms. */
+function createPlatforms(routePlatforms, routeCollectables) {
   const firstWeapon = routeCollectables.find(({ weaponId }) => {
     return weaponId === "boltThrower";
   });
   const explorationPlatforms = new ExplorationAreaBuilder(levelData.width)
     .build(routePlatforms, firstWeapon);
-  const platforms = Object.freeze([...routePlatforms, ...explorationPlatforms]);
-  const collectables = Object.freeze([
-    ...routeCollectables,
-    ...itemPlacement.buildSearchRewards(explorationPlatforms),
-    ...itemPlacement.buildPreBossSupply(routePlatforms, routeCollectables),
+  return Object.freeze([...routePlatforms, ...explorationPlatforms]);
+}
+
+/** Creates collectables. */
+function createCollectables(itemPlacement, platforms, route, existing) {
+  return Object.freeze([
+    ...existing,
+    ...itemPlacement.buildSearchRewards(platforms),
+    ...itemPlacement.buildPreBossSupply(route, existing),
   ]);
-  const storyProps = new StoryPropBuilder().build(platforms, collectables);
-  const encounters = new CombatEncounterBuilder(levelData.width)
-    .build(platforms, enemyConfig);
+}
+
+/** Creates level result. */
+function createLevelResult(sections, structures, platforms, collectables,
+  storyProps, encounters, boss) {
+  const combatZones = Object.freeze([
+    ...encounters.combatZones, ...boss.combatZones,
+  ]);
+  const enemies = Object.freeze([...encounters.enemies, ...boss.enemies]);
   return Object.freeze({
-    id: levelData.id,
-    width: levelData.width,
-    height: levelData.height,
+    id: levelData.id, width: levelData.width, height: levelData.height,
     playerStart: Object.freeze({ ...levelData.playerStart }),
-    sections,
-    structures,
-    platforms,
-    collectables,
-    storyProps,
-    hazards: Object.freeze([]),
-    combatZones: Object.freeze([
-      ...encounters.combatZones,
-      ...boss.combatZones,
-    ]),
-    enemies: Object.freeze([...encounters.enemies, ...boss.enemies]),
+    sections, structures, platforms, collectables, storyProps,
+    hazards: Object.freeze([]), combatZones, enemies,
   });
 }
 
+/** Creates section. */
 function createSection(section) {
   return Object.freeze({
     ...section,
@@ -99,6 +140,7 @@ function createSection(section) {
   });
 }
 
+/** Validates level data. */
 function validateLevelData(data) {
   const values = [data?.width, data?.height,
     data?.playerStart?.x, data?.playerStart?.y];

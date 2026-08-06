@@ -67,6 +67,7 @@ export class RunCombo {
     });
   }
 
+  /** Updates timer. */
   #updateTimer(deltaTimeSeconds) {
     if (this.remainingSeconds <= 0) return false;
     this.remainingSeconds = Math.max(0, this.remainingSeconds - deltaTimeSeconds);
@@ -74,6 +75,7 @@ export class RunCombo {
     return this.break();
   }
 
+  /** Updates fall. */
   #updateFall(heightLossPixels) {
     this.fallAnchorPixels = Math.min(this.fallAnchorPixels, heightLossPixels);
     const distance = heightLossPixels - this.fallAnchorPixels;
@@ -83,12 +85,14 @@ export class RunCombo {
     return changed;
   }
 
+  /** Validates update. */
   #validateUpdate(deltaTimeSeconds, heightLossPixels) {
     const values = [deltaTimeSeconds, heightLossPixels];
     if (values.every((value) => Number.isFinite(value) && value >= 0)) return;
     throw new TypeError("Combo-Zeit und Höhenverlust müssen positiv sein.");
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const values = [
       config?.windowSeconds,

@@ -55,6 +55,7 @@ export class FeedbackBurst {
     context.restore();
   }
 
+  /** Draws particle. */
   #drawParticle(context, index, progress) {
     const angleStep = this.config.arc / Math.max(1, this.config.count - 1);
     const angle = this.config.startAngle + angleStep * index;
@@ -70,12 +71,14 @@ export class FeedbackBurst {
     );
   }
 
+  /** Returns anchor y. */
   #getAnchorY(target) {
     return this.config.anchor === "feet"
       ? target.y + target.height
       : target.y + target.height / 2;
   }
 
+  /** Validates target. */
   #validateTarget(target) {
     const values = [target?.x, target?.y, target?.width, target?.height];
     if (values.every(Number.isFinite)) return;

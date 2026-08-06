@@ -27,6 +27,7 @@ export class CollisionDebugRenderer {
     context.restore();
   }
 
+  /** Draws entity. */
   #drawEntity(context, entity) {
     if (typeof entity.getCollisionBoundsList === "function") {
       entity.getCollisionBoundsList().forEach((bounds) => {
@@ -40,6 +41,7 @@ export class CollisionDebugRenderer {
     this.#strokeBounds(context, entity.getStompBounds(), STOMP_BOX_COLOR);
   }
 
+  /** Performs the stroke bounds operation. */
   #strokeBounds(context, bounds, color) {
     context.strokeStyle = color;
     context.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);

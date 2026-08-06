@@ -56,6 +56,11 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
   draw(context) {
     if (this.state === FALLING_PLATFORM_STATES.FALLEN) return;
     if (this.state !== FALLING_PLATFORM_STATES.WARNING) return super.draw(context);
+    this.#drawWarning(context);
+  }
+
+  /** Draws warning. */
+  #drawWarning(context) {
     const shake = Math.sin(this.warningElapsedSeconds * Math.PI * 16) * 3;
     context.save();
     context.translate(shake, 0);
@@ -70,6 +75,7 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
+  /** Updates warning. */
   #updateWarning(deltaTimeSeconds, world) {
     this.warningElapsedSeconds += deltaTimeSeconds;
     this.warningSecondsRemaining -= deltaTimeSeconds;
@@ -80,6 +86,7 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     if (overflow > 0) this.#fall(overflow, world);
   }
 
+  /** Performs operation. */
   #fall(deltaTimeSeconds, world) {
     const previousY = this.y;
     const worldHeight = world?.config?.world?.height;
@@ -95,6 +102,7 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     this.respawnSecondsRemaining = this.respawnDelaySeconds;
   }
 
+  /** Updates respawn. */
   #updateRespawn(deltaTimeSeconds) {
     this.respawnSecondsRemaining -= deltaTimeSeconds;
     if (this.respawnSecondsRemaining > 0) return;
@@ -104,6 +112,7 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     this.state = FALLING_PLATFORM_STATES.STABLE;
   }
 
+  /** Validates fall. */
   #validateFall(fall) {
     const values = [fall?.warningDelaySeconds, fall?.speedPixelsPerSecond,
       fall?.maximumDropPixels, fall?.respawnDelaySeconds];

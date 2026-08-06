@@ -135,6 +135,7 @@ export class RunResources {
     });
   }
 
+  /** Applies pickup. */
   #applyPickup(pickup) {
     const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
     if (NON_RESOURCE_TYPES.includes(pickup?.type)) return false;
@@ -146,6 +147,7 @@ export class RunResources {
     return this.#values[statName] !== previousValue;
   }
 
+  /** Returns pickup value. */
   #getPickupValue(statName, amount) {
     const capacityName = CAPACITY_BY_STAT[statName];
     if (!capacityName) return this.#values[statName] + amount;
@@ -154,6 +156,7 @@ export class RunResources {
     );
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const values = [
       config?.maximumEnergy, config?.startingEnergy, config?.startingGears,
@@ -166,11 +169,13 @@ export class RunResources {
     this.#validateArcCharges(config);
   }
 
+  /** Validates energy. */
   #validateEnergy(config) {
     if (config.startingEnergy <= config.maximumEnergy) return;
     throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
   }
 
+  /** Validates arc charges. */
   #validateArcCharges(config) {
     this.#validateRange(
       config.startingArcCharges, config.maximumArcCharges,
@@ -178,18 +183,21 @@ export class RunResources {
     );
   }
 
+  /** Validates range. */
   #validateRange(starting, maximum, message) {
     const hasIntegers = Number.isInteger(starting) && Number.isInteger(maximum);
     if (hasIntegers && maximum > 0 && starting >= 0 && starting <= maximum) return;
     throw new RangeError(message);
   }
 
+  /** Validates spend. */
   #validateSpend(type, amount) {
     const hasType = SPENDABLE_TYPES.includes(type);
     if (hasType && Number.isInteger(amount) && amount >= 0) return;
     throw new TypeError("Der Munitionsverbrauch ist ungültig.");
   }
 
+  /** Validates upgrade. */
   #validateUpgrade(type, amount) {
     const canGrow = Object.hasOwn(CAPACITY_BY_STAT, STAT_BY_PICKUP_TYPE[type]);
     if (canGrow && Number.isFinite(amount) && amount > 0) return;

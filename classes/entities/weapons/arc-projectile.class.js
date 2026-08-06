@@ -50,6 +50,7 @@ export class ArcProjectile extends Projectile {
   }
 }
 
+/** Creates projectile data. */
 function createProjectileData(attack) {
   return {
     team: "player",
@@ -60,6 +61,7 @@ function createProjectileData(attack) {
   };
 }
 
+/** Validates arc inputs. */
 function validateArcInputs(attack, config) {
   const hasAttack = attack?.type === "projectile" &&
     attack.projectileKind === "arc" &&

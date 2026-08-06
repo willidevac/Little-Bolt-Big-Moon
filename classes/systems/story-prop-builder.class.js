@@ -16,37 +16,55 @@ export class StoryPropBuilder {
     );
     const usedAnchorIds = new Set();
     const storyProps = STORY_PLAN.map((definition, index) => {
-      const config = STORY_PROP_CONFIGS[definition.type];
-      const anchor = this.#selectAnchor(
-        platforms, definition, config, occupiedAnchorIds, usedAnchorIds,
-      );
-      usedAnchorIds.add(anchor.id);
-      return this.#create(definition, index, config, anchor);
+      return this.#buildProp(platforms, definition, index, occupiedAnchorIds,
+        usedAnchorIds);
     });
     return Object.freeze(storyProps);
   }
 
+  /** Builds prop. */
+  #buildProp(platforms, definition, index, occupied, used) {
+    const config = STORY_PROP_CONFIGS[definition.type];
+    const anchor = this.#selectAnchor(
+      platforms, definition, config, occupied, used,
+    );
+    used.add(anchor.id);
+    return this.#create(definition, index, config, anchor);
+  }
+
+  /** Selects anchor. */
   #selectAnchor(platforms, definition, config, occupiedAnchorIds, usedAnchorIds) {
     const minimumWidth = config.sprite.frameWidth * config.renderScale + 24;
-    const isEligible = (platform) => {
-      return platform.biomeId === definition.biomeId &&
-        platform.width >= minimumWidth && !platform.mechanic &&
-        !platform.requiresWallBounce && !platform.preparesWallBounce &&
-        !occupiedAnchorIds.has(platform.id) && !usedAnchorIds.has(platform.id) &&
-        typeof platform.getFrameDisplacement === "function";
-    };
-    const candidates = platforms.filter((platform) => {
-      const hasSafeRole = platform.routeRole === "main" ||
-        platform.routeRole === "boss-arena-support";
-      return hasSafeRole && isEligible(platform);
-    }).sort((first, second) => {
-      return Math.abs(first.y - definition.targetY) -
-        Math.abs(second.y - definition.targetY);
-    });
+    const candidates = this.#getCandidates(platforms, definition, minimumWidth,
+      occupiedAnchorIds, usedAnchorIds);
     if (candidates[0]) return candidates[0];
     throw new RangeError(`Keine sichere Plattform für ${definition.type}.`);
   }
 
+  /** Returns candidates. */
+  #getCandidates(platforms, definition, minimumWidth, occupied, used) {
+    return platforms.filter((platform) => {
+      const hasSafeRole = platform.routeRole === "main" ||
+        platform.routeRole === "boss-arena-support";
+      return hasSafeRole && this.#isEligible(
+        platform, definition, minimumWidth, occupied, used,
+      );
+    }).sort((first, second) => {
+      return Math.abs(first.y - definition.targetY) -
+        Math.abs(second.y - definition.targetY);
+    });
+  }
+
+  /** Checks whether eligible. */
+  #isEligible(platform, definition, minimumWidth, occupied, used) {
+    return platform.biomeId === definition.biomeId &&
+      platform.width >= minimumWidth && !platform.mechanic &&
+      !platform.requiresWallBounce && !platform.preparesWallBounce &&
+      !occupied.has(platform.id) && !used.has(platform.id) &&
+      typeof platform.getFrameDisplacement === "function";
+  }
+
+  /** Creates operation. */
   #create(definition, index, config, anchor) {
     const width = config.sprite.frameWidth * config.renderScale;
     const data = Object.freeze({

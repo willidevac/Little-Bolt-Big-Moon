@@ -6,6 +6,7 @@ import { translate } from "../../js/i18n/localization.js";
 import { FallFeedback } from "./fall-feedback.class.js";
 import { HudAnnouncement } from "./hud-announcement.class.js";
 
+/** Applies text. */
 function setText(element, value) {
   const text = String(value);
   if (element.textContent !== text) element.textContent = text;
@@ -37,6 +38,7 @@ export class HudFeedbackController {
     this.fallFeedback.destroy();
   }
 
+  /** Handles announcement. */
   #handleAnnouncement(event) {
     if (event.type === GAMEPLAY_EVENTS.PICKUP) {
       this.announcement.showPickup(event.detail);
@@ -49,6 +51,7 @@ export class HudFeedbackController {
     return this.#handlePathOpened(event);
   }
 
+  /** Handles path opened. */
   #handlePathOpened(event) {
     const pathOpened = event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
       event.detail?.unlockPlatformId;
@@ -59,6 +62,7 @@ export class HudFeedbackController {
     return true;
   }
 
+  /** Draws render jump charge. */
   #renderJumpCharge(charge) {
     const percent = Math.max(0, Math.min(100, charge.percent));
     this.elements.jumpCharge.hidden = !charge.isCharging;
@@ -66,6 +70,7 @@ export class HudFeedbackController {
     this.#renderJumpChargeText(percent);
   }
 
+  /** Draws render jump charge text. */
   #renderJumpChargeText(percent) {
     this.elements.jumpChargeBar.setAttribute(
       "aria-valuetext",

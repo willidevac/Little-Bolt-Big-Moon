@@ -19,11 +19,13 @@ export function createGameCombatSystems(config, dependencies) {
   return { combatSystem, weaponSystem, upgradeFlow };
 }
 
+/** Creates upgrade flow. */
 function createUpgradeFlow(combatSystem, weaponSystem, dependencies) {
   return new RunUpgradeFlow(upgradeData, {
     runStats: dependencies.runStats,
     weaponSystem,
     combatSystem,
+    /** Returns character. */
     getCharacter: () => dependencies.world.character,
   });
 }

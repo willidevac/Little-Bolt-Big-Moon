@@ -64,12 +64,14 @@ export class GameDialogController {
     if (restoreFocus) this.#restorePreviousFocus();
   }
 
+  /** Performs the close from key operation. */
   #closeFromKey(event) {
     event.preventDefault();
     event.stopPropagation();
     this.close();
   }
 
+  /** Returns dialog. */
   #getDialog(name) {
     const dialog = this.dialogs.find((element) => {
       return element instanceof HTMLElement && element.dataset.gameDialog === name;
@@ -78,6 +80,7 @@ export class GameDialogController {
     throw new Error(`Dialog nicht gefunden: ${name}`);
   }
 
+  /** Performs the trap focus operation. */
   #trapFocus(event) {
     const focusable = [...this.activeDialog.querySelectorAll(FOCUSABLE_SELECTOR)];
     if (focusable.length === 0) return;
@@ -88,29 +91,34 @@ export class GameDialogController {
     if (!event.shiftKey && active === last) this.#moveFocus(event, first);
   }
 
+  /** Performs the move focus operation. */
   #moveFocus(event, target) {
     if (!(target instanceof HTMLElement)) return;
     event.preventDefault();
     target.focus();
   }
 
+  /** Applies background inert. */
   #setBackgroundInert(isInert) {
     this.backgroundElements.forEach((element) => {
       element.inert = isInert;
     });
   }
 
+  /** Performs the restore previous focus operation. */
   #restorePreviousFocus() {
     if (this.previousFocus instanceof HTMLElement) this.previousFocus.focus();
     this.previousFocus = null;
   }
 
+  /** Returns dialog focus. */
   #getDialogFocus(dialog) {
     const element = dialog.querySelector(DIALOG_FOCUS_SELECTOR);
     if (element instanceof HTMLElement) return element;
     throw new Error(`UI-Element nicht gefunden: ${DIALOG_FOCUS_SELECTOR}`);
   }
 
+  /** Validates dependencies. */
   #validateDependencies(root, backgroundElements) {
     const hasRoot = root instanceof HTMLElement;
     const hasBackgrounds = Array.isArray(backgroundElements) &&

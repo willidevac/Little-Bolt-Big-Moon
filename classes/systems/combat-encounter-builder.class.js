@@ -39,10 +39,7 @@ export class CombatEncounterBuilder {
   /** @returns {Readonly<{enemies:ReadonlyArray,combatZones:ReadonlyArray}>} */
   build(platforms, enemyConfig) {
     this.#validateInputs(platforms, enemyConfig);
-    const stages = platforms.filter(({ kind }) => {
-      return kind === "combat-staging-platform";
-    }).sort((first, second) => this.#getStageNumber(first) -
-      this.#getStageNumber(second));
+    const stages = this.#getStages(platforms);
     const encounters = stages.map((stage, stageIndex) => {
       return this.#createEncounter(
         stage, stageIndex, enemyConfig, platforms,
@@ -54,8 +51,23 @@ export class CombatEncounterBuilder {
     });
   }
 
+  /** Returns stages. */
+  #getStages(platforms) {
+    return platforms.filter(({ kind }) => kind === "combat-staging-platform")
+      .sort((first, second) => this.#getStageNumber(first) -
+        this.#getStageNumber(second));
+  }
+
+  /** Creates encounter. */
   #createEncounter(stage, stageIndex, config, platforms) {
     const profile = ENCOUNTER_PROFILES[stageIndex];
+    const enemies = this.#createEnemies(profile, stage, stageIndex, config);
+    const zone = this.#createZone(stage, stageIndex, platforms, enemies);
+    return Object.freeze({ enemies: Object.freeze(enemies), zone });
+  }
+
+  /** Creates enemies. */
+  #createEnemies(profile, stage, stageIndex, config) {
     const groundCount = profile.filter((type) => type !== "droneGuard").length;
     const droneCount = profile.length - groundCount;
     let groundIndex = 0;
@@ -67,7 +79,12 @@ export class CombatEncounterBuilder {
       return this.#createEnemy(type, stage, stageIndex, enemyIndex,
         placement, config[type]);
     });
-    const zone = new CombatZone(Object.freeze({
+    return enemies;
+  }
+
+  /** Creates zone. */
+  #createZone(stage, stageIndex, platforms, enemies) {
+    return new CombatZone(Object.freeze({
       id: `${stage.id}-zone`,
       x: 0,
       y: stage.y - TRIGGER_HEIGHT_ABOVE,
@@ -78,9 +95,9 @@ export class CombatEncounterBuilder {
         stage, stageIndex, platforms,
       ),
     }));
-    return Object.freeze({ enemies: Object.freeze(enemies), zone });
   }
 
+  /** Returns unlock platform id. */
   #getUnlockPlatformId(stage, stageIndex, platforms) {
     if (!REQUIRED_STAGE_INDICES.has(stageIndex)) return null;
     const anchor = platforms.find(({ id }) => {
@@ -94,6 +111,7 @@ export class CombatEncounterBuilder {
     throw new RangeError(`${stage.id} hat keinen fairen Kampfausgang.`);
   }
 
+  /** Creates enemy. */
   #createEnemy(type, stage, stageIndex, enemyIndex, placement, config) {
     const EnemyClass = ENEMY_CLASSES[type];
     const enemy = new EnemyClass(Object.freeze({
@@ -109,6 +127,7 @@ export class CombatEncounterBuilder {
     return enemy;
   }
 
+  /** Returns ground placement. */
   #getGroundPlacement(stage, index, count) {
     const patrolStart = stage.x + PLATFORM_MARGIN;
     const usableWidth = stage.width - PLATFORM_MARGIN * 2;
@@ -123,6 +142,7 @@ export class CombatEncounterBuilder {
     });
   }
 
+  /** Returns drone placement. */
   #getDronePlacement(stage, index, count) {
     const patrolMinX = Math.round(stage.x + PLATFORM_MARGIN);
     const patrolMaxX = Math.round(stage.x + stage.width - PLATFORM_MARGIN);
@@ -135,10 +155,12 @@ export class CombatEncounterBuilder {
     });
   }
 
+  /** Returns stage number. */
   #getStageNumber(stage) {
     return Number.parseInt(stage.id.replace("combat-stage-", ""), 10);
   }
 
+  /** Validates inputs. */
   #validateInputs(platforms, config) {
     const stages = Array.isArray(platforms) ? platforms.filter(({ kind }) => {
       return kind === "combat-staging-platform";

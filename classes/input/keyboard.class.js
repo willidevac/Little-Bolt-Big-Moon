@@ -133,6 +133,7 @@ export class Keyboard {
     SUPPORTED_ACTIONS.forEach((action) => { this[action] = false; });
   }
 
+  /** Updates key state. */
   #updateKeyState(event, isPressed) {
     const actions = ACTIONS_BY_KEY_CODE[event.code];
     if (!actions || (isPressed && this.#hasModifier(event))) return;
@@ -142,14 +143,17 @@ export class Keyboard {
     });
   }
 
+  /** Performs the prevent browser action operation. */
   #preventBrowserAction(event) {
     if (PREVENTED_DEFAULT_CODES.includes(event.code)) event.preventDefault();
   }
 
+  /** Checks the modifier condition. */
   #hasModifier(event) {
     return event.ctrlKey || event.altKey || event.metaKey;
   }
 
+  /** Validates action source. */
   #validateActionSource(action, isPressed, sourceId) {
     if (!SUPPORTED_ACTIONS.has(action)) {
       throw new RangeError(`Unbekannte Eingabeaktion: ${action}`);
@@ -160,6 +164,7 @@ export class Keyboard {
     throw new TypeError("Der Eingabezustand benötigt Boolean und Quellen-ID.");
   }
 
+  /** Validates event target. */
   #validateEventTarget() {
     const canAdd = typeof this.eventTarget?.addEventListener === "function";
     const canRemove = typeof this.eventTarget?.removeEventListener === "function";

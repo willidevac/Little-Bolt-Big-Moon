@@ -28,6 +28,7 @@ export class Enemy extends MovableObject {
     this.#initializeAnimation(visualConfig);
   }
 
+  /** Initializes animation. */
   #initializeAnimation(visualConfig) {
     this.animationController = new AnimationController(visualConfig.animations);
     this.loadSprite(visualConfig.sprite);
@@ -74,12 +75,14 @@ export class Enemy extends MovableObject {
     context.restore();
   }
 
+  /** Applies ground offset. */
   #applyGroundOffset(context) {
     if (!this.groundOffsets) return;
     const drawY = getGroundedSpriteY(this, this.groundOffsets);
     context.translate(0, drawY - this.y);
   }
 
+  /** Draws facing direction. */
   #drawFacingDirection(context) {
     if (this.facingDirection >= 0) return super.draw(context);
     context.save();
@@ -89,6 +92,7 @@ export class Enemy extends MovableObject {
     context.restore();
   }
 
+  /** Applies elite glow. */
   #applyEliteGlow(context) {
     if (!this.isElite) return;
     context.shadowColor = "#ff9b32";
@@ -205,6 +209,7 @@ export class Enemy extends MovableObject {
     this.setFrameIndex(frame);
   }
 
+  /** Applies visual size. */
   #setVisualSize(config) {
     const values = [
       config?.renderScale,
@@ -219,6 +224,7 @@ export class Enemy extends MovableObject {
     this.groundOffsets = this.#getGroundOffsets(config);
   }
 
+  /** Returns ground offsets. */
   #getGroundOffsets(config) {
     if (config.groundOffsets === undefined) return null;
     const offsets = config.groundOffsets;
@@ -231,6 +237,7 @@ export class Enemy extends MovableObject {
     throw new TypeError("Die Bodenabstände der Gegnerdarstellung sind ungültig.");
   }
 
+  /** Applies enemy data. */
   #setEnemyData(data) {
     this.id = data.id;
     this.type = data.type;
@@ -245,6 +252,7 @@ export class Enemy extends MovableObject {
     this.animationState = null;
   }
 
+  /** Applies boss data. */
   #setBossData(data) {
     this.isElite = Boolean(data.isElite);
     this.isBoss = Boolean(data.isBoss);
@@ -254,12 +262,14 @@ export class Enemy extends MovableObject {
     this.phase = 1;
   }
 
+  /** Performs the enter death state operation. */
   #enterDeathState() {
     this.isAffectedByGravity = false;
     this.#stopMovement();
     this.setAnimationState("dead");
   }
 
+  /** Clears movement. */
   #stopMovement() {
     this.velocityX = 0;
     this.velocityY = 0;
@@ -267,6 +277,7 @@ export class Enemy extends MovableObject {
     this.accelerationY = 0;
   }
 
+  /** Returns center x. */
   #getCenterX(target) {
     const bounds = typeof target.getCollisionBounds === "function"
       ? target.getCollisionBounds()
@@ -274,6 +285,7 @@ export class Enemy extends MovableObject {
     return bounds.x + bounds.width / 2;
   }
 
+  /** Validates target. */
   #validateTarget(target) {
     const bounds = typeof target?.getCollisionBounds === "function"
       ? target.getCollisionBounds()
@@ -283,17 +295,20 @@ export class Enemy extends MovableObject {
     throw new TypeError("Das Angriffsziel ist ungültig.");
   }
 
+  /** Performs the turn at operation. */
   #turnAt(x, direction) {
     this.x = x;
     this.direction = direction;
     this.velocityX = 0;
   }
 
+  /** Validates enemy data. */
   #validateEnemyData(data) {
     if (this.#hasValidEnemyData(data)) return;
     throw new TypeError("Die Gegnerdaten sind ungültig.");
   }
 
+  /** Checks the valid enemy data condition. */
   #hasValidEnemyData(data) {
     const textValues = [data?.id, data?.type];
     const numbers = [data?.x, data?.y, data?.patrolMinX, data?.patrolMaxX];
@@ -307,6 +322,7 @@ export class Enemy extends MovableObject {
       validDirection && this.#hasValidBossProfile(data);
   }
 
+  /** Checks the valid boss profile condition. */
   #hasValidBossProfile(data) {
     if (!data?.isBoss) return !data?.isFinalBoss && !data?.bossName;
     return typeof data.bossName === "string" && data.bossName.length > 0 &&

@@ -53,26 +53,31 @@ export class MovableObject extends DrawableObject {
     this.setOnGround(false);
   }
 
+  /** Applies acceleration. */
   #applyAcceleration(deltaTimeSeconds) {
     this.velocityX += this.accelerationX * deltaTimeSeconds;
     this.velocityY += this.accelerationY * deltaTimeSeconds;
   }
 
+  /** Applies gravity. */
   #applyGravity(deltaTimeSeconds, physicsConfig) {
     if (!this.isAffectedByGravity || this.isOnGround) return;
     this.velocityY += physicsConfig.gravityPixelsPerSecondSquared * deltaTimeSeconds;
   }
 
+  /** Performs the limit fall speed operation. */
   #limitFallSpeed(physicsConfig) {
     const maximumFallSpeed = physicsConfig.maximumFallSpeedPixelsPerSecond;
     this.velocityY = Math.min(this.velocityY, maximumFallSpeed);
   }
 
+  /** Applies velocity. */
   #applyVelocity(deltaTimeSeconds) {
     this.x += this.velocityX * deltaTimeSeconds;
     this.y += this.velocityY * deltaTimeSeconds;
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

@@ -53,6 +53,7 @@ export class FullscreenController {
     this.unsubscribeLanguage = null;
   }
 
+  /** Performs the supports fullscreen operation. */
   #supportsFullscreen() {
     return typeof this.root?.requestFullscreen === "function" &&
       typeof this.document?.exitFullscreen === "function";

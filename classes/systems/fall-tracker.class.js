@@ -77,6 +77,7 @@ export class FallTracker {
     return fall;
   }
 
+  /** Performs the track completed fall operation. */
   #trackCompletedFall(target) {
     if (this.#wasOnGround && !target.isOnGround) this.#startAirborneFall();
     if (!target.isOnGround) this.#recordAirborneDepth(target.y);
@@ -85,16 +86,19 @@ export class FallTracker {
     this.#wasOnGround = target.isOnGround;
   }
 
+  /** Performs the start airborne fall operation. */
   #startAirborneFall() {
     this.#departureY = this.#lastGroundY;
     this.#lowestAirborneY = this.#departureY;
   }
 
+  /** Performs the record airborne depth operation. */
   #recordAirborneDepth(targetY) {
     if (this.#departureY === null) return;
     this.#lowestAirborneY = Math.max(this.#lowestAirborneY, targetY);
   }
 
+  /** Performs the complete fall operation. */
   #completeFall(landingY) {
     if (this.#departureY === null) return;
     const lowestY = Math.max(this.#lowestAirborneY, landingY);
@@ -103,6 +107,7 @@ export class FallTracker {
     this.#departureY = null;
   }
 
+  /** Performs the evaluate fall operation. */
   #evaluateFall(lossPixels) {
     if (lossPixels < this.#fallConfig.minimumPixels) return null;
     let severity = "normal";
@@ -111,11 +116,13 @@ export class FallTracker {
     return Object.freeze({ lossPixels: Math.round(lossPixels), severity });
   }
 
+  /** Performs the record safe height operation. */
   #recordSafeHeight(targetY) {
     if (this.#highestSafeY === null) this.#highestSafeY = targetY;
     else this.#highestSafeY = Math.min(this.#highestSafeY, targetY);
   }
 
+  /** Validates world config. */
   #validateWorldConfig(config) {
     const hasHeight = Number.isFinite(config?.height) && config.height > 0;
     const hasOffset = Number.isFinite(config?.deathZoneOffsetPixels) &&
@@ -124,6 +131,7 @@ export class FallTracker {
     throw new TypeError("Die Todeszonen-Konfiguration ist ungültig.");
   }
 
+  /** Checks the valid fall config condition. */
   #hasValidFallConfig(config) {
     const fall = config?.fallFeedback;
     const values = [fall?.minimumPixels, fall?.hardPixels, fall?.severePixels];
@@ -132,6 +140,7 @@ export class FallTracker {
       values[1] < values[2];
   }
 
+  /** Validates target. */
   #validateTarget(target) {
     const hasPosition = Number.isFinite(target?.y);
     if (hasPosition && typeof target.isOnGround === "boolean") return;

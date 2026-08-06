@@ -19,29 +19,37 @@ import { loadHtmlFragments } from "../ui/html-fragments.js";
  */
 export async function createGameApplication() {
   await loadHtmlFragments();
-  const canvas = getGameCanvas();
-  canvas.width = GAME_CONFIG.canvas.width;
-  canvas.height = GAME_CONFIG.canvas.height;
-
+  const canvas = configureCanvas(getGameCanvas());
   const storage = createGameStorage();
   const localization = initializeLocalization(storage);
   const game = createGame(canvas, GAME_CONFIG);
   game.initialize();
   const audio = initializeAudio(game);
-  const controllers = [
-    localization,
-    audio,
-    initializeScreens(game),
-    initializeHud(game),
-    initializeStorage(game, audio, document.body, storage),
-    initializeTouchControls(game),
-    initializeReviewMode(game),
-    initializeFullscreen(),
-  ];
-  let isDestroyed = false;
+  const controllers = createControllers(game, audio, storage, localization);
+  return createApplicationResult(game, controllers);
+}
 
+/** Initializes canvas. */
+function configureCanvas(canvas) {
+  canvas.width = GAME_CONFIG.canvas.width;
+  canvas.height = GAME_CONFIG.canvas.height;
+  return canvas;
+}
+
+/** Creates controllers. */
+function createControllers(game, audio, storage, localization) {
+  return [localization, audio, initializeScreens(game), initializeHud(game),
+    initializeStorage(game, audio, document.body, storage),
+    initializeTouchControls(game), initializeReviewMode(game),
+    initializeFullscreen()];
+}
+
+/** Creates application result. */
+function createApplicationResult(game, controllers) {
+  let isDestroyed = false;
   return Object.freeze({
     game,
+    /** Destroys the application. */
     destroy() {
       if (isDestroyed) return false;
       [...controllers].reverse().forEach((controller) => controller.destroy?.());
@@ -52,6 +60,7 @@ export async function createGameApplication() {
   });
 }
 
+/** Returns game canvas. */
 function getGameCanvas() {
   const canvas = document.querySelector("[data-game-canvas]");
   if (canvas instanceof HTMLCanvasElement) return canvas;

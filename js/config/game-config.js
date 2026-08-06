@@ -233,11 +233,13 @@ const STORAGE_CONFIG = Object.freeze({
   version: 1,
 });
 
+/** Creates music. */
 const createMusic = (fileName, volume) => Object.freeze({
   source: getAssetPath("audio", `music/${fileName}`),
   volume,
 });
 
+/** Creates effect. */
 const createEffect = (
   fileName,
   volume,

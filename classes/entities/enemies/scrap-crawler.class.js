@@ -75,6 +75,7 @@ export class ScrapCrawler extends Enemy {
     this.updateAnimation(deltaTimeSeconds);
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const speed = config?.speedPixelsPerSecond;
     if (Number.isFinite(speed) && speed > 0) return;

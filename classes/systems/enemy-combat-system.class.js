@@ -47,6 +47,7 @@ export class EnemyCombatSystem {
     return hit;
   }
 
+  /** Returns resolve character contact. */
   #resolveCharacterContact(world, deltaTimeSeconds) {
     const enemies = this.#getLivingEnemies(world);
     const stompTarget = this.#findStompTarget(
@@ -69,12 +70,14 @@ export class EnemyCombatSystem {
     return enemies;
   }
 
+  /** Returns melee targets. */
   #getMeleeTargets(hitbox, world) {
     return this.#getLivingEnemies(world).filter((enemy) => {
       return this.collisionManager.areOverlapping(hitbox, enemy);
     });
   }
 
+  /** Creates player hit. */
   #createPlayerHit(attack) {
     return Object.freeze({
       amount: attack.damage,
@@ -83,6 +86,7 @@ export class EnemyCombatSystem {
     });
   }
 
+  /** Returns find stomp target. */
   #findStompTarget(character, enemies, deltaTimeSeconds) {
     return enemies.find((enemy) => {
       return this.collisionManager.isStompCollision(
@@ -93,6 +97,7 @@ export class EnemyCombatSystem {
     });
   }
 
+  /** Returns resolve stomp. */
   #resolveStomp(character, enemy, world) {
     world.eventReporter.damageEnemy(enemy, Object.freeze({
       amount: this.config.stompDamage,
@@ -103,6 +108,7 @@ export class EnemyCombatSystem {
     return null;
   }
 
+  /** Returns resolve contact. */
   #resolveContact(character, enemies) {
     const attacker = enemies.find((enemy) => {
       return this.collisionManager.areOverlapping(character, enemy);
@@ -110,6 +116,7 @@ export class EnemyCombatSystem {
     return attacker?.attack(character) ?? null;
   }
 
+  /** Clears defeated. */
   #removeDefeated(world) {
     const enemies = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES);
     enemies.filter((enemy) => enemy.isReadyForRemoval).forEach((enemy) => {
@@ -121,12 +128,14 @@ export class EnemyCombatSystem {
     });
   }
 
+  /** Returns living enemies. */
   #getLivingEnemies(world) {
     return world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).filter((enemy) => {
       return !enemy.isDead;
     });
   }
 
+  /** Validates dependencies. */
   #validateDependencies(config, collisionManager) {
     const values = [
       config?.stompDamage,

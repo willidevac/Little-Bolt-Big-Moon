@@ -18,15 +18,20 @@ export class StoryProp extends DrawableObject {
     this.#validateData(data);
     this.#validateVisualConfig(visualConfig);
     Object.assign(this, data);
-    this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
-    this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
-    this.groundOffsets = visualConfig.groundOffsets;
-    this.glowColor = visualConfig.glowColor ?? "#67efff";
+    this.#applyVisualConfig(visualConfig);
     this.pulseTime = 0;
     this.#anchorTo(anchorPlatform);
     this.loadSprite(visualConfig.sprite);
     this.animationController = this.#createAnimation(visualConfig.animation);
     this.#setInitialFrame(visualConfig.frameIndex);
+  }
+
+  /** Applies visual config. */
+  #applyVisualConfig(visualConfig) {
+    this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
+    this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
+    this.groundOffsets = visualConfig.groundOffsets;
+    this.glowColor = visualConfig.glowColor ?? "#67efff";
   }
 
   /**
@@ -64,11 +69,13 @@ export class StoryProp extends DrawableObject {
     this.drawCurrentFrame(context, this.x, drawY, this.width, this.height);
   }
 
+  /** Creates animation. */
   #createAnimation(animation) {
     if (!animation) return null;
     return new AnimationController({ [ANIMATION_STATE]: animation });
   }
 
+  /** Applies initial frame. */
   #setInitialFrame(frameIndex) {
     const frame = this.animationController
       ? this.animationController.setState(ANIMATION_STATE)
@@ -76,6 +83,7 @@ export class StoryProp extends DrawableObject {
     this.setFrameIndex(frame);
   }
 
+  /** Validates data. */
   #validateData(data) {
     const text = [data?.id, data?.type, data?.anchorPlatformId];
     const position = [data?.x, data?.y];
@@ -83,6 +91,7 @@ export class StoryProp extends DrawableObject {
     throw new TypeError("Die Storyobjektdaten sind ungültig.");
   }
 
+  /** Validates visual config. */
   #validateVisualConfig(config) {
     const hasSprite = this.#hasValidSprite(config?.sprite);
     const hasScale = Number.isFinite(config?.renderScale) &&
@@ -95,6 +104,7 @@ export class StoryProp extends DrawableObject {
     throw new TypeError("Die Storyobjektdarstellung ist ungültig.");
   }
 
+  /** Performs the anchor to operation. */
   #anchorTo(platform) {
     const matches = this.anchorPlatformId === platform?.id;
     const hasMovement = typeof platform?.getFrameDisplacement === "function";
@@ -107,6 +117,7 @@ export class StoryProp extends DrawableObject {
     this.y = platform.y - this.height;
   }
 
+  /** Checks the valid sprite condition. */
   #hasValidSprite(sprite) {
     const values = [
       sprite?.frameWidth,
@@ -118,12 +129,14 @@ export class StoryProp extends DrawableObject {
       values.every((value) => Number.isInteger(value) && value > 0);
   }
 
+  /** Checks the valid frame condition. */
   #hasValidFrame(config) {
     return Number.isInteger(config?.frameIndex) &&
       config.frameIndex >= 0 &&
       config.frameIndex < config?.sprite?.frameCount;
   }
 
+  /** Checks the valid ground offsets condition. */
   #hasValidGroundOffsets(config) {
     return Array.isArray(config?.groundOffsets) &&
       config.groundOffsets.length === config?.sprite?.frameCount &&
@@ -132,6 +145,7 @@ export class StoryProp extends DrawableObject {
       });
   }
 
+  /** Checks the text condition. */
   #isText(value) {
     return typeof value === "string" && value.length > 0;
   }

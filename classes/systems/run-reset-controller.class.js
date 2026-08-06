@@ -23,6 +23,7 @@ export class RunResetController {
     return nextWorld;
   }
 
+  /** Clears systems. */
   #resetSystems(world) {
     const systems = this.#dependencies;
     const startY = world.level?.playerStart?.y ?? 0;

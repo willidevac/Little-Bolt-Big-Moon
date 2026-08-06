@@ -14,6 +14,7 @@ const CHARACTER_LANDING_WIDTH = 32;
  * }} JumpCharacterConfig
  */
 /** @typedef {{framesPerSecond?:number, safeOverlapPixels?:number}} JumpOptions */
+/** @typedef {{frame:number, ratio:number, direction:number, seconds:number, distance:number}} JumpSample */
 
 /**
  * Evaluates the exact discrete charge frames that can land a regular jump.
@@ -27,30 +28,92 @@ const CHARACTER_LANDING_WIDTH = 32;
 export function evaluateJumpWindow(lower, upper, physics, character,
   options = {}) {
   validateJumpInputs(lower, upper, physics, character);
-  const framesPerSecond = options.framesPerSecond ??
-    DEFAULT_FRAMES_PER_SECOND;
+  const framesPerSecond = options.framesPerSecond ?? DEFAULT_FRAMES_PER_SECOND;
   const safeOverlapPixels = options.safeOverlapPixels ?? DEFAULT_SAFE_OVERLAP;
-  const fullChargeFrame = Math.ceil(
-    character.jumpChargeSeconds * framesPerSecond,
+  const fullChargeFrame = Math.ceil(character.jumpChargeSeconds * framesPerSecond);
+  const samples = collectJumpSamples(
+    lower, upper, physics, character,
+    framesPerSecond, safeOverlapPixels, fullChargeFrame,
   );
+  return createJumpWindowResult(samples, fullChargeFrame);
+}
+
+/**
+ * Collects every valid charge and direction sample.
+ * @param {JumpSurface} lower @param {JumpSurface} upper
+ * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
+ * @param {number} framesPerSecond @param {number} safeOverlapPixels
+ * @param {number} fullChargeFrame @returns {ReadonlyArray<Readonly<JumpSample>>}
+ */
+function collectJumpSamples(lower, upper, physics, character, framesPerSecond,
+  safeOverlapPixels, fullChargeFrame) {
   const samples = [];
   for (let frame = 0; frame <= fullChargeFrame; frame += 1) {
-    const ratio = Math.min(1,
-      frame / framesPerSecond / character.jumpChargeSeconds);
-    const seconds = getDescendingFlightSeconds(lower.y - upper.y, ratio,
-      physics, character);
-    if (seconds === null) continue;
-    for (const direction of [-1, 0, 1]) {
-      const speed = interpolate(
-        character.minimumJumpHorizontalSpeedPixelsPerSecond,
-        character.maximumJumpHorizontalSpeedPixelsPerSecond,
-        ratio,
-      );
-      const distance = direction * speed * seconds;
-      if (!canLandAtDistance(lower, upper, distance, safeOverlapPixels)) continue;
-      samples.push(Object.freeze({ frame, ratio, direction, seconds, distance }));
-    }
+    samples.push(...createFrameSamples(
+      lower, upper, physics, character, framesPerSecond, safeOverlapPixels, frame,
+    ));
   }
+  return samples;
+}
+
+/**
+ * Creates all valid directional samples for one charge frame.
+ * @param {JumpSurface} lower @param {JumpSurface} upper
+ * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
+ * @param {number} framesPerSecond @param {number} safeOverlapPixels
+ * @param {number} frame @returns {ReadonlyArray<Readonly<JumpSample>>}
+ */
+function createFrameSamples(lower, upper, physics, character, framesPerSecond,
+  safeOverlapPixels, frame) {
+  const ratio = Math.min(1, frame / framesPerSecond / character.jumpChargeSeconds);
+  const seconds = getDescendingFlightSeconds(
+    lower.y - upper.y, ratio, physics, character,
+  );
+  if (seconds === null) return [];
+  const speed = interpolate(character.minimumJumpHorizontalSpeedPixelsPerSecond,
+    character.maximumJumpHorizontalSpeedPixelsPerSecond, ratio);
+  return createDirectionalSamples(
+    lower, upper, safeOverlapPixels, frame, ratio, seconds, speed,
+  );
+}
+
+/**
+ * Creates valid landing samples for left, neutral, and right movement.
+ * @param {JumpSurface} lower @param {JumpSurface} upper
+ * @param {number} overlap @param {number} frame @param {number} ratio
+ * @param {number} seconds @param {number} speed
+ * @returns {ReadonlyArray<Readonly<JumpSample>>}
+ */
+function createDirectionalSamples(lower, upper, overlap, frame, ratio,
+  seconds, speed) {
+  return [-1, 0, 1].flatMap((direction) => {
+    const sample = createSample(
+      lower, upper, overlap, frame, ratio, direction, seconds, speed,
+    );
+    return sample ? [sample] : [];
+  });
+}
+
+/**
+ * Creates one valid landing sample or returns null.
+ * @param {JumpSurface} lower @param {JumpSurface} upper
+ * @param {number} overlap @param {number} frame @param {number} ratio
+ * @param {number} direction @param {number} seconds @param {number} speed
+ * @returns {Readonly<JumpSample>|null}
+ */
+function createSample(lower, upper, overlap, frame, ratio, direction,
+  seconds, speed) {
+  const distance = direction * speed * seconds;
+  if (!canLandAtDistance(lower, upper, distance, overlap)) return null;
+  return Object.freeze({ frame, ratio, direction, seconds, distance });
+}
+
+/**
+ * Creates the immutable aggregate for one jump window.
+ * @param {ReadonlyArray<Readonly<JumpSample>>} samples
+ * @param {number} fullChargeFrame
+ */
+function createJumpWindowResult(samples, fullChargeFrame) {
   const chargeFrames = [...new Set(samples.map(({ frame }) => frame))];
   return Object.freeze({
     samples: Object.freeze(samples),
@@ -113,11 +176,28 @@ function interpolate(minimum, maximum, ratio) {
  * @param {JumpCharacterConfig} character
  */
 function validateJumpInputs(lower, upper, physics, character) {
-  const platformsAreValid = [lower, upper].every((platform) => {
-    return [platform?.x, platform?.y, platform?.width].every(Number.isFinite) &&
-      platform.width >= CHARACTER_LANDING_WIDTH;
+  const platformsAreValid = [lower, upper].every(isValidJumpSurface);
+  const values = getJumpConfigValues(physics, character);
+  const configIsValid = values.every((value) => {
+    return Number.isFinite(value) && value > 0;
   });
-  const values = [
+  if (platformsAreValid && configIsValid) return;
+  throw new TypeError("The jump-reachability input is invalid.");
+}
+
+/** @param {JumpSurface} platform @returns {boolean} */
+function isValidJumpSurface(platform) {
+  return [platform?.x, platform?.y, platform?.width].every(Number.isFinite) &&
+    platform.width >= CHARACTER_LANDING_WIDTH;
+}
+
+/**
+ * Returns numeric values that every jump configuration must provide.
+ * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
+ * @returns {ReadonlyArray<number>}
+ */
+function getJumpConfigValues(physics, character) {
+  return [
     physics?.gravityPixelsPerSecondSquared,
     character?.jumpChargeSeconds,
     character?.minimumJumpSpeedPixelsPerSecond,
@@ -125,8 +205,4 @@ function validateJumpInputs(lower, upper, physics, character) {
     character?.minimumJumpHorizontalSpeedPixelsPerSecond,
     character?.maximumJumpHorizontalSpeedPixelsPerSecond,
   ];
-  if (platformsAreValid && values.every((value) => {
-    return Number.isFinite(value) && value > 0;
-  })) return;
-  throw new TypeError("The jump-reachability input is invalid.");
 }

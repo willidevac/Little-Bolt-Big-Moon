@@ -24,21 +24,26 @@ export class ThinWallBuilder {
   /** Returns biome boundaries plus sparse late-game rebound shafts. */
   build(sections) {
     const biomeBounds = this.#getBiomeBounds(sections);
-    const boundaries = biomeBounds.flatMap((biome, biomeIndex) => {
-      return [
-        this.#createWall(biome, "left", biomeIndex),
-        this.#createWall(biome, "right", biomeIndex),
-      ];
-    });
-    const reboundWalls = WALL_BOUNCE_CHALLENGES.flatMap((challenge, index) => {
-      return [
-        this.#createReboundWall(challenge, "left", challenge.leftX, index),
-        this.#createReboundWall(challenge, "right", challenge.rightX, index),
-      ];
-    });
+    const boundaries = biomeBounds.flatMap((biome, index) =>
+      this.#createBoundaryPair(biome, index));
+    const reboundWalls = WALL_BOUNCE_CHALLENGES.flatMap((challenge, index) =>
+      this.#createReboundPair(challenge, index));
     return Object.freeze([...boundaries, ...reboundWalls]);
   }
 
+  /** Creates boundary pair. */
+  #createBoundaryPair(biome, index) {
+    return [this.#createWall(biome, "left", index),
+      this.#createWall(biome, "right", index)];
+  }
+
+  /** Creates rebound pair. */
+  #createReboundPair(challenge, index) {
+    return [this.#createReboundWall(challenge, "left", challenge.leftX, index),
+      this.#createReboundWall(challenge, "right", challenge.rightX, index)];
+  }
+
+  /** Creates wall. */
   #createWall(biome, side, biomeIndex) {
     const data = Object.freeze({
       id: `${biome.id}-${side}-thin-wall`,
@@ -53,17 +58,32 @@ export class ThinWallBuilder {
     return new AnimatedBiomeWall(data, getWallSpriteConfig(biome.id));
   }
 
+  /** Creates rebound wall. */
   #createReboundWall(challenge, side, x, challengeIndex) {
     const data = Object.freeze({
+      ...this.#getReboundIdentity(challenge, side, x),
+      ...this.#getReboundMotion(challenge),
+      ...this.#getExitAssist(challenge),
+      phaseOffset: challengeIndex * 0.11 + (side === "right" ? 0.09 : 0),
+      animationFrameSeconds: BIOME_WALL_SPEEDS[challenge.biomeId],
+    });
+    return new AnimatedBiomeWall(data, getWallSpriteConfig(challenge.biomeId));
+  }
+
+  /** Returns rebound identity. */
+  #getReboundIdentity(challenge, side, x) {
+    return {
       id: `${challenge.id}-${side}-wall`,
-      role: "wall-bounce-choke",
-      challengeId: challenge.id,
-      biomeId: challenge.biomeId,
-      side,
-      x,
-      y: challenge.y,
+      role: "wall-bounce-choke", challengeId: challenge.id,
+      biomeId: challenge.biomeId, side, x, y: challenge.y,
       height: challenge.height,
       corridorWidth: challenge.corridorWidth,
+    };
+  }
+
+  /** Returns rebound motion. */
+  #getReboundMotion(challenge) {
+    return {
       reboundHorizontalSpeedPixelsPerSecond:
         challenge.reboundHorizontalSpeedPixelsPerSecond,
       reboundVerticalSpeedPixelsPerSecond:
@@ -71,6 +91,12 @@ export class ThinWallBuilder {
       reboundControlSeconds: challenge.reboundControlSeconds,
       reboundReleasedVerticalRatio: challenge.reboundReleasedVerticalRatio,
       reboundDropVerticalRatio: challenge.reboundDropVerticalRatio,
+    };
+  }
+
+  /** Returns exit assist. */
+  #getExitAssist(challenge) {
+    return {
       exitTargetCenterX: challenge.exitTargetCenterX,
       exitTargetSurfaceY: challenge.exitTargetSurfaceY,
       exitAssistBandPixels: challenge.exitAssistBandPixels,
@@ -79,14 +105,10 @@ export class ThinWallBuilder {
       exitAssistMaximumHorizontalSpeedPixelsPerSecond:
         challenge.exitAssistMaximumHorizontalSpeedPixelsPerSecond,
       exitAssistControlSeconds: challenge.exitAssistControlSeconds,
-      phaseOffset: challengeIndex * 0.11 + (side === "right" ? 0.09 : 0),
-      animationFrameSeconds: BIOME_WALL_SPEEDS[challenge.biomeId],
-    });
-    return new AnimatedBiomeWall(
-      data, getWallSpriteConfig(challenge.biomeId),
-    );
+    };
   }
 
+  /** Returns biome bounds. */
   #getBiomeBounds(sections) {
     const bounds = new Map();
     sections.forEach((section) => {

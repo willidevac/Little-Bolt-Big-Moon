@@ -15,6 +15,7 @@ export function createRunResetController(game, createWorld) {
     combatSystem: game.combatSystem,
     upgradeFlow: game.upgradeFlow,
     createWorld,
+    /** Performs the replace world operation. */
     replaceWorld: (world) => { game.world = world; },
   });
 }

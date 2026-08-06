@@ -74,6 +74,7 @@ export class BossFightManager {
     return true;
   }
 
+  /** Returns find nearest active boss. */
   #findNearestActiveBoss(enemies, target) {
     const activeBosses = this.#bosses.filter((boss) => {
       return boss.isActive && enemies.includes(boss);
@@ -85,6 +86,7 @@ export class BossFightManager {
     }, null);
   }
 
+  /** Returns distance squared. */
   #getDistanceSquared(entity, target) {
     if (!target) return 0;
     const entityX = entity.x + entity.width / 2;
@@ -94,6 +96,7 @@ export class BossFightManager {
     return (entityX - targetX) ** 2 + (entityY - targetY) ** 2;
   }
 
+  /** Checks the near active boss condition. */
   #isNearActiveBoss(target) {
     if (!this.#activeBoss) return false;
     const maximumDistanceSquared = BOSS_TRACKING_DISTANCE_PIXELS ** 2;
@@ -101,6 +104,7 @@ export class BossFightManager {
       maximumDistanceSquared;
   }
 
+  /** Performs the queue final victory operation. */
   #queueFinalVictory(enemies) {
     if (!this.#finalBoss || this.#isVictoryQueued || this.#wasVictoryDelivered) {
       return;
@@ -109,6 +113,7 @@ export class BossFightManager {
     if (this.#finalBoss.isDead && wasRemoved) this.#isVictoryQueued = true;
   }
 
+  /** Validates enemies. */
   #validateEnemies(enemies) {
     if (!Array.isArray(enemies)) {
       throw new TypeError("Die Bossgegner müssen als Liste vorliegen.");

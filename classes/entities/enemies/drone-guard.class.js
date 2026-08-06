@@ -85,6 +85,7 @@ export class DroneGuard extends Enemy {
     this.updateAnimation(deltaTimeSeconds);
   }
 
+  /** Updates hover. */
   #updateHover(deltaTimeSeconds, target) {
     this.#trackTarget(deltaTimeSeconds, target);
     this.hoverSeconds += deltaTimeSeconds;
@@ -93,6 +94,7 @@ export class DroneGuard extends Enemy {
     this.y = this.hoverCenterY + Math.sin(angle) * this.hoverAmplitudePixels;
   }
 
+  /** Performs the track target operation. */
   #trackTarget(deltaTimeSeconds, target) {
     if (!target) return;
     const desiredY = target.y + target.height / 2 - this.height / 2;
@@ -105,6 +107,7 @@ export class DroneGuard extends Enemy {
     this.hoverCenterY += clamp(distance, -maximumStep, maximumStep);
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const values = [
       config?.speedPixelsPerSecond,

@@ -31,6 +31,7 @@ export const CHARACTER_STATES = Object.freeze({
   DEAD: "dead",
 });
 
+/** Creates animation clip. */
 const createAnimationClip = (
   startFrame,
   frameCount,

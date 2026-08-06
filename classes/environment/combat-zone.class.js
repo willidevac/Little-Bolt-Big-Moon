@@ -81,6 +81,7 @@ export class CombatZone {
     return this.#state;
   }
 
+  /** Validates data. */
   #validateData(data) {
     const hasId = typeof data?.id === "string" && data.id.length > 0;
     const position = [data?.x, data?.y];
@@ -95,12 +96,14 @@ export class CombatZone {
     throw new TypeError("Die Kampfzonendaten sind ungültig.");
   }
 
+  /** Checks the unlock platform id condition. */
   #hasUnlockPlatformId(data) {
     const id = data?.unlockPlatformId;
     return id === undefined || id === null ||
       (typeof id === "string" && id.length > 0);
   }
 
+  /** Checks the enemy ids condition. */
   #hasEnemyIds(data) {
     if (!Array.isArray(data?.enemyIds) || data.enemyIds.length === 0) return false;
     const uniqueIds = new Set(data.enemyIds);

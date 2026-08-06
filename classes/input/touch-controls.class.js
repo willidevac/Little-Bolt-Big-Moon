@@ -39,6 +39,7 @@ export class TouchControls {
     this.#bindHandlers();
   }
 
+  /** Performs the bind handlers operation. */
   #bindHandlers() {
     this.boundPointerDown = this.handlePointerDown.bind(this);
     this.boundPointerEnd = this.handlePointerEnd.bind(this);
@@ -140,6 +141,7 @@ export class TouchControls {
     if (!isUnlocked) this.#releaseCombatPointers();
   }
 
+  /** Performs the release pointer operation. */
   #releasePointer(pointerId) {
     const pointer = this.#activePointers.get(pointerId);
     if (!pointer) return;
@@ -151,6 +153,7 @@ export class TouchControls {
     this.#setButtonPressed(pointer.button, remainsPressed);
   }
 
+  /** Collects elements. */
   #collectElements(root) {
     this.element = this.#getElement(root);
     this.buttons = [...this.element.querySelectorAll("button[data-input-action]")];
@@ -160,6 +163,7 @@ export class TouchControls {
     this.#validateButtons();
   }
 
+  /** Applies element listeners. */
   #addElementListeners() {
     this.element.addEventListener("pointerdown", this.boundPointerDown);
     POINTER_END_EVENTS.forEach((type) => {
@@ -169,6 +173,7 @@ export class TouchControls {
     this.element.addEventListener("selectstart", this.boundBlockDefault);
   }
 
+  /** Performs the subscribe to game operation. */
   #subscribeToGame() {
     this.unsubscribeState = this.game.onStateChange((state) => this.render(state));
     this.unsubscribeGameplay = this.game.onGameplayEvent((event) => {
@@ -176,18 +181,21 @@ export class TouchControls {
     });
   }
 
+  /** Performs the release all pointers operation. */
   #releaseAllPointers() {
     [...this.#activePointers.keys()].forEach((pointerId) => {
       this.#releasePointer(pointerId);
     });
   }
 
+  /** Performs the release combat pointers operation. */
   #releaseCombatPointers() {
     [...this.#activePointers.entries()].forEach(([pointerId, { button }]) => {
       if (this.combatButtons.includes(button)) this.#releasePointer(pointerId);
     });
   }
 
+  /** Collects pointer. */
   #capturePointer(button, pointerId) {
     try {
       button.setPointerCapture(pointerId);
@@ -196,27 +204,32 @@ export class TouchControls {
     }
   }
 
+  /** Applies button pressed. */
   #setButtonPressed(button, isPressed) {
     button.classList.toggle("is-pressed", isPressed);
     button.setAttribute("aria-pressed", String(isPressed));
   }
 
+  /** Returns button. */
   #getButton(target) {
     if (!(target instanceof Element)) return null;
     const button = target.closest("button[data-input-action]");
     return button && this.element.contains(button) ? button : null;
   }
 
+  /** Returns source id. */
   #getSourceId(pointerId) {
     return `pointer:${pointerId}`;
   }
 
+  /** Returns element. */
   #getElement(root) {
     const element = root.querySelector(TOUCH_CONTROLS_SELECTOR);
     if (element instanceof HTMLElement) return element;
     throw new Error("Statische Touch-Steuerung wurde nicht gefunden.");
   }
 
+  /** Validates buttons. */
   #validateButtons() {
     const actions = this.buttons.map((button) => button.dataset.inputAction);
     const uniqueActions = new Set(actions);
@@ -228,6 +241,7 @@ export class TouchControls {
     throw new Error("Touch-Steuerung ist unvollständig oder doppelt.");
   }
 
+  /** Validates dependencies. */
   #validateDependencies(game, root) {
     const hasGame = typeof game?.onStateChange === "function";
     const hasGameplay = typeof game?.onGameplayEvent === "function";

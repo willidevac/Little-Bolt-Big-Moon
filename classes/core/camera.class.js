@@ -56,6 +56,7 @@ export class Camera {
     this.followSpeedMultiplier = multiplier;
   }
 
+  /** Returns desired y. */
   #getDesiredY(target) {
     const targetCenterY = target.y + target.height / 2;
     const screenY = targetCenterY - this.y;
@@ -64,6 +65,7 @@ export class Camera {
     return this.y;
   }
 
+  /** Returns follow speed. */
   #getFollowSpeed(desiredY) {
     const speed = desiredY < this.y
       ? this.upwardFollowSpeed
@@ -71,16 +73,19 @@ export class Camera {
     return speed * this.followSpeedMultiplier;
   }
 
+  /** Performs the move towards operation. */
   #moveTowards(current, target, maximumDistance) {
     if (current < target) return Math.min(current + maximumDistance, target);
     return Math.max(current - maximumDistance, target);
   }
 
+  /** Performs the clamp y operation. */
   #clampY(y) {
     const maximumY = Math.max(0, this.worldHeight - this.viewportHeight);
     return Math.min(Math.max(0, y), maximumY);
   }
 
+  /** Checks the valid target condition. */
   #isValidTarget(target) {
     return (
       Number.isFinite(target?.y) &&
@@ -89,10 +94,12 @@ export class Camera {
     );
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const hasValidWorld = Number.isFinite(config?.world?.height) &&
       Number.isFinite(config?.canvas?.height) &&
@@ -103,6 +110,7 @@ export class Camera {
     }
   }
 
+  /** Checks the valid camera config condition. */
   #hasValidCameraConfig(camera, viewportHeight) {
     const hasValidDeadZone = Number.isFinite(camera?.deadZoneTopPixels) &&
       Number.isFinite(camera?.deadZoneBottomPixels) &&

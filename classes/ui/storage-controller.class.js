@@ -34,6 +34,7 @@ export class StorageController {
     this.boundVolumeInput = this.handleVolumeInput.bind(this);
   }
 
+  /** Applies elements. */
   #assignElements() {
     this.muteButton = this.#getRequiredElement(SELECTORS.mute);
     this.scoreElement = this.#getRequiredElement(SELECTORS.score);
@@ -57,6 +58,7 @@ export class StorageController {
     return this;
   }
 
+  /** Performs the bind controls operation. */
   #bindControls() {
     this.muteButton.addEventListener("click", this.boundMuteClick);
     this.volumeControls.forEach((control) => {
@@ -64,6 +66,7 @@ export class StorageController {
     });
   }
 
+  /** Performs the bind observers operation. */
   #bindObservers() {
     this.unsubscribe = this.game.onStateChange((state) => {
       this.handleStateChange(state);
@@ -137,6 +140,7 @@ export class StorageController {
     this.#renderVolume("effects", records.effectsVolume);
   }
 
+  /** Draws render mute. */
   #renderMute(isMuted) {
     this.muteButton.textContent = translate(
       isMuted ? "audio.muted" : "audio.active",
@@ -148,18 +152,21 @@ export class StorageController {
     );
   }
 
+  /** Returns required element. */
   #getRequiredElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
     throw new Error(`Speicheranzeige nicht gefunden: ${selector}`);
   }
 
+  /** Applies audio settings. */
   #applyAudioSettings(records) {
     this.audio.setMusicVolume(records.musicVolume / 100);
     this.audio.setEffectsVolume(records.effectsVolume / 100);
     this.audio.setMuted(records.isMuted);
   }
 
+  /** Validates audio. */
   #validateAudio(audio) {
     const isValid = typeof audio?.setMuted === "function" &&
       typeof audio?.setMusicVolume === "function" &&
@@ -168,6 +175,7 @@ export class StorageController {
     throw new TypeError("Der Speichersteuerung fehlt die Audiosteuerung.");
   }
 
+  /** Draws render volume. */
   #renderVolume(group, value) {
     const control = this.volumeControls.find((element) => {
       return element.dataset.volumeControl === group;

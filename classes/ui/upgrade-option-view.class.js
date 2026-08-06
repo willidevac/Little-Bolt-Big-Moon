@@ -31,6 +31,7 @@ export class UpgradeOptionView {
     return button;
   }
 
+  /** Creates content. */
   #createContent(upgrade) {
     return [
       this.#createRarity(upgrade),
@@ -41,6 +42,7 @@ export class UpgradeOptionView {
     ];
   }
 
+  /** Creates rarity. */
   #createRarity(upgrade) {
     return this.#createText(
       "span",
@@ -49,6 +51,7 @@ export class UpgradeOptionView {
     );
   }
 
+  /** Creates icon. */
   #createIcon(upgrade) {
     const icon = this.document.createElement("span");
     const source = new URL(upgrade.iconSheet.source, this.document.baseURI).href;
@@ -59,6 +62,7 @@ export class UpgradeOptionView {
     return icon;
   }
 
+  /** Creates text. */
   #createText(tagName, className, text) {
     const element = this.document.createElement(tagName);
     element.className = className;
@@ -66,14 +70,17 @@ export class UpgradeOptionView {
     return element;
   }
 
+  /** Returns name. */
   #getName(upgrade) {
     return translate(`upgrade.${upgrade.id}.name`);
   }
 
+  /** Returns description. */
   #getDescription(upgrade) {
     return translate(`upgrade.${upgrade.id}.description`);
   }
 
+  /** Returns level. */
   #getLevel(upgrade) {
     return translate("upgrade.level", {
       level: upgrade.nextLevel,
@@ -81,6 +88,7 @@ export class UpgradeOptionView {
     });
   }
 
+  /** Returns accessible label. */
   #getAccessibleLabel(upgrade) {
     const rarity = translate(`upgrade.rarity.${upgrade.rarity}`);
     return `${rarity}. ${this.#getName(upgrade)}. ` +

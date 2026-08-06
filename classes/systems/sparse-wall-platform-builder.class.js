@@ -63,21 +63,25 @@ export class SparseWallPlatformBuilder {
   build(sections) {
     const platforms = [this.#createFloor()];
     this.#groupBiomes(sections).forEach((biome) => {
-      const profile = getWallFeatureProfile(biome.id);
-      const entrances = WALL_BOUNCE_CHALLENGES.filter((challenge) => {
-        return challenge.biomeId === biome.id;
-      });
-      this.#createFeatureSlots(biome, entrances).forEach((slot, index) => {
-        const { entrance, side, y } = slot;
-        const width = this.#resolveWidth(profile, FEATURE_WIDTH_ROLES[index]);
-        platforms.push(this.#createWallFeature(
-          biome.id, side, width, y, index, entrance,
-        ));
-      });
+      platforms.push(...this.#createBiomeFeatures(biome));
     });
     return Object.freeze(platforms);
   }
 
+  /** Creates biome features. */
+  #createBiomeFeatures(biome) {
+    const profile = getWallFeatureProfile(biome.id);
+    const entrances = WALL_BOUNCE_CHALLENGES.filter((challenge) =>
+      challenge.biomeId === biome.id);
+    return this.#createFeatureSlots(biome, entrances).map((slot, index) => {
+      const width = this.#resolveWidth(profile, FEATURE_WIDTH_ROLES[index]);
+      return this.#createWallFeature(
+        biome.id, slot.side, width, slot.y, index, slot.entrance,
+      );
+    });
+  }
+
+  /** Creates feature slots. */
   #createFeatureSlots(biome, entrances) {
     const ratios = FEATURE_RATIOS_BY_BIOME[biome.id] ?? FEATURE_RATIOS;
     const slots = ratios.map((ratio, index) => ({
@@ -86,20 +90,24 @@ export class SparseWallPlatformBuilder {
       y: Math.round(biome.bottomY - biome.height * ratio),
     }));
     entrances.forEach((entrance) => {
-      const targetY = entrance.y + entrance.height;
-      const available = slots
-        .map((slot, index) => ({ index, distance: Math.abs(slot.y - targetY) }))
-        .filter(({ index }) => slots[index].entrance === null)
-        .sort((first, second) => first.distance - second.distance)[0];
-      Object.assign(slots[available.index], {
-        entrance,
-        side: entrance.entrySide,
-        y: targetY,
-      });
+      this.#assignEntrance(slots, entrance);
     });
     return slots;
   }
 
+  /** Performs entrance. */
+  #assignEntrance(slots, entrance) {
+    const targetY = entrance.y + entrance.height;
+    const available = slots
+      .map((slot, index) => ({ index, distance: Math.abs(slot.y - targetY) }))
+      .filter(({ index }) => slots[index].entrance === null)
+      .sort((first, second) => first.distance - second.distance)[0];
+    Object.assign(slots[available.index], {
+      entrance, side: entrance.entrySide, y: targetY,
+    });
+  }
+
+  /** Creates floor. */
   #createFloor() {
     const data = Object.freeze({
       id: "scrapyard-continuous-start-floor",
@@ -113,6 +121,7 @@ export class SparseWallPlatformBuilder {
     return new SpriteSurfacePlatform(data, getStartFloorSpriteConfig());
   }
 
+  /** Creates wall feature. */
   #createWallFeature(biomeId, side, width, y, index, entrance) {
     const innerX = WALL_WIDTH - WALL_OVERLAP;
     const x = entrance
@@ -120,7 +129,15 @@ export class SparseWallPlatformBuilder {
       : side === "left"
         ? innerX
         : this.worldWidth - innerX - width;
-    const data = Object.freeze({
+    const data = this.#createFeatureData(
+      biomeId, side, width, y, index, entrance, x,
+    );
+    return new SpriteSurfacePlatform(data, getWallPlatformSpriteConfig(biomeId));
+  }
+
+  /** Creates feature data. */
+  #createFeatureData(biomeId, side, width, y, index, entrance, x) {
+    return Object.freeze({
       id: `${biomeId}-${side}-wall-feature-${index + 1}`,
       kind: "wall-feature-platform",
       anchorSide: side,
@@ -132,35 +149,40 @@ export class SparseWallPlatformBuilder {
       height: PLATFORM_HEIGHT,
       accentColor: ACCENTS[biomeId],
     });
-    return new SpriteSurfacePlatform(data, getWallPlatformSpriteConfig(biomeId));
   }
 
+  /** Returns rebound platform x. */
   #getReboundPlatformX(challenge, side, width) {
     if (side === "left") return challenge.leftX + WALL_WIDTH - WALL_OVERLAP;
     return challenge.rightX + WALL_OVERLAP - width;
   }
 
+  /** Resolves width. */
   #resolveWidth(profile, role) {
     if (role === "cross") return profile.crossWidth;
     if (role === "small") return profile.smallWidth;
     return profile.standardWidths[role];
   }
 
+  /** Performs biomes. */
   #groupBiomes(sections) {
     const grouped = new Map();
     sections.forEach((section) => {
-      const current = grouped.get(section.tileset) ?? {
-        id: section.tileset,
-        topY: section.topY,
-        bottomY: section.bottomY,
-      };
-      current.topY = Math.min(current.topY, section.topY);
-      current.bottomY = Math.max(current.bottomY, section.bottomY);
-      grouped.set(section.tileset, current);
+      this.#includeSection(grouped, section);
     });
     return [...grouped.values()].map((biome) => Object.freeze({
       ...biome,
       height: biome.bottomY - biome.topY,
     }));
+  }
+
+  /** Includes section. */
+  #includeSection(grouped, section) {
+    const current = grouped.get(section.tileset) ?? {
+      id: section.tileset, topY: section.topY, bottomY: section.bottomY,
+    };
+    current.topY = Math.min(current.topY, section.topY);
+    current.bottomY = Math.max(current.bottomY, section.bottomY);
+    grouped.set(section.tileset, current);
   }
 }

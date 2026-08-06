@@ -82,6 +82,7 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
+  /** Draws hazard segments. */
   #drawHazardSegments(context, pulse) {
     const isWarning = this.state === TRAP_PLATFORM_STATES.WARNING;
     context.fillStyle = this.isDangerous ? "#ff3b22" : "#ffc247";
@@ -92,16 +93,27 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     const segmentGap = 5;
     const segmentWidth = (this.width - 12 - segmentGap *
       (segmentCount - 1)) / segmentCount;
-    for (let index = 0; index < segmentCount; index += 1) {
-      const x = this.x + 6 + index * (segmentWidth + segmentGap);
-      context.fillRect(x, this.y, segmentWidth, this.isDangerous ? 10 : 7);
+    this.#drawSegments(context, segmentCount, segmentGap, segmentWidth);
+    this.#drawHazardGlow(context, pulse, isWarning);
+  }
+
+  /** Draws segments. */
+  #drawSegments(context, count, gap, width) {
+    for (let index = 0; index < count; index += 1) {
+      const x = this.x + 6 + index * (width + gap);
+      context.fillRect(x, this.y, width, this.isDangerous ? 10 : 7);
     }
+  }
+
+  /** Draws hazard glow. */
+  #drawHazardGlow(context, pulse, isWarning) {
     if (!isWarning && !this.isDangerous) return;
     context.globalAlpha = this.isDangerous ? 0.2 + pulse * 0.16 : 0.1 + pulse * 0.12;
     context.fillRect(this.x + 4, this.y + 10, this.width - 8,
       this.isDangerous ? 18 : 10);
   }
 
+  /** Updates contact grace. */
   #updateContactGrace(deltaTimeSeconds) {
     this.contactGrace.forEach((contact, target) => {
       if (!contact.seen) {
@@ -115,16 +127,19 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     });
   }
 
+  /** Checks whether landing grace. */
   #hasLandingGrace(target) {
     return (this.contactGrace.get(target)?.remainingSeconds ?? 0) > 0;
   }
 
+  /** Returns state duration. */
   #getStateDuration() {
     if (this.state === TRAP_PLATFORM_STATES.SAFE) return this.safeSeconds;
     if (this.state === TRAP_PLATFORM_STATES.WARNING) return this.warningSeconds;
     return this.activeSeconds;
   }
 
+  /** Validates trap. */
   #validateTrap(trap) {
     const values = [
       trap?.safeSeconds, trap?.warningSeconds, trap?.activeSeconds,

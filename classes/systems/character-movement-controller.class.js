@@ -72,16 +72,19 @@ export class CharacterMovementController {
     this.#character.facingDirection = direction;
   }
 
+  /** Clears wall movement. */
   #stopWallMovement() {
     this.#character.velocityX = 0;
   }
 
+  /** Returns wall bounce speed. */
   #getWallBounceSpeed(config) {
     const retainedSpeed = Math.abs(this.#character.velocityX) *
       config.wallBounceHorizontalRetention;
     return Math.max(config.minimumWallBounceSpeedPixelsPerSecond, retainedSpeed);
   }
 
+  /** Performs the accelerate operation. */
   #accelerate(deltaTimeSeconds, direction, config) {
     const acceleration = config.horizontalAccelerationPixelsPerSecondSquared;
     const maximumSpeed = config.maximumHorizontalSpeedPixelsPerSecond;
@@ -92,6 +95,7 @@ export class CharacterMovementController {
     );
   }
 
+  /** Applies braking. */
   #applyBraking(deltaTimeSeconds, config) {
     const braking = config.horizontalBrakingPixelsPerSecondSquared * deltaTimeSeconds;
     if (Math.abs(this.#character.velocityX) <= braking) {
@@ -101,6 +105,7 @@ export class CharacterMovementController {
     this.#character.velocityX -= Math.sign(this.#character.velocityX) * braking;
   }
 
+  /** Returns boundary direction. */
   #getBoundaryDirection(minimumX, maximumX) {
     const velocity = this.#character.velocityX;
     const hitsLeft = this.#character.x < minimumX ||
@@ -112,10 +117,12 @@ export class CharacterMovementController {
     return 0;
   }
 
+  /** Checks the moving outward condition. */
   #isMovingOutward(inwardDirection) {
     return this.#character.velocityX * inwardDirection < 0;
   }
 
+  /** Validates world bounds. */
   #validateWorldBounds(worldWidth, config) {
     const inset = config?.wallInsetPixels;
     const hasWidth = Number.isFinite(worldWidth) && worldWidth > this.#character.width;
@@ -125,6 +132,7 @@ export class CharacterMovementController {
     throw new RangeError("The visible wall boundaries are invalid.");
   }
 
+  /** Validates wall bounce config. */
   #validateWallBounceConfig(config) {
     const retention = config?.wallBounceHorizontalRetention;
     const minimumSpeed = config?.minimumWallBounceSpeedPixelsPerSecond;
@@ -133,6 +141,7 @@ export class CharacterMovementController {
     throw new TypeError("The wall-bounce configuration is invalid.");
   }
 
+  /** Returns direction. */
   #getDirection(input) {
     return Number(input.right) - Number(input.left);
   }

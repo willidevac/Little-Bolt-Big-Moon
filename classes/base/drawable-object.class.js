@@ -104,6 +104,7 @@ export class DrawableObject {
     context.restore();
   }
 
+  /** Performs the start image load operation. */
   #startImageLoad(image, source) {
     this.image = image;
     this.imageState = "loading";
@@ -112,26 +113,31 @@ export class DrawableObject {
     image.src = source;
   }
 
+  /** Handles image load. */
   #handleImageLoad(image) {
     if (this.image !== image) return;
     this.imageState = this.#hasExpectedFrames(image) ? "ready" : "error";
   }
 
+  /** Handles image error. */
   #handleImageError(image) {
     if (this.image === image) this.imageState = "error";
   }
 
+  /** Performs the mark image unavailable operation. */
   #markImageUnavailable() {
     this.imageState = "error";
     return false;
   }
 
+  /** Draws sprite frame. */
   #drawSpriteFrame(context, x, y, width, height) {
     const sourceFrame = this.#getSourceFrame();
     const targetFrame = [x, y, width, height];
     context.drawImage(this.image, ...sourceFrame, ...targetFrame);
   }
 
+  /** Returns source frame. */
   #getSourceFrame() {
     const { frameWidth, frameHeight } = this.spriteConfig;
     const columns = Math.floor(this.image.naturalWidth / frameWidth);
@@ -140,6 +146,7 @@ export class DrawableObject {
     return [sourceX, sourceY, frameWidth, frameHeight];
   }
 
+  /** Draws placeholder. */
   #drawPlaceholder(context, x, y, width, height) {
     const fillColor = PLACEHOLDER_COLORS[this.imageState] ?? PLACEHOLDER_COLORS.loading;
     context.fillStyle = fillColor;
@@ -149,6 +156,7 @@ export class DrawableObject {
     context.strokeRect(x, y, width, height);
   }
 
+  /** Checks the expected frames condition. */
   #hasExpectedFrames(image) {
     const { frameWidth, frameHeight, frameCount } = this.spriteConfig;
     const columns = Math.floor(image.naturalWidth / frameWidth);
@@ -156,12 +164,14 @@ export class DrawableObject {
     return columns * rows >= frameCount;
   }
 
+  /** Checks the valid sprite config condition. */
   #isValidSpriteConfig(config) {
     if (!config || typeof config.source !== "string" || config.source.length === 0) return false;
     const frameValues = [config.frameWidth, config.frameHeight, config.frameCount];
     return frameValues.every((value) => Number.isInteger(value) && value > 0);
   }
 
+  /** Checks the valid collision box condition. */
   #isValidCollisionBox(box) {
     const values = [box?.offsetX, box?.offsetY, box?.width, box?.height];
     const hasValidValues = values.every((value) => Number.isFinite(value));

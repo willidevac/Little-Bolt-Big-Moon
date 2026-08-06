@@ -110,6 +110,7 @@ export class WeaponSystem {
     return this.#getWeapon(weaponId).increaseDamage(amount);
   }
 
+  /** Handles gameplay event. */
   #handleGameplayEvent(event) {
     const pickup = event?.detail;
     if (event?.type !== GAMEPLAY_EVENTS.PICKUP || pickup?.type !== "weapon") {
@@ -118,24 +119,28 @@ export class WeaponSystem {
     return this.unlockWeapon(pickup.weaponId, pickup.amount);
   }
 
+  /** Returns available weapons. */
   #getAvailableWeapons() {
     return this.weapons.filter((weapon) => {
       return this.unlockedWeaponIds.has(weapon.id);
     });
   }
 
+  /** Returns weapon. */
   #getWeapon(weaponId) {
     const weapon = this.weapons.find((candidate) => candidate.id === weaponId);
     if (weapon) return weapon;
     throw new RangeError(`Unbekannte Waffe: ${weaponId}`);
   }
 
+  /** Performs the emit weapon change operation. */
   #emitWeaponChange(weapon) {
     const snapshot = this.#createSnapshot(weapon);
     this.gameplayEvents.emit(GAMEPLAY_EVENTS.WEAPON_CHANGED, snapshot);
     return snapshot;
   }
 
+  /** Creates snapshot. */
   #createSnapshot(weapon) {
     return Object.freeze({
       ...weapon.getSnapshot(),
@@ -143,6 +148,7 @@ export class WeaponSystem {
     });
   }
 
+  /** Performs the grant starter ammo operation. */
   #grantStarterAmmo(weapon, amount) {
     if (weapon.ammoCost === 0) return;
     this.runStats.applyPickups([{
@@ -151,21 +157,25 @@ export class WeaponSystem {
     }]);
   }
 
+  /** Checks the attack condition. */
   #canAttack(weapon) {
     if (weapon.ammoCost === 0) return weapon.canAttack();
     return weapon.canAttack(this.runStats.getResourceAmount(weapon.ammoType));
   }
 
+  /** Performs the spend ammunition operation. */
   #spendAmmunition(weapon) {
     if (weapon.ammoCost === 0) return true;
     return this.runStats.spendResource(weapon.ammoType, weapon.ammoCost);
   }
 
+  /** Validates starter ammo. */
   #validateStarterAmmo(starterAmmo) {
     if (Number.isInteger(starterAmmo) && starterAmmo > 0) return;
     throw new TypeError("Die Startmunition des Waffenfunds ist ungültig.");
   }
 
+  /** Validates dependencies. */
   #validateDependencies(config, input, runStats, gameplayEvents) {
     const hasInput = typeof input?.consumePress === "function";
     const hasStats = typeof runStats?.spendResource === "function" &&
@@ -178,6 +188,7 @@ export class WeaponSystem {
     throw new TypeError("Das Waffensystem ist unvollständig konfiguriert.");
   }
 
+  /** Checks the valid weapon order condition. */
   #hasValidWeaponOrder(config) {
     const definitions = config?.definitions;
     const order = config?.order;

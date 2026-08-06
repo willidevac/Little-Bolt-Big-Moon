@@ -35,6 +35,7 @@ export class AnchoredCollectable extends CollectableObject {
     if (this.isAvailable) super.draw(context);
   }
 
+  /** Validates anchor. */
   #validateAnchor(data, platform) {
     const hasMatchingId = data?.anchorPlatformId === platform?.id;
     const hasMovement = typeof platform?.getFrameDisplacement === "function";

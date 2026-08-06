@@ -110,6 +110,7 @@ export function getWallFeatureProfile(biomeId) {
   return BIOME_PROFILES[biomeId];
 }
 
+/** Creates profile. */
 function createProfile(crossWidth, standardWidths, smallWidth) {
   return Object.freeze({
     crossWidth,
@@ -118,26 +119,23 @@ function createProfile(crossWidth, standardWidths, smallWidth) {
   });
 }
 
+/** Creates choke. */
 function createChoke(id, biomeId, y, height, leftX, rightX, entrySide,
   reboundHorizontalSpeedPixelsPerSecond,
   reboundVerticalSpeedPixelsPerSecond) {
   return Object.freeze({
     id, biomeId, y, height, leftX, rightX, entrySide,
     corridorWidth: rightX - leftX - WALL_WIDTH,
-    reboundHorizontalSpeedPixelsPerSecond,
-    reboundVerticalSpeedPixelsPerSecond,
-    reboundControlSeconds: 0.9,
-    reboundReleasedVerticalRatio: 0.52,
-    reboundDropVerticalRatio: 0.18,
-    exitTargetCenterX: 640,
-    exitTargetSurfaceY: y - 185,
-    exitAssistBandPixels: 120,
+    reboundHorizontalSpeedPixelsPerSecond, reboundVerticalSpeedPixelsPerSecond,
+    reboundControlSeconds: 0.9, reboundReleasedVerticalRatio: 0.52,
+    reboundDropVerticalRatio: 0.18, exitTargetCenterX: 640,
+    exitTargetSurfaceY: y - 185, exitAssistBandPixels: 120,
     exitAssistVerticalSpeedPixelsPerSecond: 1280,
-    exitAssistMaximumHorizontalSpeedPixelsPerSecond: 520,
-    exitAssistControlSeconds: 0.45,
+    exitAssistMaximumHorizontalSpeedPixelsPerSecond: 520, exitAssistControlSeconds: 0.45,
   });
 }
 
+/** Validates assert biome. */
 function assertBiome(biomeId) {
   if (BIOME_PROFILES[biomeId]) return;
   throw new RangeError(`Unknown wall-course biome: ${biomeId}`);
@@ -159,6 +157,7 @@ const COMBAT_PLATFORM_HEIGHTS = Object.freeze({
   moon: 213,
 });
 
+/** Performs the platform sprite operation. */
 function platformSprite(role, frameWidth, frameHeight) {
   return Object.freeze({
     source: getAssetPath(

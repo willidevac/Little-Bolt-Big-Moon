@@ -59,6 +59,7 @@ export const MECHANIC_PLATFORM_INTRODUCTIONS = Object.freeze([
   }),
 ]);
 
+/** Performs the sprite operation. */
 function sprite(fileName, frameWidth, frameHeight, frameCount = 1) {
   return Object.freeze({
     source: getAssetPath("environment", fileName),

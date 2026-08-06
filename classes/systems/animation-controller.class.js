@@ -55,6 +55,7 @@ export class AnimationController {
     return clip.startFrame + this.frameOffset;
   }
 
+  /** Updates advance. */
   #advance(deltaTimeSeconds) {
     const clip = this.#getClip(this.state);
     if (clip.frameCount === 1 || this.#hasFinished(clip)) return;
@@ -68,12 +69,14 @@ export class AnimationController {
     this.#applyFrameSteps(frameSteps, clip);
   }
 
+  /** Returns completed frame steps. */
   #getCompletedFrameSteps(clip) {
     return Math.floor(
       (this.elapsedSeconds + FRAME_TIME_EPSILON_SECONDS) / clip.frameDurationSeconds,
     );
   }
 
+  /** Applies frame steps. */
   #applyFrameSteps(frameSteps, clip) {
     const nextOffset = this.frameOffset + frameSteps;
     this.frameOffset = clip.loop
@@ -81,16 +84,19 @@ export class AnimationController {
       : Math.min(nextOffset, clip.frameCount - 1);
   }
 
+  /** Checks the finished condition. */
   #hasFinished(clip) {
     return !clip.loop && this.frameOffset === clip.frameCount - 1;
   }
 
+  /** Returns clip. */
   #getClip(state) {
     const clip = this.clips[state];
     if (!clip) throw new RangeError(`Unbekannter Animationszustand: ${state}`);
     return clip;
   }
 
+  /** Performs the are valid clips operation. */
   #areValidClips(clips) {
     if (!clips || typeof clips !== "object") return false;
     const entries = Object.entries(clips);
@@ -99,6 +105,7 @@ export class AnimationController {
     });
   }
 
+  /** Checks the valid clip condition. */
   #isValidClip(state, clip) {
     if (state.length === 0 || !clip || typeof clip !== "object") return false;
     const hasValidFrames =
@@ -109,6 +116,7 @@ export class AnimationController {
     return hasValidFrames && this.#hasValidTiming(clip);
   }
 
+  /** Checks the valid timing condition. */
   #hasValidTiming(clip) {
     return (
       Number.isFinite(clip.frameDurationSeconds) &&
@@ -117,6 +125,7 @@ export class AnimationController {
     );
   }
 
+  /** Checks the valid delta time condition. */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

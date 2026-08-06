@@ -8,6 +8,7 @@ export async function loadHtmlFragments(root = document) {
   root.querySelector(ROOT_SELECTOR)?.removeAttribute("aria-busy");
 }
 
+/** Collects fragment. */
 async function loadFragment(placeholder) {
   const source = placeholder.dataset.htmlFragment;
   if (!source) throw new Error("Einem HTML-Fragment fehlt der Pfad.");
@@ -16,6 +17,7 @@ async function loadFragment(placeholder) {
   placeholder.replaceWith(createFragment(await response.text()));
 }
 
+/** Creates fragment. */
 function createFragment(markup) {
   const template = document.createElement("template");
   template.innerHTML = markup.trim();

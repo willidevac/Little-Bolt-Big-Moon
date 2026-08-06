@@ -70,6 +70,7 @@ export class HudAnnouncement {
     this.unsubscribeLanguage();
   }
 
+  /** Performs the show operation. */
   #show(message, priority, duration) {
     if (priority < this.activePriority) return false;
     this.activePriority = priority;
@@ -82,17 +83,20 @@ export class HudAnnouncement {
     return true;
   }
 
+  /** Performs the restart animation operation. */
   #restartAnimation() {
     this.element.classList.remove("is-visible");
     void this.element.offsetWidth;
     this.element.classList.add("is-visible");
   }
 
+  /** Draws render current. */
   #renderCurrent() {
     if (!this.currentMessage) return;
     this.element.textContent = this.#getMessage(this.currentMessage);
   }
 
+  /** Returns message. */
   #getMessage(message) {
     if (message.kind === "boss") return this.#getBossMessage(message.nameKey);
     if (message.kind === "biome") {
@@ -104,10 +108,12 @@ export class HudAnnouncement {
     return this.#getPickupMessage(message.pickup);
   }
 
+  /** Returns boss message. */
   #getBossMessage(nameKey) {
     return translate("combat.bossStarted", { name: translate(nameKey) });
   }
 
+  /** Returns pickup message. */
   #getPickupMessage(pickup) {
     if (pickup?.type === "weapon") return translate("pickup.weapon");
     const key = `pickup.${pickup?.type}`;

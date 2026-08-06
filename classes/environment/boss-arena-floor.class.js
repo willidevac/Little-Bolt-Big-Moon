@@ -23,6 +23,7 @@ export class BossArenaFloor extends DrawableObject {
     return Object.freeze({ x: 0, y: 0 });
   }
 
+  /** Validates the floor dimensions. */
   #validate(data) {
     const values = [data?.x, data?.y, data?.width, data?.height];
     const hasValues = values.every(Number.isFinite) && data.width > 0 &&

@@ -61,6 +61,7 @@ export class ScreenController {
     this.#bindActions();
   }
 
+  /** Performs the bind actions operation. */
   #bindActions() {
     this.boundClick = this.handleClick.bind(this);
     this.boundDialogKeydown = this.dialogController.handleKeydown.bind(
@@ -69,6 +70,7 @@ export class ScreenController {
     this.actions = this.createActions();
   }
 
+  /** Applies required elements. */
   #assignRequiredElements() {
     this.upgradeOptionView = new UpgradeOptionView(this.root.ownerDocument);
     this.homeScreen = getRequiredElement(this.root, SELECTORS.home);
@@ -84,6 +86,7 @@ export class ScreenController {
     this.#assignEndElements();
   }
 
+  /** Applies end elements. */
   #assignEndElements() {
     this.endEyebrow = getRequiredElement(this.root, SELECTORS.endEyebrow);
     this.endTitle = getRequiredElement(this.root, SELECTORS.endTitle);
@@ -92,6 +95,7 @@ export class ScreenController {
     this.endScore = getRequiredElement(this.root, SELECTORS.endScore);
   }
 
+  /** Returns dialog background elements. */
   #getDialogBackgroundElements() {
     return [
       this.homeScreen, this.pauseScreen, this.upgradeScreen,
@@ -159,6 +163,7 @@ export class ScreenController {
     this.dialogController.close(false);
   }
 
+  /** Applies screen visibility. */
   #setScreenVisibility(state) {
     const endContent = END_SCREEN_CONTENT[state];
     this.homeScreen.hidden = state !== GAME_STATES.HOME;
@@ -168,6 +173,7 @@ export class ScreenController {
     if (endContent) this.#renderEndScreen(state, endContent);
   }
 
+  /** Checks the visible screen condition. */
   #hasVisibleScreen() {
     return [
       this.homeScreen,
@@ -183,15 +189,25 @@ export class ScreenController {
    */
   createActions() {
     return Object.freeze({
+      /** Performs the start operation. */
       start: () => this.startRun(),
+      /** Performs the controls operation. */
       controls: () => this.dialogController.open("controls"),
+      /** Applies settings. */
       settings: () => this.dialogController.open("settings"),
+      /** Performs the imprint operation. */
       imprint: () => this.dialogController.open("imprint"),
+      /** Performs the close-dialog operation. */
       "close-dialog": () => this.dialogController.close(),
+      /** Performs the pause operation. */
       pause: () => this.game.togglePause(),
+      /** Performs the resume operation. */
       resume: () => this.game.resume(),
+      /** Performs the upgrade operation. */
       upgrade: (button) => this.game.chooseUpgrade(button.dataset.upgradeId),
+      /** Performs the restart operation. */
       restart: () => this.game.reset(),
+      /** Performs the home operation. */
       home: () => this.game.goHome(),
     });
   }
@@ -216,6 +232,7 @@ export class ScreenController {
     if (END_SCREEN_CONTENT[state]) this.endTitle.focus();
   }
 
+  /** Draws render end screen. */
   #renderEndScreen(state, contentKey) {
     const stats = this.game.getHudSnapshot();
     this.endScreen.dataset.endState = state;
@@ -238,6 +255,7 @@ export class ScreenController {
     );
   }
 
+  /** Draws render upgrade context. */
   #renderUpgradeContext() {
     const context = this.game.getUpgradeContext();
     const prefix = context.didUnlockPath ? "upgrade.boss" : "upgrade";

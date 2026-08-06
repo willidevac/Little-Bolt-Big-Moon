@@ -5,20 +5,21 @@ export class SpringPlatform extends SpriteSurfacePlatform {
   /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
   constructor(data, spriteConfig) {
     super(data, spriteConfig);
-    if (!Number.isFinite(data.bounceSpeedPixelsPerSecond) ||
-      data.bounceSpeedPixelsPerSecond <= 0) {
-      throw new TypeError(`The spring platform ${this.id} is invalid.`);
-    }
+    this.#validateSpring(data);
     this.bounceSpeedPixelsPerSecond = data.bounceSpeedPixelsPerSecond;
     this.bounceHorizontalSpeedPixelsPerSecond =
       data.bounceHorizontalSpeedPixelsPerSecond;
     this.bounceDirection = data.bounceDirection;
-    if (!Number.isFinite(this.bounceHorizontalSpeedPixelsPerSecond) ||
-      this.bounceHorizontalSpeedPixelsPerSecond <= 0 ||
-      !["left", "right"].includes(this.bounceDirection)) {
-      throw new TypeError(`The spring direction of ${this.id} is invalid.`);
-    }
     this.pulseSeconds = 0;
+  }
+
+  /** Validates spring. */
+  #validateSpring(data) {
+    const speeds = [data.bounceSpeedPixelsPerSecond,
+      data.bounceHorizontalSpeedPixelsPerSecond];
+    const hasSpeeds = speeds.every((speed) => Number.isFinite(speed) && speed > 0);
+    if (hasSpeeds && ["left", "right"].includes(data.bounceDirection)) return;
+    throw new TypeError(`The spring platform ${this.id} is invalid.`);
   }
 
   /** Applies the platform's fixed upward launch impulse. */
@@ -42,6 +43,11 @@ export class SpringPlatform extends SpriteSurfacePlatform {
   draw(context) {
     super.draw(context);
     if (this.pulseSeconds <= 0) return;
+    this.#drawLaunchFlash(context);
+  }
+
+  /** Draws launch flash. */
+  #drawLaunchFlash(context) {
     context.save();
     context.globalCompositeOperation = "lighter";
     context.globalAlpha = Math.min(0.75, this.pulseSeconds * 3.4);

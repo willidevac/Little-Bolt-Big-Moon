@@ -15,18 +15,20 @@ export class ScrapyardPrototypeBuilder {
   /** @returns {ReadonlyArray<SpriteSurfacePlatform>} Stable tutorial floors. */
   buildPlatforms() {
     return Object.freeze(SCRAPYARD_PROTOTYPE_PLATFORMS.map((definition) => {
-      const role = SCRAPYARD_PLATFORM_ROLES[definition.platformRole];
-      const data = Object.freeze({
-        ...definition,
-        kind: "prototype-jump-platform",
-        biomeId: "scrapyard",
-        accentColor: role.accentColor,
-      });
-      return new SpriteSurfacePlatform(
-        data,
-        getScrapyardPrototypePlatformSpriteConfig(definition.platformRole),
-      );
+      return this.#createPlatform(definition);
     }));
+  }
+
+  /** Creates platform. */
+  #createPlatform(definition) {
+    const role = SCRAPYARD_PLATFORM_ROLES[definition.platformRole];
+    const data = Object.freeze({ ...definition,
+      kind: "prototype-jump-platform", biomeId: "scrapyard",
+      accentColor: role.accentColor });
+    const sprite = getScrapyardPrototypePlatformSpriteConfig(
+      definition.platformRole,
+    );
+    return new SpriteSurfacePlatform(data, sprite);
   }
 
   /** @returns {ReadonlyArray<AnimatedBiomeWall>} Empty during onboarding. */

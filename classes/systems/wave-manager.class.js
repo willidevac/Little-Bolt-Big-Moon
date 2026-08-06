@@ -81,6 +81,7 @@ export class WaveManager {
     throw new RangeError(`Unbekannte Kampfzone: ${zoneId}`);
   }
 
+  /** Performs the activate operation. */
   #activate(zone, world) {
     if (!zone.activate()) return;
     zone.enemyIds.forEach((enemyId) => {
@@ -91,6 +92,7 @@ export class WaveManager {
     });
   }
 
+  /** Checks the ended condition. */
   #hasEnded(zone, world) {
     const activeEnemyIds = new Set(
       world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).map((enemy) => enemy.id),
@@ -98,6 +100,7 @@ export class WaveManager {
     return zone.enemyIds.every((enemyId) => !activeEnemyIds.has(enemyId));
   }
 
+  /** Performs the complete operation. */
   #complete(zone, world) {
     if (!zone.complete()) return;
     const completion = Object.freeze({
@@ -109,6 +112,7 @@ export class WaveManager {
     world.gameplayEvents.emit(GAMEPLAY_EVENTS.WAVE_COMPLETE, completion);
   }
 
+  /** Performs the lock progression platforms operation. */
   #lockProgressionPlatforms(world) {
     this.#zones.forEach((zone) => {
       const platform = this.#getUnlockPlatform(zone);
@@ -116,16 +120,19 @@ export class WaveManager {
     });
   }
 
+  /** Performs the unlock progression platform operation. */
   #unlockProgressionPlatform(zone, world) {
     const platform = this.#getUnlockPlatform(zone);
     if (platform) world.addEntity(WORLD_ENTITY_GROUPS.PLATFORMS, platform);
   }
 
+  /** Returns unlock platform. */
   #getUnlockPlatform(zone) {
     if (!zone.unlockPlatformId) return null;
     return this.#platformsById.get(zone.unlockPlatformId) ?? null;
   }
 
+  /** Performs the complete finished zones operation. */
   #completeFinishedZones(world) {
     this.#zones.filter((zone) => {
       return zone.state === COMBAT_ZONE_STATES.ACTIVE &&
@@ -135,10 +142,12 @@ export class WaveManager {
     });
   }
 
+  /** Collects managed enemy ids. */
   #collectManagedEnemyIds() {
     return new Set(this.#zones.flatMap((zone) => zone.enemyIds));
   }
 
+  /** Validates collections. */
   #validateCollections(combatZones, enemies, platforms) {
     const hasZones = Array.isArray(combatZones) &&
       combatZones.every((zone) => zone instanceof CombatZone);
@@ -152,6 +161,7 @@ export class WaveManager {
     throw new TypeError("Die Kampfphasen-Daten sind ungültig.");
   }
 
+  /** Validates platform references. */
   #validatePlatformReferences() {
     if (this.#platformsById.size === 0) return;
     const ids = this.#zones.flatMap((zone) => {
@@ -162,6 +172,7 @@ export class WaveManager {
     throw new RangeError("Bossausgänge sind unbekannt oder doppelt vergeben.");
   }
 
+  /** Validates enemy references. */
   #validateEnemyReferences() {
     const referencedIds = this.#zones.flatMap((zone) => zone.enemyIds);
     const allExist = referencedIds.every((id) => this.#enemiesById.has(id));

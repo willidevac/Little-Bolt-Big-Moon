@@ -48,6 +48,7 @@ export class BackgroundZone {
     context.restore();
   }
 
+  /** Returns visible bounds. */
   #getVisibleBounds(camera, viewport) {
     const visibleTop = Math.max(
       0,
@@ -60,6 +61,7 @@ export class BackgroundZone {
     return { top: visibleTop, bottom: visibleBottom };
   }
 
+  /** Draws layers. */
   #drawLayers(context, camera, viewport, visible) {
     context.save();
     context.beginPath();
@@ -71,6 +73,7 @@ export class BackgroundZone {
     context.restore();
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const hasValidBounds = Number.isFinite(config?.topY) &&
       Number.isFinite(config?.bottomY) &&

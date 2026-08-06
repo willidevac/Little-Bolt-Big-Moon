@@ -36,6 +36,7 @@ export class BoltProjectile extends Projectile {
   }
 }
 
+/** Creates projectile data. */
 function createProjectileData(attack) {
   return {
     team: "player",
@@ -46,6 +47,7 @@ function createProjectileData(attack) {
   };
 }
 
+/** Validates bolt attack. */
 function validateBoltAttack(attack) {
   const isBolt = attack?.type === "projectile" &&
     attack.projectileKind === "bolt";

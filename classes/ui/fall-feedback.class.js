@@ -47,12 +47,14 @@ export class FallFeedback {
     this.unsubscribeLanguage();
   }
 
+  /** Draws render current. */
   #renderCurrent() {
     if (!this.currentFall) return;
     const key = `fall.${this.currentFall.severity}`;
     this.element.textContent = translate(key, { meters: this.currentFall.meters });
   }
 
+  /** Creates visible fall. */
   #createVisibleFall(fall) {
     return Object.freeze({
       ...fall,
@@ -60,6 +62,7 @@ export class FallFeedback {
     });
   }
 
+  /** Validates fall. */
   #validateFall(fall) {
     const hasLoss = Number.isFinite(fall?.lossPixels) && fall.lossPixels > 0;
     if (hasLoss && SEVERITIES.includes(fall?.severity)) return;

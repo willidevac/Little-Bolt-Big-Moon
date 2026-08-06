@@ -90,6 +90,7 @@ const ARC_CANNON_VISUAL = Object.freeze({
   groundOffsets: ARC_CANNON_GROUND_OFFSETS,
 });
 
+/** Creates clip. */
 function createClip(startFrame, frameCount) {
   return Object.freeze({
     startFrame,
@@ -118,6 +119,7 @@ export class CollectableObject extends DrawableObject {
     this.setFrameIndex(this.animationController.setState(this.animationState));
   }
 
+  /** Applies data. */
   #applyData(collectableData) {
     this.id = collectableData.id;
     this.type = collectableData.type;
@@ -161,6 +163,7 @@ export class CollectableObject extends DrawableObject {
     return Object.freeze(pickup);
   }
 
+  /** Validates data. */
   #validateData(data) {
     const hasIdentity = typeof data?.id === "string" && data.id.length > 0;
     const hasType = Object.values(COLLECTABLE_TYPES).includes(data?.type);
@@ -176,6 +179,7 @@ export class CollectableObject extends DrawableObject {
     throw new TypeError("Die Daten des Sammelobjekts sind ungültig.");
   }
 
+  /** Applies visual. */
   #applyVisual(visual) {
     this.width = visual.sprite.frameWidth * visual.renderScale;
     this.height = visual.sprite.frameHeight * visual.renderScale;
@@ -184,6 +188,7 @@ export class CollectableObject extends DrawableObject {
     this.loadSprite(visual.sprite);
   }
 
+  /** Returns visual. */
   #getVisual(data) {
     if (data.type === COLLECTABLE_TYPES.STORY_BADGE) return this.#getBadgeVisual(data);
     if (data.type === COLLECTABLE_TYPES.ARC_CHARGE) {
@@ -198,11 +203,13 @@ export class CollectableObject extends DrawableObject {
     return STANDARD_VISUAL;
   }
 
+  /** Returns badge visual. */
   #getBadgeVisual(data) {
     this.animationState = data.badgePart === "left" ? "badgeLeft" : "badgeRight";
     return STANDARD_VISUAL;
   }
 
+  /** Returns draw y. */
   #getDrawY() {
     return getGroundedSpriteY(this, this.groundOffsets);
   }

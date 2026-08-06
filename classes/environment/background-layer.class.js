@@ -32,6 +32,7 @@ export class BackgroundLayer extends DrawableObject {
     this.#drawSource(context, source, viewport);
   }
 
+  /** Draws source. */
   #drawSource(context, source, viewport) {
     context.drawImage(
       this.image,
@@ -46,10 +47,12 @@ export class BackgroundLayer extends DrawableObject {
     );
   }
 
+  /** Draws fallback. */
   #drawFallback(context, viewport) {
     this.drawCurrentFrame(context, 0, 0, viewport.width, viewport.height);
   }
 
+  /** Returns source frame. */
   #getSourceFrame(bounds, camera, viewport) {
     const sourceWidth = this.spriteConfig.frameWidth;
     const sourceHeight = this.spriteConfig.frameHeight;
@@ -64,11 +67,13 @@ export class BackgroundLayer extends DrawableObject {
     return { width: sourceWidth, height: sourceCropHeight, y: maximumSourceY * progress };
   }
 
+  /** Returns layer progress. */
   #getLayerProgress(worldProgress) {
     const centeredProgress = worldProgress - 0.5;
     return this.#clamp(0.5 + centeredProgress * this.scrollRate, 0, 1);
   }
 
+  /** Returns scroll progress. */
   #getScrollProgress(bounds, camera, viewportHeight) {
     const scrollableWorldHeight = bounds.bottomY - bounds.topY - viewportHeight;
     const localCameraY = this.#clamp(
@@ -79,10 +84,12 @@ export class BackgroundLayer extends DrawableObject {
     return scrollableWorldHeight > 0 ? localCameraY / scrollableWorldHeight : 0;
   }
 
+  /** Performs the clamp operation. */
   #clamp(value, minimum, maximum) {
     return Math.min(Math.max(value, minimum), maximum);
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const hasValidSize = Number.isInteger(config?.frameWidth) &&
       Number.isInteger(config?.frameHeight) &&

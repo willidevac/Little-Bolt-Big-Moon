@@ -14,9 +14,12 @@ export class AnimatedBiomeWall extends DrawableObject {
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
-    const width = data.role === "early-trickshot-wall"
-      ? data.width
-      : WALL_WIDTH;
+    this.#initialize(data, spriteConfig);
+  }
+
+  /** Initializes operation. */
+  #initialize(data, spriteConfig) {
+    const width = data.role === "early-trickshot-wall" ? data.width : WALL_WIDTH;
     Object.assign(this, data, { width });
     this.animationTime = data.phaseOffset ?? 0;
     this.animationFrameSeconds = data.animationFrameSeconds ??
@@ -46,6 +49,11 @@ export class AnimatedBiomeWall extends DrawableObject {
       this.#drawMeaningfulLight(context, this.y, this.y + this.height);
       return;
     }
+    this.#drawBiomeWall(context, world);
+  }
+
+  /** Draws biome wall. */
+  #drawBiomeWall(context, world) {
     const camera = world.camera;
     const top = Math.max(this.y, camera.y - DRAW_PADDING);
     const bottom = Math.min(
@@ -55,6 +63,12 @@ export class AnimatedBiomeWall extends DrawableObject {
     if (bottom <= top) return;
     const firstTile = Math.floor((top - this.y) / WALL_TILE_HEIGHT);
     const lastTile = Math.floor((bottom - this.y) / WALL_TILE_HEIGHT);
+    this.#drawTiles(context, firstTile, lastTile);
+    this.#drawMeaningfulLight(context, top, bottom);
+  }
+
+  /** Draws tiles. */
+  #drawTiles(context, firstTile, lastTile) {
     context.save();
     context.beginPath();
     context.rect(this.x, this.y, this.width, this.height);
@@ -63,9 +77,9 @@ export class AnimatedBiomeWall extends DrawableObject {
       this.#drawTile(context, tileIndex);
     }
     context.restore();
-    this.#drawMeaningfulLight(context, top, bottom);
   }
 
+  /** Draws trickshot wall. */
   #drawTrickshotWall(context) {
     this.setFrameIndex(0);
     if (this.side === "left") {
@@ -90,11 +104,22 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#applyReboundImpulse(character);
   }
 
+  /** Applies rebound impulse. */
   #applyReboundImpulse(character) {
     if (this.role !== "wall-bounce-choke" || character?.isOnGround) return;
     const regularDirection = this.side === "left" ? 1 : -1;
     const exitAssist = this.#getExitAssist(character, regularDirection);
-    const rebound = Object.freeze({
+    const rebound = this.#createRebound(exitAssist, regularDirection);
+    if (typeof character?.beginControlledWallRebound === "function") {
+      character.beginControlledWallRebound(rebound);
+      return;
+    }
+    this.#applyFallbackRebound(character, rebound);
+  }
+
+  /** Creates rebound. */
+  #createRebound(exitAssist, regularDirection) {
+    return Object.freeze({
       direction: exitAssist?.direction ?? regularDirection,
       horizontalSpeedPixelsPerSecond: exitAssist?.horizontalSpeed ??
         this.reboundHorizontalSpeedPixelsPerSecond,
@@ -105,10 +130,10 @@ export class AnimatedBiomeWall extends DrawableObject {
       dropVerticalRatio: this.reboundDropVerticalRatio,
       forceFullVertical: Boolean(exitAssist),
     });
-    if (typeof character?.beginControlledWallRebound === "function") {
-      character.beginControlledWallRebound(rebound);
-      return;
-    }
+  }
+
+  /** Applies fallback rebound. */
+  #applyFallbackRebound(character, rebound) {
     if (typeof character?.applyUpwardImpulse !== "function") return;
     const input = character.wallReboundInput ?? {};
     const ratio = input.down
@@ -123,10 +148,24 @@ export class AnimatedBiomeWall extends DrawableObject {
     );
   }
 
+  /** Returns exit assist. */
   #getExitAssist(character, regularDirection) {
-    if (!Number.isFinite(character?.x) || !Number.isFinite(character?.y) ||
-      !Number.isFinite(character?.width) || !Number.isFinite(character?.height) ||
-      character.y > this.y + this.exitAssistBandPixels) return null;
+    if (!this.#canAssistExit(character)) return null;
+    const { centerX, rise } = this.#getExitGeometry(character);
+    const motion = this.#getExitMotion(rise, centerX, regularDirection);
+    return Object.freeze({ ...motion,
+      controlSeconds: this.exitAssistControlSeconds });
+  }
+
+  /** Checks whether assist exit. */
+  #canAssistExit(character) {
+    return Number.isFinite(character?.x) && Number.isFinite(character?.y) &&
+      Number.isFinite(character?.width) && Number.isFinite(character?.height) &&
+      character.y <= this.y + this.exitAssistBandPixels;
+  }
+
+  /** Returns exit geometry. */
+  #getExitGeometry(character) {
     const bounds = typeof character.getCollisionBounds === "function"
       ? character.getCollisionBounds()
       : null;
@@ -138,13 +177,12 @@ export class AnimatedBiomeWall extends DrawableObject {
       : character.height;
     const targetCharacterY = this.exitTargetSurfaceY - footOffset;
     const rise = Math.max(0, character.y - targetCharacterY);
-    const minimumVerticalSpeed = Math.sqrt(
-      2 * EXIT_ASSIST_GRAVITY * (rise + EXIT_ASSIST_LANDING_MARGIN),
-    );
-    const verticalSpeed = Math.max(
-      this.exitAssistVerticalSpeedPixelsPerSecond,
-      minimumVerticalSpeed,
-    );
+    return { centerX, rise };
+  }
+
+  /** Returns exit motion. */
+  #getExitMotion(rise, centerX, regularDirection) {
+    const verticalSpeed = this.#getExitVerticalSpeed(rise);
     const discriminant = Math.max(
       0, verticalSpeed ** 2 - 2 * EXIT_ASSIST_GRAVITY * rise,
     );
@@ -152,19 +190,32 @@ export class AnimatedBiomeWall extends DrawableObject {
       EXIT_ASSIST_GRAVITY;
     const horizontalDistance = this.exitTargetCenterX - centerX;
     const direction = Math.sign(horizontalDistance) || regularDirection;
-    const horizontalSpeed = Math.min(
+    const horizontalSpeed = this.#getExitHorizontalSpeed(
+      horizontalDistance, flightSeconds,
+    );
+    return { direction, verticalSpeed, horizontalSpeed };
+  }
+
+  /** Returns exit horizontal speed. */
+  #getExitHorizontalSpeed(distance, flightSeconds) {
+    return Math.min(
       this.exitAssistMaximumHorizontalSpeedPixelsPerSecond,
       Math.max(
         EXIT_ASSIST_MINIMUM_HORIZONTAL_SPEED,
-        Math.abs(horizontalDistance) / Math.max(0.1, flightSeconds),
+        Math.abs(distance) / Math.max(0.1, flightSeconds),
       ),
     );
-    return Object.freeze({
-      direction, horizontalSpeed, verticalSpeed,
-      controlSeconds: this.exitAssistControlSeconds,
-    });
   }
 
+  /** Returns exit vertical speed. */
+  #getExitVerticalSpeed(rise) {
+    const minimum = Math.sqrt(
+      2 * EXIT_ASSIST_GRAVITY * (rise + EXIT_ASSIST_LANDING_MARGIN),
+    );
+    return Math.max(this.exitAssistVerticalSpeedPixelsPerSecond, minimum);
+  }
+
+  /** Checks whether inner impact. */
   #isInnerImpact(collisionDirection) {
     if (this.role !== "wall-bounce-choke") return true;
     const innerDirection = this.side === "left" ? 1 : -1;
@@ -187,6 +238,7 @@ export class AnimatedBiomeWall extends DrawableObject {
     })]);
   }
 
+  /** Draws tile. */
   #drawTile(context, tileIndex) {
     const y = this.y + tileIndex * WALL_TILE_HEIGHT;
     if (y >= this.y + this.height) return;
@@ -197,6 +249,11 @@ export class AnimatedBiomeWall extends DrawableObject {
       this.drawCurrentFrame(context, this.x, y, this.width, WALL_TILE_HEIGHT);
       return;
     }
+    this.#drawMirroredTile(context, y);
+  }
+
+  /** Draws mirrored tile. */
+  #drawMirroredTile(context, y) {
     context.save();
     context.translate(this.x * 2 + this.width, 0);
     context.scale(-1, 1);
@@ -204,6 +261,7 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
+  /** Draws meaningful light. */
   #drawMeaningfulLight(context, top, bottom) {
     if (bottom <= top || (!this.guidanceDirection &&
       this.impactGlowSeconds <= 0)) return;
@@ -218,6 +276,7 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
+  /** Draws guidance. */
   #drawGuidance(context, top, bottom) {
     const span = Math.max(1, bottom - top);
     const travel = (this.animationTime * 180) % span;
@@ -229,13 +288,25 @@ export class AnimatedBiomeWall extends DrawableObject {
     }
   }
 
+  /** Validates operation. */
   #validate(data) {
     const values = [data?.x, data?.y, data?.height];
     const hasValues = values.every(Number.isFinite) && data.height > 0;
     const trickshotWidthIsValid = data?.role !== "early-trickshot-wall" ||
       (Number.isFinite(data.width) && data.width > 0);
     const hasSide = data?.side === "left" || data?.side === "right";
-    const reboundIsValid = data?.role !== "wall-bounce-choke" || [
+    const reboundIsValid = this.#hasValidRebound(data);
+    const reboundRatiosAreValid = data?.role !== "wall-bounce-choke" ||
+      (data.reboundDropVerticalRatio < data.reboundReleasedVerticalRatio &&
+        data.reboundReleasedVerticalRatio < 1);
+    if (typeof data?.id === "string" && hasValues && hasSide &&
+      trickshotWidthIsValid && reboundIsValid && reboundRatiosAreValid) return;
+    throw new TypeError("The animated biome wall definition is invalid.");
+  }
+
+  /** Checks whether valid rebound. */
+  #hasValidRebound(data) {
+    return data?.role !== "wall-bounce-choke" || [
       data.reboundHorizontalSpeedPixelsPerSecond,
       data.reboundVerticalSpeedPixelsPerSecond,
       data.reboundControlSeconds,
@@ -245,15 +316,7 @@ export class AnimatedBiomeWall extends DrawableObject {
       data.exitTargetSurfaceY,
       data.exitAssistBandPixels,
       data.exitAssistVerticalSpeedPixelsPerSecond,
-      data.exitAssistMaximumHorizontalSpeedPixelsPerSecond,
-      data.exitAssistControlSeconds,
+      data.exitAssistMaximumHorizontalSpeedPixelsPerSecond, data.exitAssistControlSeconds,
     ].every((value) => Number.isFinite(value) && value > 0);
-    const reboundRatiosAreValid = data?.role !== "wall-bounce-choke" ||
-      (data.reboundDropVerticalRatio < data.reboundReleasedVerticalRatio &&
-        data.reboundReleasedVerticalRatio < 1);
-    if (typeof data?.id === "string" && hasValues && hasSide &&
-      trickshotWidthIsValid &&
-      reboundIsValid && reboundRatiosAreValid) return;
-    throw new TypeError("The animated biome wall definition is invalid.");
   }
 }

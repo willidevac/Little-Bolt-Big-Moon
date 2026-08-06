@@ -73,6 +73,7 @@ export class ReviewFlightController {
     return true;
   }
 
+  /** Applies biome jump. */
   #applyBiomeJump() {
     BIOME_ACTIONS.some((action, index) => {
       if (!this.game.keyboard.consumePress(action)) return false;
@@ -81,6 +82,7 @@ export class ReviewFlightController {
     });
   }
 
+  /** Applies flight. */
   #applyFlight(deltaTimeSeconds, direction, isFast) {
     const { x: directionX, y: directionY } = direction;
     const length = Math.hypot(directionX, directionY);
@@ -89,6 +91,7 @@ export class ReviewFlightController {
     this.character.y = this.#clampY(this.character.y + directionY / length * distance);
   }
 
+  /** Returns flight direction. */
   #getFlightDirection() {
     const input = this.game.keyboard;
     return Object.freeze({
@@ -97,6 +100,7 @@ export class ReviewFlightController {
     });
   }
 
+  /** Performs the begin flight operation. */
   #beginFlight() {
     if (this.isFlying) return;
     this.isFlying = true;
@@ -104,6 +108,7 @@ export class ReviewFlightController {
     this.character.setInvulnerability(Infinity);
   }
 
+  /** Performs the end flight operation. */
   #endFlight() {
     if (!this.isFlying) return;
     this.isFlying = false;
@@ -113,34 +118,41 @@ export class ReviewFlightController {
     this.#stopCharacter();
   }
 
+  /** Returns speed. */
   #getSpeed(isFast) {
     const speed = this.config.flightSpeedPixelsPerSecond;
     return isFast ? speed * this.config.fastMultiplier : speed;
   }
 
+  /** Collects camera follow. */
   #syncCameraFollow(isFast) {
     const multiplier = isFast ? this.config.fastMultiplier : 1;
     this.game.world.camera.setFollowSpeedMultiplier?.(multiplier);
   }
 
+  /** Clears character. */
   #stopCharacter() {
     this.character.velocityX = 0;
     this.character.velocityY = 0;
     this.character.setOnGround(false);
   }
 
+  /** Performs the clamp x operation. */
   #clampX(x) {
     return clamp(x, 0, this.game.config.world.width - this.character.width);
   }
 
+  /** Performs the clamp y operation. */
   #clampY(y) {
     return clamp(y, 0, this.game.config.world.height - this.character.height);
   }
 
+  /** Checks the valid target condition. */
   #isValidTarget(target) {
     return Number.isFinite(target?.x) && Number.isFinite(target?.y);
   }
 
+  /** Validates the flight state. */
   #validate(game, config) {
     const hasGame = game?.world?.character && game?.keyboard && game?.runStats;
     const hasHeightScale = Number.isFinite(

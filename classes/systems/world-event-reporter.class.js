@@ -63,6 +63,7 @@ export class WorldEventReporter {
     return true;
   }
 
+  /** Performs the report movement operation. */
   #reportMovement(character) {
     const jumped = this.before.velocityY >= 0 && character.velocityY < 0;
     const landed = !this.before.isOnGround && character.isOnGround;
@@ -71,6 +72,7 @@ export class WorldEventReporter {
     this.#reportJumpCharge(character);
   }
 
+  /** Performs the report jump charge operation. */
   #reportJumpCharge(character) {
     const percent = character.jumpChargePercent;
     const isCharging = character.isChargingJump;
@@ -80,6 +82,7 @@ export class WorldEventReporter {
     this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE, { percent, isCharging });
   }
 
+  /** Performs the report boss operation. */
   #reportBoss(boss) {
     if (!this.before.bossActive && boss.isActive) {
       this.events.emit(GAMEPLAY_EVENTS.BOSS_ACTIVATED, { name: boss.name });

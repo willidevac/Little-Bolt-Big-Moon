@@ -99,6 +99,7 @@ export class GameStateMachine {
     return this.#currentState;
   }
 
+  /** Performs the notify change operation. */
   #notifyChange() {
     this.#listeners.forEach((listener) => listener(this.#currentState));
   }

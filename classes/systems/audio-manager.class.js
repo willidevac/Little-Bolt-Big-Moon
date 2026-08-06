@@ -1,4 +1,6 @@
+/** Creates browser audio. */
 const createBrowserAudio = (source) => new Audio(source);
+/** Returns current time. */
 const getCurrentTime = () => globalThis.performance?.now() ?? Date.now();
 
 /**
@@ -146,6 +148,7 @@ export class AudioManager {
     this.currentMusicId = null;
   }
 
+  /** Creates effect pool. */
   #createEffectPool(definition) {
     const voices = Array.from(
       { length: definition.maximumVoices },
@@ -154,6 +157,7 @@ export class AudioManager {
     return Object.freeze({ definition, voices: Object.freeze(voices) });
   }
 
+  /** Performs the to volume operation. */
   #toVolume(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError("Die Lautstärke muss eine Zahl sein.");
@@ -161,6 +165,7 @@ export class AudioManager {
     return Math.min(1, Math.max(0, value));
   }
 
+  /** Creates track. */
   #createTrack(definition, loops) {
     const audio = this.createAudio(definition.source);
     audio.preload = "auto";
@@ -172,11 +177,13 @@ export class AudioManager {
     return audio;
   }
 
+  /** Checks the play effect condition. */
   #canPlayEffect(id, pool) {
     const previous = this.#lastEffectTimes.get(id) ?? Number.NEGATIVE_INFINITY;
     return this.now() - previous >= pool.definition.minimumIntervalMilliseconds;
   }
 
+  /** Performs the play operation. */
   #play(audio) {
     try {
       const result = audio.play();
@@ -187,6 +194,7 @@ export class AudioManager {
     }
   }
 
+  /** Performs the rewind operation. */
   #rewind(audio) {
     try {
       audio.currentTime = 0;
@@ -195,29 +203,34 @@ export class AudioManager {
     }
   }
 
+  /** Returns effect pool. */
   #getEffectPool(id) {
     const pool = this.#effectPools.get(id);
     if (pool) return pool;
     throw new RangeError(`Unbekannter Audioeffekt: ${id}`);
   }
 
+  /** Returns music track. */
   #getMusicTrack(id) {
     const track = this.#musicTracks.get(id);
     if (track) return track;
     throw new RangeError(`Unbekannte Spielmusik: ${id}`);
   }
 
+  /** Returns current music. */
   #getCurrentMusic() {
     return this.currentMusicId
       ? this.#musicTracks.get(this.currentMusicId)
       : null;
   }
 
+  /** Returns all audio. */
   #getAllAudio() {
     const effects = [...this.#effectPools.values()].flatMap((pool) => pool.voices);
     return [...this.#musicTracks.values(), ...effects];
   }
 
+  /** Clears effects. */
   #stopEffects() {
     this.#effectPools.forEach((pool) => {
       pool.voices.forEach((audio) => {
@@ -227,6 +240,7 @@ export class AudioManager {
     });
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const groups = [config?.music, config?.effects];
     const definitions = groups.flatMap((group) => Object.values(group ?? {}));
@@ -237,6 +251,7 @@ export class AudioManager {
     throw new TypeError("Die Audiokonfiguration ist unvollständig.");
   }
 
+  /** Checks the valid definition condition. */
   #isValidDefinition(definition) {
     const hasSource = typeof definition?.source === "string" && definition.source;
     const hasVolume = Number.isFinite(definition?.volume) &&

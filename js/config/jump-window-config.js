@@ -41,6 +41,7 @@ export function getJumpWindowBiomeIds() {
   return Object.freeze(Object.keys(PROFILES));
 }
 
+/** Performs the profile operation. */
 function profile(biomeId, data) {
   return Object.freeze({
     ...data,

@@ -60,6 +60,7 @@ export class GameStorage {
     return this.getSnapshot();
   }
 
+  /** Creates run record. */
   #createRunRecord(score, height, victoryTime) {
     return {
       ...this.data,
@@ -115,6 +116,7 @@ export class GameStorage {
     return Object.freeze({ ...this.data });
   }
 
+  /** Performs the persist operation. */
   #persist() {
     try {
       this.storage?.setItem(this.key, JSON.stringify(this.data));
@@ -123,6 +125,7 @@ export class GameStorage {
     }
   }
 
+  /** Performs the sanitize operation. */
   #sanitize(savedData) {
     const source = savedData && typeof savedData === "object" ? savedData : {};
     return {
@@ -136,6 +139,7 @@ export class GameStorage {
     };
   }
 
+  /** Performs the sanitize volumes operation. */
   #sanitizeVolumes(source) {
     return {
       musicVolume: this.#toPercentage(
@@ -147,41 +151,49 @@ export class GameStorage {
     };
   }
 
+  /** Creates defaults. */
   #createDefaults() {
     return { ...DEFAULT_RECORDS, version: this.version };
   }
 
+  /** Returns best time. */
   #getBestTime(victoryTime) {
     if (victoryTime === null) return this.data.bestTimeSeconds;
     if (this.data.bestTimeSeconds === null) return victoryTime;
     return Math.min(this.data.bestTimeSeconds, victoryTime);
   }
 
+  /** Performs the to integer operation. */
   #toInteger(value) {
     return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
   }
 
+  /** Performs the to optional time operation. */
   #toOptionalTime(value) {
     return Number.isFinite(value) && value >= 0 ? Math.floor(value) : null;
   }
 
+  /** Performs the to percentage operation. */
   #toPercentage(value, fallback = 0) {
     if (!Number.isFinite(value)) return fallback;
     return Math.min(100, Math.max(0, Math.round(value)));
   }
 
+  /** Returns volume property. */
   #getVolumeProperty(group) {
     if (group === "music") return "musicVolume";
     if (group === "effects") return "effectsVolume";
     throw new RangeError(`Unbekannte Lautstärkegruppe: ${group}`);
   }
 
+  /** Performs the sanitize language operation. */
   #sanitizeLanguage(language) {
     return LOCALIZATION_CONFIG.languages.includes(language)
       ? language
       : LOCALIZATION_CONFIG.defaultLanguage;
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const hasKey = typeof config?.key === "string" && config.key.length > 0;
     const hasVersion = Number.isInteger(config?.version) && config.version > 0;

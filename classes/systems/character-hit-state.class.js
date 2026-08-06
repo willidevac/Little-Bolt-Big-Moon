@@ -95,16 +95,19 @@ export class CharacterHitState {
     this.#invulnerabilitySecondsRemaining = seconds;
   }
 
+  /** Performs the reduce timer operation. */
   #reduceTimer(timer, deltaTimeSeconds) {
     return Math.max(0, timer - deltaTimeSeconds);
   }
 
+  /** Validates durations. */
   #validateDurations(hurtSeconds, invulnerabilitySeconds) {
     const values = [hurtSeconds, invulnerabilitySeconds];
     if (values.every((value) => Number.isFinite(value) && value > 0)) return;
     throw new TypeError("Die Trefferzeiten des Charakters sind ungültig.");
   }
 
+  /** Resets the hit state. */
   #reset() {
     this.#isHurt = false;
     this.#isDead = false;

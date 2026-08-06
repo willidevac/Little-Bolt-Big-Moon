@@ -20,13 +20,12 @@ export class CranePlatform extends SpriteSurfacePlatform {
     this.frameDisplacement.x = 0;
     this.frameDisplacement.y = 0;
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
-    const previousX = this.x;
-    const previousY = this.y;
+    const previous = { x: this.x, y: this.y };
     this.motionSeconds = (this.motionSeconds + deltaTimeSeconds) %
       this.cycleSeconds;
     this.#moveAlongCable();
-    this.frameDisplacement.x = this.x - previousX;
-    this.frameDisplacement.y = this.y - previousY;
+    this.frameDisplacement.x = this.x - previous.x;
+    this.frameDisplacement.y = this.y - previous.y;
     this.setFrameIndex(Math.floor(
       this.motionSeconds / this.animationFrameSeconds,
     ) % 4);
@@ -46,6 +45,11 @@ export class CranePlatform extends SpriteSurfacePlatform {
     this.drawCurrentFrame(
       context, this.x, visualY, this.width, visualHeight,
     );
+    this.#drawSurfaceGlow(context);
+  }
+
+  /** Draws surface glow. */
+  #drawSurfaceGlow(context) {
     context.save();
     context.globalCompositeOperation = "lighter";
     context.globalAlpha = 0.48;
@@ -54,6 +58,7 @@ export class CranePlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
+  /** Moves along cable. */
   #moveAlongCable() {
     const progress = this.motionSeconds / this.cycleSeconds;
     if (this.axis === "horizontal") {
@@ -67,10 +72,19 @@ export class CranePlatform extends SpriteSurfacePlatform {
     )) * this.travelPixels / 2;
   }
 
+  /** Draws crane rig. */
   #drawCraneRig(context) {
     const anchorY = this.initialY - this.cableLengthPixels;
     const travel = this.axis === "horizontal" ? this.travelPixels : 0;
     context.save();
+    this.#drawRail(context, anchorY, travel);
+    this.#drawCable(context, this.x + this.width * 0.2, anchorY);
+    this.#drawCable(context, this.x + this.width * 0.8, anchorY);
+    context.restore();
+  }
+
+  /** Draws rail. */
+  #drawRail(context, anchorY, travel) {
     context.fillStyle = "#17222b";
     context.fillRect(
       this.initialX - travel - 12, anchorY,
@@ -80,11 +94,9 @@ export class CranePlatform extends SpriteSurfacePlatform {
     context.globalAlpha = 0.5;
     context.fillRect(this.initialX - travel, anchorY + 3,
       this.width + travel * 2, 2);
-    this.#drawCable(context, this.x + this.width * 0.2, anchorY);
-    this.#drawCable(context, this.x + this.width * 0.8, anchorY);
-    context.restore();
   }
 
+  /** Draws cable. */
   #drawCable(context, x, anchorY) {
     const cableBottom = this.y - 8;
     context.globalAlpha = 1;
@@ -97,6 +109,7 @@ export class CranePlatform extends SpriteSurfacePlatform {
       Math.max(0, cableBottom - anchorY - 8));
   }
 
+  /** Validates motion. */
   #validateMotion(crane) {
     const values = [
       crane?.travelPixels, crane?.cycleSeconds, crane?.cableLengthPixels,

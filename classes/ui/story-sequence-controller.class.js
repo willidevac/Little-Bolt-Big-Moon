@@ -95,6 +95,7 @@ export class StorySequenceController {
     else if (this.activeSequence) this.#finish(false);
   }
 
+  /** Performs the play operation. */
   #play(sequence, onComplete = null) {
     if (this.activeSequence) return false;
     this.activeSequence = Object.freeze({ name: sequence, onComplete });
@@ -103,6 +104,7 @@ export class StorySequenceController {
     return true;
   }
 
+  /** Performs the show operation. */
   #show(sequence) {
     this.view.dataset.sequence = sequence;
     this.#renderText();
@@ -111,6 +113,7 @@ export class StorySequenceController {
     this.skipButton.focus();
   }
 
+  /** Performs the finish operation. */
   #finish(complete) {
     if (!this.activeSequence) return;
     const callback = complete ? this.activeSequence.onComplete : null;
@@ -121,6 +124,7 @@ export class StorySequenceController {
     callback?.();
   }
 
+  /** Performs the hide operation. */
   #hide() {
     this.view.hidden = true;
     this.view.removeAttribute("data-sequence");
@@ -128,6 +132,7 @@ export class StorySequenceController {
     this.status.textContent = "";
   }
 
+  /** Draws render text. */
   #renderText() {
     if (!this.activeSequence) return;
     const text = translate(`story.${this.activeSequence.name}`);
@@ -135,17 +140,20 @@ export class StorySequenceController {
     this.status.textContent = text;
   }
 
+  /** Returns duration. */
   #getDuration() {
     const view = this.root.ownerDocument?.defaultView;
     const reduced = view?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     return reduced ? REDUCED_DURATION_MILLISECONDS : DEFAULT_DURATION_MILLISECONDS;
   }
 
+  /** Performs the keep focus operation. */
   #keepFocus(event) {
     event.preventDefault();
     this.skipButton.focus();
   }
 
+  /** Returns element. */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element) return element;

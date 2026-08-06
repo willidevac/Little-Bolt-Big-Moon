@@ -17,6 +17,7 @@ export function createGame(
   inputTarget = globalThis,
 ) {
   return new Game(canvas, config, inputTarget, {
+    /** Creates level. */
     createLevel: () => createLevelOne(config.enemies),
     createCombatSystems: createGameCombatSystems,
     createResetController: createRunResetController,

@@ -22,12 +22,14 @@ export class StructureCollisionSystem {
     ), 0);
   }
 
+  /** Returns structure colliders. */
   #getStructureColliders(structure) {
     return typeof structure.getCollisionBoundsList === "function"
       ? structure.getCollisionBoundsList()
       : [];
   }
 
+  /** Returns resolve collider. */
   #resolveCollider(character, collider, deltaTimeSeconds, config) {
     const current = character.getCollisionBounds();
     const previous = this.#getPreviousBounds(character, current, deltaTimeSeconds);
@@ -38,6 +40,7 @@ export class StructureCollisionSystem {
     return this.#resolveExistingOverlap(character, current, collider, config);
   }
 
+  /** Returns resolve crossing. */
   #resolveCrossing(character, previous, current, collider, config) {
     return this.#resolveVerticalCrossing(character, previous, current, collider) ||
       this.#resolveHorizontalCrossing(
@@ -45,6 +48,7 @@ export class StructureCollisionSystem {
       );
   }
 
+  /** Returns resolve vertical crossing. */
   #resolveVerticalCrossing(character, previous, current, collider) {
     if (this.#crossesTop(character, previous, current, collider)) {
       return this.#land(character, current, collider);
@@ -55,6 +59,7 @@ export class StructureCollisionSystem {
     return false;
   }
 
+  /** Returns resolve horizontal crossing. */
   #resolveHorizontalCrossing(character, previous, current, collider, config) {
     if (this.#crossesLeft(character, previous, current, collider)) {
       const distance = current.x + current.width - collider.x;
@@ -67,6 +72,7 @@ export class StructureCollisionSystem {
     return false;
   }
 
+  /** Performs the crosses top operation. */
   #crossesTop(character, previous, current, collider) {
     const previousBottom = previous.y + previous.height;
     const currentBottom = current.y + current.height;
@@ -76,6 +82,7 @@ export class StructureCollisionSystem {
       currentBottom >= collider.y;
   }
 
+  /** Performs the crosses bottom operation. */
   #crossesBottom(character, previous, current, collider) {
     const colliderBottom = collider.y + collider.height;
     return character.velocityY < 0 &&
@@ -83,6 +90,7 @@ export class StructureCollisionSystem {
       previous.y >= colliderBottom && current.y <= colliderBottom;
   }
 
+  /** Performs the crosses left operation. */
   #crossesLeft(character, previous, current, collider) {
     return character.velocityX > 0 &&
       this.#hasVerticalOverlap(current, collider) &&
@@ -90,6 +98,7 @@ export class StructureCollisionSystem {
       current.x + current.width >= collider.x;
   }
 
+  /** Performs the crosses right operation. */
   #crossesRight(character, previous, current, collider) {
     const colliderRight = collider.x + collider.width;
     return character.velocityX < 0 &&
@@ -97,6 +106,7 @@ export class StructureCollisionSystem {
       previous.x >= colliderRight && current.x <= colliderRight;
   }
 
+  /** Returns resolve existing overlap. */
   #resolveExistingOverlap(character, current, collider, config) {
     const overlaps = this.#getOverlapDistances(current, collider);
     const smallest = this.#getSmallestOverlap(overlaps);
@@ -110,6 +120,7 @@ export class StructureCollisionSystem {
     );
   }
 
+  /** Returns overlap distances. */
   #getOverlapDistances(current, collider) {
     return Object.freeze({
       left: current.x + current.width - collider.x,
@@ -119,24 +130,28 @@ export class StructureCollisionSystem {
     });
   }
 
+  /** Returns smallest overlap. */
   #getSmallestOverlap(overlaps) {
     return Object.entries(overlaps).sort((first, second) => {
       return first[1] - second[1];
     })[0][0];
   }
 
+  /** Performs the land operation. */
   #land(character, current, collider) {
     this.#placeOnTop(character, current, collider);
     character.setOnGround(true, collider.owner);
     return true;
   }
 
+  /** Performs the hit ceiling operation. */
   #hitCeiling(character, current, collider) {
     character.y += collider.y + collider.height - current.y;
     character.velocityY = Math.max(0, character.velocityY);
     return true;
   }
 
+  /** Performs the hit wall operation. */
   #hitWall(character, direction, distance, config, owner) {
     character.x += direction * distance;
     this.#reflectHorizontally(character, direction, config);
@@ -144,10 +159,12 @@ export class StructureCollisionSystem {
     return true;
   }
 
+  /** Performs the place on top operation. */
   #placeOnTop(character, current, collider) {
     character.y -= current.y + current.height - collider.y;
   }
 
+  /** Performs the reflect horizontally operation. */
   #reflectHorizontally(character, direction, config) {
     if (typeof character.handleWallImpact === "function") {
       character.handleWallImpact(direction, config);
@@ -156,6 +173,7 @@ export class StructureCollisionSystem {
     character.velocityX = 0;
   }
 
+  /** Returns previous bounds. */
   #getPreviousBounds(character, current, deltaTimeSeconds) {
     return Object.freeze({
       x: current.x - character.velocityX * deltaTimeSeconds,
@@ -165,16 +183,19 @@ export class StructureCollisionSystem {
     });
   }
 
+  /** Performs the overlaps operation. */
   #overlaps(first, second) {
     return this.#hasHorizontalOverlap(first, second) &&
       this.#hasVerticalOverlap(first, second);
   }
 
+  /** Checks the horizontal overlap condition. */
   #hasHorizontalOverlap(first, second) {
     return first.x < second.x + second.width &&
       first.x + first.width > second.x;
   }
 
+  /** Checks the vertical overlap condition. */
   #hasVerticalOverlap(first, second) {
     return first.y < second.y + second.height &&
       first.y + first.height > second.y;

@@ -53,6 +53,7 @@ export class PrecisionJumpController {
     return clamp(this.chargeSeconds / duration, 0, 1);
   }
 
+  /** Performs the charge operation. */
   #charge(deltaTimeSeconds, input) {
     if (!this.wasJumpHeld) this.isCharging = true;
     this.wasJumpHeld = true;
@@ -62,6 +63,7 @@ export class PrecisionJumpController {
     return null;
   }
 
+  /** Performs the release operation. */
   #release(input, config) {
     const shouldLaunch = this.wasJumpHeld && this.isCharging;
     this.wasJumpHeld = false;
@@ -72,6 +74,7 @@ export class PrecisionJumpController {
     return this.#createLaunch(ratio, direction, config);
   }
 
+  /** Updates in air. */
   #updateInAir(isHeld) {
     this.chargeSeconds = 0;
     this.isCharging = false;
@@ -79,15 +82,18 @@ export class PrecisionJumpController {
     return null;
   }
 
+  /** Returns direction. */
   #getDirection(input) {
     return Number(input.right) - Number(input.left);
   }
 
+  /** Performs the consume press operation. */
   #consumePress(input) {
     if (typeof input.consumePress !== "function") return false;
     return input.consumePress("jump");
   }
 
+  /** Creates launch. */
   #createLaunch(ratio, direction, config) {
     const verticalRange = config.maximumJumpSpeedPixelsPerSecond -
       config.minimumJumpSpeedPixelsPerSecond;

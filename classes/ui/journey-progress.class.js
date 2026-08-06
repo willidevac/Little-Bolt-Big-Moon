@@ -24,11 +24,13 @@ export class JourneyProgress {
     return Object.freeze({ biomeId: section.backgroundId, percentage });
   }
 
+  /** Performs the clamp height operation. */
   #clampHeight(heightMeters) {
     if (!Number.isFinite(heightMeters)) return 0;
     return Math.min(Math.max(0, heightMeters), this.maximumHeightMeters);
   }
 
+  /** Returns find section. */
   #findSection(worldY) {
     const initialSection = this.sections[0];
     if (worldY === initialSection.bottomY) return initialSection;
@@ -37,6 +39,7 @@ export class JourneyProgress {
     }) ?? this.sections.at(-1);
   }
 
+  /** Validates the progress state. */
   #validate(sections, startY, pixelsPerMeter) {
     const hasSections = Array.isArray(sections) && sections.length > 0;
     const hasStart = Number.isFinite(startY) && startY > 0;

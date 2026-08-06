@@ -42,6 +42,7 @@ function getRequiredElement(root, selector) {
   throw new Error(`HUD-Element nicht gefunden: ${selector}`);
 }
 
+/** Draws render boss values. */
 function renderBossValues(statusBar, boss, bossName) {
   statusBar.setText(statusBar.elements.bossName, bossName);
   statusBar.setText(
@@ -51,6 +52,7 @@ function renderBossValues(statusBar, boss, bossName) {
   statusBar.setText(statusBar.elements.bossPhase, boss.phase);
 }
 
+/** Draws render boss bar. */
 function renderBossBar(statusBar, boss, bossName) {
   const bar = statusBar.elements.bossBar;
   const percentage = Math.round((boss.health / boss.maximumHealth) * 100);
@@ -63,6 +65,7 @@ function renderBossBar(statusBar, boss, bossName) {
   ));
 }
 
+/** Draws render weapon value. */
 function renderWeaponValue(statusBar, weapon) {
   statusBar.currentWeapon = weapon;
   statusBar.root.dataset.combatLocked = String(!weapon.isCombatUnlocked);
@@ -72,6 +75,7 @@ function renderWeaponValue(statusBar, weapon) {
   );
 }
 
+/** Returns biome translation key. */
 function getBiomeTranslationKey(biomeId) {
   const suffix = biomeId.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
   return `biome.${suffix}`;
@@ -117,6 +121,7 @@ export class StatusBar {
     return this;
   }
 
+  /** Creates journey. */
   #createJourney(pixelsPerMeter) {
     return new JourneyProgress(
       this.game.world.level.sections,

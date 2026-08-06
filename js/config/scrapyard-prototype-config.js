@@ -29,10 +29,12 @@ export const SCRAPYARD_PROTOTYPE_PLATFORMS = Object.freeze([
 
 export const SCRAPYARD_PROTOTYPE_WALLS = Object.freeze([]);
 
+/** Performs the role operation. */
 function role(id, frameWidth, frameHeight, accentColor) {
   return Object.freeze({ id, frameWidth, frameHeight, accentColor });
 }
 
+/** Performs the platform operation. */
 function platform(id, platformRole, x, y, width, height, routeOrder,
   suggestedDirection = null) {
   return Object.freeze({
@@ -41,6 +43,7 @@ function platform(id, platformRole, x, y, width, height, routeOrder,
   });
 }
 
+/** Performs the optional operation. */
 function optional(id, platformRole, x, y, width, height, routeRole) {
   return Object.freeze({
     id, platformRole, x, y, width, height, routeOrder: null,

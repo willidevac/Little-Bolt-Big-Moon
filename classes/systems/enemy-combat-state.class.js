@@ -143,6 +143,7 @@ export class EnemyCombatState {
     return Object.freeze({ amount: this.#contactDamage, direction, source });
   }
 
+  /** Applies state durations. */
   #setStateDurations(animations) {
     this.#hurtStateSeconds = this.#getAnimationDuration(animations.hurt);
     this.#attackStateSeconds = this.#getAnimationDuration(
@@ -151,6 +152,7 @@ export class EnemyCombatState {
     this.#deathStateSeconds = this.#getAnimationDuration(animations.dead);
   }
 
+  /** Resets the combat state. */
   #reset() {
     this.#health = this.#maximumHealth;
     this.#hurtSecondsRemaining = 0;
@@ -161,6 +163,7 @@ export class EnemyCombatState {
     this.#isDead = false;
   }
 
+  /** Returns locked state. */
   #getLockedState() {
     if (this.#isDead) return "dead";
     if (this.isHurt) return "hurt";
@@ -168,6 +171,7 @@ export class EnemyCombatState {
     return null;
   }
 
+  /** Performs the reduce state timer operation. */
   #reduceStateTimer(state, deltaTimeSeconds) {
     if (state === "dead") return this.#reduceDeathTimer(deltaTimeSeconds);
     if (state === "hurt") return this.#reduceHurtTimer(deltaTimeSeconds);
@@ -177,6 +181,7 @@ export class EnemyCombatState {
     );
   }
 
+  /** Performs the reduce death timer operation. */
   #reduceDeathTimer(deltaTimeSeconds) {
     this.#deathSecondsRemaining = this.#reduce(
       this.#deathSecondsRemaining,
@@ -184,6 +189,7 @@ export class EnemyCombatState {
     );
   }
 
+  /** Performs the reduce hurt timer operation. */
   #reduceHurtTimer(deltaTimeSeconds) {
     this.#hurtSecondsRemaining = this.#reduce(
       this.#hurtSecondsRemaining,
@@ -191,10 +197,12 @@ export class EnemyCombatState {
     );
   }
 
+  /** Performs the reduce operation. */
   #reduce(value, deltaTimeSeconds) {
     return Math.max(0, value - deltaTimeSeconds);
   }
 
+  /** Performs the die operation. */
   #die() {
     this.#isDead = true;
     this.#hurtSecondsRemaining = 0;
@@ -202,6 +210,7 @@ export class EnemyCombatState {
     this.#deathSecondsRemaining = this.#deathStateSeconds;
   }
 
+  /** Returns animation duration. */
   #getAnimationDuration(clip) {
     const values = [clip?.frameCount, clip?.frameDurationSeconds];
     if (values.every((value) => Number.isFinite(value) && value > 0)) {
@@ -210,6 +219,7 @@ export class EnemyCombatState {
     throw new TypeError("Der Gegner-Kampfzustand hat keine gültige Animation.");
   }
 
+  /** Validates config. */
   #validateConfig(config) {
     const values = [
       config?.maximumHealth,
@@ -220,6 +230,7 @@ export class EnemyCombatState {
     throw new TypeError("Die Kampfwerte des Gegners sind ungültig.");
   }
 
+  /** Validates attack state. */
   #validateAttackState(animations, defaultAttackState) {
     if (animations?.hurt && animations?.dead && animations[defaultAttackState]) {
       return;
@@ -227,6 +238,7 @@ export class EnemyCombatState {
     throw new RangeError(`Unbekannter Standardangriff: ${defaultAttackState}`);
   }
 
+  /** Validates hit. */
   #validateHit(hit) {
     if (Number.isFinite(hit?.amount) && hit.amount > 0) return;
     throw new TypeError("Der Gegnertreffer ist ungültig.");

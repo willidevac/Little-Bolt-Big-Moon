@@ -19,6 +19,7 @@ export function resolveCharacterState(character, config, states) {
   return isSleeping(character, config) ? states.SLEEP : states.IDLE;
 }
 
+/** Checks the sleeping condition. */
 function isSleeping(character, config) {
   const inactivity = character.inactivitySeconds + STATE_TIME_EPSILON_SECONDS;
   return inactivity >= config.sleepAfterInactivitySeconds;
