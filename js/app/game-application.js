@@ -11,6 +11,9 @@ import { initializeFullscreen } from "../ui/fullscreen.js";
 import { loadHtmlFragments } from "../ui/html-fragments.js";
 import { initializeTutorialDirector } from
   "../factories/tutorial-director.js";
+import { initializeTutorialMovementTracker } from
+  "../factories/tutorial-movement-tracker.js";
+import { initializeTutorialPrompt } from "../ui/tutorial-prompt.js";
 
 /**
  * Loads the interface and creates the complete browser application.
@@ -41,8 +44,10 @@ function configureCanvas(canvas) {
 /** Creates controllers. */
 function createControllers(game, audio, storage, localization) {
   const tutorial = initializeTutorialDirector(game);
+  const movement = initializeTutorialMovementTracker(game, tutorial);
   return [
-    localization, audio, tutorial,
+    localization, audio, tutorial, movement,
+    initializeTutorialPrompt(tutorial),
     initializeScreens(game), initializeHud(game),
     initializeStorage(game, audio, document.body, storage),
     initializeTouchControls(game), initializeReviewMode(game),

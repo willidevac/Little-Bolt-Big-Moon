@@ -13,6 +13,7 @@ export class WorldEventReporter {
     }
     this.events = events;
     this.before = null;
+    this.lastMovementDirection = 0;
   }
 
   /**
@@ -23,6 +24,7 @@ export class WorldEventReporter {
   capture(character, boss) {
     this.before = Object.freeze({
       isOnGround: Boolean(character?.isOnGround),
+      x: Number.isFinite(character?.x) ? character.x : null,
       velocityY: character?.velocityY ?? 0,
       jumpChargePercent: character?.jumpChargePercent ?? 0,
       isJumpCharging: Boolean(character?.isChargingJump),
@@ -65,11 +67,24 @@ export class WorldEventReporter {
 
   /** Performs the report movement operation. */
   #reportMovement(character) {
+    this.#reportHorizontalMovement(character);
     const jumped = this.before.velocityY >= 0 && character.velocityY < 0;
     const landed = !this.before.isOnGround && character.isOnGround;
     if (jumped) this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP);
     if (landed) this.events.emit(GAMEPLAY_EVENTS.PLAYER_LAND);
     this.#reportJumpCharge(character);
+  }
+
+  /** Reports actual left/right movement only when its direction changes. */
+  #reportHorizontalMovement(character) {
+    const distance = character.x - this.before.x;
+    const direction = Math.abs(distance) > 0.01 ? Math.sign(distance) : 0;
+    if (direction === 0) this.lastMovementDirection = 0;
+    if (direction === 0 || direction === this.lastMovementDirection) return;
+    this.lastMovementDirection = direction;
+    this.events.emit(GAMEPLAY_EVENTS.PLAYER_MOVE, {
+      direction, facingDirection: character.facingDirection,
+    });
   }
 
   /** Performs the report jump charge operation. */

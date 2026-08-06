@@ -21,3 +21,8 @@ export const TUTORIAL_STEP_ORDER = Object.freeze([
   TUTORIAL_STEP_IDS.COMBAT,
   TUTORIAL_STEP_IDS.COMPLETED,
 ]);
+
+export const TUTORIAL_JUMP_THRESHOLDS = Object.freeze({
+  shortMaximumPercent: 35,
+  chargedMinimumPercent: 80,
+});

@@ -1,4 +1,5 @@
 export const GAMEPLAY_EVENTS = Object.freeze({
+  PLAYER_MOVE: "playerMove",
   PLAYER_JUMP: "playerJump",
   PLAYER_JUMP_CHARGE: "playerJumpCharge",
   PLAYER_LAND: "playerLand",
