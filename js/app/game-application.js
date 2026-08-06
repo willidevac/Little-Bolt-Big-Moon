@@ -9,6 +9,8 @@ import { initializeAudio } from "../ui/audio.js";
 import { initializeReviewMode } from "../ui/review-mode.js";
 import { initializeFullscreen } from "../ui/fullscreen.js";
 import { loadHtmlFragments } from "../ui/html-fragments.js";
+import { initializeTutorialDirector } from
+  "../factories/tutorial-director.js";
 
 /**
  * Loads the interface and creates the complete browser application.
@@ -38,10 +40,14 @@ function configureCanvas(canvas) {
 
 /** Creates controllers. */
 function createControllers(game, audio, storage, localization) {
-  return [localization, audio, initializeScreens(game), initializeHud(game),
+  const tutorial = initializeTutorialDirector(game);
+  return [
+    localization, audio, tutorial,
+    initializeScreens(game), initializeHud(game),
     initializeStorage(game, audio, document.body, storage),
     initializeTouchControls(game), initializeReviewMode(game),
-    initializeFullscreen()];
+    initializeFullscreen(),
+  ];
 }
 
 /** Creates application result. */
