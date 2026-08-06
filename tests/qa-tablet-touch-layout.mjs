@@ -1,13 +1,15 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 
-const [index, stage, controls, touchCss, layoutCss] = await Promise.all([
+const [index, stage, controls, touchCss, layoutCss, responsiveCss] =
+  await Promise.all([
   fs.readFile("index.html", "utf8"),
   fs.readFile("html/fragments/game-stage.html", "utf8"),
   fs.readFile("html/fragments/touch-controls.html", "utf8"),
   fs.readFile("styles/touch-controls.css", "utf8"),
   fs.readFile("styles/layout.css", "utf8"),
-]);
+  fs.readFile("styles/responsive.css", "utf8"),
+  ]);
 
 assertViewportSibling();
 assertCoarsePointerLayout();
@@ -45,12 +47,19 @@ function assertCanvasContractUnchanged() {
   assert.match(layoutCss, /\.game-shell[\s\S]*overflow:\s*hidden/);
 }
 
-/** Verifies compact HUD text remains visible at readable minimum sizes. */
+/** Verifies compact HUD values remain readable without covering the playfield. */
 async function assertReadableCompactHud() {
   const source = await fs.readFile("styles/hud.css", "utf8");
   assert.match(source, /\.hud-label\s*\{[\s\S]*?font-size:\s*clamp\(0\.75rem/);
   assert.match(source, /\.hud-number\s*\{[\s\S]*?font-size:\s*clamp\(0\.85rem/);
   assert.match(source, /\.hud-announcement\s*\{[\s\S]*?font-size:\s*0\.8rem/);
   assert.doesNotMatch(source, /\.hud-label\s*\{\s*display:\s*none/);
-  assert.match(touchCss, /\.hud-resources \.hud-label\s*\{\s*display:\s*inline/);
+  assert.match(
+    responsiveCss,
+    /\.hud-resources \.hud-label\s*\{[\s\S]*?display:\s*none/,
+  );
+  assert.match(
+    responsiveCss,
+    /\.hud-resource--gears\s*\{[\s\S]*?position:\s*absolute/,
+  );
 }

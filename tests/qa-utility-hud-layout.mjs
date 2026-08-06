@@ -4,7 +4,9 @@ import fs from "node:fs/promises";
 const screens = await fs.readFile("styles/screens.css", "utf8");
 const hud = await fs.readFile("styles/hud.css", "utf8");
 const responsive = await fs.readFile("styles/responsive.css", "utf8");
+const touchControls = await fs.readFile("styles/touch-controls.css", "utf8");
 const layout = await fs.readFile("styles/layout.css", "utf8");
+const gameStage = await fs.readFile("html/fragments/game-stage.html", "utf8");
 const screenController = await fs.readFile(
   "classes/ui/screen-controller.class.js", "utf8",
 );
@@ -24,7 +26,20 @@ assert.match(
 );
 assert.match(responsive, /\.game-shell \.utility-buttons\s*{[\s\S]*?top:\s*0\.35rem/);
 assert.match(responsive, /grid-template-columns:\s*minmax\(0, 1fr\) auto/);
-assert.match(responsive, /\.hud-resources\s*{\s*grid-column:\s*1 \/ -1/);
+assert.match(
+  responsive,
+  /\.hud-resources\s*{[\s\S]*?grid-column:\s*1 \/ 2[\s\S]*?justify-self:\s*start/,
+);
+assert.match(
+  responsive,
+  /\.hud-resource--gears\s*{[\s\S]*?position:\s*absolute[\s\S]*?right:\s*0\.35rem/,
+);
+assert.match(
+  responsive,
+  /\.hud-resources \.hud-label\s*{[\s\S]*?display:\s*none/,
+);
+assert.doesNotMatch(touchControls, /\.hud-resources\s*{[\s\S]*?justify-self:\s*center/);
+assert.match(gameStage, /class="hud-panel hud-resource hud-resource--gears"/);
 assert.match(responsive, /max-width:\s*1066px[\s\S]*?\.utility-button/);
 assert.match(
   responsive,

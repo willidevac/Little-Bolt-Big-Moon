@@ -29,7 +29,32 @@
   }
 
   .hud-resources {
-    grid-column: 1 / -1;
+    grid-column: 1 / 2;
+    justify-self: start;
+  }
+
+  .hud-resources .hud-label {
+    display: none;
+  }
+
+  .hud-resource--gears {
+    position: absolute;
+    z-index: 1;
+    top: 4.85rem;
+    right: 0.35rem;
+    min-height: 1.85rem;
+    padding: 0.2rem 0.3rem;
+  }
+
+  .hud-resource--gears .hud-symbol {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .hud-resource--gears .hud-number {
+    overflow: visible;
+    max-width: none;
+    font-size: 0.85rem;
   }
 
   .start-screen,

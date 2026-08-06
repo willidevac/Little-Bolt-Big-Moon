@@ -80,16 +80,6 @@
 }
 
 @container game-shell (max-width: 1066px) {
-
-  .hud-resources {
-    grid-column: 1 / -1;
-    justify-self: center;
-  }
-
-  .hud-resources .hud-label {
-    display: inline;
-  }
-
   .hud-resource {
     min-width: auto;
   }
