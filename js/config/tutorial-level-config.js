@@ -80,6 +80,10 @@ export const TUTORIAL_COMBAT_ENEMY_DEFINITIONS = Object.freeze([
     x: 300, y: 26, patrolMinX: 220, patrolMaxX: 480, startDirection: 1,
   }),
   Object.freeze({
+    id: "tutorial-combat-spring-mine", type: "springMine",
+    x: 580, y: 26, patrolMinX: 500, patrolMaxX: 820, startDirection: -1,
+  }),
+  Object.freeze({
     id: "tutorial-combat-drone", type: "droneGuard",
     x: 980, y: 30, patrolMinX: 900, patrolMaxX: 1080, startDirection: -1,
   }),
@@ -89,6 +93,16 @@ export const TUTORIAL_COMBAT_PROFILES = Object.freeze({
   scrapCrawler: Object.freeze({
     speedPixelsPerSecond: 34, maximumHealth: 36,
     contactDamage: 8, attackCooldownSeconds: 1.8,
+  }),
+  springMine: Object.freeze({
+    jumpHorizontalSpeedPixelsPerSecond: 160,
+    jumpVerticalSpeedPixelsPerSecond: 480,
+    jumpCooldownSeconds: 3,
+    detectionRangePixels: 350,
+    detectionHeightPixels: 200,
+    maximumHealth: 36,
+    contactDamage: 6,
+    attackCooldownSeconds: 2.2,
   }),
   droneGuard: Object.freeze({
     speedPixelsPerSecond: 44, maximumHealth: 36,

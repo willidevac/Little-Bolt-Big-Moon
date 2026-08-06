@@ -44,7 +44,7 @@ function assertTutorialWorld() {
   assert.deepEqual(tutorial.platforms.filter(({ mechanic }) => mechanic)
     .map(({ mechanic }) => mechanic), ["spring", "falling", "trap"]);
   assert.deepEqual(tutorial.enemies.slice(1).map(({ type }) => type), [
-    "scrapCrawler", "droneGuard",
+    "scrapCrawler", "springMine", "droneGuard",
   ]);
   assert.equal(tutorial.combatZones.length, 1);
 }

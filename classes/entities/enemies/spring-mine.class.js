@@ -16,6 +16,7 @@ const VISUAL_CONFIG = Object.freeze({
     frameCount: 13,
   }),
   renderScale: 1,
+  nativeFacingDirection: -1,
   groundOffsets: SCRAP_CRAWLER_GROUND_OFFSETS,
   collisionBox: Object.freeze({
     offsetX: 12,

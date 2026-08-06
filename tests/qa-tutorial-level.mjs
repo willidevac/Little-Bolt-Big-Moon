@@ -50,7 +50,7 @@ function assertDeferredContent(tutorial) {
   assert.deepEqual(tutorial.collectables.map(({ type }) => type), [
     "gear", "energy", "weapon",
   ]);
-  assert.equal(tutorial.enemies.length, 3);
+  assert.equal(tutorial.enemies.length, 4);
   assert.equal(tutorial.combatZones.length, 1);
 }
 

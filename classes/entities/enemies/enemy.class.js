@@ -84,7 +84,9 @@ export class Enemy extends MovableObject {
 
   /** Draws facing direction. */
   #drawFacingDirection(context) {
-    if (this.facingDirection >= 0) return super.draw(context);
+    if (this.facingDirection === this.nativeFacingDirection) {
+      return super.draw(context);
+    }
     context.save();
     context.translate(this.x + this.width, this.y);
     context.scale(-1, 1);
@@ -211,16 +213,16 @@ export class Enemy extends MovableObject {
 
   /** Applies visual size. */
   #setVisualSize(config) {
-    const values = [
-      config?.renderScale,
-      config?.sprite?.frameWidth,
-      config?.sprite?.frameHeight,
-    ];
-    if (!values.every((value) => Number.isFinite(value) && value > 0)) {
+    const nativeFacingDirection = config?.nativeFacingDirection ?? 1;
+    const values = [config?.renderScale, config?.sprite?.frameWidth,
+      config?.sprite?.frameHeight];
+    const hasSize = values.every((value) => Number.isFinite(value) && value > 0);
+    if (!hasSize || Math.abs(nativeFacingDirection) !== 1) {
       throw new TypeError("Die Gegnerdarstellung ist ungültig.");
     }
     this.width = config.sprite.frameWidth * config.renderScale;
     this.height = config.sprite.frameHeight * config.renderScale;
+    this.nativeFacingDirection = nativeFacingDirection;
     this.groundOffsets = this.#getGroundOffsets(config);
   }
 

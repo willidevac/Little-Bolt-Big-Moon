@@ -10,6 +10,8 @@ import { ScrapCrawler } from
   "../../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from
   "../../classes/entities/enemies/drone-guard.class.js";
+import { SpringMine } from
+  "../../classes/entities/enemies/spring-mine.class.js";
 import { CombatZone } from
   "../../classes/environment/combat-zone.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
@@ -102,7 +104,11 @@ function createPracticeTarget(anchor, enemyConfig) {
 
 /** Creates the mild crawler and drone through their production classes. */
 function createCombatEnemies(enemyConfig) {
-  const enemyClasses = { scrapCrawler: ScrapCrawler, droneGuard: DroneGuard };
+  const enemyClasses = {
+    scrapCrawler: ScrapCrawler,
+    springMine: SpringMine,
+    droneGuard: DroneGuard,
+  };
   return TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map((definition) => {
     const EnemyClass = enemyClasses[definition.type];
     const profile = Object.freeze({

@@ -9,6 +9,8 @@ import { ScrapCrawler } from
   "../classes/entities/enemies/scrap-crawler.class.js";
 import { DroneGuard } from
   "../classes/entities/enemies/drone-guard.class.js";
+import { SpringMine } from
+  "../classes/entities/enemies/spring-mine.class.js";
 import { initializeTutorialDirector } from
   "../js/factories/tutorial-director.js";
 import { initializeTutorialCombatTracker } from
@@ -24,20 +26,25 @@ console.log("TUTORIAL-008: Milde Gegnerwelle und Kampflektion bestanden.");
 
 /** Verifies existing enemy classes, mild profiles, and exact zone references. */
 function assertCombatDefinitions() {
-  const [practice, crawler, drone] = level.enemies;
+  const [practice, crawler, springMine, drone] = level.enemies;
   assert.equal(practice.id, "tutorial-practice-target");
   assert.ok(crawler instanceof ScrapCrawler);
+  assert.ok(springMine instanceof SpringMine);
   assert.ok(drone instanceof DroneGuard);
-  assert.deepEqual(level.combatZones[0].enemyIds, [crawler.id, drone.id]);
+  assert.deepEqual(level.combatZones[0].enemyIds, [
+    crawler.id, springMine.id, drone.id,
+  ]);
   assert.equal(level.combatZones[0].triggerEnemyId, practice.id);
   assert.equal(level.platforms.at(-1).width, 960);
   assert.equal(crawler.maximumHealth, 36);
+  assert.equal(springMine.maximumHealth, 36);
   assert.equal(drone.maximumHealth, 36);
   assert.ok(crawler.speedPixelsPerSecond < GAME_CONFIG.enemies.scrapCrawler
     .speedPixelsPerSecond);
   assert.ok(drone.speedPixelsPerSecond < GAME_CONFIG.enemies.droneGuard
     .speedPixelsPerSecond);
   assertBoltLineIntersects(crawler);
+  assertBoltLineIntersects(springMine);
   assertBoltLineIntersects(drone);
 }
 
@@ -71,7 +78,8 @@ function assertProductionWave() {
   );
   world.update(0.6);
   assert.deepEqual(activeEnemyIds(world), [
-    "tutorial-combat-crawler", "tutorial-combat-drone",
+    "tutorial-combat-crawler", "tutorial-combat-spring-mine",
+    "tutorial-combat-drone",
   ]);
   defeatCombatEnemies(world);
   world.update(0.6);
