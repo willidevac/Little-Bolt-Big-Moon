@@ -2,6 +2,7 @@ import { onLanguageChange, translate } from
   "../../js/i18n/localization.js";
 import { TUTORIAL_STATUSES } from
   "../systems/tutorial-director.class.js";
+import { GAME_STATES } from "../core/game-state-machine.class.js";
 
 const PRIMARY_BUTTON_CLASS = "menu-button--primary";
 
@@ -28,6 +29,7 @@ export class TutorialCompletionController {
     if (this.#unsubscribers.length > 0) return this;
     this.#unsubscribers.push(
       this.director.onChange((snapshot) => this.handleProgress(snapshot)),
+      this.game.onStateChange((state) => this.handleGameState(state)),
       onLanguageChange(() => this.renderRecommendation()),
     );
     this.renderRecommendation();
@@ -49,10 +51,17 @@ export class TutorialCompletionController {
       return false;
     }
     if (this.#handledCompletion) return false;
+    if (!this.game.win()) return false;
     this.#handledCompletion = true;
     this.storage.setTutorialCompleted();
     this.renderRecommendation();
-    return this.game.win();
+    return true;
+  }
+
+  /** Retries a pending completion when gameplay becomes active again. */
+  handleGameState(state) {
+    if (state !== GAME_STATES.PLAYING) return false;
+    return this.handleProgress(this.director.getSnapshot());
   }
 
   /** Renders the recommended first-run action in the active language. */
@@ -75,7 +84,8 @@ export class TutorialCompletionController {
 
   /** Validates completion, storage, and menu dependencies. */
   #validateDependencies(game, director, storage, root) {
-    const hasGame = typeof game?.win === "function";
+    const hasGame = typeof game?.win === "function" &&
+      typeof game?.onStateChange === "function";
     const hasDirector = typeof director?.onChange === "function" &&
       typeof director?.getSnapshot === "function";
     const hasStorage = typeof storage?.getSnapshot === "function" &&

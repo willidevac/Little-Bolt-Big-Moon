@@ -13,12 +13,12 @@ const { StorageController } = await import(
   "../classes/ui/storage-controller.class.js"
 );
 
-/** Verifies persistent completion, menu emphasis, localization, and one win. */
+/** Verifies persistent completion, menu emphasis, and repeated fresh runs. */
 function assertCompletionFlow() {
   const memory = new MemoryStorage();
   const storage = new GameStorage(memory, { key: "tutorial", version: 1 });
   const director = createDirector();
-  const game = { wins: 0, win() { this.wins += 1; return true; } };
+  const game = createGame();
   const tutorialButton = new FakeButton();
   const startButton = new FakeButton();
   const root = new FakeRoot(tutorialButton, startButton);
@@ -27,13 +27,37 @@ function assertCompletionFlow() {
   ).initialize();
   assert.equal(tutorialButton.classList.has("menu-button--primary"), true);
   director.emit({ status: "completed", stepId: "completed" });
-  assert.equal(game.wins, 1);
+  assert.equal(game.winAttempts, 1);
   assert.equal(storage.getSnapshot().tutorialCompleted, true);
   assert.equal(JSON.parse(memory.value).tutorialCompleted, true);
   assert.equal(startButton.classList.has("menu-button--primary"), true);
   assert.equal(tutorialButton.dataset.tutorialCompleted, "true");
   director.emit({ status: "completed", stepId: "completed" });
-  assert.equal(game.wins, 1);
+  assert.equal(game.winAttempts, 1);
+  director.emit({ status: "inactive", stepId: null });
+  game.emitState(GAME_STATES.PLAYING);
+  director.emit({ status: "completed", stepId: "completed" });
+  assert.equal(game.winAttempts, 2);
+  controller.destroy();
+}
+
+/** Verifies a temporarily blocked completion is retried, not lost. */
+function assertDeferredCompletionRetry() {
+  const memory = new MemoryStorage();
+  const storage = new GameStorage(memory, { key: "tutorial-retry", version: 1 });
+  const director = createDirector();
+  const game = createGame([false, true]);
+  const controller = new TutorialCompletionController(
+    game, director, storage, new FakeRoot(new FakeButton(), new FakeButton()),
+  ).initialize();
+  director.emit({ status: "completed", stepId: "completed" });
+  assert.equal(game.winAttempts, 1);
+  assert.equal(storage.getSnapshot().tutorialCompleted, false);
+  game.emitState(GAME_STATES.PAUSED);
+  assert.equal(game.winAttempts, 1);
+  game.emitState(GAME_STATES.PLAYING);
+  assert.equal(game.winAttempts, 2);
+  assert.equal(storage.getSnapshot().tutorialCompleted, true);
   controller.destroy();
 }
 
@@ -69,6 +93,28 @@ function createDirector() {
     emit(next) {
       snapshot = Object.freeze({ ...next });
       listeners.forEach((listener) => listener(snapshot));
+    },
+  };
+}
+
+/** Creates an observable game state and configurable win results. */
+function createGame(winResults = [true]) {
+  const listeners = new Set();
+  const results = [...winResults];
+  return {
+    state: GAME_STATES.PLAYING,
+    winAttempts: 0,
+    onStateChange(listener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    win() {
+      this.winAttempts += 1;
+      return results.shift() ?? true;
+    },
+    emitState(state) {
+      this.state = state;
+      listeners.forEach((listener) => listener(state));
     },
   };
 }
@@ -113,6 +159,7 @@ class FakeRoot extends FakeHTMLElement {
 }
 
 assertCompletionFlow();
+assertDeferredCompletionRetry();
 assertTutorialRecordIsolation();
 
 console.log("TUTORIAL-010: Abschluss, Empfehlung und Rekordtrennung bestanden.");
