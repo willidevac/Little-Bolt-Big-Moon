@@ -78,7 +78,7 @@
   }
 
   .hud-resources .hud-label {
-    display: none;
+    display: inline;
   }
 
   .hud-resource {

@@ -12,6 +12,7 @@ const [index, stage, controls, touchCss, layoutCss] = await Promise.all([
 assertViewportSibling();
 assertCoarsePointerLayout();
 assertCanvasContractUnchanged();
+await assertReadableCompactHud();
 
 console.log("UI-019: iPad-Touchleiste und mobiler Vollbild-Fallback bestanden.");
 
@@ -37,4 +38,14 @@ function assertCoarsePointerLayout() {
 function assertCanvasContractUnchanged() {
   assert.match(layoutCss, /\.game-shell[\s\S]*aspect-ratio:\s*16\s*\/\s*9/);
   assert.match(layoutCss, /\.game-shell[\s\S]*overflow:\s*hidden/);
+}
+
+/** Verifies compact HUD text remains visible at readable minimum sizes. */
+async function assertReadableCompactHud() {
+  const source = await fs.readFile("styles/hud.css", "utf8");
+  assert.match(source, /\.hud-label\s*\{[\s\S]*?font-size:\s*clamp\(0\.75rem/);
+  assert.match(source, /\.hud-number\s*\{[\s\S]*?font-size:\s*clamp\(0\.85rem/);
+  assert.match(source, /\.hud-announcement\s*\{[\s\S]*?font-size:\s*0\.8rem/);
+  assert.doesNotMatch(source, /\.hud-label\s*\{\s*display:\s*none/);
+  assert.match(touchCss, /\.hud-resources \.hud-label\s*\{\s*display:\s*inline/);
 }
