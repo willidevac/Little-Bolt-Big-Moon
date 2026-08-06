@@ -110,17 +110,30 @@
 
 @container game-shell (max-width: 1066px) {
   .tutorial-prompt {
-    top: 3rem;
-    width: min(74%, 30rem);
-    padding: 0.45rem 0.65rem;
+    top: clamp(5rem, 9vw, 5.5rem);
+    width: min(70%, 31rem);
+    max-height: calc(100% - 7.5rem);
+    padding: 0.55rem 0.75rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .tutorial-prompt__heading {
+    font-size: 0.75rem;
+  }
+
+  .tutorial-prompt__title {
+    font-size: 0.9rem;
   }
 
   .tutorial-prompt__copy {
-    font-size: clamp(0.58rem, 1.7vw, 0.75rem);
+    font-size: clamp(0.78rem, 1.7vw, 0.9rem);
   }
 
   .tutorial-prompt[data-collapsed="true"] {
     width: var(--tutorial-toggle-size);
+    height: var(--tutorial-toggle-size);
     padding: 0;
+    overflow: visible;
   }
 }

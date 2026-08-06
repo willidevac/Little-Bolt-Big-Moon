@@ -46,13 +46,11 @@ export class TutorialPromptController {
 
   /** Displays one immutable tutorial progress snapshot. */
   render(snapshot) {
-    const didStepChange = snapshot.stepId !== this.snapshot.stepId;
     this.snapshot = snapshot;
     const isVisible = snapshot.status === TUTORIAL_STATUSES.ACTIVE;
     this.root.hidden = !isVisible;
     this.root.setAttribute("aria-hidden", String(!isVisible));
     if (!isVisible) return;
-    if (didStepChange) this.isCollapsed = false;
     this.#renderStep(snapshot.stepId);
     this.#renderProgress(snapshot);
     this.#renderCollapsedState();

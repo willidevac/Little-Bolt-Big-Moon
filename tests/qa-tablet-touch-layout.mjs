@@ -32,6 +32,11 @@ function assertCoarsePointerLayout() {
   assert.match(touchCss, /@media\s*\(hover:\s*none\)\s*and\s*\(pointer:\s*coarse\)/);
   assert.match(touchCss, /\.touch-controls:not\(\[hidden\]\)[\s\S]*display:\s*flex/);
   assert.match(touchCss, /\.fullscreen-button[\s\S]*display:\s*none/);
+  assert.match(
+    touchCss,
+    /@media\s*\(hover:\s*none\)\s*and\s*\(pointer:\s*coarse\)\s*and\s*\(min-aspect-ratio:\s*16\s*\/\s*9\)/,
+  );
+  assert.match(touchCss, /\.game-hud\s*\{[\s\S]*padding-bottom:\s*max\(/);
 }
 
 /** Verifies the viewport overlay does not distort the production canvas. */

@@ -30,7 +30,12 @@ assert.match(css, /data-collapsed="true"[\s\S]*?\.tutorial-prompt__label[\s\S]*?
 assert.match(css, /\.tutorial-prompt\s*\{[\s\S]*?pointer-events:\s*none/);
 assert.match(css, /\.tutorial-prompt__toggle\s*\{[\s\S]*?pointer-events:\s*auto/);
 assert.match(css, /@container game-shell \(max-width:\s*1066px\)/);
+assert.match(css, /max-height:\s*calc\(100% - 7\.5rem\)/);
+assert.match(css, /top:\s*clamp\(5rem,\s*9vw,\s*5\.5rem\)/);
+assert.match(css, /font-size:\s*clamp\(0\.78rem,\s*1\.7vw,\s*0\.9rem\)/);
+assert.match(css, /overscroll-behavior:\s*contain/);
 assert.match(source, /director\.onChange/);
+assert.doesNotMatch(source, /didStepChange/);
 assert.match(source, /onLanguageChange/);
 assertTranslations(stepIds);
 

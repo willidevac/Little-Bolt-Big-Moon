@@ -70,6 +70,15 @@
   }
 }
 
+@media (hover: none) and (pointer: coarse) and (min-aspect-ratio: 16 / 9) {
+  .game-hud {
+    padding-bottom: max(
+      4rem,
+      calc(env(safe-area-inset-bottom) + 3.25rem)
+    );
+  }
+}
+
 @container game-shell (max-width: 1066px) {
 
   .hud-resources {
