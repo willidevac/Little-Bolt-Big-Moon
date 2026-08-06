@@ -2,172 +2,212 @@
 
 ![Little Bolt, Big Moon – Game Cover](img/cover/little-bolt-big-moon-cover-v1.png)
 
-> Ein kleiner aussortierter Roboter. Ein riesiger Turm. Ein Freund, der auf
-> dem Mond wartet.
+> One discarded robot. One enormous tower. One friend waiting on the moon.
 
-## Schnellstart
+**Little Bolt, Big Moon** is a vertical HTML5 Canvas precision platformer.
+Guide Byte from a scrapyard through five industrial biomes, master charged
+jumps and combat encounters, and reach the Moon Warden at the top.
 
-Voraussetzung ist Node.js 22 oder neuer.
+## Tech Stack
+
+- HTML5 Canvas for the game world and rendering
+- vanilla JavaScript with native ES modules
+- object-oriented gameplay architecture without a framework or bundler
+- semantic HTML and responsive CSS for menus, dialogs, and touch controls
+- JSON and configuration modules for levels, balancing, and asset metadata
+- `localStorage` for settings, tutorial progress, and local records
+- Node.js for the lightweight local development server and test runner
+- ESLint, TypeScript checking, and native Node.js acceptance tests
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 22 or newer
+- npm, included with Node.js
+- a modern browser with Canvas and native ES module support
+
+### Installation
 
 ```bash
+git clone https://github.com/willidevac/Little-Bolt-Big-Moon.git
+cd Little-Bolt-Big-Moon
 npm install
 npm run dev
 ```
 
-Danach läuft das Spiel unter `http://127.0.0.1:4173`. Ein lokaler Server ist
-nötig, weil die Oberfläche HTML-Fragmente und native ES-Module lädt.
+Open `http://127.0.0.1:4173` in your browser. The local server is required
+because the application loads HTML fragments and native ES modules. There is
+no build step, backend, framework, or external runtime service.
 
-Die vollständige technische Abnahme startet mit:
+## Quality Checks
+
+Run the complete local release gate with:
 
 ```bash
 npm run check
 ```
 
-| Befehl | Zweck |
+| Command | Purpose |
 | --- | --- |
-| `npm run dev` | kleiner lokaler Node-Server ohne Framework |
-| `npm test` | vollständiges, automatisch entdecktes Release-Gate |
-| `npm run lint` | ESLint für Produktions- und Testcode |
-| `npm run typecheck` | strikte Typprüfung der deterministischen Kernmodule |
-| `npm run test:architecture` | Import- und Architekturgrenzen |
-| `npm run test:release` | zentrale Spieler- und UI-Wege |
+| `npm run dev` | Start the lightweight local development server |
+| `npm test` | Run the complete, automatically discovered acceptance suite |
+| `npm run lint` | Check production and test code with ESLint |
+| `npm run typecheck` | Check the deterministic core modules with TypeScript |
+| `npm run test:quick` | Check clean code, imports, and runtime assets |
+| `npm run test:architecture` | Verify import and architecture boundaries |
+| `npm run test:release` | Verify central gameplay, UI, and responsive flows |
 
-**Little Bolt, Big Moon** ist ein schwieriges vertikales
-2D-Präzisionsspiel für HTML5 Canvas. Byte klettert vom Schrottplatz durch
-eine verlassene Fabrik, über den Wolken und durch eine alte Raumstation bis
-zum Mond. Ein falscher Sprung oder ein gegnerischer Treffer kann ihn mehrere
-Bildschirmhöhen zurückwerfen.
+The acceptance suite currently covers 87 mandatory quality areas, including
+game states, physics, combat, audio storage, responsive controls, tutorial
+progression, the boss encounter, and release-critical UI paths.
 
-## Spielidee
+## Technical Documentation
 
-Der Spieler bewegt Byte innerhalb einer hohen, zusammenhängenden Welt nach
-oben. Statt klassisch nach rechts zu laufen, stehen präzise Sprünge, der
-Umgang mit großer Fallhöhe und offene Gegnerphasen im Mittelpunkt.
+- [`docs/project-structure.md`](docs/project-structure.md) – folders, modules, and responsibilities
+- [`docs/quality-audit.md`](docs/quality-audit.md) – visible and technical acceptance criteria
+- [`docs/game-design.md`](docs/game-design.md) – story, progression, and gameplay pillars
+- [`docs/tutorial-plan.md`](docs/tutorial-plan.md) – tutorial design and acceptance criteria
+- [`docs/asset-guide.md`](docs/asset-guide.md) – visual direction and asset dimensions
+- [`docs/asset-licensing.md`](docs/asset-licensing.md) – asset origin and usage rights
+- [`tests/README.md`](tests/README.md) – test layers and release gates
+- [`data/asset-credits.json`](data/asset-credits.json) – machine-readable asset credits
 
-Der Spielablauf:
+## Mentor Review Mode
 
-1. Plattformen erklimmen und riskante Sprünge meistern
-2. Zahnräder, Energiezellen und neue Waffen finden
-3. Gegnerphasen überstehen, ohne heruntergestoßen zu werden
-4. eines von drei Upgrades auswählen
-5. nach einem Sturz verlorene Höhe erneut erklimmen
-6. den Mond erreichen und den Endboss besiegen
+Review Mode is an optional, unscored QA tool for quickly inspecting the large
+vertical world. It is not an easier version of the game and is not the
+recommended way to learn the mechanics. Use the guided Tutorial for a normal
+feature review.
 
-## Wortlose Geschichte
+To unlock Review Mode, click the version label five times and enter
+`MOON-REVIEW-150`. The toolbar can jump to a biome or measured height, while
+the arrow keys enable free flight and Shift increases flight speed. Review
+runs never write scores, heights, or times to the normal local records.
 
-Byte und Luma wurden gemeinsam als Reparaturroboter für eine Mondmission
-gebaut. Wegen seiner schiefen Antenne wurde Byte jedoch aussortiert und auf
-dem Schrottplatz zurückgelassen, während Luma allein zum Mond geschickt
-wurde.
+## Gameplay Overview
 
-Die Geschichte wird nicht durch Dialoge erklärt. Transportkisten, alte
-Produktionsanlagen, das geteilte Mondabzeichen und Lumas blaues Signal
-erzählen während des Aufstiegs, was zwischen den beiden Robotern passiert
-ist.
+Byte climbs one continuous 150,000-pixel world instead of moving through
+separate horizontal stages. Precision jumps, wall rebounds, recovery after
+long falls, environmental platform mechanics, and open combat arenas shape
+the run.
+
+The main progression loop is:
+
+1. climb static and mechanical platforms
+2. collect gears, energy cells, arc charges, and new weapons
+3. survive combat encounters without being knocked down
+4. choose one of three upgrades after major encounters
+5. recover lost height after a fall
+6. reach the moon and defeat the final boss
+
+## Guided Tutorial
+
+Select **Tutorial – recommended** from the main menu to enter a compact,
+approximately 1,600-pixel training world. Eight localized lessons introduce:
+
+- movement and visible facing direction
+- short and fully charged jumps
+- wall rebounds
+- spring, falling, and trap platforms
+- the bolt thrower and ranged attacks
+- a harmless practice target
+- a safe, automatically triggered crawler-and-drone combat wave
+
+Section checkpoints reduce repetition after a fall or defeat. Tutorial score,
+height, and time remain separate from the main-game records. Completion opens
+direct actions for starting the main game, replaying the tutorial, or returning
+to the main menu.
+
+## Controls
+
+| Action | Keyboard |
+| --- | --- |
+| Move | `A` / `D` or Left / Right Arrow |
+| Charge and release jump | `W`, Up Arrow, or Space |
+| Brake during a wall rebound | `S` or Down Arrow |
+| Attack | `F` or `J` |
+| Switch weapon | `Q` |
+| Pause | `Escape` |
+
+Touch controls appear only on supported mobile and tablet layouts. Mobile play
+is designed for landscape orientation; portrait mode displays a rotate-device
+notice.
 
 ## Features
 
-- zusammenhängende vertikale Welt mit 150.000 Pixeln Höhe
-- fünf Biome mit insgesamt 15 unterschiedlich gebauten Abschnitten
-- Kamera, die Byte beim Aufstieg und Fallen begleitet
-- aufladbarer Präzisionssprung ohne nachträgliche Luftsteuerung
-- statische, fallende, federnde und als Falle markierte Plattformen
-- zwei normale Gegnertypen, Zwischenbosse und ein Endboss
-- Rückstoß durch Gegner und Projektile
-- Schraubenschlüssel und auffindbarer Bolzenwerfer
-- wählbare Verbesserungen nach bestandenen Gegnerphasen
-- lokale Highscore- und Höhenauswertung
-- Desktop- und Touchsteuerung im Querformat
-- gespeicherte Deutsch-/Englisch-Umschaltung in den Einstellungen
-- Start-, Gewinn- und Game-over-Bildschirm
-- freiwilliges, lokalisiertes Tutorial als kompakter Vertical Slice
-- wortlose Anfangs- und Endsequenz
+- five biomes across 15 handcrafted vertical sections
+- charged precision jumping and wall-rebound movement
+- static, spring, falling, and trap platforms
+- two regular enemy types, intermediate encounters, and a final boss
+- melee and projectile weapons with weapon switching
+- selectable upgrades after completed encounters
+- animated idle, sleep, movement, jump, hurt, attack, and death states
+- background music and layered sound effects with persistent mute settings
+- local high score, maximum height, and best-time records
+- responsive desktop and landscape touch controls
+- German and English interface localization
+- start, pause, victory, game-over, restart, and home-screen flows
+- optional fullscreen mode
+- a wordless opening and ending sequence
 
-## Landschaft
+## Story and World
 
-Die Umgebung erzählt gleichzeitig den Fortschritt:
+Byte and Luma were built as repair robots for a moon mission. Byte was
+discarded because of his crooked antenna, while Luma was sent to the moon
+alone. Transport crates, abandoned production lines, a divided moon badge,
+and Luma's blue signal tell their story without dialogue.
+
+The environment changes with the climb:
 
 ```text
-Mond und Endboss
+Moon and final boss
         ↑
-Raumstation und Sterne
+Space station and stars
         ↑
-Wolken und Startturm
+Clouds and launch tower
         ↑
-Fabrik
+Factory
         ↑
-Schrottplatz
+Scrapyard
 ```
 
-Warme Rost- und Industrietöne verändern sich während des Aufstiegs zu
-Violett, Mondblau und Cyan. Der Mond wird im Hintergrund immer größer.
+Warm rust and industrial colors gradually shift toward violet, lunar blue,
+and cyan while the moon grows larger in the background.
 
-## Technik
+## Architecture
 
-- HTML5 Canvas
-- objektorientiertes JavaScript
-- JSON für Level-, Upgrade- und Assetdaten
-- HTML und CSS für Menüs und responsive Oberfläche
-- `localStorage` für Einstellungen und lokale Rekorde
+The project follows KISS principles: no framework, no bundler, and no
+unnecessary runtime dependency. `script.js` delegates to a central composition
+root and contains no gameplay logic. Gameplay classes do not know about DOM
+bootstrap or concrete UI initialization. Level data and balancing plans are
+separated from builders and runtime systems.
 
-Das Projekt folgt bewusst dem KISS-Prinzip: kein Framework, kein Bundler und
-keine unnötige Runtime-Abhängigkeit. `script.js` delegiert an eine zentrale
-Composition Root. Gameplayklassen kennen weder DOM-Bootstrap noch konkrete
-UI-Initialisierung. Levelinhalt und Balancingpläne liegen getrennt von den
-Builder-Algorithmen in Konfigurationsmodulen.
+Production code is organized by responsibility and checked against the project
+rules for descriptive naming, JSDoc coverage, a maximum of 14 code lines per
+function, and a maximum of 400 code lines per file.
 
-Die Typprüfung wird schrittweise eingesetzt. Aktuell werden die besonders
-deterministischen und wiederverwendbaren Kernmodule strikt geprüft; eine
-Komplettmigration zu TypeScript wäre für dieses native Canvas-Projekt derzeit
-mehr Komplexität als Nutzen.
+## Project Status
 
-Alle Klassen werden nach Verantwortung gegliedert. `script.js` bleibt ein
-kleiner Einstiegspunkt und enthält keine Gameplaylogik.
+The game is playable from the main menu through the final encounter and ending
+sequence. Gameplay, enemies, upgrades, audio, localization, responsive input,
+the guided tutorial, and completion flows are implemented and covered by the
+release checks described above.
 
-## Projektstatus
+## Additional Scope Beyond the Assignment
 
-Das Spiel ist vom Startbildschirm bis zum Ende spielbar. Der aktuelle Stand
-ist ein Release-Kandidat: Gameplay, Gegner, Upgrades, Audio, responsive
-Steuerung und Abschlusssequenz sind umgesetzt. Die nachvollziehbaren Befehle
-oben prüfen die automatisierten Qualitäts-, Architektur- und Release-Verträge.
+- one continuous 150,000-pixel precision world
+- 15 sections with biome-specific jump patterns and difficulty progression
+- encounter gates and intermediate boss-style phases
+- discoverable weapons, weapon switching, and run upgrades
+- environmental storytelling from the scrapyard to the moon
+- local records and separate music and effect volume settings
+- hidden unscored traversal tools for mentor and visual QA
 
-## Tutorial
+## Asset Credits
 
-Der sichtbare Menüpunkt `Tutorial – empfohlen` startet eine eigene, ungefähr
-1.600 Pixel hohe Schrottplatzwelt. Acht kurze Lektionen führen durch Bewegung,
-kurze und geladene Sprünge, Wandabprall, Plattformmechaniken, Waffenaufnahme,
-ein ungefährliches Übungsziel und den Kampf gegen Schrottkrabbler und Drohne.
-
-Das Tutorial verwendet dieselben Physik-, Kollisions-, Waffen-, Projektil-,
-Plattform- und Gegnersysteme wie das Hauptspiel. Abschnitts-Checkpoints
-verkürzen Wiederholungen nach Stürzen oder Niederlagen. Tutorialpunkte,
-Tutorialhöhe und Tutorialzeit verändern die lokalen Hauptspielrekorde nicht.
-Nach dem ersten Abschluss wird der Menüpunkt als wiederholbar statt empfohlen
-angezeigt.
-
-## Extras über die Pflichtanforderungen
-
-- 150.000 Pixel hohe Präzisionswelt statt eines kurzen Einzellevels
-- 15 Abschnitte mit eigenen Sprungmustern und biomeabhängiger Schwierigkeit
-- Zwischenboss-Sperren mit Statusanzeige zwischen den großen Gebieten
-- auffindbare Waffe, Waffenwechsel und dauerhafte Verbesserungen im Lauf
-- wortlose Umweltgeschichte vom Schrottplatz bis zum Mond
-- lokal gespeicherte Rekorde sowie getrennte Musik- und Effektlautstärke
-
-## Dokumentation
-
-- [`docs/game-design.md`](docs/game-design.md) – Story und Spielkern
-- [`docs/asset-guide.md`](docs/asset-guide.md) – visueller Stil und Assetgrößen
-- [`docs/asset-licensing.md`](docs/asset-licensing.md) – Herkunft und Nutzung
-- [`docs/project-structure.md`](docs/project-structure.md) – Ordner und Zuständigkeiten
-- [`docs/quality-audit.md`](docs/quality-audit.md) – sichtbare und technische Abnahme
-- [`docs/tutorial-plan.md`](docs/tutorial-plan.md) – Tutorialkonzept und Abnahmekriterien
-- [`tests/README.md`](tests/README.md) – Testebenen und Release-Gates
-- [`data/asset-credits.json`](data/asset-credits.json) – Assetnachweise
-
-## Asset-Hinweis
-
-Das visuelle Konzept, das Gamecover und die Produktionsgrafiken wurden mit
-OpenAI-Bildgenerierung erstellt, für das Spiel aufbereitet und im Projekt
-dokumentiert. Herkunft und Nutzung aller eingebundenen Assets stehen in der
-Lizenzdokumentation und in den Assetnachweisen.
+The visual concept, cover art, and production graphics were created with
+OpenAI image generation and prepared specifically for this project. Asset
+origin and usage information is documented in
+[`docs/asset-licensing.md`](docs/asset-licensing.md) and
+[`data/asset-credits.json`](data/asset-credits.json).

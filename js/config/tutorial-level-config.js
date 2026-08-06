@@ -4,22 +4,29 @@ import {
   TUTORIAL_PRACTICE_TARGET_ID,
   TUTORIAL_WEAPON_ID,
 } from "./tutorial-config.js";
+import { GAME_CONFIG } from "./game-config.js";
 
 const LEVEL_WIDTH = 1280;
 const LEVEL_HEIGHT = 1600;
 const FLOOR_Y = 1408;
+const CAMERA_TOP_PADDING = 300;
 
 export const TUTORIAL_LEVEL_CONFIG = Object.freeze({
   id: "tutorial-scrapyard",
   width: LEVEL_WIDTH,
   height: LEVEL_HEIGHT,
   playerStart: Object.freeze({ x: 560, y: FLOOR_Y - 55 }),
+  cameraBounds: Object.freeze({
+    minimumY: -CAMERA_TOP_PADDING,
+    maximumY: LEVEL_HEIGHT - GAME_CONFIG.canvas.height,
+    deadZoneTopPixels: 300,
+  }),
   section: Object.freeze({
     id: "tutorial-scrapyard",
     name: "Tutorial – Schrottplatz",
     backgroundId: "scrapyard",
     tileset: "scrapyard",
-    topY: 0,
+    topY: -CAMERA_TOP_PADDING,
     bottomY: LEVEL_HEIGHT,
   }),
 });
@@ -35,7 +42,7 @@ export const TUTORIAL_PLATFORM_DEFINITIONS = Object.freeze([
     384, 92, 4, PLATFORM_MECHANIC_CONFIG.falling),
   defineMechanicPlatform("tutorial-trap", "trap", 100, 310,
     320, 82, 5, PLATFORM_MECHANIC_CONFIG.trap),
-  definePlatform("tutorial-goal", "rest", 440, 90, 480, 120, 6),
+  definePlatform("tutorial-goal", "rest", 160, 90, 960, 120, 6),
 ]);
 
 export const TUTORIAL_WEAPON_PICKUP_DEFINITION = Object.freeze({
@@ -59,11 +66,11 @@ export const TUTORIAL_PRACTICE_TARGET_PROFILE = Object.freeze({
 export const TUTORIAL_COMBAT_ENEMY_DEFINITIONS = Object.freeze([
   Object.freeze({
     id: "tutorial-combat-crawler", type: "scrapCrawler",
-    x: 540, y: 26, patrolMinX: 470, patrolMaxX: 690, startDirection: 1,
+    x: 300, y: 26, patrolMinX: 220, patrolMaxX: 480, startDirection: 1,
   }),
   Object.freeze({
     id: "tutorial-combat-drone", type: "droneGuard",
-    x: 740, y: 30, patrolMinX: 690, patrolMaxX: 910, startDirection: -1,
+    x: 980, y: 30, patrolMinX: 900, patrolMaxX: 1080, startDirection: -1,
   }),
 ]);
 
@@ -83,7 +90,8 @@ export const TUTORIAL_COMBAT_PROFILES = Object.freeze({
 
 export const TUTORIAL_COMBAT_ZONE_DEFINITION = Object.freeze({
   id: TUTORIAL_COMBAT_ZONE_ID,
-  x: 830, y: 0, width: 90, height: 250,
+  x: 160, y: 0, width: 960, height: 250,
+  triggerEnemyId: TUTORIAL_PRACTICE_TARGET_ID,
   enemyIds: Object.freeze(TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map(({ id }) => id)),
 });
 

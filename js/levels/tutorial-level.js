@@ -39,10 +39,11 @@ export function createTutorialLevel(enemyConfig = GAME_CONFIG.enemies) {
 
 /** Creates the immutable regular level contract. */
 function createLevelResult(sections, platforms, training) {
-  const { id, width, height, playerStart } = TUTORIAL_LEVEL_CONFIG;
+  const { id, width, height, playerStart, cameraBounds } = TUTORIAL_LEVEL_CONFIG;
   return Object.freeze({
     id, width, height, sections,
     playerStart: Object.freeze({ ...playerStart }),
+    cameraBounds,
     structures: new ThinWallBuilder(TUTORIAL_LEVEL_CONFIG.width).build(sections),
     platforms, collectables: training.collectables,
     storyProps: Object.freeze([]),

@@ -4,18 +4,27 @@
 export class Camera {
   /**
    * @param {Readonly<object>} config
+   * @param {Readonly<{minimumY?:number,maximumY?:number,
+   * deadZoneTopPixels?:number,deadZoneBottomPixels?:number}>} [bounds]
    */
-  constructor(config) {
-    this.#validateConfig(config);
-    this.x = 0;
-    this.y = 0;
-    this.viewportHeight = config.canvas.height;
-    this.worldHeight = config.world.height;
-    this.deadZoneTop = config.camera.deadZoneTopPixels;
-    this.deadZoneBottom = config.camera.deadZoneBottomPixels;
-    this.upwardFollowSpeed = config.camera.upwardFollowSpeedPixelsPerSecond;
-    this.downwardFollowSpeed = config.camera.downwardFollowSpeedPixelsPerSecond;
-    this.followSpeedMultiplier = 1;
+  constructor(config, bounds = {}) {
+    const cameraConfig = Object.freeze({ ...config?.camera, ...bounds });
+    this.#validateConfig(config, cameraConfig);
+    const cameraBounds = this.#createBounds(config, bounds);
+    this.#assignState(config, cameraConfig, cameraBounds);
+  }
+
+  /** Assigns validated camera state. */
+  #assignState(config, camera, bounds) {
+    Object.assign(this, {
+      x: 0, y: 0, viewportHeight: config.canvas.height,
+      minimumY: bounds.minimumY, maximumY: bounds.maximumY,
+      deadZoneTop: camera.deadZoneTopPixels,
+      deadZoneBottom: camera.deadZoneBottomPixels,
+      upwardFollowSpeed: camera.upwardFollowSpeedPixelsPerSecond,
+      downwardFollowSpeed: camera.downwardFollowSpeedPixelsPerSecond,
+      followSpeedMultiplier: 1,
+    });
   }
 
   /**
@@ -81,8 +90,18 @@ export class Camera {
 
   /** Performs the clamp y operation. */
   #clampY(y) {
-    const maximumY = Math.max(0, this.worldHeight - this.viewportHeight);
-    return Math.min(Math.max(0, y), maximumY);
+    return Math.min(Math.max(this.minimumY, y), this.maximumY);
+  }
+
+  /** Creates validated level-specific camera limits. */
+  #createBounds(config, bounds) {
+    const minimumY = bounds.minimumY ?? 0;
+    const fallbackMaximum = Math.max(0, config.world.height - config.canvas.height);
+    const maximumY = bounds.maximumY ?? fallbackMaximum;
+    if (![minimumY, maximumY].every(Number.isFinite) || minimumY > maximumY) {
+      throw new RangeError("Die Kameragrenzen sind ungültig.");
+    }
+    return Object.freeze({ minimumY, maximumY });
   }
 
   /** Checks the valid target condition. */
@@ -100,12 +119,12 @@ export class Camera {
   }
 
   /** Validates config. */
-  #validateConfig(config) {
+  #validateConfig(config, camera) {
     const hasValidWorld = Number.isFinite(config?.world?.height) &&
       Number.isFinite(config?.canvas?.height) &&
       config.world.height > 0 &&
       config.canvas.height > 0;
-    if (!hasValidWorld || !this.#hasValidCameraConfig(config.camera, config.canvas.height)) {
+    if (!hasValidWorld || !this.#hasValidCameraConfig(camera, config.canvas.height)) {
       throw new TypeError("Die Kamera-Konfiguration ist ungültig.");
     }
   }

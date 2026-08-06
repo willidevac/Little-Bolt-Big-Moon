@@ -56,7 +56,10 @@ export class WaveManager {
   update(world) {
     if (!this.#isInitialized) return;
     this.#completeFinishedZones(world);
-    const waitingZone = this.#zones.find((zone) => zone.canTrigger(world.character));
+    const activeEnemyIds = this.#getLivingEnemyIds(world);
+    const waitingZone = this.#zones.find((zone) => {
+      return zone.canTrigger(world.character, activeEnemyIds);
+    });
     if (waitingZone) this.#activate(waitingZone, world);
   }
 
@@ -94,10 +97,23 @@ export class WaveManager {
 
   /** Checks the ended condition. */
   #hasEnded(zone, world) {
-    const activeEnemyIds = new Set(
-      world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).map((enemy) => enemy.id),
-    );
+    const activeEnemyIds = this.#getActiveEnemyIds(world);
     return zone.enemyIds.every((enemyId) => !activeEnemyIds.has(enemyId));
+  }
+
+  /** Returns currently active enemy identities. */
+  #getActiveEnemyIds(world) {
+    return new Set(
+      world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).map(({ id }) => id),
+    );
+  }
+
+  /** Returns living enemy identities for defeat-triggered encounters. */
+  #getLivingEnemyIds(world) {
+    return new Set(
+      world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)
+        .filter(({ isDead }) => !isDead).map(({ id }) => id),
+    );
   }
 
   /** Performs the complete operation. */
@@ -175,9 +191,14 @@ export class WaveManager {
   /** Validates enemy references. */
   #validateEnemyReferences() {
     const referencedIds = this.#zones.flatMap((zone) => zone.enemyIds);
+    const triggerIds = this.#zones.flatMap((zone) => {
+      return zone.triggerEnemyId ? [zone.triggerEnemyId] : [];
+    });
     const allExist = referencedIds.every((id) => this.#enemiesById.has(id));
+    const triggersExist = triggerIds.every((id) => this.#enemiesById.has(id));
     const uniqueReferences = new Set(referencedIds);
-    if (allExist && uniqueReferences.size === referencedIds.length) return;
+    if (allExist && triggersExist &&
+      uniqueReferences.size === referencedIds.length) return;
     throw new RangeError("Kampfzonen enthalten unbekannte oder doppelte Gegner.");
   }
 }

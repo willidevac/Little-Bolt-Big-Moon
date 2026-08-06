@@ -63,7 +63,7 @@ export class World {
     this.waveManager = new WaveManager(level?.combatZones, level?.enemies, level?.platforms);
     this.bossFight = new BossFightManager(level?.enemies);
     this.character = null;
-    this.camera = new Camera(config);
+    this.camera = new Camera(config, level?.cameraBounds);
     this.#renderer = new WorldRenderer(context, config, level?.sections);
   }
 

@@ -126,6 +126,7 @@ function assertRejectedHits(game, director) {
   game.emitGameplay(GAMEPLAY_EVENTS.ENEMY_HIT, {
     ...createTargetHit(), id: "other-target",
   });
+  game.emitGameplay(GAMEPLAY_EVENTS.ENEMY_HIT, createTargetHit());
   assert.equal(director.getSnapshot().stepId, "practiceTarget");
 }
 

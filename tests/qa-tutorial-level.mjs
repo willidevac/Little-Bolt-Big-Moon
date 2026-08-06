@@ -14,10 +14,15 @@ const route = [...level.platforms].sort((first, second) => {
 
 assert.equal(level.id, "tutorial-scrapyard");
 assert.deepEqual([level.width, level.height], [1280, 1600]);
-assert.deepEqual([level.sections[0].topY, level.sections[0].bottomY], [0, 1600]);
+assert.deepEqual(
+  [level.sections[0].topY, level.sections[0].bottomY],
+  [level.cameraBounds.minimumY, 1600],
+);
 assert.match(level.sections[0].backgroundLayers[0].source, /scrapyard-/);
 assert.deepEqual(level.structures.map(({ side }) => side), ["left", "right"]);
-assert.ok(level.structures.every(({ y, height }) => y === 0 && height === 1600));
+assert.ok(level.structures.every(({ y, height }) => {
+  return y === level.cameraBounds.minimumY && height === 1600 - y;
+}));
 assert.deepEqual([route[0].x, route[0].width], [0, level.width]);
 assert.equal(level.playerStart.y + 55, route[0].y);
 assert.equal(new Set(route.map(({ id }) => id)).size, route.length);

@@ -1,11 +1,6 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
 
-const TARGET_HIT_EVENTS = new Set([
-  GAMEPLAY_EVENTS.ENEMY_HIT,
-  GAMEPLAY_EVENTS.ENEMY_DEFEATED,
-]);
-
-/** Completes weapon pickup and first ranged-hit tutorial lessons. */
+/** Completes weapon pickup and practice-target defeat tutorial lessons. */
 export class TutorialCombatBasicsTracker {
   #unsubscribe = null;
 
@@ -36,7 +31,7 @@ export class TutorialCombatBasicsTracker {
     this.#unsubscribe = null;
   }
 
-  /** Routes pickup and hit evidence to their currently active lesson. */
+  /** Routes pickup and defeat evidence to their currently active lesson. */
   handleGameplayEvent(event) {
     const stepId = this.director.getSnapshot().stepId;
     if (stepId === this.config.weaponStepId) this.#handlePickup(event, stepId);
@@ -51,9 +46,9 @@ export class TutorialCombatBasicsTracker {
     if (matches) this.director.completeStep(stepId);
   }
 
-  /** Accepts only a real configured-weapon hit on the practice target. */
+  /** Accepts only a real configured-weapon defeat of the practice target. */
   #handleTargetHit(event, stepId) {
-    const matches = TARGET_HIT_EVENTS.has(event.type) &&
+    const matches = event.type === GAMEPLAY_EVENTS.ENEMY_DEFEATED &&
       event.detail.id === this.config.targetId &&
       event.detail.source === this.config.weaponId;
     if (matches) this.director.completeStep(stepId);

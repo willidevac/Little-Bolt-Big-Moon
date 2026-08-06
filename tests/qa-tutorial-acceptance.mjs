@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { GAME_CONFIG } from "../js/config/game-config.js";
+import { Camera } from "../classes/core/camera.class.js";
 import { GAME_LEVEL_IDS } from "../js/config/level-config.js";
 import { TUTORIAL_STEP_ORDER } from "../js/config/tutorial-config.js";
 import { TRANSLATION_CATALOG } from
@@ -15,6 +16,7 @@ const tutorial = createTutorialLevel();
 
 await assertPublicInterface();
 assertTutorialWorld();
+assertTutorialCamera();
 assertLocalizedJourney();
 assertMainLevelUnchanged();
 await assertCompletionContract();
@@ -41,6 +43,19 @@ function assertTutorialWorld() {
     "scrapCrawler", "droneGuard",
   ]);
   assert.equal(tutorial.combatZones.length, 1);
+}
+
+/** Verifies full tracking in the top room without changing main camera limits. */
+function assertTutorialCamera() {
+  const target = { y: 26, height: 64 };
+  const tutorialCamera = new Camera(GAME_CONFIG, tutorial.cameraBounds);
+  const mainCamera = new Camera(GAME_CONFIG);
+  tutorialCamera.reset(target);
+  mainCamera.reset(target);
+  assert.equal(mainCamera.y, 0);
+  assert.equal(tutorialCamera.y, -242);
+  assert.equal(target.y + target.height / 2 - tutorialCamera.y,
+    tutorial.cameraBounds.deadZoneTopPixels);
 }
 
 /** Verifies every lesson and final action in German and English. */

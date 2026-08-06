@@ -29,6 +29,8 @@ function assertCombatDefinitions() {
   assert.ok(crawler instanceof ScrapCrawler);
   assert.ok(drone instanceof DroneGuard);
   assert.deepEqual(level.combatZones[0].enemyIds, [crawler.id, drone.id]);
+  assert.equal(level.combatZones[0].triggerEnemyId, practice.id);
+  assert.equal(level.platforms.at(-1).width, 960);
   assert.equal(crawler.maximumHealth, 36);
   assert.equal(drone.maximumHealth, 36);
   assert.ok(crawler.speedPixelsPerSecond < GAME_CONFIG.enemies.scrapCrawler
@@ -46,7 +48,7 @@ function assertBoltLineIntersects(enemy) {
   assert.ok(projectileY >= bounds.y && projectileY <= bounds.y + bounds.height);
 }
 
-/** Verifies delayed spawning, real defeat cleanup, and wave completion. */
+/** Verifies defeat-triggered spawning, cleanup, and wave completion. */
 function assertProductionWave() {
   const events = new GameplayEventHub();
   const completions = [];
@@ -58,12 +60,30 @@ function assertProductionWave() {
   const world = new World({}, GAME_CONFIG, createInput(), level, events);
   world.initialize();
   assert.deepEqual(activeEnemyIds(world), ["tutorial-practice-target"]);
-  Object.assign(world.character, { x: 840, y: 35 });
+  Object.assign(world.character, { x: 1080, y: 35 });
   world.update(0.016);
-  assert.equal(activeEnemyIds(world).length, 3);
+  assert.deepEqual(activeEnemyIds(world), ["tutorial-practice-target"]);
+  defeatPracticeTarget(world);
+  world.update(0.016);
+  assert.equal(
+    world.waveManager.getZoneSnapshot("tutorial-combat-zone").state,
+    "active",
+  );
+  world.update(0.6);
+  assert.deepEqual(activeEnemyIds(world), [
+    "tutorial-combat-crawler", "tutorial-combat-drone",
+  ]);
   defeatCombatEnemies(world);
   world.update(0.6);
   assert.deepEqual(completions, ["tutorial-combat-zone"]);
+}
+
+/** Defeats the passive target that unlocks the automatic wave. */
+function defeatPracticeTarget(world) {
+  const target = world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)[0];
+  world.eventReporter.damageEnemy(target, {
+    amount: 999, direction: 1, source: "boltThrower",
+  });
 }
 
 /** Returns active enemy identities in their stable insertion order. */

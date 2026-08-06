@@ -21,6 +21,7 @@ export class CombatZone {
     this.width = zoneData.width;
     this.height = zoneData.height;
     this.enemyIds = Object.freeze([...zoneData.enemyIds]);
+    this.triggerEnemyId = zoneData.triggerEnemyId ?? null;
     this.unlockPlatformId = zoneData.unlockPlatformId ?? null;
     this.#state = COMBAT_ZONE_STATES.WAITING;
   }
@@ -48,10 +49,15 @@ export class CombatZone {
   /**
    * Checks whether the center of a target entered the waiting area.
    * @param {Readonly<object>} target
+   * @param {ReadonlySet<string>|null} [activeEnemyIds]
    * @returns {boolean}
    */
-  canTrigger(target) {
+  canTrigger(target, activeEnemyIds = null) {
     if (this.#state !== COMBAT_ZONE_STATES.WAITING) return false;
+    if (this.triggerEnemyId) {
+      return activeEnemyIds instanceof Set &&
+        !activeEnemyIds.has(this.triggerEnemyId);
+    }
     const centerX = target.x + target.width / 2;
     const centerY = target.y + target.height / 2;
     return centerX >= this.x &&
@@ -91,7 +97,8 @@ export class CombatZone {
       return Number.isFinite(value) && value > 0;
     });
     const hasUnlock = this.#hasUnlockPlatformId(data);
-    if (hasId && hasPosition && hasDimensions && hasUnlock &&
+    const hasTrigger = this.#hasTriggerEnemyId(data);
+    if (hasId && hasPosition && hasDimensions && hasUnlock && hasTrigger &&
       this.#hasEnemyIds(data)) return;
     throw new TypeError("Die Kampfzonendaten sind ungültig.");
   }
@@ -99,6 +106,13 @@ export class CombatZone {
   /** Checks the unlock platform id condition. */
   #hasUnlockPlatformId(data) {
     const id = data?.unlockPlatformId;
+    return id === undefined || id === null ||
+      (typeof id === "string" && id.length > 0);
+  }
+
+  /** Checks the optional defeat-trigger enemy id. */
+  #hasTriggerEnemyId(data) {
+    const id = data?.triggerEnemyId;
     return id === undefined || id === null ||
       (typeof id === "string" && id.length > 0);
   }
