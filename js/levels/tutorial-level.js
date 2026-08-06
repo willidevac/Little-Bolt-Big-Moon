@@ -12,6 +12,8 @@ import { DroneGuard } from
   "../../classes/entities/enemies/drone-guard.class.js";
 import { SpringMine } from
   "../../classes/entities/enemies/spring-mine.class.js";
+import { ScrapOverseer } from
+  "../../classes/entities/enemies/scrap-overseer.class.js";
 import { CombatZone } from
   "../../classes/environment/combat-zone.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
@@ -31,6 +33,13 @@ import {
   TUTORIAL_RESOURCE_PICKUP_DEFINITIONS,
   TUTORIAL_WEAPON_PICKUP_DEFINITION,
 } from "../config/tutorial-level-config.js";
+
+const TUTORIAL_ENEMY_CLASSES = Object.freeze({
+  scrapCrawler: ScrapCrawler,
+  springMine: SpringMine,
+  droneGuard: DroneGuard,
+  scrapOverseer: ScrapOverseer,
+});
 
 /** Creates the compact production tutorial with the regular level contract. */
 export function createTutorialLevel(enemyConfig = GAME_CONFIG.enemies) {
@@ -104,13 +113,8 @@ function createPracticeTarget(anchor, enemyConfig) {
 
 /** Creates the mild crawler and drone through their production classes. */
 function createCombatEnemies(enemyConfig) {
-  const enemyClasses = {
-    scrapCrawler: ScrapCrawler,
-    springMine: SpringMine,
-    droneGuard: DroneGuard,
-  };
   return TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map((definition) => {
-    const EnemyClass = enemyClasses[definition.type];
+    const EnemyClass = TUTORIAL_ENEMY_CLASSES[definition.type];
     const profile = Object.freeze({
       ...enemyConfig[definition.type], ...TUTORIAL_COMBAT_PROFILES[definition.type],
     });

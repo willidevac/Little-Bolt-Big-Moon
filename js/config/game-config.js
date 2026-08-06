@@ -133,6 +133,12 @@ const PROJECTILE_CONFIG = Object.freeze({
       worldPaddingPixels: 64,
       animationFrameDurationSeconds: 0.09,
     }),
+    overseerBolt: Object.freeze({
+      speedPixelsPerSecond: 300,
+      lifetimeSeconds: 2.8,
+      worldPaddingPixels: 64,
+      animationFrameDurationSeconds: 0.1,
+    }),
   }),
 });
 
@@ -162,6 +168,17 @@ const ENEMY_CONFIG = Object.freeze({
     maximumHealth: 48,
     contactDamage: 20,
     attackCooldownSeconds: 1.2,
+  }),
+  scrapOverseer: Object.freeze({
+    speedPixelsPerSecond: 42,
+    hoverAmplitudePixels: 10,
+    hoverCyclesPerSecond: 0.28,
+    initialDelaySeconds: 1.2,
+    attackReleaseSeconds: 0.9,
+    boltDamage: 8,
+    maximumHealth: 108,
+    contactDamage: 8,
+    attackCooldownSeconds: 1.6,
   }),
   moonWarden: Object.freeze({
     speedPixelsPerSecond: 104,
@@ -206,6 +223,7 @@ const SCORE_CONFIG = Object.freeze({
     scrapCrawler: 750,
     droneGuard: 1000,
     springMine: 1100,
+    scrapOverseer: 2500,
     moonWarden: 5000,
   }),
 });

@@ -7,6 +7,19 @@ const BOSS_PROJECTILE_SPRITE = Object.freeze({
   frameHeight: 32,
   frameCount: 8,
 });
+const ENERGY_BOLT_VISUAL_CONFIG = Object.freeze({
+  sprite: BOSS_PROJECTILE_SPRITE,
+  renderScale: 1,
+  collisionBox: Object.freeze({
+    offsetX: 8,
+    offsetY: 4,
+    width: 48,
+    height: 24,
+  }),
+  animationStartFrame: 4,
+  animationFrameCount: 4,
+  originOffsetY: 0.5,
+});
 const VISUAL_CONFIGS = Object.freeze({
   shockwave: Object.freeze({
     sprite: BOSS_PROJECTILE_SPRITE,
@@ -21,23 +34,12 @@ const VISUAL_CONFIGS = Object.freeze({
     animationFrameCount: 4,
     originOffsetY: 1,
   }),
-  moonBolt: Object.freeze({
-    sprite: BOSS_PROJECTILE_SPRITE,
-    renderScale: 1,
-    collisionBox: Object.freeze({
-      offsetX: 8,
-      offsetY: 4,
-      width: 48,
-      height: 24,
-    }),
-    animationStartFrame: 4,
-    animationFrameCount: 4,
-    originOffsetY: 0.5,
-  }),
+  moonBolt: ENERGY_BOLT_VISUAL_CONFIG,
+  overseerBolt: ENERGY_BOLT_VISUAL_CONFIG,
 });
 
 /**
- * Hostile shockwave or moon-bolt projectile.
+ * Hostile shockwave or aimed energy-bolt projectile.
  */
 export class BossProjectile extends Projectile {
   /**

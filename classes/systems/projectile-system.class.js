@@ -179,7 +179,8 @@ export class ProjectileSystem {
     const hasPlayerConfig = config?.playerBolt && config?.playerArc &&
       typeof config.playerBolt === "object" &&
       typeof config.playerArc === "object";
-    const hasBossConfig = config?.boss?.shockwave && config?.boss?.moonBolt;
+    const hasBossConfig = config?.boss?.shockwave && config?.boss?.moonBolt &&
+      config?.boss?.overseerBolt;
     const hasCollision = typeof collisionManager?.areOverlapping === "function";
     if (hasPlayerConfig && hasBossConfig && hasCollision) return;
     throw new TypeError("Das Projektilsystem ist unvollständig konfiguriert.");
