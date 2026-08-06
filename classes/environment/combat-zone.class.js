@@ -22,6 +22,7 @@ export class CombatZone {
     this.height = zoneData.height;
     this.enemyIds = Object.freeze([...zoneData.enemyIds]);
     this.triggerEnemyId = zoneData.triggerEnemyId ?? null;
+    this.triggerZoneId = zoneData.triggerZoneId ?? null;
     this.unlockPlatformId = zoneData.unlockPlatformId ?? null;
     this.#state = COMBAT_ZONE_STATES.WAITING;
   }
@@ -50,14 +51,24 @@ export class CombatZone {
    * Checks whether the center of a target entered the waiting area.
    * @param {Readonly<object>} target
    * @param {ReadonlySet<string>|null} [activeEnemyIds]
+   * @param {ReadonlySet<string>|null} [completedZoneIds]
    * @returns {boolean}
    */
-  canTrigger(target, activeEnemyIds = null) {
+  canTrigger(target, activeEnemyIds = null, completedZoneIds = null) {
     if (this.#state !== COMBAT_ZONE_STATES.WAITING) return false;
     if (this.triggerEnemyId) {
       return activeEnemyIds instanceof Set &&
         !activeEnemyIds.has(this.triggerEnemyId);
     }
+    if (this.triggerZoneId) {
+      return completedZoneIds instanceof Set &&
+        completedZoneIds.has(this.triggerZoneId);
+    }
+    return this.#contains(target);
+  }
+
+  /** Checks whether the target center lies inside the physical trigger. */
+  #contains(target) {
     const centerX = target.x + target.width / 2;
     const centerY = target.y + target.height / 2;
     return centerX >= this.x &&
@@ -113,8 +124,12 @@ export class CombatZone {
   /** Checks the optional defeat-trigger enemy id. */
   #hasTriggerEnemyId(data) {
     const id = data?.triggerEnemyId;
-    return id === undefined || id === null ||
-      (typeof id === "string" && id.length > 0);
+    const zoneId = data?.triggerZoneId;
+    const hasEnemy = id !== undefined && id !== null;
+    const hasZone = zoneId !== undefined && zoneId !== null;
+    const validEnemy = !hasEnemy || typeof id === "string" && id.length > 0;
+    const validZone = !hasZone || typeof zoneId === "string" && zoneId.length > 0;
+    return validEnemy && validZone && !(hasEnemy && hasZone);
   }
 
   /** Checks the enemy ids condition. */

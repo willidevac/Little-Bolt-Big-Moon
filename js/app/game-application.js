@@ -21,11 +21,22 @@ import { initializeTutorialCombatBasicsTracker } from
   "../factories/tutorial-combat-basics-tracker.js";
 import { initializeTutorialCombatTracker } from
   "../factories/tutorial-combat-tracker.js";
+import { initializeTutorialBossTracker } from
+  "../factories/tutorial-boss-tracker.js";
 import { initializeTutorialCheckpointController } from
   "../factories/tutorial-checkpoint-controller.js";
 import { initializeTutorialPrompt } from "../ui/tutorial-prompt.js";
 import { initializeTutorialCompletion } from
   "../ui/tutorial-completion.js";
+
+const TUTORIAL_TRACKER_FACTORIES = Object.freeze([
+  initializeTutorialMovementTracker,
+  initializeTutorialResourceTracker,
+  initializeTutorialMechanicsTracker,
+  initializeTutorialCombatBasicsTracker,
+  initializeTutorialCombatTracker,
+  initializeTutorialBossTracker,
+]);
 
 /**
  * Loads the interface and creates the complete browser application.
@@ -68,15 +79,13 @@ function createControllers(game, audio, storage, localization) {
 /** Creates tutorial orchestration in dependency order. */
 function createTutorialControllers(game, storage) {
   const tutorial = initializeTutorialDirector(game);
-  const movement = initializeTutorialMovementTracker(game, tutorial);
-  const resources = initializeTutorialResourceTracker(game, tutorial);
-  const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
-  const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
-  const combat = initializeTutorialCombatTracker(game, tutorial);
+  const trackers = TUTORIAL_TRACKER_FACTORIES.map((createTracker) => {
+    return createTracker(game, tutorial);
+  });
   const checkpoints = initializeTutorialCheckpointController(game, tutorial);
   const completion = initializeTutorialCompletion(game, tutorial, storage);
   return [
-    tutorial, movement, resources, mechanics, combatBasics, combat, checkpoints,
+    tutorial, ...trackers, checkpoints,
     completion, initializeTutorialPrompt(tutorial),
   ];
 }

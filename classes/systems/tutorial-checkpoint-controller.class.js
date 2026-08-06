@@ -23,6 +23,7 @@ export class TutorialCheckpointController {
     this.config = Object.freeze({
       ...config, checkpoints: Object.freeze({ ...config.checkpoints }),
       weaponSteps: Object.freeze([...config.weaponSteps]),
+      encounterSteps: Object.freeze({ ...config.encounterSteps }),
     });
   }
 
@@ -70,7 +71,10 @@ export class TutorialCheckpointController {
     if (this.#isRecovering) return false;
     this.#isRecovering = true;
     const recovered = this.game.restartWorldAt(this.#checkpoint.position);
-    if (recovered) this.#restoreWeapon();
+    if (recovered) {
+      this.#restoreWeapon();
+      this.#restoreEncounter();
+    }
     this.#isRecovering = false;
     return recovered;
   }
@@ -83,6 +87,13 @@ export class TutorialCheckpointController {
     });
   }
 
+  /** Restores a configured deferred encounter after the fresh world exists. */
+  #restoreEncounter() {
+    const zoneId = this.config.encounterSteps[this.#checkpoint.stepId];
+    if (!zoneId) return false;
+    return this.game.world.waveManager.restoreZone(zoneId, this.game.world);
+  }
+
   /** Validates recovery commands, progress observations, and configuration. */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function" &&
@@ -90,12 +101,30 @@ export class TutorialCheckpointController {
       typeof game?.gameplayEvents?.emit === "function";
     const hasDirector = typeof director?.onChange === "function" &&
       typeof director?.getSnapshot === "function";
+    const hasRecoveryConfig = this.#hasRecoveryConfig(config);
+    const hasEncounters = this.#hasEncounterConfig(game, config);
+    if (hasGame && hasDirector && hasRecoveryConfig &&
+      hasEncounters) return;
+    throw new TypeError("Die Tutorial-Checkpoints sind unvollständig.");
+  }
+
+  /** Checks checkpoint positions and weapon recovery configuration. */
+  #hasRecoveryConfig(config) {
     const hasCheckpoints = config?.checkpoints &&
       Object.values(config.checkpoints).every(this.#isValidPosition);
     const hasWeapon = Array.isArray(config?.weaponSteps) &&
       typeof config?.weaponId === "string" && config.weaponId.length > 0;
-    if (hasGame && hasDirector && hasCheckpoints && hasWeapon) return;
-    throw new TypeError("Die Tutorial-Checkpoints sind unvollständig.");
+    return Boolean(hasCheckpoints && hasWeapon);
+  }
+
+  /** Checks encounter recovery commands and every configured zone identity. */
+  #hasEncounterConfig(game, config) {
+    const ids = Object.values(config?.encounterSteps ?? {});
+    const hasIds = config?.encounterSteps && ids.every((id) => {
+      return typeof id === "string" && id.length > 0;
+    });
+    return Boolean(hasIds) &&
+      typeof game?.world?.waveManager?.restoreZone === "function";
   }
 
   /** Checks whether a checkpoint position is finite. */

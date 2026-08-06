@@ -30,6 +30,7 @@ export class WaveManager {
     this.#isInitialized = false;
     this.#validateEnemyReferences();
     this.#validatePlatformReferences();
+    this.#validateZoneReferences();
   }
 
   /**
@@ -57,8 +58,9 @@ export class WaveManager {
     if (!this.#isInitialized) return;
     this.#completeFinishedZones(world);
     const activeEnemyIds = this.#getLivingEnemyIds(world);
+    const completedZoneIds = this.#getCompletedZoneIds();
     const waitingZone = this.#zones.find((zone) => {
-      return zone.canTrigger(world.character, activeEnemyIds);
+      return zone.canTrigger(world.character, activeEnemyIds, completedZoneIds);
     });
     if (waitingZone) this.#activate(waitingZone, world);
   }
@@ -84,15 +86,43 @@ export class WaveManager {
     throw new RangeError(`Unbekannte Kampfzone: ${zoneId}`);
   }
 
+  /** Restores one deferred encounter and silently satisfies prerequisites. */
+  restoreZone(zoneId, world) {
+    const zone = this.#zones.find(({ id }) => id === zoneId);
+    if (!zone) throw new RangeError(`Unbekannte Kampfzone: ${zoneId}`);
+    if (zone.state !== COMBAT_ZONE_STATES.WAITING) return false;
+    this.#restorePrerequisite(zone, world);
+    return this.#activate(zone, world);
+  }
+
   /** Performs the activate operation. */
   #activate(zone, world) {
-    if (!zone.activate()) return;
+    if (!zone.activate()) return false;
     zone.enemyIds.forEach((enemyId) => {
       world.addEntity(
         WORLD_ENTITY_GROUPS.ENEMIES,
         this.#enemiesById.get(enemyId),
       );
     });
+    return true;
+  }
+
+  /** Silently marks an earlier zone complete and removes its remaining actors. */
+  #restorePrerequisite(zone, world) {
+    if (!zone.triggerZoneId) return;
+    const prerequisite = this.#zones.find(({ id }) => id === zone.triggerZoneId);
+    this.#restorePrerequisite(prerequisite, world);
+    prerequisite.activate();
+    prerequisite.complete();
+    this.#removeZoneActors(prerequisite, world);
+  }
+
+  /** Removes enemies and defeat triggers belonging to a restored prior zone. */
+  #removeZoneActors(zone, world) {
+    const ids = new Set([...zone.enemyIds, zone.triggerEnemyId].filter(Boolean));
+    world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)
+      .filter(({ id }) => ids.has(id))
+      .forEach((enemy) => world.removeEntity(WORLD_ENTITY_GROUPS.ENEMIES, enemy));
   }
 
   /** Checks the ended condition. */
@@ -114,6 +144,13 @@ export class WaveManager {
       world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES)
         .filter(({ isDead }) => !isDead).map(({ id }) => id),
     );
+  }
+
+  /** Returns every completed encounter identity. */
+  #getCompletedZoneIds() {
+    return new Set(this.#zones
+      .filter(({ state }) => state === COMBAT_ZONE_STATES.COMPLETED)
+      .map(({ id }) => id));
   }
 
   /** Performs the complete operation. */
@@ -200,5 +237,19 @@ export class WaveManager {
     if (allExist && triggersExist &&
       uniqueReferences.size === referencedIds.length) return;
     throw new RangeError("Kampfzonen enthalten unbekannte oder doppelte Gegner.");
+  }
+
+  /** Validates every zone-to-zone dependency without self references. */
+  #validateZoneReferences() {
+    const ids = new Set(this.#zones.map(({ id }) => id));
+    const dependencies = this.#zones.filter(({ triggerZoneId }) => triggerZoneId);
+    const allExist = dependencies.every(({ triggerZoneId }) => {
+      return ids.has(triggerZoneId);
+    });
+    const noSelfReferences = dependencies.every((zone) => {
+      return zone.triggerZoneId !== zone.id;
+    });
+    if (allExist && noSelfReferences) return;
+    throw new RangeError("Kampfzonen-Abhängigkeiten sind ungültig.");
   }
 }

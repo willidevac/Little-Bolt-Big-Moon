@@ -13,7 +13,7 @@ const stepIds = [
   "movement", "resources", "shortJump", "chargedJump", "wallRebound",
   "platformMechanics",
   "weaponPickup", "practiceTarget",
-  "combat",
+  "combat", "boss",
 ];
 
 assert.match(html, /<aside[\s\S]*?aria-live="polite"[\s\S]*?data-tutorial-prompt/);

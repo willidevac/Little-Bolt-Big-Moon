@@ -48,7 +48,7 @@ function assertCombatDefinitions() {
   assertBoltLineIntersects(drone);
 }
 
-/** Verifies both enemies intersect the horizontal bolt line from the checkpoint. */
+/** Verifies every enemy intersects the horizontal bolt line from the checkpoint. */
 function assertBoltLineIntersects(enemy) {
   const projectileY = 35 + GAME_CONFIG.weapons.definitions.boltThrower.attackOffsetY;
   const bounds = enemy.getCollisionBounds();
@@ -120,7 +120,7 @@ function assertCombatLesson() {
   });
   assert.equal(director.getSnapshot().stepId, "movement");
   advanceToCombat(director);
-  assert.equal(director.getSnapshot().status, "completed");
+  assert.equal(director.getSnapshot().stepId, "boss");
   tracker.destroy();
   director.destroy();
 }

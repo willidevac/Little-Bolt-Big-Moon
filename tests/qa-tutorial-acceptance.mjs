@@ -44,9 +44,9 @@ function assertTutorialWorld() {
   assert.deepEqual(tutorial.platforms.filter(({ mechanic }) => mechanic)
     .map(({ mechanic }) => mechanic), ["spring", "falling", "trap"]);
   assert.deepEqual(tutorial.enemies.slice(1).map(({ type }) => type), [
-    "scrapCrawler", "springMine", "droneGuard",
+    "scrapCrawler", "springMine", "droneGuard", "scrapOverseer",
   ]);
-  assert.equal(tutorial.combatZones.length, 1);
+  assert.equal(tutorial.combatZones.length, 2);
 }
 
 /** Verifies full tracking in the top room without changing main camera limits. */

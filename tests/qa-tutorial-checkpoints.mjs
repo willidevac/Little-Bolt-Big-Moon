@@ -23,9 +23,13 @@ function assertCheckpointRecovery() {
   game.emitGameplay(GAMEPLAY_EVENTS.PLAYER_DEATH);
   assert.deepEqual(game.restarts.at(-1), { x: 500, y: 35 });
   assert.deepEqual(game.restoredWeapons, ["boltThrower"]);
+  director.completeStep("combat");
+  game.emitGameplay(GAMEPLAY_EVENTS.PLAYER_DEATH);
+  assert.deepEqual(game.restoredZones, ["tutorial-boss-zone"]);
+  assert.deepEqual(game.restoredWeapons, ["boltThrower", "boltThrower"]);
   checkpoints.destroy();
   game.emitGameplay(GAMEPLAY_EVENTS.PLAYER_FALL);
-  assert.equal(game.restarts.length, 2);
+  assert.equal(game.restarts.length, 3);
   director.destroy();
 }
 
@@ -42,6 +46,7 @@ function createGameFixture() {
   const gameplayListeners = new Set();
   const game = {
     state: GAME_STATES.HOME, levelId: "main", restarts: [], restoredWeapons: [],
+    restoredZones: [],
     onStateChange: (listener) => register(stateListeners, listener),
     onGameplayEvent: (listener) => register(gameplayListeners, listener),
     restartWorldAt(position) {
@@ -55,6 +60,14 @@ function createGameFixture() {
     emitGameplay(type, detail = {}) {
       const event = Object.freeze({ type, detail: Object.freeze(detail) });
       gameplayListeners.forEach((listener) => listener(event));
+    },
+  };
+  game.world = {
+    waveManager: {
+      restoreZone(zoneId) {
+        game.restoredZones.push(zoneId);
+        return true;
+      },
     },
   };
   game.gameplayEvents = createEventCommands(game, gameplayListeners);

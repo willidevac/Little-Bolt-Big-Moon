@@ -24,6 +24,8 @@ import {
 } from "../config/wall-course-config.js";
 import {
   TUTORIAL_LEVEL_CONFIG,
+  TUTORIAL_BOSS_DEFINITION,
+  TUTORIAL_BOSS_ZONE_DEFINITION,
   TUTORIAL_PLATFORM_DEFINITIONS,
   TUTORIAL_COMBAT_ENEMY_DEFINITIONS,
   TUTORIAL_COMBAT_PROFILES,
@@ -67,14 +69,36 @@ function createLevelResult(sections, platforms, training) {
 /** Creates the weapon pickup and its harmless production target. */
 function createTrainingContent(platforms, enemyConfig) {
   const weaponAnchor = getAnchor(platforms, TUTORIAL_WEAPON_PICKUP_DEFINITION);
-  const combatEnemies = createCombatEnemies(enemyConfig);
   return Object.freeze({
     collectables: createTrainingCollectables(platforms, weaponAnchor),
-    enemies: Object.freeze([
-      createPracticeTarget(weaponAnchor, enemyConfig), ...combatEnemies,
-    ]),
-    combatZones: Object.freeze([new CombatZone(TUTORIAL_COMBAT_ZONE_DEFINITION)]),
+    enemies: createTutorialEnemies(weaponAnchor, enemyConfig),
+    combatZones: createTutorialZones(),
   });
+}
+
+/** Creates all staged training enemies in their activation order. */
+function createTutorialEnemies(weaponAnchor, enemyConfig) {
+  return Object.freeze([
+    createPracticeTarget(weaponAnchor, enemyConfig),
+    ...createCombatEnemies(enemyConfig),
+    createTutorialBoss(enemyConfig),
+  ]);
+}
+
+/** Creates the regular wave followed by its dependent boss encounter. */
+function createTutorialZones() {
+  return Object.freeze([
+    new CombatZone(TUTORIAL_COMBAT_ZONE_DEFINITION),
+    new CombatZone(TUTORIAL_BOSS_ZONE_DEFINITION),
+  ]);
+}
+
+/** Creates the original boss while keeping it deferred by its own zone. */
+function createTutorialBoss(enemyConfig) {
+  return new ScrapOverseer(
+    TUTORIAL_BOSS_DEFINITION,
+    enemyConfig.scrapOverseer,
+  );
 }
 
 /** Creates every resource and weapon pickup in route order. */

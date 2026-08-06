@@ -65,6 +65,7 @@ function assertBufferedCompletion(directorToComplete, activeGame) {
   activeGame.emit(GAME_STATES.PLAYING, "tutorial");
   assert.equal(directorToComplete.recordStepCompletion("combat"), true);
   assert.equal(directorToComplete.recordStepCompletion("combat"), false);
+  assert.equal(directorToComplete.recordStepCompletion("boss"), true);
   assert.equal(directorToComplete.recordStepCompletion("completed"), false);
   assert.equal(directorToComplete.recordStepCompletion("unknown"), false);
   directorToComplete.recordStepCompletion("shortJump");

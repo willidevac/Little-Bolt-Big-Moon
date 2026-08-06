@@ -1,5 +1,7 @@
 import { PLATFORM_MECHANIC_CONFIG } from "./world-content-config.js";
 import {
+  TUTORIAL_BOSS_ID,
+  TUTORIAL_BOSS_ZONE_ID,
   TUTORIAL_COMBAT_ZONE_ID,
   TUTORIAL_PRACTICE_TARGET_ID,
   TUTORIAL_WEAPON_ID,
@@ -121,6 +123,27 @@ export const TUTORIAL_COMBAT_ZONE_DEFINITION = Object.freeze({
   x: 160, y: 0, width: 960, height: 250,
   triggerEnemyId: TUTORIAL_PRACTICE_TARGET_ID,
   enemyIds: Object.freeze(TUTORIAL_COMBAT_ENEMY_DEFINITIONS.map(({ id }) => id)),
+});
+
+export const TUTORIAL_BOSS_DEFINITION = Object.freeze({
+  id: TUTORIAL_BOSS_ID,
+  type: "scrapOverseer",
+  bossName: "Schrott-Aufseher",
+  x: 544,
+  y: -145,
+  patrolMinX: 240,
+  patrolMaxX: 1040,
+  startDirection: 1,
+});
+
+export const TUTORIAL_BOSS_ZONE_DEFINITION = Object.freeze({
+  id: TUTORIAL_BOSS_ZONE_ID,
+  x: 160,
+  y: -300,
+  width: 960,
+  height: 550,
+  triggerZoneId: TUTORIAL_COMBAT_ZONE_ID,
+  enemyIds: Object.freeze([TUTORIAL_BOSS_ID]),
 });
 
 /** Creates one tutorial use of an existing production platform mechanic. */

@@ -8,6 +8,7 @@ export const TUTORIAL_STEP_IDS = Object.freeze({
   WEAPON_PICKUP: "weaponPickup",
   PRACTICE_TARGET: "practiceTarget",
   COMBAT: "combat",
+  BOSS: "boss",
   COMPLETED: "completed",
 });
 
@@ -21,6 +22,7 @@ export const TUTORIAL_STEP_ORDER = Object.freeze([
   TUTORIAL_STEP_IDS.WEAPON_PICKUP,
   TUTORIAL_STEP_IDS.PRACTICE_TARGET,
   TUTORIAL_STEP_IDS.COMBAT,
+  TUTORIAL_STEP_IDS.BOSS,
   TUTORIAL_STEP_IDS.COMPLETED,
 ]);
 
@@ -39,6 +41,8 @@ export const TUTORIAL_RESOURCE_PICKUP_TYPES = Object.freeze([
 ]);
 export const TUTORIAL_PRACTICE_TARGET_ID = "tutorial-practice-target";
 export const TUTORIAL_COMBAT_ZONE_ID = "tutorial-combat-zone";
+export const TUTORIAL_BOSS_ID = "tutorial-scrap-overseer";
+export const TUTORIAL_BOSS_ZONE_ID = "tutorial-boss-zone";
 
 export const TUTORIAL_CHECKPOINTS = Object.freeze({
   movement: Object.freeze({ x: 560, y: 1353 }),
@@ -48,4 +52,5 @@ export const TUTORIAL_CHECKPOINTS = Object.freeze({
   weaponPickup: Object.freeze({ x: 160, y: 255 }),
   practiceTarget: Object.freeze({ x: 500, y: 35 }),
   combat: Object.freeze({ x: 500, y: 35 }),
+  boss: Object.freeze({ x: 500, y: 35 }),
 });

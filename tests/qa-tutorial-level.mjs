@@ -50,8 +50,8 @@ function assertDeferredContent(tutorial) {
   assert.deepEqual(tutorial.collectables.map(({ type }) => type), [
     "gear", "energy", "weapon",
   ]);
-  assert.equal(tutorial.enemies.length, 4);
-  assert.equal(tutorial.combatZones.length, 1);
+  assert.equal(tutorial.enemies.length, 5);
+  assert.equal(tutorial.combatZones.length, 2);
 }
 
 /** Verifies that the public menu selection can create the tutorial. */
