@@ -84,7 +84,7 @@ export class TutorialPromptController {
   #renderCollapsedState() {
     this.details.hidden = this.isCollapsed;
     this.root.dataset.collapsed = String(this.isCollapsed);
-    this.toggle.textContent = this.isCollapsed ? "+" : "−";
+    this.toggle.textContent = this.isCollapsed ? "i" : "−";
     this.toggle.setAttribute("aria-expanded", String(!this.isCollapsed));
     const key = this.isCollapsed ? "tutorial.expand" : "tutorial.collapse";
     this.toggle.setAttribute("aria-label", translate(key));

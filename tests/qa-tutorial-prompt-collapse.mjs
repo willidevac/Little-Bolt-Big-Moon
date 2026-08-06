@@ -53,7 +53,7 @@ function assertExpanded({ root, details, toggle }) {
 function assertCollapsed({ root, details, toggle }) {
   assert.equal(details.hidden, true);
   assert.equal(root.dataset.collapsed, "true");
-  assert.equal(toggle.textContent, "+");
+  assert.equal(toggle.textContent, "i");
   assert.equal(toggle.getAttribute("aria-expanded"), "false");
 }
 
