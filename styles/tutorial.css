@@ -29,6 +29,40 @@
   text-transform: uppercase;
 }
 
+.tutorial-prompt__actions {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.tutorial-prompt__toggle {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 1px solid var(--color-cream);
+  place-items: center;
+  color: var(--color-cream);
+  background: rgb(9 20 30 / 90%);
+  font-size: 1rem;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+.tutorial-prompt__toggle:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+.tutorial-prompt[data-collapsed="true"] {
+  width: min(58%, 24rem);
+  padding-block: 0.45rem;
+}
+
+[data-tutorial-details][hidden] {
+  display: none;
+}
+
 .tutorial-prompt__title,
 .tutorial-prompt__copy {
   margin: 0;
@@ -57,5 +91,9 @@
 
   .tutorial-prompt__copy {
     font-size: clamp(0.58rem, 1.7vw, 0.75rem);
+  }
+
+  .tutorial-prompt[data-collapsed="true"] {
+    width: min(64%, 22rem);
   }
 }

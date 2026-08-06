@@ -9,6 +9,12 @@ export const BYTE_SPRITE_CONFIG = Object.freeze({
   frameCount: 33,
 });
 export const BYTE_RENDER_SCALE = 1;
+export const BYTE_CONTRAST_SHADOW = Object.freeze({
+  color: "#02070d",
+  blurPixels: 10,
+  offsetXPixels: 0,
+  offsetYPixels: 2,
+});
 export const BYTE_HURTBOX = Object.freeze({
   offsetX: 12,
   offsetY: 6,

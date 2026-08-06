@@ -20,7 +20,11 @@ assert.match(html, /<aside[\s\S]*?aria-live="polite"[\s\S]*?data-tutorial-prompt
 assert.match(html, /data-tutorial-title/);
 assert.match(html, /data-tutorial-copy/);
 assert.match(html, /data-tutorial-progress/);
-assert.match(css, /pointer-events:\s*none/);
+assert.match(html, /data-tutorial-toggle/);
+assert.match(html, /aria-expanded="true"/);
+assert.match(css, /data-collapsed="true"/);
+assert.match(css, /\.tutorial-prompt\s*\{[\s\S]*?pointer-events:\s*none/);
+assert.match(css, /\.tutorial-prompt__toggle\s*\{[\s\S]*?pointer-events:\s*auto/);
 assert.match(css, /@container game-shell \(max-width:\s*1066px\)/);
 assert.match(source, /director\.onChange/);
 assert.match(source, /onLanguageChange/);
@@ -36,5 +40,7 @@ function assertTranslations(ids) {
       assert.ok(catalog[`tutorial.step.${stepId}.copy`]);
     });
     assert.ok(catalog["tutorial.progress"]);
+    assert.ok(catalog["tutorial.collapse"]);
+    assert.ok(catalog["tutorial.expand"]);
   });
 }

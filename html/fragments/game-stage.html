@@ -66,14 +66,28 @@
       >
         <div class="tutorial-prompt__heading">
           <span data-i18n="tutorial.label">Tutorial</span>
-          <span data-tutorial-progress>Lektion 1 von 8</span>
+          <div class="tutorial-prompt__actions">
+            <span data-tutorial-progress>Lektion 1 von 10</span>
+            <button
+              class="tutorial-prompt__toggle"
+              type="button"
+              aria-label="Hinweis einklappen"
+              aria-expanded="true"
+              aria-controls="tutorial-prompt-details"
+              data-tutorial-toggle
+            >
+              −
+            </button>
+          </div>
         </div>
-        <strong class="tutorial-prompt__title" data-tutorial-title>
-          Bewegen &amp; Blickrichtung
-        </strong>
-        <p class="tutorial-prompt__copy" data-tutorial-copy>
-          Laufe einmal nach links und rechts. Byte blickt in Laufrichtung.
-        </p>
+        <div id="tutorial-prompt-details" data-tutorial-details>
+          <strong class="tutorial-prompt__title" data-tutorial-title>
+            Bewegen &amp; Blickrichtung
+          </strong>
+          <p class="tutorial-prompt__copy" data-tutorial-copy>
+            Laufe einmal nach links und rechts. Byte blickt in Laufrichtung.
+          </p>
+        </div>
       </aside>
 
       <div class="utility-buttons">

@@ -7,6 +7,7 @@ import { CharacterMovementController } from
 import { PrecisionJumpController } from "../systems/precision-jump-controller.class.js";
 import {
   BYTE_ANIMATION_CLIPS,
+  BYTE_CONTRAST_SHADOW,
   BYTE_HURTBOX,
   BYTE_RENDER_SCALE,
   BYTE_SPRITE_CONFIG,
@@ -87,8 +88,17 @@ export class Character extends MovableObject {
   draw(context) {
     context.save();
     context.globalAlpha = this.#getHitOpacity();
+    this.#applyContrastShadow(context);
     this.#drawFacingDirection(context);
     context.restore();
+  }
+
+  /** Adds a stable dark silhouette against every biome background. */
+  #applyContrastShadow(context) {
+    context.shadowColor = BYTE_CONTRAST_SHADOW.color;
+    context.shadowBlur = BYTE_CONTRAST_SHADOW.blurPixels;
+    context.shadowOffsetX = BYTE_CONTRAST_SHADOW.offsetXPixels;
+    context.shadowOffsetY = BYTE_CONTRAST_SHADOW.offsetYPixels;
   }
 
   /** Draws facing direction. */
