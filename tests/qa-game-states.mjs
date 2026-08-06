@@ -22,14 +22,19 @@ globalThis.cancelAnimationFrame = () => {};
 
 const { createGame } = await import("../js/app/create-game.js");
 const { GAME_CONFIG } = await import("../js/config/game-config.js");
+const { GAME_LEVEL_IDS } = await import(
+  "../js/levels/game-level-selection.js"
+);
 const game = createGame(createCanvas(), GAME_CONFIG, new EventTarget());
 const states = [];
 game.onStateChange((state) => states.push(state));
 
 game.initialize();
 assert.equal(game.state, "home");
-assert.equal(game.play(), true);
+assert.equal(game.levelId, GAME_LEVEL_IDS.MAIN);
+assert.equal(game.startLevel(GAME_LEVEL_IDS.MAIN), true);
 assert.equal(game.state, "playing");
+assert.equal(game.startLevel(GAME_LEVEL_IDS.MAIN), false);
 assert.equal(game.play(), false);
 assert.equal(game.pause(), true);
 assert.equal(game.state, "paused");

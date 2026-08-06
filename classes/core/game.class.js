@@ -25,7 +25,7 @@ export class Game {
    * @param {Readonly<object>} config
    * @param {EventTarget} inputTarget
    * @param {Readonly<{
-   *   createLevel: () => Readonly<object>,
+   *   levelSelection: import("./level-selection.class.js").LevelSelection,
    *   createCombatSystems: (config:Readonly<object>, game:Game) => Readonly<object>,
    *   createResetController: (game:Game, createWorld:() => World) => object
    * }>} dependencies
@@ -79,6 +79,9 @@ export class Game {
 
   /** @returns {string} The active game state. */
   get state() { return this.#stateMachine.getState(); }
+
+  /** @returns {string} The active level identifier. */
+  get levelId() { return this.#dependencies.levelSelection.activeLevelId; }
 
   /** @returns {number} Byte's current height loss in world pixels. */
   get heightLossPixels() { return this.world.getHeightLossPixels(); }
@@ -217,6 +220,18 @@ export class Game {
   }
 
   /**
+   * Selects and starts a fresh level from the home screen.
+   * @param {string} levelId
+   * @returns {boolean} Whether a level was started.
+   */
+  startLevel(levelId) {
+    if (!this.#stateMachine.is(GAME_STATES.HOME)) return false;
+    this.#dependencies.levelSelection.select(levelId);
+    this.reset();
+    return true;
+  }
+
+  /**
    * Freezes the world after a victory.
    * @returns {boolean}
    */
@@ -306,7 +321,7 @@ export class Game {
       this.context,
       this.config,
       this.keyboard,
-      this.#dependencies.createLevel(),
+      this.#dependencies.levelSelection.createLevel(),
       this.gameplayEvents,
     );
   }
