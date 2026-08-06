@@ -1,4 +1,5 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
+import { TUTORIAL_STATUSES } from "./tutorial-director.class.js";
 
 /** Completes the movement and jump lessons from semantic gameplay events. */
 export class TutorialMovementTracker {
@@ -24,7 +25,7 @@ export class TutorialMovementTracker {
     if (this.#unsubscribers.length > 0) return this;
     this.#unsubscribers.push(
       this.game.onGameplayEvent((event) => this.handleGameplayEvent(event)),
-      this.director.onChange(() => this.#resetObservations()),
+      this.director.onChange((snapshot) => this.#handleProgress(snapshot)),
     );
     this.#resetObservations();
     return this;
@@ -37,61 +38,67 @@ export class TutorialMovementTracker {
     this.#resetObservations();
   }
 
-  /** Routes one gameplay event to the currently active lesson. */
+  /** Records movement evidence throughout the active tutorial run. */
   handleGameplayEvent(event) {
-    const stepId = this.director.getSnapshot().stepId;
+    if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
     if (event.type === GAMEPLAY_EVENTS.PLAYER_MOVE) {
-      this.#handleMovement(stepId, event.detail);
+      this.#handleMovement(event.detail);
     }
     if (event.type === GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE) {
-      this.#handleCharge(stepId, event.detail);
+      this.#handleCharge(event.detail);
     }
-    if (event.type === GAMEPLAY_EVENTS.PLAYER_JUMP) this.#handleJump(stepId);
-    if (event.type === GAMEPLAY_EVENTS.PLAYER_LAND) this.#handleLanding(stepId);
+    if (event.type === GAMEPLAY_EVENTS.PLAYER_JUMP) this.#handleJump();
+    if (event.type === GAMEPLAY_EVENTS.PLAYER_LAND) this.#handleLanding();
   }
 
   /** Records a movement only when Byte visibly faces its direction. */
-  #handleMovement(stepId, movement) {
-    if (stepId !== this.config.movementStepId) return;
+  #handleMovement(movement) {
     const { direction, facingDirection } = movement;
     if (![-1, 1].includes(direction) || facingDirection !== direction) return;
     this.#directions.add(direction);
-    if (this.#directions.size === 2) this.director.completeStep(stepId);
+    if (this.#directions.size === 2) {
+      this.director.recordStepCompletion(this.config.movementStepId);
+    }
   }
 
   /** Remembers the greatest visible charge of the current jump. */
-  #handleCharge(stepId, charge) {
-    if (!this.#isJumpStep(stepId) || !Number.isFinite(charge.percent)) return;
+  #handleCharge(charge) {
+    if (!Number.isFinite(charge.percent)) return;
     this.#maximumChargePercent = Math.max(
       this.#maximumChargePercent, charge.percent,
     );
   }
 
   /** Evaluates a released jump against the active lesson threshold. */
-  #handleJump(stepId) {
-    if (!this.#isJumpStep(stepId)) return;
+  #handleJump() {
     const chargePercent = this.#maximumChargePercent;
     this.#maximumChargePercent = 0;
-    if (stepId === this.config.shortJumpStepId &&
-      chargePercent <= this.config.shortMaximumPercent) {
-      this.#pendingJumpStepId = stepId;
-    }
-    if (stepId === this.config.chargedJumpStepId &&
-      chargePercent >= this.config.chargedMinimumPercent) {
-      this.#pendingJumpStepId = stepId;
-    }
+    this.#pendingJumpStepId = this.#getJumpStepId(chargePercent);
   }
 
   /** Completes a valid jump only after Byte lands safely. */
-  #handleLanding(stepId) {
-    if (this.#pendingJumpStepId !== stepId) return;
-    this.director.completeStep(stepId);
+  #handleLanding() {
+    const stepId = this.#pendingJumpStepId;
+    this.#pendingJumpStepId = null;
+    if (stepId) this.director.recordStepCompletion(stepId);
   }
 
-  /** Checks whether the current step evaluates jump charge. */
-  #isJumpStep(stepId) {
-    return [this.config.shortJumpStepId, this.config.chargedJumpStepId]
-      .includes(stepId);
+  /** Maps one measured jump charge to its matching lesson. */
+  #getJumpStepId(chargePercent) {
+    if (chargePercent <= this.config.shortMaximumPercent) {
+      return this.config.shortJumpStepId;
+    }
+    if (chargePercent >= this.config.chargedMinimumPercent) {
+      return this.config.chargedJumpStepId;
+    }
+    return null;
+  }
+
+  /** Clears run evidence only when the tutorial becomes inactive. */
+  #handleProgress(snapshot) {
+    if (snapshot.status === TUTORIAL_STATUSES.INACTIVE) {
+      this.#resetObservations();
+    }
   }
 
   /** Clears partial evidence when a lesson or run changes. */
@@ -106,7 +113,7 @@ export class TutorialMovementTracker {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.onChange === "function" &&
       typeof director?.getSnapshot === "function" &&
-      typeof director?.completeStep === "function";
+      typeof director?.recordStepCompletion === "function";
     const values = [config?.shortMaximumPercent, config?.chargedMinimumPercent];
     const hasThresholds = values.every(Number.isFinite) &&
       values[0] >= 0 && values[0] < values[1] && values[1] <= 100;

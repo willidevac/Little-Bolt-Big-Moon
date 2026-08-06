@@ -94,13 +94,13 @@ function assertLessonProgression() {
   const director = initializeTutorialDirector(game);
   const tracker = initializeTutorialMechanicsTracker(game, director);
   game.emitState(GAME_STATES.PLAYING, "tutorial");
-  ["movement", "shortJump", "chargedJump"]
-    .forEach((step) => director.completeStep(step));
   game.emitGameplay(GAMEPLAY_EVENTS.PLAYER_WALL_REBOUND);
-  assert.equal(director.getSnapshot().stepId, "platformMechanics");
   ["spring", "spring", "unknown", "falling", "trap"].forEach((mechanic) => {
     game.emitGameplay(GAMEPLAY_EVENTS.PLATFORM_ACTIVATED, { mechanic });
   });
+  assert.equal(director.getSnapshot().stepId, "movement");
+  ["movement", "shortJump", "chargedJump"]
+    .forEach((step) => director.completeStep(step));
   assert.equal(director.getSnapshot().stepId, "weaponPickup");
   tracker.destroy();
   director.destroy();

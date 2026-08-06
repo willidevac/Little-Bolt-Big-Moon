@@ -1,4 +1,5 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
+import { TUTORIAL_STATUSES } from "./tutorial-director.class.js";
 
 /** Completes the combat lesson from a real production wave completion. */
 export class TutorialCombatTracker {
@@ -31,20 +32,19 @@ export class TutorialCombatTracker {
     this.#unsubscribe = null;
   }
 
-  /** Completes only the active combat lesson for its configured wave. */
+  /** Records the configured wave throughout the active tutorial run. */
   handleGameplayEvent(event) {
-    const stepId = this.director.getSnapshot().stepId;
-    const matches = stepId === this.config.stepId &&
-      event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
+    if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
+    const matches = event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
       event.detail.id === this.config.zoneId;
-    if (matches) this.director.completeStep(stepId);
+    if (matches) this.director.recordStepCompletion(this.config.stepId);
   }
 
   /** Validates event source, director commands, and combat identities. */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.getSnapshot === "function" &&
-      typeof director?.completeStep === "function";
+      typeof director?.recordStepCompletion === "function";
     const values = [config?.stepId, config?.zoneId];
     const hasValues = values.every((value) => {
       return typeof value === "string" && value.length > 0;

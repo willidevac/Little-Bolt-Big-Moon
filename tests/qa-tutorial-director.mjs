@@ -30,6 +30,8 @@ completeTutorial(director);
 assertCompleted(director.getSnapshot());
 game.emit(GAME_STATES.HOME, "tutorial");
 assertInactive(director.getSnapshot());
+assertBufferedCompletion(director, game);
+game.emit(GAME_STATES.HOME, "tutorial");
 assert.ok(snapshots.every(Object.isFrozen));
 director.destroy();
 game.emit(GAME_STATES.PLAYING, "tutorial");
@@ -56,6 +58,21 @@ function completeTutorial(directorToComplete) {
       assertActive(snapshot, TUTORIAL_STEP_ORDER[index + 1], index + 1);
     }
   });
+}
+
+/** Verifies future evidence advances only after every earlier lesson is done. */
+function assertBufferedCompletion(directorToComplete, activeGame) {
+  activeGame.emit(GAME_STATES.PLAYING, "tutorial");
+  assert.equal(directorToComplete.recordStepCompletion("combat"), true);
+  assert.equal(directorToComplete.recordStepCompletion("combat"), false);
+  assert.equal(directorToComplete.recordStepCompletion("completed"), false);
+  assert.equal(directorToComplete.recordStepCompletion("unknown"), false);
+  directorToComplete.recordStepCompletion("shortJump");
+  directorToComplete.completeStep("movement");
+  assertActive(directorToComplete.getSnapshot(), "chargedJump", 2);
+  ["chargedJump", "wallRebound", "platformMechanics", "weaponPickup",
+    "practiceTarget"].forEach((step) => directorToComplete.completeStep(step));
+  assertCompleted(directorToComplete.getSnapshot());
 }
 
 /** Verifies an inactive snapshot. */

@@ -106,12 +106,12 @@ function assertCombatLesson() {
   const director = initializeTutorialDirector(game);
   const tracker = initializeTutorialCombatTracker(game, director);
   game.emitState(GAME_STATES.PLAYING, "tutorial");
-  advanceToCombat(director);
   game.emitGameplay(GAMEPLAY_EVENTS.WAVE_COMPLETE, { id: "other-zone" });
-  assert.equal(director.getSnapshot().stepId, "combat");
   game.emitGameplay(GAMEPLAY_EVENTS.WAVE_COMPLETE, {
     id: "tutorial-combat-zone",
   });
+  assert.equal(director.getSnapshot().stepId, "movement");
+  advanceToCombat(director);
   assert.equal(director.getSnapshot().status, "completed");
   tracker.destroy();
   director.destroy();

@@ -1,4 +1,5 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
+import { TUTORIAL_STATUSES } from "./tutorial-director.class.js";
 
 /** Completes wall-rebound and platform-mechanic tutorial lessons. */
 export class TutorialMechanicsTracker {
@@ -24,7 +25,7 @@ export class TutorialMechanicsTracker {
     if (this.#unsubscribers.length > 0) return this;
     this.#unsubscribers.push(
       this.game.onGameplayEvent((event) => this.handleGameplayEvent(event)),
-      this.director.onChange(() => this.#activatedMechanics.clear()),
+      this.director.onChange((snapshot) => this.#handleProgress(snapshot)),
     );
     return this;
   }
@@ -36,27 +37,34 @@ export class TutorialMechanicsTracker {
     this.#activatedMechanics.clear();
   }
 
-  /** Routes semantic gameplay events to the active mechanic lesson. */
+  /** Records mechanic evidence throughout the active tutorial run. */
   handleGameplayEvent(event) {
-    const stepId = this.director.getSnapshot().stepId;
-    if (stepId === this.config.wallStepId &&
-      event.type === GAMEPLAY_EVENTS.PLAYER_WALL_REBOUND) {
-      this.director.completeStep(stepId);
+    if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
+    if (event.type === GAMEPLAY_EVENTS.PLAYER_WALL_REBOUND) {
+      this.director.recordStepCompletion(this.config.wallStepId);
     }
-    if (stepId === this.config.platformStepId &&
-      event.type === GAMEPLAY_EVENTS.PLATFORM_ACTIVATED) {
-      this.#recordMechanic(stepId, event.detail.mechanic);
+    if (event.type === GAMEPLAY_EVENTS.PLATFORM_ACTIVATED) {
+      this.#recordMechanic(event.detail.mechanic);
     }
   }
 
   /** Records one required platform mechanic without counting duplicates. */
-  #recordMechanic(stepId, mechanic) {
+  #recordMechanic(mechanic) {
     if (!this.config.requiredMechanics.includes(mechanic)) return;
     this.#activatedMechanics.add(mechanic);
     const complete = this.config.requiredMechanics.every((required) => {
       return this.#activatedMechanics.has(required);
     });
-    if (complete) this.director.completeStep(stepId);
+    if (complete) {
+      this.director.recordStepCompletion(this.config.platformStepId);
+    }
+  }
+
+  /** Clears mechanic evidence only after leaving the tutorial run. */
+  #handleProgress(snapshot) {
+    if (snapshot.status === TUTORIAL_STATUSES.INACTIVE) {
+      this.#activatedMechanics.clear();
+    }
   }
 
   /** Validates event sources, director commands, steps, and mechanic IDs. */
@@ -64,7 +72,7 @@ export class TutorialMechanicsTracker {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.onChange === "function" &&
       typeof director?.getSnapshot === "function" &&
-      typeof director?.completeStep === "function";
+      typeof director?.recordStepCompletion === "function";
     const stepIds = [config?.wallStepId, config?.platformStepId];
     const hasSteps = stepIds.every((id) => typeof id === "string" && id);
     const mechanics = config?.requiredMechanics;

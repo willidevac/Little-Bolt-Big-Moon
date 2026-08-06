@@ -8,6 +8,7 @@ export const TUTORIAL_STATUSES = Object.freeze({
 
 /** Orchestrates the linear tutorial without changing gameplay systems. */
 export class TutorialDirector {
+  #completedEvidence = new Set();
   #currentIndex;
   #game;
   #levelId;
@@ -99,11 +100,19 @@ export class TutorialDirector {
   completeStep(stepId) {
     if (this.#status !== TUTORIAL_STATUSES.ACTIVE) return false;
     if (this.#steps[this.#currentIndex] !== stepId) return false;
-    this.#currentIndex += 1;
-    if (this.#currentIndex === this.#steps.length - 1) {
-      this.#status = TUTORIAL_STATUSES.COMPLETED;
-    }
-    this.#notifyChange();
+    return this.recordStepCompletion(stepId);
+  }
+
+  /**
+   * Buffers valid future lesson evidence until all earlier steps are complete.
+   * @param {string} stepId
+   * @returns {boolean} Whether new evidence was accepted.
+   */
+  recordStepCompletion(stepId) {
+    if (!this.#isPendingStep(stepId)) return false;
+    if (this.#completedEvidence.has(stepId)) return false;
+    this.#completedEvidence.add(stepId);
+    this.#advanceBufferedSteps();
     return true;
   }
 
@@ -117,8 +126,30 @@ export class TutorialDirector {
 
   /** Applies the inactive state without notifying observers. */
   #resetState() {
+    this.#completedEvidence.clear();
     this.#status = TUTORIAL_STATUSES.INACTIVE;
     this.#currentIndex = -1;
+  }
+
+  /** Advances through every consecutive lesson with recorded evidence. */
+  #advanceBufferedSteps() {
+    let advanced = false;
+    while (this.#completedEvidence.delete(this.#steps[this.#currentIndex])) {
+      this.#currentIndex += 1;
+      advanced = true;
+    }
+    if (!advanced) return;
+    if (this.#currentIndex === this.#steps.length - 1) {
+      this.#status = TUTORIAL_STATUSES.COMPLETED;
+    }
+    this.#notifyChange();
+  }
+
+  /** Checks whether evidence belongs to this run's current or future lessons. */
+  #isPendingStep(stepId) {
+    if (this.#status !== TUTORIAL_STATUSES.ACTIVE) return false;
+    const stepIndex = this.#steps.indexOf(stepId);
+    return stepIndex >= this.#currentIndex && stepIndex < this.#steps.length - 1;
   }
 
   /** Publishes one immutable progress snapshot. */

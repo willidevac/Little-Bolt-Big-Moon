@@ -102,13 +102,12 @@ function assertLessonProgression() {
   const director = initializeTutorialDirector(game);
   const tracker = initializeTutorialCombatBasicsTracker(game, director);
   game.emitState(GAME_STATES.PLAYING, "tutorial");
-  advanceToWeaponStep(director);
   game.emitGameplay(GAMEPLAY_EVENTS.PICKUP, createPickup("repairWrench"));
-  assert.equal(director.getSnapshot().stepId, "weaponPickup");
-  game.emitGameplay(GAMEPLAY_EVENTS.PICKUP, createPickup("boltThrower"));
-  assert.equal(director.getSnapshot().stepId, "practiceTarget");
   assertRejectedHits(game, director);
+  game.emitGameplay(GAMEPLAY_EVENTS.PICKUP, createPickup("boltThrower"));
   game.emitGameplay(GAMEPLAY_EVENTS.ENEMY_DEFEATED, createTargetHit());
+  assert.equal(director.getSnapshot().stepId, "movement");
+  advanceToWeaponStep(director);
   assert.equal(director.getSnapshot().stepId, "combat");
   tracker.destroy();
   director.destroy();
@@ -127,7 +126,7 @@ function assertRejectedHits(game, director) {
     ...createTargetHit(), id: "other-target",
   });
   game.emitGameplay(GAMEPLAY_EVENTS.ENEMY_HIT, createTargetHit());
-  assert.equal(director.getSnapshot().stepId, "practiceTarget");
+  assert.equal(director.getSnapshot().stepId, "movement");
 }
 
 /** Creates one weapon pickup event detail. */

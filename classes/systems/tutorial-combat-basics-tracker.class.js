@@ -1,4 +1,5 @@
 import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
+import { TUTORIAL_STATUSES } from "./tutorial-director.class.js";
 
 /** Completes weapon pickup and practice-target defeat tutorial lessons. */
 export class TutorialCombatBasicsTracker {
@@ -31,34 +32,34 @@ export class TutorialCombatBasicsTracker {
     this.#unsubscribe = null;
   }
 
-  /** Routes pickup and defeat evidence to their currently active lesson. */
+  /** Records matching combat evidence throughout the active tutorial run. */
   handleGameplayEvent(event) {
-    const stepId = this.director.getSnapshot().stepId;
-    if (stepId === this.config.weaponStepId) this.#handlePickup(event, stepId);
-    if (stepId === this.config.targetStepId) this.#handleTargetHit(event, stepId);
+    if (this.director.getSnapshot().status !== TUTORIAL_STATUSES.ACTIVE) return;
+    this.#handlePickup(event);
+    this.#handleTargetHit(event);
   }
 
   /** Accepts only the configured production weapon pickup. */
-  #handlePickup(event, stepId) {
+  #handlePickup(event) {
     const matches = event.type === GAMEPLAY_EVENTS.PICKUP &&
       event.detail.type === "weapon" &&
       event.detail.weaponId === this.config.weaponId;
-    if (matches) this.director.completeStep(stepId);
+    if (matches) this.director.recordStepCompletion(this.config.weaponStepId);
   }
 
   /** Accepts only a real configured-weapon defeat of the practice target. */
-  #handleTargetHit(event, stepId) {
+  #handleTargetHit(event) {
     const matches = event.type === GAMEPLAY_EVENTS.ENEMY_DEFEATED &&
       event.detail.id === this.config.targetId &&
       event.detail.source === this.config.weaponId;
-    if (matches) this.director.completeStep(stepId);
+    if (matches) this.director.recordStepCompletion(this.config.targetStepId);
   }
 
   /** Validates event source, director commands, and lesson identities. */
   #validateDependencies(game, director, config) {
     const hasGame = typeof game?.onGameplayEvent === "function";
     const hasDirector = typeof director?.getSnapshot === "function" &&
-      typeof director?.completeStep === "function";
+      typeof director?.recordStepCompletion === "function";
     const values = [config?.weaponStepId, config?.targetStepId,
       config?.weaponId, config?.targetId];
     const hasValues = values.every((value) => {
