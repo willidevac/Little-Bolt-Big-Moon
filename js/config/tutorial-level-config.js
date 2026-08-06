@@ -51,6 +51,17 @@ export const TUTORIAL_WEAPON_PICKUP_DEFINITION = Object.freeze({
   anchorPlatformId: "tutorial-goal", x: 530, y: 90,
 });
 
+export const TUTORIAL_RESOURCE_PICKUP_DEFINITIONS = Object.freeze([
+  Object.freeze({
+    id: "tutorial-gear", type: "gear", visualType: "gear", amount: 1,
+    anchorPlatformId: "tutorial-floor", x: 340, y: FLOOR_Y,
+  }),
+  Object.freeze({
+    id: "tutorial-energy", type: "energy", visualType: "energy", amount: 25,
+    anchorPlatformId: "tutorial-floor", x: 820, y: FLOOR_Y,
+  }),
+]);
+
 export const TUTORIAL_PRACTICE_TARGET_DEFINITION = Object.freeze({
   id: TUTORIAL_PRACTICE_TARGET_ID, type: "scrapCrawler",
   anchorPlatformId: "tutorial-goal", x: 770, y: 90,

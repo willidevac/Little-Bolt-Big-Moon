@@ -10,7 +10,8 @@ const source = await fs.readFile(
   "classes/ui/tutorial-prompt-controller.class.js", "utf8",
 );
 const stepIds = [
-  "movement", "shortJump", "chargedJump", "wallRebound", "platformMechanics",
+  "movement", "resources", "shortJump", "chargedJump", "wallRebound",
+  "platformMechanics",
   "weaponPickup", "practiceTarget",
   "combat",
 ];

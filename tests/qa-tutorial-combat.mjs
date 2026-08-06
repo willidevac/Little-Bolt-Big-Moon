@@ -119,7 +119,7 @@ function assertCombatLesson() {
 
 /** Completes every lesson before the combat wave. */
 function advanceToCombat(director) {
-  ["movement", "shortJump", "chargedJump", "wallRebound",
+  ["movement", "resources", "shortJump", "chargedJump", "wallRebound",
     "platformMechanics", "weaponPickup", "practiceTarget"]
     .forEach((step) => director.completeStep(step));
 }

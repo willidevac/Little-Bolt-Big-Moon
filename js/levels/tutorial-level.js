@@ -26,6 +26,7 @@ import {
   TUTORIAL_COMBAT_ZONE_DEFINITION,
   TUTORIAL_PRACTICE_TARGET_DEFINITION,
   TUTORIAL_PRACTICE_TARGET_PROFILE,
+  TUTORIAL_RESOURCE_PICKUP_DEFINITIONS,
   TUTORIAL_WEAPON_PICKUP_DEFINITION,
 } from "../config/tutorial-level-config.js";
 
@@ -54,23 +55,38 @@ function createLevelResult(sections, platforms, training) {
 
 /** Creates the weapon pickup and its harmless production target. */
 function createTrainingContent(platforms, enemyConfig) {
-  const anchor = platforms.find(({ id }) => {
-    return id === TUTORIAL_WEAPON_PICKUP_DEFINITION.anchorPlatformId;
-  });
-  if (!anchor) throw new RangeError("Der Tutorial-Kampfbereich fehlt.");
+  const weaponAnchor = getAnchor(platforms, TUTORIAL_WEAPON_PICKUP_DEFINITION);
   const combatEnemies = createCombatEnemies(enemyConfig);
   return Object.freeze({
-    collectables: Object.freeze([createWeaponPickup(anchor)]),
+    collectables: createTrainingCollectables(platforms, weaponAnchor),
     enemies: Object.freeze([
-      createPracticeTarget(anchor, enemyConfig), ...combatEnemies,
+      createPracticeTarget(weaponAnchor, enemyConfig), ...combatEnemies,
     ]),
     combatZones: Object.freeze([new CombatZone(TUTORIAL_COMBAT_ZONE_DEFINITION)]),
   });
 }
 
-/** Creates the regular anchored bolt-thrower pickup. */
-function createWeaponPickup(anchor) {
-  return new AnchoredCollectable(TUTORIAL_WEAPON_PICKUP_DEFINITION, anchor);
+/** Creates every resource and weapon pickup in route order. */
+function createTrainingCollectables(platforms, weaponAnchor) {
+  const resources = TUTORIAL_RESOURCE_PICKUP_DEFINITIONS.map((definition) => {
+    return createPickup(definition, getAnchor(platforms, definition));
+  });
+  return Object.freeze([
+    ...resources,
+    createPickup(TUTORIAL_WEAPON_PICKUP_DEFINITION, weaponAnchor),
+  ]);
+}
+
+/** Returns the platform referenced by one tutorial pickup. */
+function getAnchor(platforms, definition) {
+  const anchor = platforms.find(({ id }) => id === definition.anchorPlatformId);
+  if (anchor) return anchor;
+  throw new RangeError(`Tutorial-Plattform fehlt: ${definition.anchorPlatformId}`);
+}
+
+/** Creates one regular anchored production pickup. */
+function createPickup(definition, anchor) {
+  return new AnchoredCollectable(definition, anchor);
 }
 
 /** Creates a passive crawler that uses regular projectile hit handling. */

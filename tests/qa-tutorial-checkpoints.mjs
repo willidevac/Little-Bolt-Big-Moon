@@ -31,7 +31,7 @@ function assertCheckpointRecovery() {
 
 /** Completes every lesson before combat to select its checkpoint. */
 function advanceToCombat(director) {
-  ["movement", "shortJump", "chargedJump", "wallRebound",
+  ["movement", "resources", "shortJump", "chargedJump", "wallRebound",
     "platformMechanics", "weaponPickup", "practiceTarget"]
     .forEach((step) => director.completeStep(step));
 }

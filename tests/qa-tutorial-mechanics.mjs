@@ -99,7 +99,7 @@ function assertLessonProgression() {
     game.emitGameplay(GAMEPLAY_EVENTS.PLATFORM_ACTIVATED, { mechanic });
   });
   assert.equal(director.getSnapshot().stepId, "movement");
-  ["movement", "shortJump", "chargedJump"]
+  ["movement", "resources", "shortJump", "chargedJump"]
     .forEach((step) => director.completeStep(step));
   assert.equal(director.getSnapshot().stepId, "weaponPickup");
   tracker.destroy();

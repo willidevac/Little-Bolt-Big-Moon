@@ -36,7 +36,11 @@ async function assertPublicInterface() {
 /** Verifies dimensions and every required production content category. */
 function assertTutorialWorld() {
   assert.deepEqual([tutorial.width, tutorial.height], [1280, 1600]);
-  assert.equal(tutorial.collectables[0].weaponId, "boltThrower");
+  const weapon = tutorial.collectables.find(({ type }) => type === "weapon");
+  assert.equal(weapon.weaponId, "boltThrower");
+  assert.deepEqual(tutorial.collectables.slice(0, 2).map(({ type }) => type), [
+    "gear", "energy",
+  ]);
   assert.deepEqual(tutorial.platforms.filter(({ mechanic }) => mechanic)
     .map(({ mechanic }) => mechanic), ["spring", "falling", "trap"]);
   assert.deepEqual(tutorial.enemies.slice(1).map(({ type }) => type), [

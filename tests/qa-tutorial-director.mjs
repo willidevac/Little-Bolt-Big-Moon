@@ -68,8 +68,9 @@ function assertBufferedCompletion(directorToComplete, activeGame) {
   assert.equal(directorToComplete.recordStepCompletion("completed"), false);
   assert.equal(directorToComplete.recordStepCompletion("unknown"), false);
   directorToComplete.recordStepCompletion("shortJump");
+  directorToComplete.recordStepCompletion("resources");
   directorToComplete.completeStep("movement");
-  assertActive(directorToComplete.getSnapshot(), "chargedJump", 2);
+  assertActive(directorToComplete.getSnapshot(), "chargedJump", 3);
   ["chargedJump", "wallRebound", "platformMechanics", "weaponPickup",
     "practiceTarget"].forEach((step) => directorToComplete.completeStep(step));
   assertCompleted(directorToComplete.getSnapshot());

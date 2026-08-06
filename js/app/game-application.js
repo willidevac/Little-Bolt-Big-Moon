@@ -13,6 +13,8 @@ import { initializeTutorialDirector } from
   "../factories/tutorial-director.js";
 import { initializeTutorialMovementTracker } from
   "../factories/tutorial-movement-tracker.js";
+import { initializeTutorialResourceTracker } from
+  "../factories/tutorial-resource-tracker.js";
 import { initializeTutorialMechanicsTracker } from
   "../factories/tutorial-mechanics-tracker.js";
 import { initializeTutorialCombatBasicsTracker } from
@@ -67,13 +69,14 @@ function createControllers(game, audio, storage, localization) {
 function createTutorialControllers(game, storage) {
   const tutorial = initializeTutorialDirector(game);
   const movement = initializeTutorialMovementTracker(game, tutorial);
+  const resources = initializeTutorialResourceTracker(game, tutorial);
   const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
   const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
   const combat = initializeTutorialCombatTracker(game, tutorial);
   const checkpoints = initializeTutorialCheckpointController(game, tutorial);
   const completion = initializeTutorialCompletion(game, tutorial, storage);
   return [
-    tutorial, movement, mechanics, combatBasics, combat, checkpoints,
+    tutorial, movement, resources, mechanics, combatBasics, combat, checkpoints,
     completion, initializeTutorialPrompt(tutorial),
   ];
 }

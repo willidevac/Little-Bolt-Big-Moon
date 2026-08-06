@@ -50,6 +50,7 @@ function assertLessonProgression() {
   emitJump(game, 20);
   emitJump(game, 80);
   game.emitState(GAME_STATES.PLAYING, "tutorial");
+  director.recordStepCompletion("resources");
   emitMovement(game, -1, -1);
   emitMovement(game, 1, -1);
   assert.equal(director.getSnapshot().stepId, "movement");

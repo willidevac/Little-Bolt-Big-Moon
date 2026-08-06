@@ -46,7 +46,10 @@ function assertSafeJumps(platforms) {
 function assertDeferredContent(tutorial) {
   ["storyProps", "hazards"]
     .forEach((property) => assert.deepEqual(tutorial[property], []));
-  assert.equal(tutorial.collectables.length, 1);
+  assert.equal(tutorial.collectables.length, 3);
+  assert.deepEqual(tutorial.collectables.map(({ type }) => type), [
+    "gear", "energy", "weapon",
+  ]);
   assert.equal(tutorial.enemies.length, 3);
   assert.equal(tutorial.combatZones.length, 1);
 }

@@ -25,7 +25,7 @@ console.log("TUTORIAL-007: Waffenaufnahme und Übungsziel bestanden.");
 
 /** Verifies a grounded production pickup before the practice target. */
 function assertWeaponPickup() {
-  const pickup = level.collectables[0];
+  const pickup = level.collectables.find(({ type }) => type === "weapon");
   const target = level.enemies[0];
   assert.equal(pickup.weaponId, "boltThrower");
   assert.equal(pickup.anchorPlatformId, "tutorial-goal");
@@ -77,7 +77,8 @@ function collectTargetHits(events) {
 
 /** Moves Byte onto the regular pickup and resolves its collision. */
 function collectWeapon(world) {
-  const pickup = world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES)[0];
+  const pickup = world.getEntities(WORLD_ENTITY_GROUPS.COLLECTABLES)
+    .find(({ type }) => type === "weapon");
   Object.assign(world.character, { x: pickup.x, y: pickup.y });
   world.update(0);
 }
@@ -115,7 +116,8 @@ function assertLessonProgression() {
 
 /** Completes all lessons owned by earlier tutorial tasks. */
 function advanceToWeaponStep(director) {
-  ["movement", "shortJump", "chargedJump", "wallRebound", "platformMechanics"]
+  ["movement", "resources", "shortJump", "chargedJump", "wallRebound",
+    "platformMechanics"]
     .forEach((step) => director.completeStep(step));
 }
 
