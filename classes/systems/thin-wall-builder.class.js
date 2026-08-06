@@ -26,9 +26,18 @@ export class ThinWallBuilder {
     const biomeBounds = this.#getBiomeBounds(sections);
     const boundaries = biomeBounds.flatMap((biome, index) =>
       this.#createBoundaryPair(biome, index));
-    const reboundWalls = WALL_BOUNCE_CHALLENGES.flatMap((challenge, index) =>
+    const challenges = this.#getChallengesFor(biomeBounds);
+    const reboundWalls = challenges.flatMap((challenge, index) =>
       this.#createReboundPair(challenge, index));
     return Object.freeze([...boundaries, ...reboundWalls]);
+  }
+
+  /** Returns rebound challenges belonging to the supplied biomes. */
+  #getChallengesFor(biomes) {
+    const biomeIds = new Set(biomes.map(({ id }) => id));
+    return WALL_BOUNCE_CHALLENGES.filter(({ biomeId }) => {
+      return biomeIds.has(biomeId);
+    });
   }
 
   /** Creates boundary pair. */
