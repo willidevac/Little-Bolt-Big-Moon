@@ -53,6 +53,7 @@ export class CharacterMovementController {
     this.#validateWallBounceConfig(config);
     if (this.#character.isOnGround) return this.#stopWallMovement();
     const speed = this.#getWallBounceSpeed(config);
+    this.#character.wallImpactCount += 1;
     this.#character.velocityX = direction * speed;
     this.#character.facingDirection = direction;
   }

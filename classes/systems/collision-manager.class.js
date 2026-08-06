@@ -57,16 +57,19 @@ export class CollisionManager {
    * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
    * @param {ReadonlyArray<import("../environment/platform.class.js").Platform>} platforms
    * @param {number} deltaTimeSeconds
+   * @returns {ReadonlyArray<Readonly<object>>} New landing contacts.
    */
   resolvePlatformLandings(movableObjects, platforms, deltaTimeSeconds) {
+    const landings = [];
     movableObjects.forEach((movableObject) => {
       const platform = this.#findLandingPlatform(
         movableObject,
         platforms,
         deltaTimeSeconds,
       );
-      if (platform) this.#landOnPlatform(movableObject, platform);
+      if (platform) landings.push(this.#landOnPlatform(movableObject, platform));
     });
+    return Object.freeze(landings);
   }
 
   /** Returns find landing platform. */
@@ -118,9 +121,9 @@ export class CollisionManager {
     const bottomOffset = movableBounds.y + movableBounds.height - movableObject.y;
     movableObject.y = platformBounds.y - bottomOffset;
     movableObject.setOnGround(true, platform);
-    if (typeof platform.onLanded === "function") {
+    const activated = typeof platform.onLanded === "function" &&
       platform.onLanded(movableObject);
-    }
+    return Object.freeze({ movableObject, platform, activated });
   }
 
   /** Returns collision bounds. */

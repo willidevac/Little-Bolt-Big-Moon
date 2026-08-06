@@ -2,6 +2,8 @@ import { SpriteSurfacePlatform } from
   "../../classes/environment/sprite-surface-platform.class.js";
 import { ThinWallBuilder } from
   "../../classes/systems/thin-wall-builder.class.js";
+import { MechanicPlatformBuilder } from
+  "../../classes/systems/mechanic-platform-builder.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
 import {
   getScrapyardPrototypePlatformSpriteConfig,
@@ -48,6 +50,9 @@ function createPlatforms() {
 
 /** Creates one platform with its existing production sprite. */
 function createPlatform(definition) {
+  if (definition.mechanic) {
+    return new MechanicPlatformBuilder().create(definition);
+  }
   const sprite = definition.platformRole === "floor"
     ? getStartFloorSpriteConfig()
     : getScrapyardPrototypePlatformSpriteConfig(definition.platformRole);

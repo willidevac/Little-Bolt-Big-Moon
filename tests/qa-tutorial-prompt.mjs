@@ -9,7 +9,9 @@ const css = await fs.readFile("styles/tutorial.css", "utf8");
 const source = await fs.readFile(
   "classes/ui/tutorial-prompt-controller.class.js", "utf8",
 );
-const stepIds = ["movement", "shortJump", "chargedJump", "wallRebound"];
+const stepIds = [
+  "movement", "shortJump", "chargedJump", "wallRebound", "platformMechanics",
+];
 
 assert.match(html, /<aside[\s\S]*?aria-live="polite"[\s\S]*?data-tutorial-prompt/);
 assert.match(html, /data-tutorial-title/);

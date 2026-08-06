@@ -3,6 +3,8 @@ export const GAMEPLAY_EVENTS = Object.freeze({
   PLAYER_JUMP: "playerJump",
   PLAYER_JUMP_CHARGE: "playerJumpCharge",
   PLAYER_LAND: "playerLand",
+  PLAYER_WALL_REBOUND: "playerWallRebound",
+  PLATFORM_ACTIVATED: "platformActivated",
   PLAYER_ATTACK: "playerAttack",
   PLAYER_HURT: "playerHurt",
   PLAYER_DEATH: "playerDeath",

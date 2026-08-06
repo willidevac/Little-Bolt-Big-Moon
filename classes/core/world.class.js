@@ -245,11 +245,20 @@ export class World {
   /** Returns resolve platform landings. */
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds) {
     const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
-    this.#collisionManager.resolvePlatformLandings(
+    const landings = this.#collisionManager.resolvePlatformLandings(
       movableObjects,
       platforms,
       deltaTimeSeconds,
     );
+    landings.forEach((landing) => this.#reportPlatformActivation(landing));
+  }
+
+  /** Reports a mechanic activated by Byte's landing. */
+  #reportPlatformActivation({ movableObject, platform, activated }) {
+    if (movableObject !== this.character || !activated || !platform.mechanic) return;
+    this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLATFORM_ACTIVATED, {
+      id: platform.id, mechanic: platform.mechanic,
+    });
   }
 
   /** Returns resolve structure collisions. */

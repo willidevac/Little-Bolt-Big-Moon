@@ -26,6 +26,7 @@ export class WorldEventReporter {
       isOnGround: Boolean(character?.isOnGround),
       x: Number.isFinite(character?.x) ? character.x : null,
       velocityY: character?.velocityY ?? 0,
+      wallImpactCount: character?.wallImpactCount ?? 0,
       jumpChargePercent: character?.jumpChargePercent ?? 0,
       isJumpCharging: Boolean(character?.isChargingJump),
       bossActive: boss.isActive,
@@ -72,7 +73,18 @@ export class WorldEventReporter {
     const landed = !this.before.isOnGround && character.isOnGround;
     if (jumped) this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP);
     if (landed) this.events.emit(GAMEPLAY_EVENTS.PLAYER_LAND);
+    this.#reportWallRebound(character);
     this.#reportJumpCharge(character);
+  }
+
+  /** Reports a newly accepted airborne wall impact exactly once. */
+  #reportWallRebound(character) {
+    const impactCount = character.wallImpactCount ?? 0;
+    if (impactCount <= this.before.wallImpactCount) return;
+    this.events.emit(GAMEPLAY_EVENTS.PLAYER_WALL_REBOUND, {
+      direction: Math.sign(character.velocityX),
+      facingDirection: character.facingDirection,
+    });
   }
 
   /** Reports actual left/right movement only when its direction changes. */

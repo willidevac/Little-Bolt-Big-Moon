@@ -47,6 +47,7 @@ export class Character extends MovableObject {
     this.state = CHARACTER_STATES.IDLE;
     this.inactivitySeconds = 0;
     this.facingDirection = 1;
+    this.wallImpactCount = 0;
     this.wallReboundControlSeconds = 0;
     this.wallReboundInput = Object.seal({
       left: false, right: false, jump: false, down: false,

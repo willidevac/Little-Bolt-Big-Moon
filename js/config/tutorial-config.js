@@ -26,3 +26,7 @@ export const TUTORIAL_JUMP_THRESHOLDS = Object.freeze({
   shortMaximumPercent: 35,
   chargedMinimumPercent: 80,
 });
+
+export const TUTORIAL_PLATFORM_MECHANICS = Object.freeze([
+  "spring", "falling", "trap",
+]);
