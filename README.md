@@ -58,7 +58,7 @@ npm run check
 | `npm run test:architecture` | Verify import and architecture boundaries |
 | `npm run test:release` | Verify central gameplay, UI, and responsive flows |
 
-The acceptance suite currently covers 87 mandatory quality areas, including
+The acceptance suite currently covers 97 mandatory quality areas, including
 game states, physics, combat, audio storage, responsive controls, tutorial
 progression, the boss encounter, and release-critical UI paths.
 
@@ -72,6 +72,13 @@ progression, the boss encounter, and release-critical UI paths.
 - [`docs/asset-licensing.md`](docs/asset-licensing.md) – asset origin and usage rights
 - [`tests/README.md`](tests/README.md) – test layers and release gates
 - [`data/asset-credits.json`](data/asset-credits.json) – machine-readable asset credits
+
+## Recommended Review Path
+
+For a course or portfolio review, start with **Tutorial – recommended**. It
+presents the checklist-relevant mechanics, resources, enemy variants, and a
+dedicated tutorial boss in a compact level. The main game is intentionally a
+much harder precision-platforming challenge and is best tested afterwards.
 
 ## Mentor Review Mode
 
@@ -104,20 +111,24 @@ The main progression loop is:
 ## Guided Tutorial
 
 Select **Tutorial – recommended** from the main menu to enter a compact,
-approximately 1,600-pixel training world. Eight localized lessons introduce:
+approximately 1,600-pixel training world. Ten localized lessons introduce:
 
 - movement and visible facing direction
+- energy cells and collectible gears
 - short and fully charged jumps
 - wall rebounds
 - spring, falling, and trap platforms
 - the bolt thrower and ranged attacks
 - a harmless practice target
-- a safe, automatically triggered crawler-and-drone combat wave
+- a safe, automatically triggered crawler, spring-mine, and drone combat wave
+- the Scrap Overseer, a dedicated tutorial boss that keeps the Moon Warden a
+  main-game reveal
 
 Section checkpoints reduce repetition after a fall or defeat. Tutorial score,
 height, and time remain separate from the main-game records. Completion opens
 direct actions for starting the main game, replaying the tutorial, or returning
-to the main menu.
+to the main menu. The localized instruction panel can be collapsed at any time
+on smaller screens and opens automatically for each new lesson.
 
 ## Controls
 
@@ -139,7 +150,7 @@ notice.
 - five biomes across 15 handcrafted vertical sections
 - charged precision jumping and wall-rebound movement
 - static, spring, falling, and trap platforms
-- two regular enemy types, intermediate encounters, and a final boss
+- three regular enemy archetypes, intermediate encounters, and a final boss
 - melee and projectile weapons with weapon switching
 - selectable upgrades after completed encounters
 - animated idle, sleep, movement, jump, hurt, attack, and death states
@@ -203,6 +214,7 @@ release checks described above.
 - environmental storytelling from the scrapyard to the moon
 - local records and separate music and effect volume settings
 - hidden unscored traversal tools for mentor and visual QA
+- a replayable guided tutorial with its own boss and separate progress state
 
 ## Asset Credits
 

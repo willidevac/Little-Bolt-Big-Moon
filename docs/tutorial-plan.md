@@ -31,7 +31,7 @@ Hinweisreihenfolge und Rücksetzpunkte erhalten tutorialeigene Konfigurationen.
 | Landschaft | Schrottplatz |
 | Zieldauer | drei bis fünf Minuten |
 | Spielerstart | sicherer Boden im unteren Weltbereich |
-| Abschluss | sichtbare Zielplattform im oberen Weltbereich |
+| Abschluss | eigener Tutorial-Boss im oberen Arenabereich |
 | Scheitern | Rücksetzung zum letzten Tutorial-Checkpoint |
 
 Die Route wechselt innerhalb der verfügbaren Breite mehrfach zwischen links
@@ -42,12 +42,12 @@ mehrere kurze Übungen.
 
 | Höhenbereich | Inhalt | Erfolgskriterium |
 | --- | --- | --- |
-| 1.450–1.600 | Bewegung und Blickrichtung | links und rechts bewegt |
+| 1.450–1.600 | Bewegung, Blickrichtung und Ressourcen | links/rechts bewegt, Energie und Zahnrad gesammelt |
 | 1.200–1.450 | kurzer und geladener Sprung | beide Sprungarten ausgeführt |
 | 950–1.200 | einfacher Wandabsprung | Zielplattform erreicht |
 | 650–950 | Plattformmechaniken | sicheren Mechanikpfad abgeschlossen |
 | 350–650 | Bolzenwerfer und Kampf | Übungsziel und Gegner besiegt |
-| 100–350 | Abschluss | Zielplattform erreicht |
+| 100–350 | Kampf und Abschluss | Welle und Schrott-Aufseher besiegt |
 
 Die Bereiche sind Richtwerte. Erreichbarkeit und Kameralesbarkeit entscheiden
 bei der Umsetzung über die endgültigen Koordinaten.
@@ -61,21 +61,27 @@ bei der Umsetzung über die endgültigen Koordinaten.
 - Byte muss sich mindestens einmal nach links und rechts bewegen.
 - Die sichtbare Spiegelung demonstriert die Blickrichtung.
 
-### 2. Präzisionssprung
+### 2. Ressourcen
+
+- Eine Energiezelle erklärt Lebensenergie und Heilung.
+- Ein Zahnrad demonstriert die zählbare Sammelressource.
+- Beide Objekte liegen sicher auf dem breiten Startboden.
+
+### 3. Präzisionssprung
 
 - Eine breite Plattform erklärt zuerst einen kurzen Sprung.
 - Eine zweite Plattform verlangt einen deutlich geladenen Sprung.
 - Die Ladeanzeige des Hauptspiels bleibt unverändert aktiv.
 - Ein Fehlsprung führt ohne Höhenverlust zum Abschnittsanfang zurück.
 
-### 3. Wandabsprung
+### 4. Wandabsprung
 
 - Eine kurze, breite Wandpassage nutzt die echte Wandkollision.
 - Der Hinweis erklärt die feste Flugbahn eines normalen Präzisionssprungs.
 - Die begrenzte Richtungskorrektur nach dem Wandabprall wird ausdrücklich
   erklärt, damit sie nicht mit allgemeiner Luftsteuerung verwechselt wird.
 
-### 4. Plattformmechaniken
+### 5. Plattformmechaniken
 
 - Eine Federplattform demonstriert einen automatischen Startimpuls.
 - Eine Fallplattform zeigt Warnung, Fall und Respawn.
@@ -83,7 +89,7 @@ bei der Umsetzung über die endgültigen Koordinaten.
 - Eine Kranplattform ist optional und entfällt, falls sie die kompakte Route
   unübersichtlich macht.
 
-### 5. Sammelobjekt und Waffe
+### 6. Waffe und Übungsziel
 
 - Der Bolzenwerfer liegt gut sichtbar auf einem sicheren Boden.
 - Angriffshinweise erscheinen erst nach der Waffenaufnahme.
@@ -91,15 +97,23 @@ bei der Umsetzung über die endgültigen Koordinaten.
 - Der Waffenwechsel wird nur erklärt, wenn mindestens zwei Waffen verfügbar
   sind; andernfalls bleibt er außerhalb des Tutorialumfangs.
 
-### 6. Kampf
+### 7. Kampf
 
 - Ein Schrottkrabbler führt Bodengegner, Treffer und Rückstoß ein.
+- Eine Federmine ergänzt einen stationären Gegnertyp mit eigener Warnphase.
 - Eine langsame Drohne führt fliegende Gegner und Projektile ein.
 - Tutorialgegner verwenden vorhandene Gegnerklassen mit eigenen, milden
   Konfigurationswerten.
 - Ein verlorener Kampf startet nur den Kampfbereich neu.
 
-### 7. Abschluss
+### 8. Tutorial-Boss
+
+- Der Schrott-Aufseher startet automatisch nach der regulären Kampfwelle.
+- Die größere Bossdrohne besitzt eigene Grafik, Lebensleiste und Angriffsmuster.
+- Der Mondwächter bleibt dem Hauptspiel vorbehalten und wird nicht vorweggenommen.
+- Erst der Sieg über den Schrott-Aufseher schließt das Tutorial ab.
+
+### 9. Abschluss
 
 Der Abschlussdialog bestätigt das Tutorial und bietet:
 
@@ -112,24 +126,27 @@ Upgrades, weitere Waffen, schwierigere Begegnungen und der Mondwächter.
 
 ## Wiederverwendete Inhalte
 
-Es werden keine neuen Rastergrafiken, Animationen oder Audiodateien erstellt.
-Vorgesehen sind ausschließlich vorhandene Inhalte:
+Das Tutorial verwendet überwiegend vorhandene Produktionsinhalte. Für den
+eigenständigen Tutorial-Boss wurde genau eine neue, dokumentierte Rastergrafik
+ergänzt:
 
 - Schrottplatz-Hintergrund, Boden, Wände und Plattformen
 - Byte mit bestehenden Bewegungs-, Sprung- und Angriffsanimationen
 - vorhandene Lade-, Treffer- und Projektil-Effekte
 - Bolzenwerfer und Bolzenprojektil
-- Schrottkrabbler und Drohne
+- Schrottkrabbler, Federmine und Drohne
+- Schrott-Aufseher mit eigener Bossgrafik und vorhandenen Projektilsystemen
 - Feder-, Fall-, Fallen- und optional Kranplattform
 - bestehende HUD-, Dialog-, Button- und Fokusgestaltung
 - bestehende Musik und Effekte des Schrottplatzes
 
 ## Tutorialzustände
 
-Der geplante `TutorialDirector` besitzt eine lineare, explizite Zustandsfolge:
+Der implementierte `TutorialDirector` besitzt eine lineare, explizite Zustandsfolge:
 
 ```text
 movement
+  → resources
   → shortJump
   → chargedJump
   → wallRebound
@@ -137,6 +154,7 @@ movement
   → weaponPickup
   → practiceTarget
   → combat
+  → boss
   → completed
 ```
 
@@ -159,10 +177,9 @@ Tutorial erhalten. Tutorialzustand bleibt damit eine äußere Orchestrierung.
 
 - kein Ersatz für den Review-Modus
 - kein alternatives leichtes Hauptspiel
-- kein vollständiger Bosskampf
 - keine Demonstration sämtlicher Upgrades und Sammelobjekte
 - keine neue allgemeine Luftsteuerung
-- keine neuen Designs oder Assets
+- keine Vorwegnahme des Mondwächters aus dem Hauptspiel
 - keine Änderung des bestehenden Hauptspiel-Balancings
 
 ## Verbindliche Abnahmekriterien
@@ -179,14 +196,18 @@ und automatisiert oder sichtbar geprüft sind:
    erreichbar.
 6. Mindestens Feder-, Fall- und Fallenplattform werden sicher demonstriert.
 7. Der Bolzenwerfer wird vor der ersten Kampfaufgabe aufgenommen.
-8. Ein Schrottkrabbler und eine Drohne sind innerhalb weniger Minuten sichtbar
+8. Energiezelle und Zahnrad erklären die sichtbaren HUD-Ressourcen.
+9. Schrottkrabbler, Federmine und Drohne sind innerhalb weniger Minuten sichtbar
    und besiegbar.
-9. Stürze und Niederlagen setzen nur zum letzten Tutorial-Checkpoint zurück.
-10. Ein Tutoriallauf verändert weder Rekorde noch Hauptspielfortschritt.
-11. Abschluss, Wiederholung, Hauptspielstart und Rückkehr zum Menü funktionieren.
-12. Das normale Hauptlevel bleibt funktional und inhaltlich unverändert.
-13. Der vollständige automatisierte Abnahmelauf bleibt grün.
-14. Ein Browser-Smoke-Test durchläuft das Tutorial ohne Konsolenfehler.
+10. Der Schrott-Aufseher startet nach der Welle und beendet das Tutorial erst
+    nach seiner Niederlage.
+11. Stürze und Niederlagen setzen nur zum letzten Tutorial-Checkpoint zurück.
+12. Ein Tutoriallauf verändert weder Rekorde noch Hauptspielfortschritt.
+13. Abschluss, Wiederholung, Hauptspielstart und Rückkehr zum Menü funktionieren.
+14. Das normale Hauptlevel bleibt funktional und inhaltlich unverändert.
+15. Der vollständige automatisierte Abnahmelauf bleibt grün.
+16. Browser-Smoke-Tests laufen ohne Konsolenfehler auf Desktop und in den
+    geprüften Querformatgrößen.
 
 ## Clean-Code-Vertrag
 
@@ -202,5 +223,5 @@ Für jede folgende Tutorialaufgabe gelten die bestehenden Projektregeln:
 - keine neue Abhängigkeit entgegen der dokumentierten Architekturrichtung
 - fokussierte Regressionstests zusammen mit jeder Funktionserweiterung
 
-Nach jeder der zehn Umsetzungsaufgaben werden die relevanten Tests ausgeführt.
+Nach jeder der zwölf Umsetzungsaufgaben werden die relevanten Tests ausgeführt.
 Commit und Push erfolgen erst nach ausdrücklicher Freigabe.
