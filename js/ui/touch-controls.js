@@ -2,8 +2,8 @@ import { TouchControls } from "../../classes/input/touch-controls.class.js";
 
 /**
  * Creates and binds the mobile controls.
- * @param {import("../../classes/core/game.class.js").Game} game
- * @param {HTMLElement} [root=document.body]
+ * @param {import("../../classes/core/game.class.js").Game} game Active game instance coordinated by the controller.
+ * @param {HTMLElement} [root=document.body] Root element queried for the relevant interface controls.
  * @returns {TouchControls}
  */
 export function initializeTouchControls(

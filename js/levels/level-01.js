@@ -24,7 +24,10 @@ import { StoryPropBuilder } from
 import { GAME_CONFIG } from "../config/game-config.js";
 import { getAssetPath } from "../config/asset-paths.js";
 
-/** Creates the deliberately empty baseline used before the new world build. */
+/**
+ * Creates the deliberately empty baseline used before the new world build.
+ * @param {object} [enemyConfig=GAME_CONFIG.enemies] Enemy definitions used to populate the level.
+ */
 export function createLevelOne(enemyConfig = GAME_CONFIG.enemies) {
   validateLevelData(levelData);
   const sections = Object.freeze(levelData.sections.map(createSection));
@@ -33,7 +36,11 @@ export function createLevelOne(enemyConfig = GAME_CONFIG.enemies) {
   return assembleLevel(sections, prototype, routePlatforms, enemyConfig);
 }
 
-/** Creates build route. */
+/**
+ * Builds the complete mandatory platform route.
+ * @param {ReadonlyArray<object>} sections Immutable level sections used to assemble the route.
+ * @param {object} prototype Scrapyard prototype builder used for the opening route.
+ */
 function buildRoute(sections, prototype) {
   const prototypePlatforms = prototype.buildPlatforms();
   const wallPlatforms = new SparseWallPlatformBuilder(levelData.width)
@@ -45,13 +52,22 @@ function buildRoute(sections, prototype) {
   return Object.freeze([...wallPlatforms, ...prototypePlatforms, ...progression]);
 }
 
-/** Returns last tutorial platform. */
+/**
+ * Returns the final mandatory platform of the opening prototype.
+ * @param {ReadonlyArray<object>} platforms Platform definitions used to place level content.
+ */
 function getLastTutorialPlatform(platforms) {
   return platforms.filter(({ routeRole }) => routeRole === "main")
     .sort((first, second) => first.routeOrder - second.routeOrder).at(-1);
 }
 
-/** Creates assemble level. */
+/**
+ * Assembles the production level and all generated content.
+ * @param {ReadonlyArray<object>} sections Immutable level sections used to assemble the route.
+ * @param {object} prototype Scrapyard prototype builder used for the opening route.
+ * @param {ReadonlyArray<object>} routePlatforms Platforms that form the mandatory progression route.
+ * @param {object} enemyConfig Enemy definitions used to populate the level.
+ */
 function assembleLevel(sections, prototype, routePlatforms, enemyConfig) {
   const boss = new FinalBossBuilder().build();
   const structures = createStructures(sections, prototype, routePlatforms, boss);
@@ -63,7 +79,10 @@ function assembleLevel(sections, prototype, routePlatforms, enemyConfig) {
   );
 }
 
-/** Creates items. */
+/**
+ * Places route pickups and any platforms required by exploration rewards.
+ * @param {ReadonlyArray<object>} routePlatforms Platforms that form the mandatory progression route.
+ */
 function createItems(routePlatforms) {
   const itemPlacement = new ItemPlacementBuilder();
   const routeCollectables = itemPlacement.build(routePlatforms);
@@ -74,7 +93,12 @@ function createItems(routePlatforms) {
   return Object.freeze({ platforms, collectables });
 }
 
-/** Creates level content. */
+/**
+ * Creates story props and combat encounters around placed content.
+ * @param {ReadonlyArray<object>} platforms Platform definitions used to place level content.
+ * @param {ReadonlyArray<object>} collectables Collectable definitions included in the level.
+ * @param {object} enemyConfig Enemy definitions used to populate the level.
+ */
 function createLevelContent(platforms, collectables, enemyConfig) {
   const storyProps = new StoryPropBuilder().build(platforms, collectables);
   const encounters = new CombatEncounterBuilder(levelData.width)
@@ -82,7 +106,13 @@ function createLevelContent(platforms, collectables, enemyConfig) {
   return Object.freeze({ storyProps, encounters });
 }
 
-/** Creates structures. */
+/**
+ * Creates walls, route features, and boss-arena structures.
+ * @param {ReadonlyArray<object>} sections Immutable level sections used to assemble the route.
+ * @param {object} prototype Scrapyard prototype builder used for the opening route.
+ * @param {ReadonlyArray<object>} routePlatforms Platforms that form the mandatory progression route.
+ * @param {object} boss Final boss content included in the level.
+ */
 function createStructures(sections, prototype, routePlatforms, boss) {
   return Object.freeze([
     ...new ThinWallBuilder(levelData.width).build(sections),
@@ -93,7 +123,11 @@ function createStructures(sections, prototype, routePlatforms, boss) {
   ]);
 }
 
-/** Creates platforms. */
+/**
+ * Extends the mandatory route with optional exploration platforms.
+ * @param {ReadonlyArray<object>} routePlatforms Platforms that form the mandatory progression route.
+ * @param {ReadonlyArray<object>} routeCollectables Pickups already placed on the route.
+ */
 function createPlatforms(routePlatforms, routeCollectables) {
   const firstWeapon = routeCollectables.find(({ weaponId }) => {
     return weaponId === "boltThrower";
@@ -103,7 +137,13 @@ function createPlatforms(routePlatforms, routeCollectables) {
   return Object.freeze([...routePlatforms, ...explorationPlatforms]);
 }
 
-/** Creates collectables. */
+/**
+ * Combines route pickups, search rewards, and pre-boss supplies.
+ * @param {object} itemPlacement Builder responsible for placing route rewards.
+ * @param {ReadonlyArray<object>} platforms Platform definitions used to place level content.
+ * @param {ReadonlyArray<object>} route Route platforms used to position the content.
+ * @param {ReadonlyArray<object>} existing Existing collectables retained in the result.
+ */
 function createCollectables(itemPlacement, platforms, route, existing) {
   return Object.freeze([
     ...existing,
@@ -112,7 +152,16 @@ function createCollectables(itemPlacement, platforms, route, existing) {
   ]);
 }
 
-/** Creates level result. */
+/**
+ * Creates the immutable production-level contract.
+ * @param {ReadonlyArray<object>} sections Immutable level sections used to assemble the route.
+ * @param {ReadonlyArray<object>} structures Static structure definitions included in the level.
+ * @param {ReadonlyArray<object>} platforms Platform definitions used to place level content.
+ * @param {ReadonlyArray<object>} collectables Collectable definitions included in the level.
+ * @param {ReadonlyArray<object>} storyProps Story-prop definitions included in the level.
+ * @param {object} encounters Generated combat enemies and activation zones.
+ * @param {object} boss Final boss content included in the level.
+ */
 function createLevelResult(sections, structures, platforms, collectables,
   storyProps, encounters, boss) {
   const combatZones = Object.freeze([
@@ -127,7 +176,10 @@ function createLevelResult(sections, structures, platforms, collectables,
   });
 }
 
-/** Creates section. */
+/**
+ * Adds the configured background layer to one source section.
+ * @param {object} section Source section definition to convert into runtime data.
+ */
 function createSection(section) {
   return Object.freeze({
     ...section,
@@ -140,7 +192,10 @@ function createSection(section) {
   });
 }
 
-/** Validates level data. */
+/**
+ * Validates the minimum data required to build the production level.
+ * @param {object} data Source data that must satisfy the level contract.
+ */
 function validateLevelData(data) {
   const values = [data?.width, data?.height,
     data?.playerStart?.x, data?.playerStart?.y];

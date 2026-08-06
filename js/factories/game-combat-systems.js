@@ -5,8 +5,8 @@ import upgradeData from "../../data/upgrades.json" with { type: "json" };
 
 /**
  * Creates the three interdependent combat systems for a run.
- * @param {Readonly<object>} config
- * @param {Readonly<object>} dependencies
+ * @param {Readonly<object>} config Configuration values used to construct the requested component.
+ * @param {Readonly<object>} dependencies Constructors and collaborators required by the factory.
  * @returns {Readonly<object>}
  */
 export function createGameCombatSystems(config, dependencies) {
@@ -19,7 +19,12 @@ export function createGameCombatSystems(config, dependencies) {
   return { combatSystem, weaponSystem, upgradeFlow };
 }
 
-/** Creates upgrade flow. */
+/**
+ * Creates the upgrade flow around the run's combat systems.
+ * @param {CombatSystem} combatSystem Combat service receiving upgrade effects.
+ * @param {WeaponSystem} weaponSystem Weapon service receiving upgrade effects.
+ * @param {Readonly<object>} dependencies Runtime services required by the flow.
+ */
 function createUpgradeFlow(combatSystem, weaponSystem, dependencies) {
   return new RunUpgradeFlow(upgradeData, {
     runStats: dependencies.runStats,

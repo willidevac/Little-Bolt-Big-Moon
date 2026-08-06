@@ -6,8 +6,8 @@ import { GAME_CONFIG } from "../config/game-config.js";
 
 /**
  * Creates the central audio controller.
- * @param {import("../../classes/core/game.class.js").Game} game
- * @param {EventTarget} [eventTarget=document]
+ * @param {import("../../classes/core/game.class.js").Game} game Active game instance coordinated by the controller.
+ * @param {EventTarget} [eventTarget=document] Event target used to register interaction listeners.
  * @returns {GameAudioController}
  */
 export function initializeAudio(game, eventTarget = document) {

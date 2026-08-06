@@ -57,14 +57,23 @@ export async function createGameApplication() {
   return createApplicationResult(game, controllers);
 }
 
-/** Initializes canvas. */
+/**
+ * Initializes canvas.
+ * @param {HTMLCanvasElement} canvas Canvas used to render the game.
+ */
 function configureCanvas(canvas) {
   canvas.width = GAME_CONFIG.canvas.width;
   canvas.height = GAME_CONFIG.canvas.height;
   return canvas;
 }
 
-/** Creates controllers. */
+/**
+ * Creates controllers.
+ * @param {object} game Active game instance coordinated by the controller.
+ * @param {object} audio Audio controller synchronized with the interface.
+ * @param {object} storage Persistence service used for player settings and progress.
+ * @param {object} localization Localization controller synchronized with the interface.
+ */
 function createControllers(game, audio, storage, localization) {
   const tutorialControllers = createTutorialControllers(game, storage);
   return [
@@ -76,7 +85,11 @@ function createControllers(game, audio, storage, localization) {
   ];
 }
 
-/** Creates tutorial orchestration in dependency order. */
+/**
+ * Creates tutorial orchestration in dependency order.
+ * @param {object} game Active game instance coordinated by the controller.
+ * @param {object} storage Persistence service used for player settings and progress.
+ */
 function createTutorialControllers(game, storage) {
   const tutorial = initializeTutorialDirector(game);
   const trackers = TUTORIAL_TRACKER_FACTORIES.map((createTracker) => {
@@ -90,7 +103,11 @@ function createTutorialControllers(game, storage) {
   ];
 }
 
-/** Creates application result. */
+/**
+ * Creates application result.
+ * @param {object} game Active game instance coordinated by the controller.
+ * @param {ReadonlyArray<object>} controllers Controllers owned by the application lifecycle.
+ */
 function createApplicationResult(game, controllers) {
   let isDestroyed = false;
   return Object.freeze({

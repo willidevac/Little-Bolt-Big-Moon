@@ -7,10 +7,10 @@ import { createRunResetController } from "../factories/run-reset-controller.js";
 
 /**
  * Creates a game with the production level and system factories.
- * @param {HTMLCanvasElement} canvas
- * @param {Readonly<object>} [config=GAME_CONFIG]
- * @param {EventTarget} [inputTarget=globalThis]
- * @param {import("../../classes/core/level-selection.class.js").LevelSelection} [levelSelection]
+ * @param {HTMLCanvasElement} canvas Canvas used to render the game.
+ * @param {Readonly<object>} [config=GAME_CONFIG] Configuration values used to construct the requested component.
+ * @param {EventTarget} [inputTarget=globalThis] Event target that receives keyboard input.
+ * @param {import("../../classes/core/level-selection.class.js").LevelSelection} [levelSelection] Level-selection strategy used to create playable worlds.
  * @returns {Game}
  */
 export function createGame(

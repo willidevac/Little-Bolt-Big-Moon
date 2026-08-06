@@ -6,7 +6,7 @@ import { createTutorialLevel } from "./tutorial-level.js";
 
 /**
  * Creates the production level selection at the application boundary.
- * @param {Readonly<object>} enemyConfig
+ * @param {Readonly<object>} enemyConfig Enemy definitions used to populate the level.
  * @returns {LevelSelection}
  */
 export function createGameLevelSelection(enemyConfig) {

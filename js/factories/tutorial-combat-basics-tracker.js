@@ -6,7 +6,11 @@ import {
   TUTORIAL_WEAPON_ID,
 } from "../config/tutorial-config.js";
 
-/** Connects weapon onboarding to production pickup and defeat events. */
+/**
+ * Connects weapon onboarding to production pickup and defeat events.
+ * @param {object} game Active game instance coordinated by the controller.
+ * @param {object} director Tutorial director receiving basic-combat progress.
+ */
 export function initializeTutorialCombatBasicsTracker(game, director) {
   return new TutorialCombatBasicsTracker(game, director, {
     weaponStepId: TUTORIAL_STEP_IDS.WEAPON_PICKUP,

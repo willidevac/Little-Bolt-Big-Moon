@@ -3,7 +3,7 @@ import { StorySequenceController } from "../../classes/ui/story-sequence-control
 
 /**
  * Initializes screen control.
- * @param {import("../../classes/core/game.class.js").Game} game
+ * @param {import("../../classes/core/game.class.js").Game} game Active game instance coordinated by the controller.
  * @returns {ScreenController}
  */
 export function initializeScreens(game) {
@@ -14,7 +14,11 @@ export function initializeScreens(game) {
   return createControllers(game, root);
 }
 
-/** Creates controllers. */
+/**
+ * Creates controllers.
+ * @param {object} game Active game instance coordinated by the controller.
+ * @param {HTMLElement} root Root element queried for the relevant interface controls.
+ */
 function createControllers(game, root) {
   const storySequenceController = new StorySequenceController(game, root);
   const screenController = new ScreenController(

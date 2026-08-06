@@ -16,7 +16,7 @@ function getBrowserStorage() {
 
 /**
  * Creates storage for records and settings.
- * @param {Storage|null} [storage]
+ * @param {Storage|null} [storage] Persistence service used for player settings and progress.
  * @returns {GameStorage}
  */
 export function createGameStorage(storage = getBrowserStorage()) {
@@ -25,9 +25,10 @@ export function createGameStorage(storage = getBrowserStorage()) {
 
 /**
  * Connects local records and settings to the game.
- * @param {import("../../classes/core/game.class.js").Game} game
- * @param {import("../../classes/systems/game-audio-controller.class.js").GameAudioController} audio
- * @param {HTMLElement} [root=document.body]
+ * @param {import("../../classes/core/game.class.js").Game} game Active game instance coordinated by the controller.
+ * @param {import("../../classes/systems/game-audio-controller.class.js").GameAudioController} audio Audio controller synchronized with the interface.
+ * @param {HTMLElement} [root=document.body] Root element queried for the relevant interface controls.
+ * @param {object} [storage=createGameStorage()] Persistence service used for player settings and progress.
  * @returns {StorageController}
  */
 export function initializeStorage(

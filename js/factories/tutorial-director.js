@@ -5,7 +5,7 @@ import { TUTORIAL_STEP_ORDER } from "../config/tutorial-config.js";
 
 /**
  * Connects tutorial orchestration to the public game lifecycle.
- * @param {import("../../classes/core/game.class.js").Game} game
+ * @param {import("../../classes/core/game.class.js").Game} game Active game instance coordinated by the controller.
  * @returns {TutorialDirector}
  */
 export function initializeTutorialDirector(game) {
