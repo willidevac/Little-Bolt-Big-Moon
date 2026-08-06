@@ -6,6 +6,9 @@ import {
 } from "./tutorial-config.js";
 import { GAME_CONFIG } from "./game-config.js";
 
+export { SCRAP_OVERSEER_VISUAL_CONFIG } from
+  "./scrap-overseer-visual-config.js";
+
 const LEVEL_WIDTH = 1280;
 const LEVEL_HEIGHT = 1600;
 const FLOOR_Y = 1408;

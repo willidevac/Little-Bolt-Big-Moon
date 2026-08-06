@@ -527,6 +527,21 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "scrap-overseer",
+                       "priority":  "P0",
+                       "category":  "enemies",
+                       "file":  "img/sprites/enemies/scrap-overseer-clean-hd.png",
+                       "frameWidth":  192,
+                       "frameHeight":  160,
+                       "columns":  4,
+                       "rows":  1,
+                       "totalFrames":  4,
+                       "states":  {
+                                      "idle":  4
+                                  },
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "moon-warden",
                        "priority":  "P0",
                        "category":  "enemies",

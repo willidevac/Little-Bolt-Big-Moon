@@ -106,6 +106,16 @@
                        "licenseId":  "openai-assisted-project-art"
                    },
                    {
+                       "id":  "scrap-overseer-clean-hd-runtime-v1",
+                       "file":  "img/sprites/enemies/scrap-overseer-clean-hd.png",
+                       "role":  "runtime-tutorial-boss-drone-clean-hd-spritesheet",
+                       "status":  "approved",
+                       "origin":  "OpenAI-generated original Scrap Overseer using the Drone Guard only as a visual style reference",
+                       "created":  "2026-08-06",
+                       "modifications":  "Green chroma-key removal, per-frame subject extraction and nearest-neighbor packing produced four transparent 192x160 idle frames.",
+                       "licenseId":  "openai-assisted-project-art"
+                   },
+                   {
                        "id":  "moon-warden-clean-hd-runtime-v1",
                        "file":  "img/sprites/enemies/moon-warden-clean-hd.png",
                        "role":  "runtime-moon-warden-clean-hd-spritesheet",
