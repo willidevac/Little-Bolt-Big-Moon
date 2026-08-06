@@ -80,6 +80,7 @@ ist.
 - Desktop- und Touchsteuerung im Querformat
 - gespeicherte Deutsch-/Englisch-Umschaltung in den Einstellungen
 - Start-, Gewinn- und Game-over-Bildschirm
+- freiwilliges, lokalisiertes Tutorial als kompakter Vertical Slice
 - wortlose Anfangs- und Endsequenz
 
 ## Landschaft
@@ -130,6 +131,20 @@ ist ein Release-Kandidat: Gameplay, Gegner, Upgrades, Audio, responsive
 Steuerung und Abschlusssequenz sind umgesetzt. Die nachvollziehbaren Befehle
 oben prüfen die automatisierten Qualitäts-, Architektur- und Release-Verträge.
 
+## Tutorial
+
+Der sichtbare Menüpunkt `Tutorial – empfohlen` startet eine eigene, ungefähr
+1.600 Pixel hohe Schrottplatzwelt. Acht kurze Lektionen führen durch Bewegung,
+kurze und geladene Sprünge, Wandabprall, Plattformmechaniken, Waffenaufnahme,
+ein ungefährliches Übungsziel und den Kampf gegen Schrottkrabbler und Drohne.
+
+Das Tutorial verwendet dieselben Physik-, Kollisions-, Waffen-, Projektil-,
+Plattform- und Gegnersysteme wie das Hauptspiel. Abschnitts-Checkpoints
+verkürzen Wiederholungen nach Stürzen oder Niederlagen. Tutorialpunkte,
+Tutorialhöhe und Tutorialzeit verändern die lokalen Hauptspielrekorde nicht.
+Nach dem ersten Abschluss wird der Menüpunkt als wiederholbar statt empfohlen
+angezeigt.
+
 ## Extras über die Pflichtanforderungen
 
 - 150.000 Pixel hohe Präzisionswelt statt eines kurzen Einzellevels
@@ -146,6 +161,7 @@ oben prüfen die automatisierten Qualitäts-, Architektur- und Release-Verträge
 - [`docs/asset-licensing.md`](docs/asset-licensing.md) – Herkunft und Nutzung
 - [`docs/project-structure.md`](docs/project-structure.md) – Ordner und Zuständigkeiten
 - [`docs/quality-audit.md`](docs/quality-audit.md) – sichtbare und technische Abnahme
+- [`docs/tutorial-plan.md`](docs/tutorial-plan.md) – Tutorialkonzept und Abnahmekriterien
 - [`tests/README.md`](tests/README.md) – Testebenen und Release-Gates
 - [`data/asset-credits.json`](data/asset-credits.json) – Assetnachweise
 

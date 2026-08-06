@@ -9,6 +9,7 @@ const DEFAULT_RECORDS = Object.freeze({
   musicVolume: 75,
   effectsVolume: 85,
   language: LOCALIZATION_CONFIG.defaultLanguage,
+  tutorialCompleted: false,
 });
 
 /**
@@ -109,6 +110,16 @@ export class GameStorage {
   }
 
   /**
+   * Stores whether the optional tutorial was completed at least once.
+   * @returns {Readonly<object>}
+   */
+  setTutorialCompleted() {
+    this.data = { ...this.data, tutorialCompleted: true };
+    this.#persist();
+    return this.getSnapshot();
+  }
+
+  /**
    * Returns an immutable copy of the current data.
    * @returns {Readonly<object>}
    */
@@ -134,6 +145,7 @@ export class GameStorage {
       maximumHeight: this.#toInteger(source.maximumHeight),
       bestTimeSeconds: this.#toOptionalTime(source.bestTimeSeconds),
       isMuted: typeof source.isMuted === "boolean" ? source.isMuted : false,
+      tutorialCompleted: source.tutorialCompleted === true,
       language: this.#sanitizeLanguage(source.language),
       ...this.#sanitizeVolumes(source),
     };

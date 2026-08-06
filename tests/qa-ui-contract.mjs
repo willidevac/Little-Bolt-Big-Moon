@@ -28,6 +28,8 @@ const expectedActions = [
   "settings",
   "start",
   "tutorial",
+  "tutorial-main",
+  "tutorial-replay",
 ];
 
 assert.deepEqual([...new Set(actions)].sort(), expectedActions);

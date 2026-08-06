@@ -141,6 +141,7 @@
             class="end-result"
             aria-label="Laufergebnis"
             data-i18n-aria-label="end.result"
+            data-end-result
           >
             <div class="end-result__item">
               <dt data-i18n="end.bestHeight">Beste Höhe</dt>
@@ -152,9 +153,10 @@
             </div>
           </dl>
           <nav
-            class="start-menu"
+            class="start-menu end-actions"
             aria-label="Lauf beenden"
             data-i18n-aria-label="end.menu"
+            data-end-actions
           >
             <button
               class="menu-button menu-button--primary"
@@ -168,6 +170,38 @@
               class="menu-button"
               type="button"
               data-i18n="end.home"
+              data-ui-action="home"
+            >
+              Zum Hauptmenü
+            </button>
+          </nav>
+          <nav
+            class="start-menu tutorial-end-actions"
+            aria-label="Tutorial abschließen"
+            data-i18n-aria-label="tutorial.complete.menu"
+            data-tutorial-end-actions
+            hidden
+          >
+            <button
+              class="menu-button menu-button--primary"
+              type="button"
+              data-i18n="tutorial.complete.main"
+              data-ui-action="tutorial-main"
+            >
+              Hauptspiel starten
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="tutorial.complete.replay"
+              data-ui-action="tutorial-replay"
+            >
+              Tutorial wiederholen
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              data-i18n="tutorial.complete.home"
               data-ui-action="home"
             >
               Zum Hauptmenü

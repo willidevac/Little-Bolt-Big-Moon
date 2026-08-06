@@ -1,6 +1,7 @@
 import { GAME_STATES } from "../core/game-state-machine.class.js";
 import { formatScore, formatTime } from "../../js/utils/format.js";
 import { onLanguageChange, translate } from "../../js/i18n/localization.js";
+import { GAME_LEVEL_IDS } from "../../js/config/level-config.js";
 
 const SELECTORS = Object.freeze({
   mute: '[data-ui-action="mute"]',
@@ -123,6 +124,10 @@ export class StorageController {
     if (this.game.canvas.dataset.reviewMode === "true") return;
     const isVictory = state === GAME_STATES.WON;
     if (!isVictory && state !== GAME_STATES.LOST) return;
+    if (this.game.levelId === GAME_LEVEL_IDS.TUTORIAL) {
+      this.render(this.storage.getSnapshot());
+      return;
+    }
     const records = this.storage.recordRun(this.game.getHudSnapshot(), isVictory);
     this.render(records);
   }

@@ -15,6 +15,9 @@ const SELECTORS = Object.freeze({
   endCopy: "[data-end-copy]",
   endHeight: "[data-end-height]",
   endScore: "[data-end-score]",
+  endResult: "[data-end-result]",
+  endActions: "[data-end-actions]",
+  tutorialEndActions: "[data-tutorial-end-actions]",
   upgradeEyebrow: "[data-upgrade-eyebrow]",
   upgradeCopy: "[data-upgrade-copy]",
   upgradeOptions: "[data-upgrade-options]",
@@ -101,6 +104,11 @@ export class ScreenController {
     this.endCopy = getRequiredElement(this.root, SELECTORS.endCopy);
     this.endHeight = getRequiredElement(this.root, SELECTORS.endHeight);
     this.endScore = getRequiredElement(this.root, SELECTORS.endScore);
+    this.endResult = getRequiredElement(this.root, SELECTORS.endResult);
+    this.endActions = getRequiredElement(this.root, SELECTORS.endActions);
+    this.tutorialEndActions = getRequiredElement(
+      this.root, SELECTORS.tutorialEndActions,
+    );
   }
 
   /** Returns dialog background elements. */
@@ -174,7 +182,7 @@ export class ScreenController {
 
   /** Applies screen visibility. */
   #setScreenVisibility(state) {
-    const endContent = END_SCREEN_CONTENT[state];
+    const endContent = this.#getEndContent(state);
     this.homeScreen.hidden = state !== GAME_STATES.HOME;
     this.pauseScreen.hidden = state !== GAME_STATES.PAUSED;
     this.upgradeScreen.hidden = state !== GAME_STATES.UPGRADING;
@@ -199,6 +207,14 @@ export class ScreenController {
   createActions() {
     return Object.freeze({
       ...this.#createLevelActions(),
+      ...this.#createMenuActions(),
+      ...this.#createResultActions(),
+    });
+  }
+
+  /** Creates shared menu and game-state actions. */
+  #createMenuActions() {
+    return {
       /** Performs the controls operation. */
       controls: () => this.dialogController.open("controls"),
       /** Applies settings. */
@@ -217,7 +233,17 @@ export class ScreenController {
       restart: () => this.game.reset(),
       /** Performs the home operation. */
       home: () => this.game.goHome(),
-    });
+    };
+  }
+
+  /** Creates actions available on the tutorial result screen. */
+  #createResultActions() {
+    return {
+      /** Starts the main game after the tutorial result. */
+      "tutorial-main": () => this.#startFromEnd(GAME_LEVEL_IDS.MAIN),
+      /** Starts a fresh tutorial after the tutorial result. */
+      "tutorial-replay": () => this.#startFromEnd(GAME_LEVEL_IDS.TUTORIAL),
+    };
   }
 
   /** Creates actions that enter selectable levels. */
@@ -265,18 +291,47 @@ export class ScreenController {
 
   /** Returns the recommended usable home action. */
   #getHomeFocusTarget() {
-    return this.tutorialButton.disabled ? this.startButton : this.tutorialButton;
+    const completed = this.tutorialButton.dataset.tutorialCompleted === "true";
+    return this.tutorialButton.disabled || completed
+      ? this.startButton
+      : this.tutorialButton;
+  }
+
+  /** Returns regular or tutorial-specific end content. */
+  #getEndContent(state) {
+    const completedTutorial = state === GAME_STATES.WON &&
+      this.game.levelId === GAME_LEVEL_IDS.TUTORIAL;
+    return completedTutorial ? "tutorial.complete" : END_SCREEN_CONTENT[state];
   }
 
   /** Draws render end screen. */
   #renderEndScreen(state, contentKey) {
+    const isTutorial = contentKey === "tutorial.complete";
     const stats = this.game.getHudSnapshot();
-    this.endScreen.dataset.endState = state;
+    this.endScreen.dataset.endState = isTutorial ? "tutorial" : state;
     this.endEyebrow.textContent = translate(`${contentKey}.eyebrow`);
     this.endTitle.textContent = translate(`${contentKey}.title`);
     this.endCopy.textContent = translate(`${contentKey}.copy`);
+    this.#setEndSections(isTutorial);
+    if (isTutorial) return;
     this.endHeight.textContent = `${stats.heightMeters} m`;
     this.endScore.textContent = formatScore(stats.score);
+  }
+
+  /** Switches between run results and tutorial completion actions. */
+  #setEndSections(isTutorial) {
+    this.endResult.hidden = isTutorial;
+    this.endActions.hidden = isTutorial;
+    this.tutorialEndActions.hidden = !isTutorial;
+  }
+
+  /** Leaves an end state before selecting a fresh requested level. */
+  #startFromEnd(levelId) {
+    if (![GAME_STATES.WON, GAME_STATES.LOST].includes(this.game.state)) {
+      return false;
+    }
+    this.game.goHome();
+    return this.startRun(levelId);
   }
 
   /**

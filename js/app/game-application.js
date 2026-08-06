@@ -22,6 +22,8 @@ import { initializeTutorialCombatTracker } from
 import { initializeTutorialCheckpointController } from
   "../factories/tutorial-checkpoint-controller.js";
 import { initializeTutorialPrompt } from "../ui/tutorial-prompt.js";
+import { initializeTutorialCompletion } from
+  "../ui/tutorial-completion.js";
 
 /**
  * Loads the interface and creates the complete browser application.
@@ -51,7 +53,7 @@ function configureCanvas(canvas) {
 
 /** Creates controllers. */
 function createControllers(game, audio, storage, localization) {
-  const tutorialControllers = createTutorialControllers(game);
+  const tutorialControllers = createTutorialControllers(game, storage);
   return [
     localization, audio, ...tutorialControllers,
     initializeScreens(game), initializeHud(game),
@@ -62,16 +64,17 @@ function createControllers(game, audio, storage, localization) {
 }
 
 /** Creates tutorial orchestration in dependency order. */
-function createTutorialControllers(game) {
+function createTutorialControllers(game, storage) {
   const tutorial = initializeTutorialDirector(game);
   const movement = initializeTutorialMovementTracker(game, tutorial);
   const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
   const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
   const combat = initializeTutorialCombatTracker(game, tutorial);
   const checkpoints = initializeTutorialCheckpointController(game, tutorial);
+  const completion = initializeTutorialCompletion(game, tutorial, storage);
   return [
     tutorial, movement, mechanics, combatBasics, combat, checkpoints,
-    initializeTutorialPrompt(tutorial),
+    completion, initializeTutorialPrompt(tutorial),
   ];
 }
 
