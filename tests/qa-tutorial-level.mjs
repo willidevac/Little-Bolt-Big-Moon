@@ -22,7 +22,7 @@ assert.deepEqual([route[0].x, route[0].width], [0, level.width]);
 assert.equal(level.playerStart.y + 55, route[0].y);
 assert.equal(new Set(route.map(({ id }) => id)).size, route.length);
 assertSafeJumps(route);
-assertEmptyContent(level);
+assertDeferredContent(level);
 assertTutorialRegistration();
 
 console.log("TUTORIAL-002: Die kompakte Tutorial-Basiswelt ist spielbar verbunden.");
@@ -37,10 +37,12 @@ function assertSafeJumps(platforms) {
   });
 }
 
-/** Verifies that later tutorial tasks still own interactive content. */
-function assertEmptyContent(tutorial) {
-  ["collectables", "storyProps", "hazards", "combatZones", "enemies"]
+/** Verifies that only later combat and completion content stays deferred. */
+function assertDeferredContent(tutorial) {
+  ["storyProps", "hazards", "combatZones"]
     .forEach((property) => assert.deepEqual(tutorial[property], []));
+  assert.equal(tutorial.collectables.length, 1);
+  assert.equal(tutorial.enemies.length, 1);
 }
 
 /** Verifies that the public menu selection can create the tutorial. */

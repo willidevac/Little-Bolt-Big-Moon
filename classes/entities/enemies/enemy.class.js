@@ -143,7 +143,7 @@ export class Enemy extends MovableObject {
    * @returns {Readonly<{amount:number,direction:number,source:string}>|null}
    */
   attack(target) {
-    if (!this.#combatState.canAttack) return null;
+    if (this.isPassive || !this.#combatState.canAttack) return null;
     this.#validateTarget(target);
     this.startAttackState(this.#combatState.defaultAttackState);
     const direction = this.#getCenterX(target) < this.#getCenterX(this) ? -1 : 1;
@@ -248,6 +248,7 @@ export class Enemy extends MovableObject {
     this.direction = data.startDirection ?? 1;
     this.facingDirection = this.direction;
     this.team = "enemy";
+    this.isPassive = Boolean(data.isPassive);
     this.#setBossData(data);
     this.animationState = null;
   }

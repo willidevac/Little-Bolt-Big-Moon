@@ -14,6 +14,6 @@ export function createGameLevelSelection(enemyConfig) {
     /** Creates the main game level. */
     [GAME_LEVEL_IDS.MAIN]: () => createLevelOne(enemyConfig),
     /** Creates the tutorial level. */
-    [GAME_LEVEL_IDS.TUTORIAL]: () => createTutorialLevel(),
+    [GAME_LEVEL_IDS.TUTORIAL]: () => createTutorialLevel(enemyConfig),
   }, GAME_LEVEL_IDS.MAIN);
 }

@@ -11,6 +11,7 @@ const source = await fs.readFile(
 );
 const stepIds = [
   "movement", "shortJump", "chargedJump", "wallRebound", "platformMechanics",
+  "weaponPickup", "practiceTarget",
 ];
 
 assert.match(html, /<aside[\s\S]*?aria-live="polite"[\s\S]*?data-tutorial-prompt/);

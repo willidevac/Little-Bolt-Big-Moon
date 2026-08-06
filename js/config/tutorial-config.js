@@ -30,3 +30,6 @@ export const TUTORIAL_JUMP_THRESHOLDS = Object.freeze({
 export const TUTORIAL_PLATFORM_MECHANICS = Object.freeze([
   "spring", "falling", "trap",
 ]);
+
+export const TUTORIAL_WEAPON_ID = "boltThrower";
+export const TUTORIAL_PRACTICE_TARGET_ID = "tutorial-practice-target";

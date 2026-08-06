@@ -58,12 +58,18 @@ export class WorldEventReporter {
     const type = enemy.isDead
       ? GAMEPLAY_EVENTS.ENEMY_DEFEATED
       : GAMEPLAY_EVENTS.ENEMY_HIT;
+    this.#reportEnemyHit(type, enemy, hit);
+    return true;
+  }
+
+  /** Reports accepted damage with its source for downstream observers. */
+  #reportEnemyHit(type, enemy, hit) {
     this.events.emit(type, {
       id: enemy.id,
       enemyType: enemy.type,
       isBoss: Boolean(enemy.isBoss),
+      source: hit.source,
     });
-    return true;
   }
 
   /** Performs the report movement operation. */

@@ -4,7 +4,12 @@ import { ThinWallBuilder } from
   "../../classes/systems/thin-wall-builder.class.js";
 import { MechanicPlatformBuilder } from
   "../../classes/systems/mechanic-platform-builder.class.js";
+import { AnchoredCollectable } from
+  "../../classes/entities/collectables/anchored-collectable.class.js";
+import { ScrapCrawler } from
+  "../../classes/entities/enemies/scrap-crawler.class.js";
 import { getAssetPath } from "../config/asset-paths.js";
+import { GAME_CONFIG } from "../config/game-config.js";
 import {
   getScrapyardPrototypePlatformSpriteConfig,
   getStartFloorSpriteConfig,
@@ -12,22 +17,59 @@ import {
 import {
   TUTORIAL_LEVEL_CONFIG,
   TUTORIAL_PLATFORM_DEFINITIONS,
+  TUTORIAL_PRACTICE_TARGET_DEFINITION,
+  TUTORIAL_PRACTICE_TARGET_PROFILE,
+  TUTORIAL_WEAPON_PICKUP_DEFINITION,
 } from "../config/tutorial-level-config.js";
 
 /** Creates the compact production tutorial with the regular level contract. */
-export function createTutorialLevel() {
+export function createTutorialLevel(enemyConfig = GAME_CONFIG.enemies) {
   const sections = Object.freeze([createSection()]);
-  const { id, width, height } = TUTORIAL_LEVEL_CONFIG;
+  const platforms = createPlatforms();
+  const training = createTrainingContent(platforms, enemyConfig);
+  return createLevelResult(sections, platforms, training);
+}
+
+/** Creates the immutable regular level contract. */
+function createLevelResult(sections, platforms, training) {
+  const { id, width, height, playerStart } = TUTORIAL_LEVEL_CONFIG;
   return Object.freeze({
-    id, width, height,
-    playerStart: Object.freeze({ ...TUTORIAL_LEVEL_CONFIG.playerStart }),
-    sections,
+    id, width, height, sections,
+    playerStart: Object.freeze({ ...playerStart }),
     structures: new ThinWallBuilder(TUTORIAL_LEVEL_CONFIG.width).build(sections),
-    platforms: createPlatforms(),
-    collectables: Object.freeze([]), storyProps: Object.freeze([]),
+    platforms, collectables: training.collectables,
+    storyProps: Object.freeze([]),
     hazards: Object.freeze([]), combatZones: Object.freeze([]),
-    enemies: Object.freeze([]),
+    enemies: training.enemies,
   });
+}
+
+/** Creates the weapon pickup and its harmless production target. */
+function createTrainingContent(platforms, enemyConfig) {
+  const anchor = platforms.find(({ id }) => {
+    return id === TUTORIAL_WEAPON_PICKUP_DEFINITION.anchorPlatformId;
+  });
+  if (!anchor) throw new RangeError("Der Tutorial-Kampfbereich fehlt.");
+  return Object.freeze({
+    collectables: Object.freeze([createWeaponPickup(anchor)]),
+    enemies: Object.freeze([createPracticeTarget(anchor, enemyConfig)]),
+  });
+}
+
+/** Creates the regular anchored bolt-thrower pickup. */
+function createWeaponPickup(anchor) {
+  return new AnchoredCollectable(TUTORIAL_WEAPON_PICKUP_DEFINITION, anchor);
+}
+
+/** Creates a passive crawler that uses regular projectile hit handling. */
+function createPracticeTarget(anchor, enemyConfig) {
+  const profile = Object.freeze({
+    ...enemyConfig.scrapCrawler, ...TUTORIAL_PRACTICE_TARGET_PROFILE,
+  });
+  const target = new ScrapCrawler(TUTORIAL_PRACTICE_TARGET_DEFINITION, profile);
+  target.anchorPlatformId = anchor.id;
+  target.y = anchor.y - target.height;
+  return target;
 }
 
 /** Creates the tutorial background section from an existing panorama. */

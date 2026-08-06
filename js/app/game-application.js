@@ -15,6 +15,8 @@ import { initializeTutorialMovementTracker } from
   "../factories/tutorial-movement-tracker.js";
 import { initializeTutorialMechanicsTracker } from
   "../factories/tutorial-mechanics-tracker.js";
+import { initializeTutorialCombatBasicsTracker } from
+  "../factories/tutorial-combat-basics-tracker.js";
 import { initializeTutorialPrompt } from "../ui/tutorial-prompt.js";
 
 /**
@@ -48,8 +50,9 @@ function createControllers(game, audio, storage, localization) {
   const tutorial = initializeTutorialDirector(game);
   const movement = initializeTutorialMovementTracker(game, tutorial);
   const mechanics = initializeTutorialMechanicsTracker(game, tutorial);
+  const combatBasics = initializeTutorialCombatBasicsTracker(game, tutorial);
   return [
-    localization, audio, tutorial, movement, mechanics,
+    localization, audio, tutorial, movement, mechanics, combatBasics,
     initializeTutorialPrompt(tutorial),
     initializeScreens(game), initializeHud(game),
     initializeStorage(game, audio, document.body, storage),

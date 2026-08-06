@@ -1,4 +1,8 @@
 import { PLATFORM_MECHANIC_CONFIG } from "./world-content-config.js";
+import {
+  TUTORIAL_PRACTICE_TARGET_ID,
+  TUTORIAL_WEAPON_ID,
+} from "./tutorial-config.js";
 
 const LEVEL_WIDTH = 1280;
 const LEVEL_HEIGHT = 1600;
@@ -32,6 +36,24 @@ export const TUTORIAL_PLATFORM_DEFINITIONS = Object.freeze([
     320, 82, 5, PLATFORM_MECHANIC_CONFIG.trap),
   definePlatform("tutorial-goal", "rest", 440, 90, 480, 120, 6),
 ]);
+
+export const TUTORIAL_WEAPON_PICKUP_DEFINITION = Object.freeze({
+  id: "tutorial-bolt-thrower", type: "weapon", visualType: TUTORIAL_WEAPON_ID,
+  weaponId: TUTORIAL_WEAPON_ID, amount: 1,
+  anchorPlatformId: "tutorial-goal", x: 530, y: 90,
+});
+
+export const TUTORIAL_PRACTICE_TARGET_DEFINITION = Object.freeze({
+  id: TUTORIAL_PRACTICE_TARGET_ID, type: "scrapCrawler",
+  anchorPlatformId: "tutorial-goal", x: 770, y: 90,
+  patrolMinX: 700, patrolMaxX: 900, startDirection: -1,
+  isPassive: true,
+});
+
+export const TUTORIAL_PRACTICE_TARGET_PROFILE = Object.freeze({
+  speedPixelsPerSecond: 20,
+  maximumHealth: 18,
+});
 
 /** Creates one tutorial use of an existing production platform mechanic. */
 function defineMechanicPlatform(id, mechanic, x, y, width, height,
