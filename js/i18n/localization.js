@@ -14,7 +14,7 @@ export function getLanguage() {
 
 /**
  * Switches to a supported language.
- * @param {string} language
+ * @param {string} language Supported language identifier to activate.
  * @returns {boolean}
  */
 export function setLanguage(language) {
@@ -27,8 +27,8 @@ export function setLanguage(language) {
 
 /**
  * Translates a key and substitutes named placeholders.
- * @param {string} key
- * @param {Readonly<Record<string, string|number>>} [values]
+ * @param {string} key Stable translation key to resolve.
+ * @param {Readonly<Record<string, string|number>>} [values] Named placeholder values.
  * @returns {string}
  */
 export function translate(key, values = {}) {
@@ -41,7 +41,7 @@ export function translate(key, values = {}) {
 
 /**
  * Observes language changes and returns an unsubscribe function.
- * @param {(language:string) => void} listener
+ * @param {(language:string) => void} listener Callback receiving the active language.
  * @returns {() => void}
  */
 export function onLanguageChange(listener) {

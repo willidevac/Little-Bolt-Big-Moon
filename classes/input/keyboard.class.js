@@ -40,7 +40,7 @@ export class Keyboard {
   #pressedActions;
 
   /**
-   * @param {EventTarget} [eventTarget=globalThis]
+   * @param {EventTarget} [eventTarget=globalThis] Target receiving keyboard events.
    */
   constructor(eventTarget = globalThis) {
     this.eventTarget = eventTarget;
@@ -83,7 +83,7 @@ export class Keyboard {
 
   /**
    * Activates the state of a pressed game key.
-   * @param {KeyboardEvent} event
+   * @param {KeyboardEvent} event Pressed-key event to translate into actions.
    */
   handleKeyDown(event) {
     this.#updateKeyState(event, true);
@@ -91,7 +91,7 @@ export class Keyboard {
 
   /**
    * Deactivates the state of a released game key.
-   * @param {KeyboardEvent} event
+   * @param {KeyboardEvent} event Released-key event to translate into actions.
    */
   handleKeyUp(event) {
     this.#updateKeyState(event, false);
@@ -99,7 +99,7 @@ export class Keyboard {
 
   /**
    * Returns a new action press exactly once.
-   * @param {string} action
+   * @param {string} action Action whose one-shot press should be consumed.
    * @returns {boolean}
    */
   consumePress(action) {
@@ -108,9 +108,9 @@ export class Keyboard {
 
   /**
    * Toggles an action for exactly one keyboard or pointer source.
-   * @param {string} action
-   * @param {boolean} isPressed
-   * @param {string} sourceId
+   * @param {string} action Supported game action to update.
+   * @param {boolean} isPressed Whether the source currently presses the action.
+   * @param {string} sourceId Stable identifier of the keyboard or pointer source.
    */
   setAction(action, isPressed, sourceId) {
     this.#validateActionSource(action, isPressed, sourceId);
@@ -133,7 +133,11 @@ export class Keyboard {
     SUPPORTED_ACTIONS.forEach((action) => { this[action] = false; });
   }
 
-  /** Updates key state. */
+  /**
+   * Translates a keyboard event into one or more game actions.
+   * @param {KeyboardEvent} event Keyboard event to translate.
+   * @param {boolean} isPressed Whether the key is being pressed or released.
+   */
   #updateKeyState(event, isPressed) {
     const actions = ACTIONS_BY_KEY_CODE[event.code];
     if (!actions || (isPressed && this.#hasModifier(event))) return;
@@ -143,17 +147,28 @@ export class Keyboard {
     });
   }
 
-  /** Performs the prevent browser action operation. */
+  /**
+   * Prevents browser behavior for keys reserved by the game.
+   * @param {KeyboardEvent} event Keyboard event to inspect.
+   */
   #preventBrowserAction(event) {
     if (PREVENTED_DEFAULT_CODES.includes(event.code)) event.preventDefault();
   }
 
-  /** Checks the modifier condition. */
+  /**
+   * Checks whether a shortcut modifier accompanies a key press.
+   * @param {KeyboardEvent} event Keyboard event to inspect.
+   */
   #hasModifier(event) {
     return event.ctrlKey || event.altKey || event.metaKey;
   }
 
-  /** Validates action source. */
+  /**
+   * Validates an action update before mutating input state.
+   * @param {string} action Supported action identifier.
+   * @param {boolean} isPressed Candidate pressed state.
+   * @param {string} sourceId Candidate input-source identifier.
+   */
   #validateActionSource(action, isPressed, sourceId) {
     if (!SUPPORTED_ACTIONS.has(action)) {
       throw new RangeError(`Unbekannte Eingabeaktion: ${action}`);

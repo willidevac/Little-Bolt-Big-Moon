@@ -23,7 +23,7 @@ export class DrawableObject {
 
   /**
    * Starts loading a configured sprite sheet.
-   * @param {{source:string, frameWidth:number, frameHeight:number, frameCount:number}} config
+   * @param {{source:string, frameWidth:number, frameHeight:number, frameCount:number}} config Sprite-sheet source and frame geometry.
    * @returns {boolean} Whether the loading process was started.
    */
   loadSprite(config) {
@@ -40,7 +40,7 @@ export class DrawableObject {
 
   /**
    * Selects a valid frame from the loaded sprite sheet.
-   * @param {number} frameIndex
+   * @param {number} frameIndex Zero-based frame to display.
    */
   setFrameIndex(frameIndex) {
     const frameCount = this.spriteConfig?.frameCount ?? 0;
@@ -52,7 +52,7 @@ export class DrawableObject {
 
   /**
    * Defines a precise collision area within the visible image.
-   * @param {{offsetX:number, offsetY:number, width:number, height:number}} box
+   * @param {{offsetX:number, offsetY:number, width:number, height:number}} box Collision area relative to the image.
    */
   setCollisionBox(box) {
     if (!this.#isValidCollisionBox(box)) {
@@ -82,7 +82,7 @@ export class DrawableObject {
 
   /**
    * Draws the current sprite frame or a safe placeholder.
-   * @param {CanvasRenderingContext2D} context
+   * @param {CanvasRenderingContext2D} context Canvas context receiving the object.
    */
   draw(context) {
     this.drawCurrentFrame(context, this.x, this.y, this.width, this.height);
@@ -90,11 +90,11 @@ export class DrawableObject {
 
   /**
    * Draws the current frame into a freely selected destination area.
-   * @param {CanvasRenderingContext2D} context
-   * @param {number} x
-   * @param {number} y
-   * @param {number} width
-   * @param {number} height
+   * @param {CanvasRenderingContext2D} context Canvas context receiving the frame.
+   * @param {number} x Horizontal destination position in pixels.
+   * @param {number} y Vertical destination position in pixels.
+   * @param {number} width Destination width in pixels.
+   * @param {number} height Destination height in pixels.
    */
   drawCurrentFrame(context, x, y, width, height) {
     if (width <= 0 || height <= 0) return;
@@ -104,7 +104,11 @@ export class DrawableObject {
     context.restore();
   }
 
-  /** Performs the start image load operation. */
+  /**
+   * Starts an image request and connects its completion handlers.
+   * @param {HTMLImageElement} image Image instance used for the request.
+   * @param {string} source Asset path assigned to the image.
+   */
   #startImageLoad(image, source) {
     this.image = image;
     this.imageState = "loading";
@@ -113,13 +117,19 @@ export class DrawableObject {
     image.src = source;
   }
 
-  /** Handles image load. */
+  /**
+   * Marks a loaded image ready only when it contains every configured frame.
+   * @param {HTMLImageElement} image Image whose loading completed.
+   */
   #handleImageLoad(image) {
     if (this.image !== image) return;
     this.imageState = this.#hasExpectedFrames(image) ? "ready" : "error";
   }
 
-  /** Handles image error. */
+  /**
+   * Marks the active image as unavailable after a request error.
+   * @param {HTMLImageElement} image Image whose request failed.
+   */
   #handleImageError(image) {
     if (this.image === image) this.imageState = "error";
   }
@@ -130,7 +140,14 @@ export class DrawableObject {
     return false;
   }
 
-  /** Draws sprite frame. */
+  /**
+   * Draws the selected source frame into the destination rectangle.
+   * @param {CanvasRenderingContext2D} context Canvas context receiving the frame.
+   * @param {number} x Horizontal destination position in pixels.
+   * @param {number} y Vertical destination position in pixels.
+   * @param {number} width Destination width in pixels.
+   * @param {number} height Destination height in pixels.
+   */
   #drawSpriteFrame(context, x, y, width, height) {
     const sourceFrame = this.#getSourceFrame();
     const targetFrame = [x, y, width, height];
@@ -146,7 +163,14 @@ export class DrawableObject {
     return [sourceX, sourceY, frameWidth, frameHeight];
   }
 
-  /** Draws placeholder. */
+  /**
+   * Draws a visible loading or error placeholder.
+   * @param {CanvasRenderingContext2D} context Canvas context receiving the placeholder.
+   * @param {number} x Horizontal destination position in pixels.
+   * @param {number} y Vertical destination position in pixels.
+   * @param {number} width Destination width in pixels.
+   * @param {number} height Destination height in pixels.
+   */
   #drawPlaceholder(context, x, y, width, height) {
     const fillColor = PLACEHOLDER_COLORS[this.imageState] ?? PLACEHOLDER_COLORS.loading;
     context.fillStyle = fillColor;
@@ -156,7 +180,10 @@ export class DrawableObject {
     context.strokeRect(x, y, width, height);
   }
 
-  /** Checks the expected frames condition. */
+  /**
+   * Checks whether an image contains the configured frame count.
+   * @param {HTMLImageElement} image Loaded sprite-sheet image.
+   */
   #hasExpectedFrames(image) {
     const { frameWidth, frameHeight, frameCount } = this.spriteConfig;
     const columns = Math.floor(image.naturalWidth / frameWidth);
@@ -164,14 +191,20 @@ export class DrawableObject {
     return columns * rows >= frameCount;
   }
 
-  /** Checks the valid sprite config condition. */
+  /**
+   * Checks the required sprite source and positive frame geometry.
+   * @param {object} config Candidate sprite configuration.
+   */
   #isValidSpriteConfig(config) {
     if (!config || typeof config.source !== "string" || config.source.length === 0) return false;
     const frameValues = [config.frameWidth, config.frameHeight, config.frameCount];
     return frameValues.every((value) => Number.isInteger(value) && value > 0);
   }
 
-  /** Checks the valid collision box condition. */
+  /**
+   * Checks whether a collision box is finite, positive, and inside the image.
+   * @param {object} box Candidate collision-box definition.
+   */
   #isValidCollisionBox(box) {
     const values = [box?.offsetX, box?.offsetY, box?.width, box?.height];
     const hasValidValues = values.every((value) => Number.isFinite(value));

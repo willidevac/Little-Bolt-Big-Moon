@@ -2,9 +2,9 @@ const STATE_TIME_EPSILON_SECONDS = 1e-9;
 
 /**
  * Derives Byte's visible state from combat, jumping, and movement.
- * @param {Readonly<object>} character
- * @param {Readonly<object>} config
- * @param {Readonly<object>} states
+ * @param {Readonly<object>} character Character state and motion to evaluate.
+ * @param {Readonly<object>} config Animation-state thresholds and timing.
+ * @param {Readonly<object>} states Stable visual-state identifiers.
  * @returns {string}
  */
 export function resolveCharacterState(character, config, states) {
@@ -19,7 +19,11 @@ export function resolveCharacterState(character, config, states) {
   return isSleeping(character, config) ? states.SLEEP : states.IDLE;
 }
 
-/** Checks the sleeping condition. */
+/**
+ * Checks whether character inactivity reached the sleep threshold.
+ * @param {Readonly<object>} character Character inactivity state to evaluate.
+ * @param {Readonly<object>} config Configuration containing the sleep threshold.
+ */
 function isSleeping(character, config) {
   const inactivity = character.inactivitySeconds + STATE_TIME_EPSILON_SECONDS;
   return inactivity >= config.sleepAfterInactivitySeconds;

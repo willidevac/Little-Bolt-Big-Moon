@@ -19,11 +19,11 @@ const CHARACTER_LANDING_WIDTH = 32;
 /**
  * Evaluates the exact discrete charge frames that can land a regular jump.
  * The result uses the same velocity interpolation and gravity as gameplay.
- * @param {JumpSurface} lower
- * @param {JumpSurface} upper
- * @param {JumpPhysics} physics
- * @param {JumpCharacterConfig} character
- * @param {JumpOptions} [options]
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {JumpPhysics} physics Gravity used by the gameplay simulation.
+ * @param {JumpCharacterConfig} character Character jump-speed configuration.
+ * @param {JumpOptions} [options] Sampling rate and safe landing overlap.
  */
 export function evaluateJumpWindow(lower, upper, physics, character,
   options = {}) {
@@ -40,10 +40,14 @@ export function evaluateJumpWindow(lower, upper, physics, character,
 
 /**
  * Collects every valid charge and direction sample.
- * @param {JumpSurface} lower @param {JumpSurface} upper
- * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
- * @param {number} framesPerSecond @param {number} safeOverlapPixels
- * @param {number} fullChargeFrame @returns {ReadonlyArray<Readonly<JumpSample>>}
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {JumpPhysics} physics Gravity used by the gameplay simulation.
+ * @param {JumpCharacterConfig} character Character jump-speed configuration.
+ * @param {number} framesPerSecond Charge samples evaluated per second.
+ * @param {number} safeOverlapPixels Required landing overlap in pixels.
+ * @param {number} fullChargeFrame Frame representing a fully charged jump.
+ * @returns {ReadonlyArray<Readonly<JumpSample>>}
  */
 function collectJumpSamples(lower, upper, physics, character, framesPerSecond,
   safeOverlapPixels, fullChargeFrame) {
@@ -58,10 +62,14 @@ function collectJumpSamples(lower, upper, physics, character, framesPerSecond,
 
 /**
  * Creates all valid directional samples for one charge frame.
- * @param {JumpSurface} lower @param {JumpSurface} upper
- * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
- * @param {number} framesPerSecond @param {number} safeOverlapPixels
- * @param {number} frame @returns {ReadonlyArray<Readonly<JumpSample>>}
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {JumpPhysics} physics Gravity used by the gameplay simulation.
+ * @param {JumpCharacterConfig} character Character jump-speed configuration.
+ * @param {number} framesPerSecond Charge samples evaluated per second.
+ * @param {number} safeOverlapPixels Required landing overlap in pixels.
+ * @param {number} frame Charge frame currently being evaluated.
+ * @returns {ReadonlyArray<Readonly<JumpSample>>}
  */
 function createFrameSamples(lower, upper, physics, character, framesPerSecond,
   safeOverlapPixels, frame) {
@@ -79,9 +87,13 @@ function createFrameSamples(lower, upper, physics, character, framesPerSecond,
 
 /**
  * Creates valid landing samples for left, neutral, and right movement.
- * @param {JumpSurface} lower @param {JumpSurface} upper
- * @param {number} overlap @param {number} frame @param {number} ratio
- * @param {number} seconds @param {number} speed
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {number} overlap Required landing overlap in pixels.
+ * @param {number} frame Charge frame represented by the samples.
+ * @param {number} ratio Normalized jump-charge ratio.
+ * @param {number} seconds Descending flight duration in seconds.
+ * @param {number} speed Horizontal movement speed in pixels per second.
  * @returns {ReadonlyArray<Readonly<JumpSample>>}
  */
 function createDirectionalSamples(lower, upper, overlap, frame, ratio,
@@ -96,9 +108,14 @@ function createDirectionalSamples(lower, upper, overlap, frame, ratio,
 
 /**
  * Creates one valid landing sample or returns null.
- * @param {JumpSurface} lower @param {JumpSurface} upper
- * @param {number} overlap @param {number} frame @param {number} ratio
- * @param {number} direction @param {number} seconds @param {number} speed
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {number} overlap Required landing overlap in pixels.
+ * @param {number} frame Charge frame represented by the sample.
+ * @param {number} ratio Normalized jump-charge ratio.
+ * @param {number} direction Horizontal direction from minus one to one.
+ * @param {number} seconds Descending flight duration in seconds.
+ * @param {number} speed Horizontal movement speed in pixels per second.
  * @returns {Readonly<JumpSample>|null}
  */
 function createSample(lower, upper, overlap, frame, ratio, direction,
@@ -110,8 +127,8 @@ function createSample(lower, upper, overlap, frame, ratio, direction,
 
 /**
  * Creates the immutable aggregate for one jump window.
- * @param {ReadonlyArray<Readonly<JumpSample>>} samples
- * @param {number} fullChargeFrame
+ * @param {ReadonlyArray<Readonly<JumpSample>>} samples Valid landing samples.
+ * @param {number} fullChargeFrame Frame representing a fully charged jump.
  */
 function createJumpWindowResult(samples, fullChargeFrame) {
   const chargeFrames = [...new Set(samples.map(({ frame }) => frame))];
@@ -128,10 +145,10 @@ function createJumpWindowResult(samples, fullChargeFrame) {
 
 /**
  * Returns the descending flight duration for a charged jump or null.
- * @param {number} rise
- * @param {number} ratio
- * @param {JumpPhysics} physics
- * @param {JumpCharacterConfig} character
+ * @param {number} rise Vertical distance to the target surface in pixels.
+ * @param {number} ratio Normalized jump-charge ratio.
+ * @param {JumpPhysics} physics Gravity used by the gameplay simulation.
+ * @param {JumpCharacterConfig} character Character jump-speed configuration.
  * @returns {number|null}
  */
 export function getDescendingFlightSeconds(rise, ratio, physics, character) {
@@ -148,10 +165,11 @@ export function getDescendingFlightSeconds(rise, ratio, physics, character) {
 }
 
 /**
- * @param {JumpSurface} lower
- * @param {JumpSurface} upper
- * @param {number} distance
- * @param {number} safeOverlapPixels
+ * Checks whether a horizontal jump displacement leaves a safe landing range.
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {number} distance Signed horizontal jump distance in pixels.
+ * @param {number} safeOverlapPixels Required landing overlap in pixels.
  */
 function canLandAtDistance(lower, upper, distance, safeOverlapPixels) {
   const launchMinimum = lower.x;
@@ -164,16 +182,22 @@ function canLandAtDistance(lower, upper, distance, safeOverlapPixels) {
     Math.min(launchMaximum, landingMaximum);
 }
 
-/** @param {number} minimum @param {number} maximum @param {number} ratio */
+/**
+ * Interpolates between two values using a normalized ratio.
+ * @param {number} minimum Value returned at a zero ratio.
+ * @param {number} maximum Value returned at a one ratio.
+ * @param {number} ratio Normalized interpolation ratio.
+ */
 function interpolate(minimum, maximum, ratio) {
   return minimum + (maximum - minimum) * ratio;
 }
 
 /**
- * @param {JumpSurface} lower
- * @param {JumpSurface} upper
- * @param {JumpPhysics} physics
- * @param {JumpCharacterConfig} character
+ * Validates the surfaces and configuration required by the simulation.
+ * @param {JumpSurface} lower Platform from which the jump begins.
+ * @param {JumpSurface} upper Platform on which the character should land.
+ * @param {JumpPhysics} physics Gravity used by the gameplay simulation.
+ * @param {JumpCharacterConfig} character Character jump-speed configuration.
  */
 function validateJumpInputs(lower, upper, physics, character) {
   const platformsAreValid = [lower, upper].every(isValidJumpSurface);
@@ -185,7 +209,11 @@ function validateJumpInputs(lower, upper, physics, character) {
   throw new TypeError("The jump-reachability input is invalid.");
 }
 
-/** @param {JumpSurface} platform @returns {boolean} */
+/**
+ * Checks whether a platform provides finite geometry and landing width.
+ * @param {JumpSurface} platform Candidate jump surface.
+ * @returns {boolean}
+ */
 function isValidJumpSurface(platform) {
   return [platform?.x, platform?.y, platform?.width].every(Number.isFinite) &&
     platform.width >= CHARACTER_LANDING_WIDTH;
@@ -193,7 +221,8 @@ function isValidJumpSurface(platform) {
 
 /**
  * Returns numeric values that every jump configuration must provide.
- * @param {JumpPhysics} physics @param {JumpCharacterConfig} character
+ * @param {JumpPhysics} physics Gravity configuration to flatten.
+ * @param {JumpCharacterConfig} character Character jump values to flatten.
  * @returns {ReadonlyArray<number>}
  */
 function getJumpConfigValues(physics, character) {

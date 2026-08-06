@@ -1,6 +1,6 @@
 /**
  * Formats scores consistently for the HUD and end result.
- * @param {number} score
+ * @param {number} score Raw score value to normalize and pad.
  * @returns {string}
  */
 export function formatScore(score) {
@@ -9,7 +9,7 @@ export function formatScore(score) {
 
 /**
  * Formats a best time as minutes and seconds or as an empty record.
- * @param {number|null} seconds
+ * @param {number|null} seconds Best-time duration in seconds.
  * @returns {string}
  */
 export function formatTime(seconds) {

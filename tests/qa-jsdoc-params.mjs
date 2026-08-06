@@ -4,17 +4,9 @@ import path from "node:path";
 import { parse } from "espree";
 
 const TARGET_PATHS = Object.freeze([
-  "classes/core",
-  "classes/effects",
-  "classes/entities",
-  "classes/environment",
-  "classes/ui",
-  "classes/systems",
-  "js/config",
-  "js/app",
-  "js/factories",
-  "js/levels",
-  "js/ui",
+  "classes",
+  "js",
+  "script.js",
 ]);
 
 const files = (await Promise.all(TARGET_PATHS.map(collectFiles))).flat();

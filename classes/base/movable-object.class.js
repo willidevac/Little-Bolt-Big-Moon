@@ -18,8 +18,8 @@ export class MovableObject extends DrawableObject {
 
   /**
    * Updates movement over time using the central physics values.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../core/world.class.js").World} world
+   * @param {number} deltaTimeSeconds Elapsed simulation time in seconds.
+   * @param {import("../core/world.class.js").World} world World providing physics values.
    */
   update(deltaTimeSeconds, world) {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
@@ -32,8 +32,8 @@ export class MovableObject extends DrawableObject {
 
   /**
    * Changes the grounded state and stops an active falling motion.
-   * @param {boolean} isOnGround
-   * @param {object|null} [platform=null]
+   * @param {boolean} isOnGround Whether the object has stable ground contact.
+   * @param {object|null} [platform=null] Platform supporting the object.
    */
   setOnGround(isOnGround, platform = null) {
     this.isOnGround = Boolean(isOnGround);
@@ -43,7 +43,7 @@ export class MovableObject extends DrawableObject {
 
   /**
    * Applies a controlled upward impulse to the object.
-   * @param {number} speedPixelsPerSecond
+   * @param {number} speedPixelsPerSecond Positive vertical launch speed.
    */
   applyUpwardImpulse(speedPixelsPerSecond) {
     if (!Number.isFinite(speedPixelsPerSecond) || speedPixelsPerSecond <= 0) {
@@ -53,31 +53,47 @@ export class MovableObject extends DrawableObject {
     this.setOnGround(false);
   }
 
-  /** Applies acceleration. */
+  /**
+   * Integrates configured acceleration into velocity.
+   * @param {number} deltaTimeSeconds Elapsed simulation time in seconds.
+   */
   #applyAcceleration(deltaTimeSeconds) {
     this.velocityX += this.accelerationX * deltaTimeSeconds;
     this.velocityY += this.accelerationY * deltaTimeSeconds;
   }
 
-  /** Applies gravity. */
+  /**
+   * Applies gravity while the object is airborne.
+   * @param {number} deltaTimeSeconds Elapsed simulation time in seconds.
+   * @param {object} physicsConfig Gravity and fall-speed configuration.
+   */
   #applyGravity(deltaTimeSeconds, physicsConfig) {
     if (!this.isAffectedByGravity || this.isOnGround) return;
     this.velocityY += physicsConfig.gravityPixelsPerSecondSquared * deltaTimeSeconds;
   }
 
-  /** Performs the limit fall speed operation. */
+  /**
+   * Clamps downward velocity to the configured terminal speed.
+   * @param {object} physicsConfig Physics values containing terminal speed.
+   */
   #limitFallSpeed(physicsConfig) {
     const maximumFallSpeed = physicsConfig.maximumFallSpeedPixelsPerSecond;
     this.velocityY = Math.min(this.velocityY, maximumFallSpeed);
   }
 
-  /** Applies velocity. */
+  /**
+   * Integrates current velocity into the world position.
+   * @param {number} deltaTimeSeconds Elapsed simulation time in seconds.
+   */
   #applyVelocity(deltaTimeSeconds) {
     this.x += this.velocityX * deltaTimeSeconds;
     this.y += this.velocityY * deltaTimeSeconds;
   }
 
-  /** Checks the valid delta time condition. */
+  /**
+   * Checks whether an elapsed-time value can be simulated safely.
+   * @param {number} deltaTimeSeconds Candidate elapsed time in seconds.
+   */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

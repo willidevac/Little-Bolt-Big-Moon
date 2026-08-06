@@ -1,8 +1,8 @@
 /**
  * Clamps a numeric value to the specified range.
- * @param {number} value
- * @param {number} minimum
- * @param {number} maximum
+ * @param {number} value Numeric value to constrain.
+ * @param {number} minimum Inclusive lower bound.
+ * @param {number} maximum Inclusive upper bound.
  * @returns {number}
  */
 export function clamp(value, minimum, maximum) {

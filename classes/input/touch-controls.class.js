@@ -24,8 +24,8 @@ export class TouchControls {
   #activePointers;
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {HTMLElement} root
+   * @param {import("../core/game.class.js").Game} game Game providing input and events.
+   * @param {HTMLElement} root Root containing the static touch controls.
    */
   constructor(game, root) {
     this.#validateDependencies(game, root);
@@ -78,7 +78,7 @@ export class TouchControls {
 
   /**
    * Activates the action of a new touch pointer.
-   * @param {PointerEvent} event
+   * @param {PointerEvent} event Pointer press to translate into a game action.
    */
   handlePointerDown(event) {
     const button = this.#getButton(event.target);
@@ -95,7 +95,7 @@ export class TouchControls {
 
   /**
    * Releases exactly the touch pointer that ended or was canceled.
-   * @param {PointerEvent} event
+   * @param {PointerEvent} event Pointer completion to release.
    */
   handlePointerEnd(event) {
     if (!this.#activePointers.has(event.pointerId)) return;
@@ -105,7 +105,7 @@ export class TouchControls {
 
   /**
    * Blocks browser actions exclusively on the touch buttons.
-   * @param {Event} event
+   * @param {Event} event Browser event originating from the controls.
    */
   blockControlDefault(event) {
     if (this.#getButton(event.target)) event.preventDefault();
@@ -113,7 +113,7 @@ export class TouchControls {
 
   /**
    * Shows the controls only during active gameplay.
-   * @param {string} state
+   * @param {string} state Current game-state identifier.
    */
   render(state) {
     const isPlaying = state === GAME_STATES.PLAYING;
@@ -121,7 +121,10 @@ export class TouchControls {
     if (!isPlaying) this.#releaseAllPointers();
   }
 
-  /** Shows combat controls only after Byte finds the first weapon. */
+  /**
+   * Shows combat controls only after Byte finds the first weapon.
+   * @param {{type: string, detail: object}} event Gameplay event to reflect.
+   */
   handleGameplayEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
       this.renderCombat(event.detail);
@@ -130,7 +133,7 @@ export class TouchControls {
 
   /**
    * Keeps unavailable combat buttons out of sight and keyboard focus.
-   * @param {Readonly<object>} weapon
+   * @param {Readonly<object>} weapon Current weapon and its unlock state.
    */
   renderCombat(weapon) {
     const isUnlocked = Boolean(weapon?.isCombatUnlocked);
@@ -141,7 +144,10 @@ export class TouchControls {
     if (!isUnlocked) this.#releaseCombatPointers();
   }
 
-  /** Performs the release pointer operation. */
+  /**
+   * Releases one pointer and its associated input action.
+   * @param {number} pointerId Browser pointer identifier to release.
+   */
   #releasePointer(pointerId) {
     const pointer = this.#activePointers.get(pointerId);
     if (!pointer) return;
@@ -153,7 +159,10 @@ export class TouchControls {
     this.#setButtonPressed(pointer.button, remainsPressed);
   }
 
-  /** Collects elements. */
+  /**
+   * Collects and validates every static touch-control element.
+   * @param {HTMLElement} root Root containing the touch-control region.
+   */
   #collectElements(root) {
     this.element = this.#getElement(root);
     this.buttons = [...this.element.querySelectorAll("button[data-input-action]")];
@@ -195,7 +204,11 @@ export class TouchControls {
     });
   }
 
-  /** Collects pointer. */
+  /**
+   * Captures a pointer when supported by the browser.
+   * @param {HTMLButtonElement} button Button receiving pointer capture.
+   * @param {number} pointerId Browser pointer identifier to capture.
+   */
   #capturePointer(button, pointerId) {
     try {
       button.setPointerCapture(pointerId);
@@ -204,25 +217,38 @@ export class TouchControls {
     }
   }
 
-  /** Applies button pressed. */
+  /**
+   * Synchronizes a touch button's visual and accessible pressed state.
+   * @param {HTMLButtonElement} button Button whose state should change.
+   * @param {boolean} isPressed Whether the button is actively pressed.
+   */
   #setButtonPressed(button, isPressed) {
     button.classList.toggle("is-pressed", isPressed);
     button.setAttribute("aria-pressed", String(isPressed));
   }
 
-  /** Returns button. */
+  /**
+   * Returns the action button containing an event target.
+   * @param {EventTarget|null} target Candidate event target.
+   */
   #getButton(target) {
     if (!(target instanceof Element)) return null;
     const button = target.closest("button[data-input-action]");
     return button && this.element.contains(button) ? button : null;
   }
 
-  /** Returns source id. */
+  /**
+   * Returns the stable keyboard-source identifier for a pointer.
+   * @param {number} pointerId Browser pointer identifier.
+   */
   #getSourceId(pointerId) {
     return `pointer:${pointerId}`;
   }
 
-  /** Returns element. */
+  /**
+   * Returns the required touch-control region below a root.
+   * @param {HTMLElement} root Root containing the touch-control region.
+   */
   #getElement(root) {
     const element = root.querySelector(TOUCH_CONTROLS_SELECTOR);
     if (element instanceof HTMLElement) return element;
@@ -241,7 +267,11 @@ export class TouchControls {
     throw new Error("Touch-Steuerung ist unvollständig oder doppelt.");
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates the game services and DOM root required by touch input.
+   * @param {object} game Candidate game service container.
+   * @param {HTMLElement} root Candidate touch-control root.
+   */
   #validateDependencies(game, root) {
     const hasGame = typeof game?.onStateChange === "function";
     const hasGameplay = typeof game?.onGameplayEvent === "function";
