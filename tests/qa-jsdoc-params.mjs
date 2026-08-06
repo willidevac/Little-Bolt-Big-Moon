@@ -3,25 +3,41 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { parse } from "espree";
 
-const TARGET_DIRECTORIES = Object.freeze([
+const TARGET_PATHS = Object.freeze([
   "classes/core",
   "classes/effects",
   "classes/entities",
   "classes/environment",
   "classes/ui",
+  "classes/systems/collision-debug-renderer.class.js",
+  "classes/systems/collision-manager.class.js",
+  "classes/systems/fall-tracker.class.js",
+  "classes/systems/platform-motion-system.class.js",
+  "classes/systems/progression-route-positioner.class.js",
+  "classes/systems/run-combo.class.js",
+  "classes/systems/run-resources.class.js",
+  "classes/systems/run-score.class.js",
+  "classes/systems/run-stats.class.js",
+  "classes/systems/run-stats-synchronizer.class.js",
+  "classes/systems/run-upgrade-flow.class.js",
+  "classes/systems/structure-collision-system.class.js",
+  "classes/systems/upgrade-manager.class.js",
+  "classes/systems/world-event-reporter.class.js",
 ]);
 
-const files = (await Promise.all(TARGET_DIRECTORIES.map(collectFiles))).flat();
+const files = (await Promise.all(TARGET_PATHS.map(collectFiles))).flat();
 const violations = (await Promise.all(files.map(auditFile))).flat();
 assert.deepEqual(violations, []);
 
 console.log(
-  `CLEAN-018: ${files.length} Core-, Effekt-, Entity-, Environment- und ` +
-    "UI-Dateien dokumentieren alle Übergabeparameter mit Beschreibung.",
+  `CLEAN-018: ${files.length} geprüfte Produktionsdateien dokumentieren ` +
+    "alle Übergabeparameter mit Typ und Beschreibung.",
 );
 
 /** Collects JavaScript files below one production directory. */
 async function collectFiles(directory) {
+  const stats = await fs.stat(directory);
+  if (stats.isFile()) return [directory];
   const entries = await fs.readdir(directory, { withFileTypes: true });
   const groups = await Promise.all(entries.map(async (entry) => {
     const target = path.join(directory, entry.name);

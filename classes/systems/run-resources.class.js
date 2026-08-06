@@ -20,7 +20,10 @@ export class RunResources {
   #values;
   #capacities;
 
-  /** @param {Readonly<object>} config Configured starting values and limits. */
+  /**
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configured starting values and limits.
+   */
   constructor(config) {
     this.#validateConfig(config);
     this.#config = config;
@@ -57,7 +60,7 @@ export class RunResources {
 
   /**
    * Applies new pickups to their matching resources as a batch.
-   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
+   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups Pickups used by apply pickups.
    * @returns {boolean} Whether at least one resource changed.
    */
   applyPickups(pickups) {
@@ -71,7 +74,7 @@ export class RunResources {
 
   /**
    * Reduces energy and returns the remaining value.
-   * @param {number} amount
+   * @param {number} amount Amount used by take damage.
    * @returns {number}
    */
   takeDamage(amount) {
@@ -86,8 +89,8 @@ export class RunResources {
 
   /**
    * Atomically spends an available limited weapon resource.
-   * @param {string} type
-   * @param {number} amount
+   * @param {string} type Type used by spend.
+   * @param {number} amount Amount used by spend.
    * @returns {boolean} Whether enough ammunition was available.
    */
   spend(type, amount) {
@@ -100,7 +103,7 @@ export class RunResources {
 
   /**
    * Returns a limited weapon resource without exposing mutable access.
-   * @param {string} type
+   * @param {string} type Type used by get amount.
    * @returns {number}
    */
   getAmount(type) {
@@ -112,8 +115,8 @@ export class RunResources {
 
   /**
    * Increases a resource capacity and immediately fills the new space.
-   * @param {"energy"|"arcCharge"} type
-   * @param {number} amount
+   * @param {"energy"|"arcCharge"} type Type used by increase capacity.
+   * @param {number} amount Amount used by increase capacity.
    */
   increaseCapacity(type, amount) {
     this.#validateUpgrade(type, amount);
@@ -135,7 +138,10 @@ export class RunResources {
     });
   }
 
-  /** Applies pickup. */
+  /**
+   * Applies pickup.
+   * @param {Readonly<object>} pickup Pickup used by apply pickup.
+   */
   #applyPickup(pickup) {
     const statName = STAT_BY_PICKUP_TYPE[pickup?.type];
     if (NON_RESOURCE_TYPES.includes(pickup?.type)) return false;
@@ -147,7 +153,11 @@ export class RunResources {
     return this.#values[statName] !== previousValue;
   }
 
-  /** Returns pickup value. */
+  /**
+   * Returns pickup value.
+   * @param {string} statName Stat name used by get pickup value.
+   * @param {Readonly<object>} amount Amount used by get pickup value.
+   */
   #getPickupValue(statName, amount) {
     const capacityName = CAPACITY_BY_STAT[statName];
     if (!capacityName) return this.#values[statName] + amount;
@@ -156,7 +166,10 @@ export class RunResources {
     );
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(config) {
     const values = [
       config?.maximumEnergy, config?.startingEnergy, config?.startingGears,
@@ -169,13 +182,19 @@ export class RunResources {
     this.#validateArcCharges(config);
   }
 
-  /** Validates energy. */
+  /**
+   * Validates energy.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateEnergy(config) {
     if (config.startingEnergy <= config.maximumEnergy) return;
     throw new RangeError("Die Startenergie liegt außerhalb des erlaubten Bereichs.");
   }
 
-  /** Validates arc charges. */
+  /**
+   * Validates arc charges.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateArcCharges(config) {
     this.#validateRange(
       config.startingArcCharges, config.maximumArcCharges,
@@ -183,21 +202,34 @@ export class RunResources {
     );
   }
 
-  /** Validates range. */
+  /**
+   * Validates range.
+   * @param {Readonly<object>} starting Starting used by validate range.
+   * @param {Readonly<object>} maximum Maximum used by validate range.
+   * @param {Readonly<object>} message Message used by validate range.
+   */
   #validateRange(starting, maximum, message) {
     const hasIntegers = Number.isInteger(starting) && Number.isInteger(maximum);
     if (hasIntegers && maximum > 0 && starting >= 0 && starting <= maximum) return;
     throw new RangeError(message);
   }
 
-  /** Validates spend. */
+  /**
+   * Validates spend.
+   * @param {Readonly<object>} type Type used by validate spend.
+   * @param {Readonly<object>} amount Amount used by validate spend.
+   */
   #validateSpend(type, amount) {
     const hasType = SPENDABLE_TYPES.includes(type);
     if (hasType && Number.isInteger(amount) && amount >= 0) return;
     throw new TypeError("Der Munitionsverbrauch ist ungültig.");
   }
 
-  /** Validates upgrade. */
+  /**
+   * Validates upgrade.
+   * @param {Readonly<object>} type Type used by validate upgrade.
+   * @param {Readonly<object>} amount Amount used by validate upgrade.
+   */
   #validateUpgrade(type, amount) {
     const canGrow = Object.hasOwn(CAPACITY_BY_STAT, STAT_BY_PICKUP_TYPE[type]);
     if (canGrow && Number.isFinite(amount) && amount > 0) return;

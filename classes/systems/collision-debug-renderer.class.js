@@ -6,7 +6,8 @@ const STOMP_BOX_COLOR = "#35d5d3";
  */
 export class CollisionDebugRenderer {
   /**
-   * @param {Readonly<object>} debugConfig
+   * Creates the configured system.
+   * @param {Readonly<object>} debugConfig Debug rendering configuration.
    */
   constructor(debugConfig) {
     this.isEnabled = debugConfig?.showCollisionBoxes === true;
@@ -14,8 +15,8 @@ export class CollisionDebugRenderer {
 
   /**
    * Draws body and stomp areas for all visible world objects.
-   * @param {CanvasRenderingContext2D} context
-   * @param {ReadonlyMap<string, ReadonlyArray<object>>} entityGroups
+   * @param {CanvasRenderingContext2D} context Canvas context used for debug rendering.
+   * @param {ReadonlyMap<string, ReadonlyArray<object>>} entityGroups Entity groups inspected by the debug renderer.
    */
   draw(context, entityGroups) {
     if (!this.isEnabled) return;
@@ -27,7 +28,11 @@ export class CollisionDebugRenderer {
     context.restore();
   }
 
-  /** Draws entity. */
+  /**
+   * Draws entity.
+   * @param {CanvasRenderingContext2D} context Canvas context used for debug rendering.
+   * @param {Readonly<object>} entity Entity evaluated or rendered by the operation.
+   */
   #drawEntity(context, entity) {
     if (typeof entity.getCollisionBoundsList === "function") {
       entity.getCollisionBoundsList().forEach((bounds) => {
@@ -41,7 +46,12 @@ export class CollisionDebugRenderer {
     this.#strokeBounds(context, entity.getStompBounds(), STOMP_BOX_COLOR);
   }
 
-  /** Performs the stroke bounds operation. */
+  /**
+   * Performs the stroke bounds operation.
+   * @param {CanvasRenderingContext2D} context Canvas context used for debug rendering.
+   * @param {Readonly<object>} bounds Bounds used by stroke bounds.
+   * @param {string} color Stroke color used for the debug bounds.
+   */
   #strokeBounds(context, bounds, color) {
     context.strokeStyle = color;
     context.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);

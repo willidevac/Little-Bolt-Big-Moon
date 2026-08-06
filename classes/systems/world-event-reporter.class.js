@@ -5,7 +5,8 @@ import { GAMEPLAY_EVENTS } from "../core/gameplay-event-hub.class.js";
  */
 export class WorldEventReporter {
   /**
-   * @param {import("../core/gameplay-event-hub.class.js").GameplayEventHub} events
+   * Creates the configured system.
+   * @param {import("../core/gameplay-event-hub.class.js").GameplayEventHub} events Gameplay event hub receiving progress reports.
    */
   constructor(events) {
     if (typeof events?.emit !== "function") {
@@ -18,8 +19,8 @@ export class WorldEventReporter {
 
   /**
    * Captures the minimal state before the world update.
-   * @param {Readonly<object>|null} character
-   * @param {Readonly<object>} boss
+   * @param {Readonly<object>|null} character Character evaluated or reported by the system.
+   * @param {Readonly<object>} boss Boss used by capture.
    */
   capture(character, boss) {
     this.before = Object.freeze({
@@ -36,8 +37,8 @@ export class WorldEventReporter {
 
   /**
    * Reports jumps, landings, boss activation, and new boss phases.
-   * @param {Readonly<object>|null} character
-   * @param {Readonly<object>} boss
+   * @param {Readonly<object>|null} character Character evaluated or reported by the system.
+   * @param {Readonly<object>} boss Boss used by report.
    */
   report(character, boss) {
     if (!this.before || !character) return;
@@ -47,8 +48,8 @@ export class WorldEventReporter {
 
   /**
    * Applies damage and reports exactly one accepted enemy hit.
-   * @param {Readonly<object>} enemy
-   * @param {Readonly<object>} hit
+   * @param {Readonly<object>} enemy Enemy involved in the reported gameplay event.
+   * @param {Readonly<object>} hit Hit data applied to the enemy.
    * @returns {boolean}
    */
   damageEnemy(enemy, hit) {
@@ -62,7 +63,12 @@ export class WorldEventReporter {
     return true;
   }
 
-  /** Reports accepted damage with its source for downstream observers. */
+  /**
+   * Reports accepted damage with its source for downstream observers.
+   * @param {Readonly<object>} type Type used by report enemy hit.
+   * @param {Readonly<object>} enemy Enemy involved in the reported gameplay event.
+   * @param {Readonly<object>} hit Hit data applied to the enemy.
+   */
   #reportEnemyHit(type, enemy, hit) {
     this.events.emit(type, {
       id: enemy.id,
@@ -72,7 +78,10 @@ export class WorldEventReporter {
     });
   }
 
-  /** Performs the report movement operation. */
+  /**
+   * Performs the report movement operation.
+   * @param {Readonly<object>} character Character evaluated or reported by the system.
+   */
   #reportMovement(character) {
     this.#reportHorizontalMovement(character);
     const jumped = this.before.velocityY >= 0 && character.velocityY < 0;
@@ -83,7 +92,10 @@ export class WorldEventReporter {
     this.#reportJumpCharge(character);
   }
 
-  /** Reports a newly accepted airborne wall impact exactly once. */
+  /**
+   * Reports a newly accepted airborne wall impact exactly once.
+   * @param {Readonly<object>} character Character evaluated or reported by the system.
+   */
   #reportWallRebound(character) {
     const impactCount = character.wallImpactCount ?? 0;
     if (impactCount <= this.before.wallImpactCount) return;
@@ -93,7 +105,10 @@ export class WorldEventReporter {
     });
   }
 
-  /** Reports actual left/right movement only when its direction changes. */
+  /**
+   * Reports actual left/right movement only when its direction changes.
+   * @param {Readonly<object>} character Character evaluated or reported by the system.
+   */
   #reportHorizontalMovement(character) {
     const distance = character.x - this.before.x;
     const direction = Math.abs(distance) > 0.01 ? Math.sign(distance) : 0;
@@ -105,7 +120,10 @@ export class WorldEventReporter {
     });
   }
 
-  /** Performs the report jump charge operation. */
+  /**
+   * Performs the report jump charge operation.
+   * @param {Readonly<object>} character Character evaluated or reported by the system.
+   */
   #reportJumpCharge(character) {
     const percent = character.jumpChargePercent;
     const isCharging = character.isChargingJump;
@@ -115,7 +133,10 @@ export class WorldEventReporter {
     this.events.emit(GAMEPLAY_EVENTS.PLAYER_JUMP_CHARGE, { percent, isCharging });
   }
 
-  /** Performs the report boss operation. */
+  /**
+   * Performs the report boss operation.
+   * @param {Readonly<object>} boss Boss used by report boss.
+   */
   #reportBoss(boss) {
     if (!this.before.bossActive && boss.isActive) {
       this.events.emit(GAMEPLAY_EVENTS.BOSS_ACTIVATED, { name: boss.name });

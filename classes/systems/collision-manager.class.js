@@ -3,7 +3,8 @@
  */
 export class CollisionManager {
   /**
-   * @param {Readonly<object>} physicsConfig
+   * Creates the configured system.
+   * @param {Readonly<object>} physicsConfig Physics thresholds used for collision detection.
    */
   constructor(physicsConfig) {
     this.landingTolerancePixels = physicsConfig.platformLandingTolerancePixels;
@@ -11,8 +12,8 @@ export class CollisionManager {
 
   /**
    * Checks whether two rectangular areas overlap.
-   * @param {import("../base/drawable-object.class.js").DrawableObject} firstObject
-   * @param {import("../base/drawable-object.class.js").DrawableObject} secondObject
+   * @param {import("../base/drawable-object.class.js").DrawableObject} firstObject First collision object being compared.
+   * @param {import("../base/drawable-object.class.js").DrawableObject} secondObject Second collision object being compared.
    * @returns {boolean}
    */
   areOverlapping(firstObject, secondObject) {
@@ -26,9 +27,9 @@ export class CollisionManager {
 
   /**
    * Detects enemy contact only while falling across the target from above.
-   * @param {import("../entities/character.class.js").Character} character
-   * @param {import("../base/drawable-object.class.js").DrawableObject} target
-   * @param {number} deltaTimeSeconds
+   * @param {import("../entities/character.class.js").Character} character Character evaluated or reported by the system.
+   * @param {import("../base/drawable-object.class.js").DrawableObject} target Target inspected or updated by the system.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    * @returns {boolean}
    */
   isStompCollision(character, target, deltaTimeSeconds) {
@@ -46,7 +47,7 @@ export class CollisionManager {
 
   /**
    * Starts a fresh ground-contact check before movement.
-   * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
+   * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects Moving entities processed during the frame.
    */
   resetGroundStates(movableObjects) {
     movableObjects.forEach((movableObject) => movableObject.setOnGround(false));
@@ -54,7 +55,7 @@ export class CollisionManager {
 
   /**
    * Captures exact collision bounds before any movement in the current frame.
-   * @param {ReadonlyArray<object>} movableObjects
+   * @param {ReadonlyArray<object>} movableObjects Moving entities processed during the frame.
    * @returns {Map<object, Readonly<object>>}
    */
   captureBounds(movableObjects) {
@@ -66,10 +67,10 @@ export class CollisionManager {
 
   /**
    * Places falling objects on the first crossed platform surface.
-   * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects
-   * @param {ReadonlyArray<import("../environment/platform.class.js").Platform>} platforms
-   * @param {number} deltaTimeSeconds
-   * @param {Map<object, Readonly<object>>|null} [previousBounds=null]
+   * @param {ReadonlyArray<import("../base/movable-object.class.js").MovableObject>} movableObjects Moving entities processed during the frame.
+   * @param {ReadonlyArray<import("../environment/platform.class.js").Platform>} platforms Candidate platforms considered for landing.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Map<object, Readonly<object>>|null} [previousBounds=null] Optional entity bounds captured before movement.
    * @returns {ReadonlyArray<Readonly<object>>} New landing contacts.
    */
   resolvePlatformLandings(movableObjects, platforms, deltaTimeSeconds,
@@ -87,7 +88,13 @@ export class CollisionManager {
     return Object.freeze(landings);
   }
 
-  /** Returns find landing platform. */
+  /**
+   * Returns find landing platform.
+   * @param {Readonly<object>} movableObject Moving entity resolved against the collision surface.
+   * @param {ReadonlyArray<object>} platforms Candidate platforms considered for landing.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {ReadonlyMap<object, Readonly<object>>|null} previousBounds Optional entity bounds captured before movement.
+   */
   #findLandingPlatform(movableObject, platforms, deltaTimeSeconds,
     previousBounds) {
     return platforms.reduce((landingPlatform, platform) => {
@@ -100,7 +107,11 @@ export class CollisionManager {
     }, null);
   }
 
-  /** Returns the platform with the higher current landing surface. */
+  /**
+   * Returns the platform with the higher current landing surface.
+   * @param {Readonly<object>} currentPlatform Current platform used by get higher platform.
+   * @param {boolean} candidatePlatform Candidate platform used by get higher platform.
+   */
   #getHigherPlatform(currentPlatform, candidatePlatform) {
     if (!currentPlatform) return candidatePlatform;
     const currentTop = this.#getCollisionBounds(currentPlatform).y;
@@ -108,7 +119,13 @@ export class CollisionManager {
     return candidateTop < currentTop ? candidatePlatform : currentPlatform;
   }
 
-  /** Checks the land on condition. */
+  /**
+   * Checks the land on condition.
+   * @param {Readonly<object>} movableObject Moving entity resolved against the collision surface.
+   * @param {Readonly<object>} platform Platform evaluated as a landing surface.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {ReadonlyMap<object, Readonly<object>>|null} previousBounds Optional entity bounds captured before movement.
+   */
   #canLandOn(movableObject, platform, deltaTimeSeconds, previousBounds) {
     if (movableObject.velocityY < 0 || platform.isCollidable === false) return false;
     const movableBounds = this.#getCollisionBounds(movableObject);
@@ -120,7 +137,15 @@ export class CollisionManager {
     );
   }
 
-  /** Checks relative movement across the platform's current top surface. */
+  /**
+   * Checks relative movement across the platform's current top surface.
+   * @param {Readonly<object>} movableObject Moving entity resolved against the collision surface.
+   * @param {Readonly<object>} movableBounds Movable bounds used by has crossed surface.
+   * @param {Readonly<object>} platform Platform evaluated as a landing surface.
+   * @param {Readonly<object>} platformBounds Platform bounds used by has crossed surface.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {ReadonlyMap<object, Readonly<object>>|null} previousBounds Optional entity bounds captured before movement.
+   */
   #hasCrossedSurface(movableObject, movableBounds, platform, platformBounds,
     deltaTimeSeconds, previousBounds) {
     const currentBottom = movableBounds.y + movableBounds.height;
@@ -132,7 +157,13 @@ export class CollisionManager {
       currentBottom >= platformBounds.y;
   }
 
-  /** Returns the exact or velocity-derived bottom before this frame. */
+  /**
+   * Returns the exact or velocity-derived bottom before this frame.
+   * @param {Readonly<object>} movableObject Moving entity resolved against the collision surface.
+   * @param {Readonly<object>} currentBounds Entity bounds after the current movement step.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {ReadonlyMap<object, Readonly<object>>|null} previousBounds Optional entity bounds captured before movement.
+   */
   #getPreviousBottom(movableObject, currentBounds, deltaTimeSeconds,
     previousBounds) {
     const previous = previousBounds?.get(movableObject);
@@ -141,7 +172,11 @@ export class CollisionManager {
       movableObject.velocityY * deltaTimeSeconds;
   }
 
-  /** Checks the horizontal overlap condition. */
+  /**
+   * Checks the horizontal overlap condition.
+   * @param {Readonly<object>} firstObject First collision object being compared.
+   * @param {Readonly<object>} secondObject Second collision object being compared.
+   */
   #hasHorizontalOverlap(firstObject, secondObject) {
     return (
       firstObject.x < secondObject.x + secondObject.width &&
@@ -149,7 +184,11 @@ export class CollisionManager {
     );
   }
 
-  /** Checks the vertical overlap condition. */
+  /**
+   * Checks the vertical overlap condition.
+   * @param {Readonly<object>} firstObject First collision object being compared.
+   * @param {Readonly<object>} secondObject Second collision object being compared.
+   */
   #hasVerticalOverlap(firstObject, secondObject) {
     return (
       firstObject.y < secondObject.y + secondObject.height &&
@@ -157,7 +196,11 @@ export class CollisionManager {
     );
   }
 
-  /** Performs the land on platform operation. */
+  /**
+   * Performs the land on platform operation.
+   * @param {Readonly<object>} movableObject Moving entity resolved against the collision surface.
+   * @param {Readonly<object>} platform Platform evaluated as a landing surface.
+   */
   #landOnPlatform(movableObject, platform) {
     const movableBounds = this.#getCollisionBounds(movableObject);
     const platformBounds = this.#getCollisionBounds(platform);
@@ -169,7 +212,10 @@ export class CollisionManager {
     return Object.freeze({ movableObject, platform, activated });
   }
 
-  /** Returns collision bounds. */
+  /**
+   * Returns collision bounds.
+   * @param {Readonly<object>} object Object used by get collision bounds.
+   */
   #getCollisionBounds(object) {
     if (typeof object?.getCollisionBounds === "function") {
       return object.getCollisionBounds();
@@ -177,7 +223,10 @@ export class CollisionManager {
     return object;
   }
 
-  /** Checks the valid delta time condition. */
+  /**
+   * Checks the valid delta time condition.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

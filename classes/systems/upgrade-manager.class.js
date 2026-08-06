@@ -19,9 +19,10 @@ export class UpgradeManager {
   #selection;
 
   /**
-   * @param {Readonly<object>} data
-   * @param {Readonly<Record<string, (value:number) => void>>} effects
-   * @param {() => number} [random=Math.random]
+   * Creates the configured system.
+   * @param {Readonly<object>} data Source definitions used to configure the system.
+   * @param {Readonly<Record<string, (value:number) => void>>} effects Upgrade effect callbacks keyed by effect identifier.
+   * @param {() => number} [random=Math.random] Random-number source used for deterministic selection.
    */
   constructor(data, effects, random = Math.random) {
     this.#validateDependencies(data, effects, random);
@@ -36,7 +37,10 @@ export class UpgradeManager {
     this.reset();
   }
 
-  /** Creates map. */
+  /**
+   * Creates map.
+   * @param {Readonly<object>} entries Entries used by create map.
+   */
   #createMap(entries) {
     return new Map(
       entries.map((entry) => [entry.id, Object.freeze({ ...entry })]),
@@ -61,7 +65,7 @@ export class UpgradeManager {
 
   /**
    * Applies only an upgrade that is currently offered.
-   * @param {string} upgradeId
+   * @param {string} upgradeId Identifier of the selected upgrade.
    * @returns {Readonly<object>}
    */
   choose(upgradeId) {
@@ -92,7 +96,10 @@ export class UpgradeManager {
     this.#selection = Object.freeze([]);
   }
 
-  /** Creates snapshot. */
+  /**
+   * Creates snapshot.
+   * @param {Readonly<object>} upgrade Upgrade definition processed by the manager.
+   */
   #createSnapshot(upgrade) {
     return Object.freeze({
       id: upgrade.id,
@@ -108,7 +115,10 @@ export class UpgradeManager {
     });
   }
 
-  /** Draws weighted. */
+  /**
+   * Draws weighted.
+   * @param {ReadonlyArray<object>} upgrades Upgrade definitions available for selection.
+   */
   #drawWeighted(upgrades) {
     const pool = [...upgrades];
     const selection = [];
@@ -119,7 +129,10 @@ export class UpgradeManager {
     return selection;
   }
 
-  /** Returns weighted index. */
+  /**
+   * Returns weighted index.
+   * @param {ReadonlyArray<object>} upgrades Upgrade definitions available for selection.
+   */
   #getWeightedIndex(upgrades) {
     const weights = upgrades.map((upgrade) => this.#getWeight(upgrade));
     const target = this.#getRandomValue() * weights.reduce((sum, value) => sum + value, 0);
@@ -131,18 +144,29 @@ export class UpgradeManager {
     return weights.length - 1;
   }
 
-  /** Returns weight. */
+  /**
+   * Returns weight.
+   * @param {Readonly<object>} upgrade Upgrade definition processed by the manager.
+   */
   #getWeight(upgrade) {
     return this.#rarities.get(upgrade.rarity).weight;
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} data Source definitions used to configure the system.
+   * @param {Readonly<Record<string, Function>>} effects Upgrade effect callbacks keyed by effect identifier.
+   * @param {() => number} random Random-number source used for deterministic selection.
+   */
   #validateDependencies(data, effects, random) {
     if (this.#hasValidData(data) && this.#hasValidEffects(effects, random)) return;
     throw new TypeError("Die Upgrade-Daten sind unvollständig oder ungültig.");
   }
 
-  /** Checks the valid data condition. */
+  /**
+   * Checks the valid data condition.
+   * @param {Readonly<object>} data Source definitions used to configure the system.
+   */
   #hasValidData(data) {
     const upgrades = data?.upgrades;
     const ids = Array.isArray(upgrades) ? upgrades.map((upgrade) => upgrade.id) : [];
@@ -157,14 +181,22 @@ export class UpgradeManager {
       this.#hasValidIconSheet(data.iconSheet);
   }
 
-  /** Checks the valid selection size condition. */
+  /**
+   * Checks the valid selection size condition.
+   * @param {Readonly<object>} selectionSize Selection size used by has valid selection size.
+   * @param {number} upgradeCount Upgrade count used by has valid selection size.
+   */
   #hasValidSelectionSize(selectionSize, upgradeCount) {
     return Number.isInteger(selectionSize) &&
       selectionSize > 0 &&
       selectionSize <= upgradeCount;
   }
 
-  /** Checks the valid effects condition. */
+  /**
+   * Checks the valid effects condition.
+   * @param {Readonly<Record<string, Function>>} effects Upgrade effect callbacks keyed by effect identifier.
+   * @param {() => number} random Random-number source used for deterministic selection.
+   */
   #hasValidEffects(effects, random) {
     const hasEffects = REQUIRED_UPGRADE_IDS.every((id) => {
       return typeof effects?.[id] === "function";
@@ -179,7 +211,10 @@ export class UpgradeManager {
     throw new RangeError("Die Zufallsfunktion muss einen Wert von 0 bis unter 1 liefern.");
   }
 
-  /** Checks the valid definitions condition. */
+  /**
+   * Checks the valid definitions condition.
+   * @param {ReadonlyArray<object>} upgrades Upgrade definitions available for selection.
+   */
   #hasValidDefinitions(upgrades) {
     return upgrades.every((upgrade) => {
       const hasText = [upgrade.id, upgrade.name, upgrade.description].every((value) => {
@@ -193,7 +228,10 @@ export class UpgradeManager {
     });
   }
 
-  /** Checks the valid rarities condition. */
+  /**
+   * Checks the valid rarities condition.
+   * @param {Readonly<object>} rarities Rarities used by has valid rarities.
+   */
   #hasValidRarities(rarities) {
     if (!Array.isArray(rarities)) return false;
     const ids = rarities.map((rarity) => rarity.id);
@@ -203,7 +241,10 @@ export class UpgradeManager {
       rarities.every((rarity) => Number.isFinite(rarity.weight) && rarity.weight > 0);
   }
 
-  /** Checks the valid icon sheet condition. */
+  /**
+   * Checks the valid icon sheet condition.
+   * @param {Readonly<object>} iconSheet Icon sheet used by has valid icon sheet.
+   */
   #hasValidIconSheet(iconSheet) {
     return typeof iconSheet?.source === "string" &&
       Number.isFinite(iconSheet.frameWidth) &&

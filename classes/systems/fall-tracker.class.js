@@ -13,7 +13,8 @@ export class FallTracker {
   #completedFall;
 
   /**
-   * @param {Readonly<object>} worldConfig
+   * Creates the configured system.
+   * @param {Readonly<object>} worldConfig World and fall thresholds used by the tracker.
    */
   constructor(worldConfig) {
     this.#validateWorldConfig(worldConfig);
@@ -25,7 +26,7 @@ export class FallTracker {
 
   /**
    * Restarts measurement at a character's current position.
-   * @param {{y:number,isOnGround:boolean}} target
+   * @param {{y:number,isOnGround:boolean}} target Target inspected or updated by the system.
    */
   reset(target) {
     this.#validateTarget(target);
@@ -40,7 +41,7 @@ export class FallTracker {
 
   /**
    * Updates the highest safe position and current height loss.
-   * @param {{y:number,isOnGround:boolean}} target
+   * @param {{y:number,isOnGround:boolean}} target Target inspected or updated by the system.
    * @returns {number} Current height loss in world pixels.
    */
   update(target) {
@@ -54,7 +55,7 @@ export class FallTracker {
 
   /**
    * Checks whether a character has fallen completely below the safe world.
-   * @param {{y:number,isOnGround:boolean}} target
+   * @param {{y:number,isOnGround:boolean}} target Target inspected or updated by the system.
    * @returns {boolean}
    */
   hasReachedDeathZone(target) {
@@ -77,7 +78,10 @@ export class FallTracker {
     return fall;
   }
 
-  /** Performs the track completed fall operation. */
+  /**
+   * Performs the track completed fall operation.
+   * @param {Readonly<object>} target Target inspected or updated by the system.
+   */
   #trackCompletedFall(target) {
     if (this.#wasOnGround && !target.isOnGround) this.#startAirborneFall();
     if (!target.isOnGround) this.#recordAirborneDepth(target.y);
@@ -92,13 +96,19 @@ export class FallTracker {
     this.#lowestAirborneY = this.#departureY;
   }
 
-  /** Performs the record airborne depth operation. */
+  /**
+   * Performs the record airborne depth operation.
+   * @param {number} targetY Target y used by record airborne depth.
+   */
   #recordAirborneDepth(targetY) {
     if (this.#departureY === null) return;
     this.#lowestAirborneY = Math.max(this.#lowestAirborneY, targetY);
   }
 
-  /** Performs the complete fall operation. */
+  /**
+   * Performs the complete fall operation.
+   * @param {number} landingY Landing y used by complete fall.
+   */
   #completeFall(landingY) {
     if (this.#departureY === null) return;
     const lowestY = Math.max(this.#lowestAirborneY, landingY);
@@ -107,7 +117,10 @@ export class FallTracker {
     this.#departureY = null;
   }
 
-  /** Performs the evaluate fall operation. */
+  /**
+   * Performs the evaluate fall operation.
+   * @param {Readonly<object>} lossPixels Loss pixels used by evaluate fall.
+   */
   #evaluateFall(lossPixels) {
     if (lossPixels < this.#fallConfig.minimumPixels) return null;
     let severity = "normal";
@@ -116,13 +129,19 @@ export class FallTracker {
     return Object.freeze({ lossPixels: Math.round(lossPixels), severity });
   }
 
-  /** Performs the record safe height operation. */
+  /**
+   * Performs the record safe height operation.
+   * @param {number} targetY Target y used by record safe height.
+   */
   #recordSafeHeight(targetY) {
     if (this.#highestSafeY === null) this.#highestSafeY = targetY;
     else this.#highestSafeY = Math.min(this.#highestSafeY, targetY);
   }
 
-  /** Validates world config. */
+  /**
+   * Validates world config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateWorldConfig(config) {
     const hasHeight = Number.isFinite(config?.height) && config.height > 0;
     const hasOffset = Number.isFinite(config?.deathZoneOffsetPixels) &&
@@ -131,7 +150,10 @@ export class FallTracker {
     throw new TypeError("Die Todeszonen-Konfiguration ist ungültig.");
   }
 
-  /** Checks the valid fall config condition. */
+  /**
+   * Checks the valid fall config condition.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #hasValidFallConfig(config) {
     const fall = config?.fallFeedback;
     const values = [fall?.minimumPixels, fall?.hardPixels, fall?.severePixels];
@@ -140,7 +162,10 @@ export class FallTracker {
       values[1] < values[2];
   }
 
-  /** Validates target. */
+  /**
+   * Validates target.
+   * @param {Readonly<object>} target Target inspected or updated by the system.
+   */
   #validateTarget(target) {
     const hasPosition = Number.isFinite(target?.y);
     if (hasPosition && typeof target.isOnGround === "boolean") return;

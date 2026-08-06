@@ -11,8 +11,9 @@ export class RunStats {
   #score;
 
   /**
-   * @param {Readonly<object>} config
-   * @param {number} startY
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {number} startY Start y used by constructor.
    */
   constructor(config, startY) {
     this.#validateProgressConfig(config, startY);
@@ -40,7 +41,7 @@ export class RunStats {
 
   /**
    * Resets all run values to their configured starting state.
-   * @param {number} [startY=this.startY]
+   * @param {number} [startY=this.startY] Start y used by reset.
    */
   reset(startY = this.startY) {
     this.#validateStartY(startY);
@@ -53,7 +54,7 @@ export class RunStats {
 
   /**
    * Registers a view and returns its unsubscribe function.
-   * @param {(snapshot: Readonly<object>) => void} listener
+   * @param {(snapshot: Readonly<object>) => void} listener Listener used by on change.
    * @returns {() => void}
    */
   onChange(listener) {
@@ -66,7 +67,7 @@ export class RunStats {
 
   /**
    * Calculates the current height from Byte's world position.
-   * @param {number} characterY
+   * @param {number} characterY Character y used by update height.
    * @returns {boolean} Whether the displayed meters changed.
    */
   updateHeight(characterY) {
@@ -82,8 +83,8 @@ export class RunStats {
 
   /**
    * Counts only actual play time and avoids notifying the HUD every frame.
-   * @param {number} deltaTimeSeconds
-   * @param {number} [heightLossPixels=0]
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {number} [heightLossPixels=0] Height loss pixels used by update time.
    */
   updateTime(deltaTimeSeconds, heightLossPixels = 0) {
     if (this.#score.updateTime(deltaTimeSeconds, heightLossPixels)) {
@@ -93,7 +94,7 @@ export class RunStats {
 
   /**
    * Applies new pickups to the score and resources.
-   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups
+   * @param {ReadonlyArray<Readonly<{type:string, amount:number}>>} pickups Pickups used by apply pickups.
    * @returns {boolean} Whether at least one visible value changed.
    */
   applyPickups(pickups) {
@@ -106,7 +107,7 @@ export class RunStats {
 
   /**
    * Scores every defeated enemy exactly once based on its ID.
-   * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
+   * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies Enemies used by apply enemy defeats.
    * @returns {boolean}
    */
   applyEnemyDefeats(enemies) {
@@ -117,7 +118,7 @@ export class RunStats {
 
   /**
    * Scores every completed combat phase exactly once.
-   * @param {ReadonlyArray<string>} phaseIds
+   * @param {ReadonlyArray<string>} phaseIds Phase ids used by apply combat phases.
    * @returns {boolean}
    */
   applyCombatPhases(phaseIds) {
@@ -128,7 +129,7 @@ export class RunStats {
 
   /**
    * Adds remaining energy and the victory time bonus exactly once at run end.
-   * @param {boolean} isVictory
+   * @param {boolean} isVictory Is victory used by finalize score.
    * @returns {boolean}
    */
   finalizeScore(isVictory) {
@@ -140,7 +141,7 @@ export class RunStats {
 
   /**
    * Reduces energy after a hit and returns the remaining value.
-   * @param {number} amount
+   * @param {number} amount Amount used by take damage.
    * @returns {number}
    */
   takeDamage(amount) {
@@ -154,8 +155,8 @@ export class RunStats {
 
   /**
    * Spends exactly the ammunition type used by the active weapon.
-   * @param {string} type
-   * @param {number} amount
+   * @param {string} type Type used by spend resource.
+   * @param {number} amount Amount used by spend resource.
    * @returns {boolean}
    */
   spendResource(type, amount) {
@@ -166,26 +167,32 @@ export class RunStats {
 
   /**
    * Returns a weapon resource without exposing mutable access.
-   * @param {string} type
+   * @param {string} type Type used by get resource amount.
    * @returns {number}
    */
   getResourceAmount(type) {
     return this.#resources.getAmount(type);
   }
 
-  /** @param {number} amount Battery capacity increase. */
+  /**
+   * Runs increase maximum energy with validated inputs.
+   * @param {number} amount Battery capacity increase.
+   */
   increaseMaximumEnergy(amount) {
     this.#increaseCapacity("energy", amount);
   }
 
-  /** @param {number} amount Arc-charge storage increase. */
+  /**
+   * Runs increase arc charge capacity with validated inputs.
+   * @param {number} amount Arc-charge storage increase.
+   */
   increaseArcChargeCapacity(amount) {
     this.#increaseCapacity("arcCharge", amount);
   }
 
   /**
    * Applies boss values only when a visible change occurs.
-   * @param {Readonly<object>} snapshot
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
    * @returns {boolean}
    */
   updateBoss(snapshot) {
@@ -210,13 +217,21 @@ export class RunStats {
     });
   }
 
-  /** Performs the increase capacity operation. */
+  /**
+   * Performs the increase capacity operation.
+   * @param {Readonly<object>} type Type used by increase capacity.
+   * @param {Readonly<object>} amount Amount used by increase capacity.
+   */
   #increaseCapacity(type, amount) {
     this.#resources.increaseCapacity(type, amount);
     this.#notifyChange();
   }
 
-  /** Validates progress config. */
+  /**
+   * Validates progress config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   * @param {number} startY Start y used by validate progress config.
+   */
   #validateProgressConfig(config, startY) {
     this.#validateStartY(startY);
     const pixelsPerMeter = config?.heightPixelsPerMeter;
@@ -224,13 +239,19 @@ export class RunStats {
     throw new TypeError("Die Höhenberechnung des Laufs ist ungültig.");
   }
 
-  /** Validates start y. */
+  /**
+   * Validates start y.
+   * @param {number} startY Start y used by validate start y.
+   */
   #validateStartY(startY) {
     if (Number.isFinite(startY) && startY >= 0) return;
     throw new TypeError("Die Lauf-Starthöhe ist ungültig.");
   }
 
-  /** Returns boss signature. */
+  /**
+   * Returns boss signature.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   #getBossSignature(snapshot) {
     return [
       snapshot.name, snapshot.health, snapshot.maximumHealth, snapshot.phase,
@@ -238,7 +259,10 @@ export class RunStats {
     ].join("|");
   }
 
-  /** Validates boss snapshot. */
+  /**
+   * Validates boss snapshot.
+   * @param {Readonly<object>} snapshot Immutable state snapshot processed by the operation.
+   */
   #validateBossSnapshot(snapshot) {
     const values = [snapshot?.health, snapshot?.maximumHealth, snapshot?.phase];
     const hasNumbers = values.every(Number.isFinite);

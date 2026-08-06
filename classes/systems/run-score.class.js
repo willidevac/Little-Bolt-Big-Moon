@@ -9,8 +9,9 @@ export class RunScore {
   #scoredPickupIds;
 
   /**
-   * @param {number} startingScore
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {number} startingScore Starting score used by constructor.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(startingScore, config) {
     this.#validateConfig(startingScore, config);
@@ -33,8 +34,8 @@ export class RunScore {
 
   /**
    * Counts only active run time.
-   * @param {number} deltaTimeSeconds
-   * @param {number} [heightLossPixels=0]
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {number} [heightLossPixels=0] Height loss pixels used by update time.
    * @returns {boolean} Whether a visible combo ended.
    */
   updateTime(deltaTimeSeconds, heightLossPixels = 0) {
@@ -45,14 +46,17 @@ export class RunScore {
     return this.combo.update(deltaTimeSeconds, heightLossPixels);
   }
 
-  /** @param {number} meters */
+  /**
+   * Runs add height meters with validated inputs.
+   * @param {number} meters Meters used by add height meters.
+   */
   addHeightMeters(meters) {
     this.#addMeasuredPoints(meters, this.config.pointsPerHeightMeter);
   }
 
   /**
    * Scores enemies exactly once based on their ID.
-   * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies
+   * @param {ReadonlyArray<Readonly<{id:string,type:string}>>} enemies Enemies used by add enemies.
    * @returns {boolean}
    */
   addEnemies(enemies) {
@@ -64,7 +68,7 @@ export class RunScore {
 
   /**
    * Scores each real collectable exactly once based on its ID.
-   * @param {ReadonlyArray<Readonly<object>>} pickups
+   * @param {ReadonlyArray<Readonly<object>>} pickups Pickups used by add pickups.
    * @returns {boolean}
    */
   addPickups(pickups) {
@@ -76,7 +80,7 @@ export class RunScore {
 
   /**
    * Scores each combat phase exactly once.
-   * @param {ReadonlyArray<string>} phaseIds
+   * @param {ReadonlyArray<string>} phaseIds Phase ids used by add combat phases.
    * @returns {boolean}
    */
   addCombatPhases(phaseIds) {
@@ -88,8 +92,8 @@ export class RunScore {
 
   /**
    * Adds remaining energy and saved victory time exactly once.
-   * @param {boolean} isVictory
-   * @param {number} remainingEnergy
+   * @param {boolean} isVictory Is victory used by finalize.
+   * @param {number} remainingEnergy Remaining energy used by finalize.
    * @returns {boolean}
    */
   finalize(isVictory, remainingEnergy) {
@@ -110,7 +114,10 @@ export class RunScore {
     return this.combo.getSnapshot();
   }
 
-  /** Applies enemy. */
+  /**
+   * Applies enemy.
+   * @param {Readonly<object>} enemy Enemy involved in the reported gameplay event.
+   */
   #addEnemy(enemy) {
     const points = this.config.enemyPoints[enemy?.type];
     const hasIdentity = typeof enemy?.id === "string" && enemy.id;
@@ -123,7 +130,10 @@ export class RunScore {
     return true;
   }
 
-  /** Applies pickup. */
+  /**
+   * Applies pickup.
+   * @param {Readonly<object>} pickup Pickup used by add pickup.
+   */
   #addPickup(pickup) {
     if (!pickup?.id) return false;
     this.#validatePickup(pickup);
@@ -136,7 +146,10 @@ export class RunScore {
     return true;
   }
 
-  /** Applies combat phase. */
+  /**
+   * Applies combat phase.
+   * @param {string} phaseId Phase id used by add combat phase.
+   */
   #addCombatPhase(phaseId) {
     if (typeof phaseId !== "string" || !phaseId) {
       throw new TypeError("Die abgeschlossene Kampfphase ist ungültig.");
@@ -147,7 +160,11 @@ export class RunScore {
     return true;
   }
 
-  /** Returns final bonus. */
+  /**
+   * Returns final bonus.
+   * @param {boolean} isVictory Is victory used by get final bonus.
+   * @param {number} remainingEnergy Remaining energy used by get final bonus.
+   */
   #getFinalBonus(isVictory, remainingEnergy) {
     const energyBonus = remainingEnergy * this.config.pointsPerRemainingEnergy;
     if (!isVictory) return energyBonus;
@@ -158,7 +175,11 @@ export class RunScore {
     return energyBonus + savedSeconds * this.config.pointsPerSavedSecond;
   }
 
-  /** Applies measured points. */
+  /**
+   * Applies measured points.
+   * @param {Readonly<object>} amount Amount used by add measured points.
+   * @param {Readonly<object>} pointsPerUnit Points per unit used by add measured points.
+   */
   #addMeasuredPoints(amount, pointsPerUnit) {
     if (!Number.isFinite(amount) || amount < 0) {
       throw new TypeError("Die Punkte-Einheit muss eine positive Zahl sein.");
@@ -166,17 +187,26 @@ export class RunScore {
     this.#addPoints(amount * pointsPerUnit);
   }
 
-  /** Applies points. */
+  /**
+   * Applies points.
+   * @param {Readonly<object>} points Points used by add points.
+   */
   #addPoints(points) {
     this.value += Math.max(0, Math.floor(points));
   }
 
-  /** Applies combo points. */
+  /**
+   * Applies combo points.
+   * @param {Readonly<object>} points Points used by add combo points.
+   */
   #addComboPoints(points) {
     this.#addPoints(points * this.combo.recordActivity());
   }
 
-  /** Validates pickup. */
+  /**
+   * Validates pickup.
+   * @param {Readonly<object>} pickup Pickup used by validate pickup.
+   */
   #validatePickup(pickup) {
     const hasIdentity = typeof pickup.id === "string" && pickup.id.length > 0;
     const hasType = typeof pickup.type === "string" && pickup.type.length > 0;
@@ -185,7 +215,11 @@ export class RunScore {
     throw new TypeError("Der Fund ist für die Wertung ungültig.");
   }
 
-  /** Validates final result. */
+  /**
+   * Validates final result.
+   * @param {boolean} isVictory Is victory used by validate final result.
+   * @param {number} remainingEnergy Remaining energy used by validate final result.
+   */
   #validateFinalResult(isVictory, remainingEnergy) {
     const hasResult = typeof isVictory === "boolean";
     const hasEnergy = Number.isFinite(remainingEnergy) && remainingEnergy >= 0;
@@ -193,13 +227,21 @@ export class RunScore {
     throw new TypeError("Das Laufergebnis ist für die Wertung ungültig.");
   }
 
-  /** Validates events. */
+  /**
+   * Validates events.
+   * @param {Readonly<object>} events Gameplay event hub receiving progress reports.
+   * @param {Readonly<object>} label Label used by validate events.
+   */
   #validateEvents(events, label) {
     if (Array.isArray(events)) return;
     throw new TypeError(`${label} müssen als Liste übergeben werden.`);
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {number} startingScore Starting score used by validate config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(startingScore, config) {
     const { enemyPoints, combo, ...scalarValues } = config ?? {};
     const enemies = Object.values(enemyPoints ?? {});

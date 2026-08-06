@@ -11,8 +11,9 @@ export class RunUpgradeFlow {
   #context;
 
   /**
-   * @param {Readonly<object>} data
-   * @param {Readonly<object>} dependencies
+   * Creates the configured system.
+   * @param {Readonly<object>} data Source definitions used to configure the system.
+   * @param {Readonly<object>} dependencies Dependencies used by constructor.
    */
   constructor(data, dependencies) {
     this.#validateDependencies(dependencies);
@@ -31,7 +32,7 @@ export class RunUpgradeFlow {
 
   /**
    * Opens a selection when the world reports a completed wave.
-   * @param {import("../core/world.class.js").World} world
+   * @param {import("../core/world.class.js").World} world World used by open from.
    * @returns {boolean}
    */
   openFrom(world) {
@@ -52,7 +53,7 @@ export class RunUpgradeFlow {
 
   /**
    * Applies an offered upgrade.
-   * @param {string} upgradeId
+   * @param {string} upgradeId Identifier of the selected upgrade.
    * @returns {Readonly<object>}
    */
   choose(upgradeId) {
@@ -71,24 +72,42 @@ export class RunUpgradeFlow {
   #createEffects() {
     const systems = this.#dependencies;
     return Object.freeze({
-      /** Performs the maximum energy operation. */
+      /**
+       * Performs the maximum energy operation.
+       * @param {Readonly<object>} value Value used by maximum energy.
+       */
       maximumEnergy: (value) => systems.runStats.increaseMaximumEnergy(value),
-      /** Performs the wrench damage operation. */
+      /**
+       * Performs the wrench damage operation.
+       * @param {Readonly<object>} value Value used by wrench damage.
+       */
       wrenchDamage: (value) => {
         systems.weaponSystem.increaseDamage("repairWrench", value);
       },
-      /** Performs the arc charge capacity operation. */
+      /**
+       * Performs the arc charge capacity operation.
+       * @param {Readonly<object>} value Value used by arc charge capacity.
+       */
       arcChargeCapacity: (value) => systems.runStats.increaseArcChargeCapacity(value),
-      /** Performs the knockback resistance operation. */
+      /**
+       * Performs the knockback resistance operation.
+       * @param {Readonly<object>} value Value used by knockback resistance.
+       */
       knockbackResistance: (value) => {
         systems.combatSystem.increaseKnockbackResistance(value);
       },
-      /** Performs the jump control operation. */
+      /**
+       * Performs the jump control operation.
+       * @param {Readonly<object>} value Value used by jump control.
+       */
       jumpControl: (value) => systems.getCharacter().increaseJumpControl(value),
     });
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {Readonly<object>} dependencies Dependencies used by validate dependencies.
+   */
   #validateDependencies(dependencies) {
     const methods = [
       dependencies?.runStats?.increaseMaximumEnergy,

@@ -3,7 +3,8 @@
  */
 export class RunCombo {
   /**
-   * @param {Readonly<object>} config
+   * Creates the configured system.
+   * @param {Readonly<object>} config Configuration values used by the system.
    */
   constructor(config) {
     this.#validateConfig(config);
@@ -32,8 +33,8 @@ export class RunCombo {
 
   /**
    * Processes idle time and height loss.
-   * @param {number} deltaTimeSeconds
-   * @param {number} heightLossPixels
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {number} heightLossPixels Height loss pixels used by update.
    * @returns {boolean} Whether the visible chain ended.
    */
   update(deltaTimeSeconds, heightLossPixels) {
@@ -67,7 +68,10 @@ export class RunCombo {
     });
   }
 
-  /** Updates timer. */
+  /**
+   * Updates timer.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateTimer(deltaTimeSeconds) {
     if (this.remainingSeconds <= 0) return false;
     this.remainingSeconds = Math.max(0, this.remainingSeconds - deltaTimeSeconds);
@@ -75,7 +79,10 @@ export class RunCombo {
     return this.break();
   }
 
-  /** Updates fall. */
+  /**
+   * Updates fall.
+   * @param {number} heightLossPixels Height loss pixels used by update fall.
+   */
   #updateFall(heightLossPixels) {
     this.fallAnchorPixels = Math.min(this.fallAnchorPixels, heightLossPixels);
     const distance = heightLossPixels - this.fallAnchorPixels;
@@ -85,14 +92,21 @@ export class RunCombo {
     return changed;
   }
 
-  /** Validates update. */
+  /**
+   * Validates update.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {number} heightLossPixels Height loss pixels used by validate update.
+   */
   #validateUpdate(deltaTimeSeconds, heightLossPixels) {
     const values = [deltaTimeSeconds, heightLossPixels];
     if (values.every((value) => Number.isFinite(value) && value >= 0)) return;
     throw new TypeError("Combo-Zeit und Höhenverlust müssen positiv sein.");
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the system.
+   */
   #validateConfig(config) {
     const values = [
       config?.windowSeconds,
