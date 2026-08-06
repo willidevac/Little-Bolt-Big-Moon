@@ -17,11 +17,12 @@ const SELECTORS = Object.freeze({
  */
 export class StorageController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("../systems/game-storage.class.js").GameStorage} storage
-   * @param {import("../systems/game-audio-controller.class.js").GameAudioController} audio
-  * @param {HTMLElement} root
-  */
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {import("../systems/game-storage.class.js").GameStorage} storage Storage service used to persist local data.
+   * @param {import("../systems/game-audio-controller.class.js").GameAudioController} audio Audio supplied to constructor.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   */
   constructor(game, storage, audio, root) {
     this.#validateAudio(audio);
     this.game = game;
@@ -103,7 +104,7 @@ export class StorageController {
 
   /**
    * Applies a volume control immediately and stores it.
-   * @param {Event} event
+   * @param {Event} event Input or gameplay event handled by the operation.
    */
   handleVolumeInput(event) {
     const control = event.target;
@@ -118,7 +119,7 @@ export class StorageController {
 
   /**
    * Stores records only after a fully completed run.
-   * @param {string} state
+   * @param {string} state State value processed by the operation.
    */
   handleStateChange(state) {
     if (this.game.canvas.dataset.reviewMode === "true") return;
@@ -134,7 +135,7 @@ export class StorageController {
 
   /**
    * Displays records and mute state accessibly.
-   * @param {Readonly<object>} records
+   * @param {Readonly<object>} records Persisted settings and records rendered by the view.
    */
   render(records) {
     this.scoreElement.textContent = formatScore(records.bestScore);
@@ -145,7 +146,10 @@ export class StorageController {
     this.#renderVolume("effects", records.effectsVolume);
   }
 
-  /** Draws render mute. */
+  /**
+   * Draws render mute.
+   * @param {boolean} isMuted Whether audio is currently muted.
+   */
   #renderMute(isMuted) {
     this.muteButton.textContent = translate(
       isMuted ? "audio.muted" : "audio.active",
@@ -157,21 +161,30 @@ export class StorageController {
     );
   }
 
-  /** Returns required element. */
+  /**
+   * Returns required element.
+   * @param {string} selector CSS selector used to find the required element.
+   */
   #getRequiredElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
     throw new Error(`Speicheranzeige nicht gefunden: ${selector}`);
   }
 
-  /** Applies audio settings. */
+  /**
+   * Applies audio settings.
+   * @param {Readonly<object>} records Persisted settings and records rendered by the view.
+   */
   #applyAudioSettings(records) {
     this.audio.setMusicVolume(records.musicVolume / 100);
     this.audio.setEffectsVolume(records.effectsVolume / 100);
     this.audio.setMuted(records.isMuted);
   }
 
-  /** Validates audio. */
+  /**
+   * Validates audio.
+   * @param {Readonly<object>} audio Audio supplied to validate audio.
+   */
   #validateAudio(audio) {
     const isValid = typeof audio?.setMuted === "function" &&
       typeof audio?.setMusicVolume === "function" &&
@@ -180,7 +193,11 @@ export class StorageController {
     throw new TypeError("Der Speichersteuerung fehlt die Audiosteuerung.");
   }
 
-  /** Draws render volume. */
+  /**
+   * Draws render volume.
+   * @param {HTMLElement} group Group supplied to render volume.
+   * @param {string} value Value read, validated, or rendered by the operation.
+   */
   #renderVolume(group, value) {
     const control = this.volumeControls.find((element) => {
       return element.dataset.volumeControl === group;

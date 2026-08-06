@@ -5,7 +5,8 @@ import { translate } from "../../js/i18n/localization.js";
  */
 export class UpgradeOptionView {
   /**
-   * @param {Document} document
+   * Creates the configured instance.
+   * @param {Document} document Document used to create view elements.
    */
   constructor(document) {
     if (typeof document?.createElement !== "function") {
@@ -16,7 +17,7 @@ export class UpgradeOptionView {
 
   /**
    * Creates a fully labeled upgrade button.
-   * @param {Readonly<object>} upgrade
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
    * @returns {HTMLButtonElement}
    */
   create(upgrade) {
@@ -31,7 +32,10 @@ export class UpgradeOptionView {
     return button;
   }
 
-  /** Creates content. */
+  /**
+   * Creates content.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #createContent(upgrade) {
     return [
       this.#createRarity(upgrade),
@@ -42,7 +46,10 @@ export class UpgradeOptionView {
     ];
   }
 
-  /** Creates rarity. */
+  /**
+   * Creates rarity.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #createRarity(upgrade) {
     return this.#createText(
       "span",
@@ -51,7 +58,10 @@ export class UpgradeOptionView {
     );
   }
 
-  /** Creates icon. */
+  /**
+   * Creates icon.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #createIcon(upgrade) {
     const icon = this.document.createElement("span");
     const source = new URL(upgrade.iconSheet.source, this.document.baseURI).href;
@@ -62,7 +72,12 @@ export class UpgradeOptionView {
     return icon;
   }
 
-  /** Creates text. */
+  /**
+   * Creates text.
+   * @param {string} tagName Tag name supplied to create text.
+   * @param {string} className Class name supplied to create text.
+   * @param {string} text Text supplied to create text.
+   */
   #createText(tagName, className, text) {
     const element = this.document.createElement(tagName);
     element.className = className;
@@ -70,17 +85,26 @@ export class UpgradeOptionView {
     return element;
   }
 
-  /** Returns name. */
+  /**
+   * Returns name.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #getName(upgrade) {
     return translate(`upgrade.${upgrade.id}.name`);
   }
 
-  /** Returns description. */
+  /**
+   * Returns description.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #getDescription(upgrade) {
     return translate(`upgrade.${upgrade.id}.description`);
   }
 
-  /** Returns level. */
+  /**
+   * Returns level.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #getLevel(upgrade) {
     return translate("upgrade.level", {
       level: upgrade.nextLevel,
@@ -88,7 +112,10 @@ export class UpgradeOptionView {
     });
   }
 
-  /** Returns accessible label. */
+  /**
+   * Returns accessible label.
+   * @param {Readonly<object>} upgrade Upgrade definition rendered by the view.
+   */
   #getAccessibleLabel(upgrade) {
     const rarity = translate(`upgrade.rarity.${upgrade.rarity}`);
     return `${rarity}. ${this.#getName(upgrade)}. ` +

@@ -25,8 +25,9 @@ const BOLT_VISUAL_CONFIG = Object.freeze({
  */
 export class BoltProjectile extends Projectile {
   /**
-   * @param {Readonly<object>} attack
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} attack Attack data processed by the operation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(attack, config) {
     validateBoltAttack(attack);
@@ -36,7 +37,10 @@ export class BoltProjectile extends Projectile {
   }
 }
 
-/** Creates projectile data. */
+/**
+ * Creates projectile data.
+ * @param {Readonly<object>} attack Attack data processed by the operation.
+ */
 function createProjectileData(attack) {
   return {
     team: "player",
@@ -47,7 +51,10 @@ function createProjectileData(attack) {
   };
 }
 
-/** Validates bolt attack. */
+/**
+ * Validates bolt attack.
+ * @param {Readonly<object>} attack Attack data processed by the operation.
+ */
 function validateBoltAttack(attack) {
   const isBolt = attack?.type === "projectile" &&
     attack.projectileKind === "bolt";

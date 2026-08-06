@@ -52,8 +52,9 @@ const VISUAL_CONFIG = Object.freeze({
  */
 export class ScrapCrawler extends Enemy {
   /**
-   * @param {Readonly<object>} enemyData
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} enemyData Enemy definition used to initialize the instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(enemyData, config) {
     super(enemyData, VISUAL_CONFIG, config);
@@ -63,8 +64,8 @@ export class ScrapCrawler extends Enemy {
 
   /**
    * Walks back and forth on platforms while affected by gravity.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../../core/world.class.js").World} world
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {import("../../core/world.class.js").World} world Active world providing runtime state and entities.
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
@@ -76,7 +77,10 @@ export class ScrapCrawler extends Enemy {
     this.updateAnimation(deltaTimeSeconds);
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     const speed = config?.speedPixelsPerSecond;
     if (Number.isFinite(speed) && speed > 0) return;

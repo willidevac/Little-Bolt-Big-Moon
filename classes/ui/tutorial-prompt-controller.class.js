@@ -6,8 +6,9 @@ import { onLanguageChange, translate } from
 /** Renders the current tutorial lesson as an accessible compact prompt. */
 export class TutorialPromptController {
   /**
-   * @param {import("../systems/tutorial-director.class.js").TutorialDirector} director
-   * @param {HTMLElement} root
+   * Creates the configured instance.
+   * @param {import("../systems/tutorial-director.class.js").TutorialDirector} director Tutorial director supplying lesson progress.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
    */
   constructor(director, root) {
     this.#validateDependencies(director, root);
@@ -44,7 +45,10 @@ export class TutorialPromptController {
     this.root.hidden = true;
   }
 
-  /** Displays one immutable tutorial progress snapshot. */
+  /**
+   * Displays one immutable tutorial progress snapshot.
+   * @param {Readonly<object>} snapshot Snapshot supplied to render.
+   */
   render(snapshot) {
     this.snapshot = snapshot;
     const isVisible = snapshot.status === TUTORIAL_STATUSES.ACTIVE;
@@ -64,13 +68,19 @@ export class TutorialPromptController {
     return true;
   }
 
-  /** Draws the localized title and instruction of one step. */
+  /**
+   * Draws the localized title and instruction of one step.
+   * @param {string} stepId Step id supplied to render step.
+   */
   #renderStep(stepId) {
     this.title.textContent = translate(`tutorial.step.${stepId}.title`);
     this.copy.textContent = translate(`tutorial.step.${stepId}.copy`);
   }
 
-  /** Draws lesson position without counting the terminal state. */
+  /**
+   * Draws lesson position without counting the terminal state.
+   * @param {Readonly<object>} snapshot Snapshot supplied to render progress.
+   */
   #renderProgress(snapshot) {
     const current = Math.min(snapshot.stepIndex + 1, snapshot.totalSteps);
     this.progress.textContent = translate("tutorial.progress", {
@@ -88,14 +98,21 @@ export class TutorialPromptController {
     this.toggle.setAttribute("aria-label", translate(key));
   }
 
-  /** Returns a required prompt child. */
+  /**
+   * Returns a required prompt child.
+   * @param {string} selector CSS selector used to find the required element.
+   */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
     throw new Error(`Tutorial-Element nicht gefunden: ${selector}`);
   }
 
-  /** Validates the tutorial source and prompt root. */
+  /**
+   * Validates the tutorial source and prompt root.
+   * @param {Readonly<object>} director Tutorial director supplying lesson progress.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   */
   #validateDependencies(director, root) {
     const hasDirector = typeof director?.onChange === "function" &&
       typeof director?.getSnapshot === "function";

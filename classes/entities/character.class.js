@@ -83,7 +83,7 @@ export class Character extends MovableObject {
 
   /**
    * Draws Byte mirrored when he is facing left.
-   * @param {CanvasRenderingContext2D} context
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
    */
   draw(context) {
     context.save();
@@ -93,7 +93,10 @@ export class Character extends MovableObject {
     context.restore();
   }
 
-  /** Adds a stable dark silhouette against every biome background. */
+  /**
+   * Adds a stable dark silhouette against every biome background.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #applyContrastShadow(context) {
     context.shadowColor = BYTE_CONTRAST_SHADOW.color;
     context.shadowBlur = BYTE_CONTRAST_SHADOW.blurPixels;
@@ -101,7 +104,10 @@ export class Character extends MovableObject {
     context.shadowOffsetY = BYTE_CONTRAST_SHADOW.offsetYPixels;
   }
 
-  /** Draws facing direction. */
+  /**
+   * Draws facing direction.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawFacingDirection(context) {
     if (this.facingDirection >= 0) {
       super.draw(context);
@@ -116,8 +122,8 @@ export class Character extends MovableObject {
 
   /**
    * Translates input into movement and then applies the shared physics.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../core/world.class.js").World} world
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {import("../core/world.class.js").World} world Active world providing runtime state and entities.
    */
   update(deltaTimeSeconds, world) {
     if (!this.#isValidDeltaTime(deltaTimeSeconds)) return;
@@ -134,7 +140,10 @@ export class Character extends MovableObject {
     this.#updateAnimation(deltaTimeSeconds);
   }
 
-  /** Updates state timers. */
+  /**
+   * Updates state timers.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateStateTimers(deltaTimeSeconds) {
     this.attackState.update(deltaTimeSeconds);
     this.#hitState.update(deltaTimeSeconds);
@@ -155,8 +164,8 @@ export class Character extends MovableObject {
 
   /**
    * Starts knockback, the hurt animation, and brief invulnerability.
-   * @param {number} direction
-   * @param {Readonly<object>} combatConfig
+   * @param {number} direction Direction applied to the movement or impact.
+   * @param {Readonly<object>} combatConfig Combat configuration used to resolve the action.
    * @returns {boolean} Whether Byte accepted the hit.
    */
   receiveHit(direction, combatConfig) {
@@ -179,7 +188,10 @@ export class Character extends MovableObject {
     return this.#hitState.isInvulnerable;
   }
 
-  /** @param {number} seconds Finite or permanent invulnerability duration. */
+  /**
+   * Runs set invulnerability with validated inputs.
+   * @param {number} seconds Finite or permanent invulnerability duration.
+   */
   setInvulnerability(seconds) {
     this.#hitState.setInvulnerability(seconds);
   }
@@ -194,8 +206,8 @@ export class Character extends MovableObject {
 
   /**
    * Starts only the animation associated with the weapon.
-   * @param {"melee"|"shoot"} animationState
-   * @param {number} durationSeconds
+   * @param {"melee"|"shoot"} animationState Animation state activated for the action.
+   * @param {number} durationSeconds Duration of the action, in seconds.
    * @returns {boolean}
    */
   startAttack(animationState, durationSeconds) {
@@ -218,12 +230,19 @@ export class Character extends MovableObject {
     });
   }
 
-  /** Reflects a collision with a solid environment wall. */
+  /**
+   * Reflects a collision with a solid environment wall.
+   * @param {string} direction Direction applied to the movement or impact.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   handleWallImpact(direction, config) {
     this.#movementController.reflectWallImpact(direction, config);
   }
 
-  /** Starts one player-controlled rebound from a shaft's inner wall face. */
+  /**
+   * Starts one player-controlled rebound from a shaft's inner wall face.
+   * @param {Readonly<object>} rebound Controlled rebound values applied to the character.
+   */
   beginControlledWallRebound(rebound) {
     this.#validateControlledRebound(rebound);
     const verticalRatio = this.#getReboundVerticalRatio(rebound);
@@ -233,7 +252,10 @@ export class Character extends MovableObject {
     this.applyUpwardImpulse(rebound.verticalSpeedPixelsPerSecond * verticalRatio);
   }
 
-  /** Validates controlled rebound. */
+  /**
+   * Validates controlled rebound.
+   * @param {Readonly<object>} rebound Controlled rebound values applied to the character.
+   */
   #validateControlledRebound(rebound) {
     const values = [
       rebound?.horizontalSpeedPixelsPerSecond,
@@ -248,7 +270,10 @@ export class Character extends MovableObject {
     }
   }
 
-  /** Returns rebound vertical ratio. */
+  /**
+   * Returns rebound vertical ratio.
+   * @param {Readonly<object>} rebound Controlled rebound values applied to the character.
+   */
   #getReboundVerticalRatio(rebound) {
     return rebound.forceFullVertical
       ? 1
@@ -259,7 +284,7 @@ export class Character extends MovableObject {
 
   /**
    * Extends coyote time and the jump buffer for the current run.
-   * @param {number} amountSeconds
+   * @param {number} amountSeconds Duration added to the current control window, in seconds.
    */
   increaseJumpControl(amountSeconds) {
     if (!Number.isFinite(amountSeconds) || amountSeconds <= 0) {
@@ -289,7 +314,12 @@ export class Character extends MovableObject {
     return true;
   }
 
-  /** Handles controls. */
+  /**
+   * Handles controls.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current input source used by the simulation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #handleControls(deltaTimeSeconds, input, config) {
     this.#syncWallReboundInput(input);
     this.#updateWallReboundControl(deltaTimeSeconds, input, config);
@@ -304,7 +334,12 @@ export class Character extends MovableObject {
     }
   }
 
-  /** Updates wall rebound control. */
+  /**
+   * Updates wall rebound control.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current input source used by the simulation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #updateWallReboundControl(deltaTimeSeconds, input, config) {
     if (this.isOnGround || this.wallReboundControlSeconds <= 0) return;
     this.#movementController.updateWallReboundControl(
@@ -312,7 +347,10 @@ export class Character extends MovableObject {
     );
   }
 
-  /** Collects wall rebound input. */
+  /**
+   * Collects wall rebound input.
+   * @param {Readonly<object>} input Current input source used by the simulation.
+   */
   #syncWallReboundInput(input) {
     this.wallReboundInput.left = Boolean(input.left);
     this.wallReboundInput.right = Boolean(input.right);
@@ -330,7 +368,11 @@ export class Character extends MovableObject {
     this.#changeState(CHARACTER_STATES.HURT);
   }
 
-  /** Applies knockback. */
+  /**
+   * Applies knockback.
+   * @param {string} direction Direction applied to the movement or impact.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #applyKnockback(direction, config) {
     this.velocityX = Math.sign(direction) *
       config.knockbackHorizontalPixelsPerSecond;
@@ -338,7 +380,10 @@ export class Character extends MovableObject {
     this.setOnGround(false);
   }
 
-  /** Performs the launch operation. */
+  /**
+   * Performs the launch operation.
+   * @param {Readonly<object>} launch Launch supplied to launch.
+   */
   #launch(launch) {
     this.velocityX = launch.velocityX;
     this.velocityY = launch.velocityY;
@@ -350,7 +395,12 @@ export class Character extends MovableObject {
     this.velocityX = 0;
   }
 
-  /** Updates inactivity. */
+  /**
+   * Updates inactivity.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} input Current input source used by the simulation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #updateInactivity(deltaTimeSeconds, input, config) {
     if (this.#hasActivity(input, config)) {
       this.inactivitySeconds = 0;
@@ -359,7 +409,11 @@ export class Character extends MovableObject {
     this.inactivitySeconds += deltaTimeSeconds;
   }
 
-  /** Checks the activity condition. */
+  /**
+   * Checks the activity condition.
+   * @param {Readonly<object>} input Current input source used by the simulation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasActivity(input, config) {
     const hasInput = ACTIVITY_ACTIONS.some((action) => Boolean(input[action]));
     const threshold = config.movementStateThresholdPixelsPerSecond;
@@ -367,13 +421,19 @@ export class Character extends MovableObject {
     return hasInput || isMoving || this.isHurt;
   }
 
-  /** Updates jump charge. */
+  /**
+   * Updates jump charge.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #updateJumpCharge(config) {
     const ratio = this.jumpController.getChargeRatio(config);
     this.jumpChargePercent = Math.round(ratio * 100);
   }
 
-  /** Performs the change state operation. */
+  /**
+   * Performs the change state operation.
+   * @param {string} nextState State requested for the next transition.
+   */
   #changeState(nextState) {
     if (this.state === nextState) return false;
     this.state = nextState;
@@ -381,13 +441,19 @@ export class Character extends MovableObject {
     return true;
   }
 
-  /** Updates animation. */
+  /**
+   * Updates animation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateAnimation(deltaTimeSeconds) {
     const frameIndex = this.animationController.update(this.state, deltaTimeSeconds);
     this.setFrameIndex(frameIndex);
   }
 
-  /** Performs the maintain dead state operation. */
+  /**
+   * Performs the maintain dead state operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #maintainDeadState(deltaTimeSeconds) {
     this.#stopMovement();
     this.#changeState(CHARACTER_STATES.DEAD);
@@ -401,7 +467,11 @@ export class Character extends MovableObject {
     return blinkFrame % 2 === 0 ? 0.35 : 1;
   }
 
-  /** Validates knockback. */
+  /**
+   * Validates knockback.
+   * @param {string} direction Direction applied to the movement or impact.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateKnockback(direction, config) {
     const hasDirection = Number.isFinite(direction) && Math.sign(direction) !== 0;
     const values = [
@@ -422,7 +492,10 @@ export class Character extends MovableObject {
     this.accelerationY = 0;
   }
 
-  /** Checks the valid delta time condition. */
+  /**
+   * Checks the valid delta time condition.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }

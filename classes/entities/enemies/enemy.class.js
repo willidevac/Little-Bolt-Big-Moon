@@ -10,9 +10,10 @@ export class Enemy extends MovableObject {
   #combatState;
 
   /**
-   * @param {Readonly<object>} enemyData
-   * @param {Readonly<object>} visualConfig
-   * @param {Readonly<object>} combatConfig
+   * Creates the configured instance.
+   * @param {Readonly<object>} enemyData Enemy definition used to initialize the instance.
+   * @param {Readonly<object>} visualConfig Visual configuration used for rendering.
+   * @param {Readonly<object>} combatConfig Combat configuration used to resolve the action.
    */
   constructor(enemyData, visualConfig, combatConfig) {
     super();
@@ -28,7 +29,10 @@ export class Enemy extends MovableObject {
     this.#initializeAnimation(visualConfig);
   }
 
-  /** Initializes animation. */
+  /**
+   * Initializes animation.
+   * @param {Readonly<object>} visualConfig Visual configuration used for rendering.
+   */
   #initializeAnimation(visualConfig) {
     this.animationController = new AnimationController(visualConfig.animations);
     this.loadSprite(visualConfig.sprite);
@@ -65,7 +69,7 @@ export class Enemy extends MovableObject {
 
   /**
    * Draws enemies mirrored according to their movement direction.
-   * @param {CanvasRenderingContext2D} context
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
    */
   draw(context) {
     context.save();
@@ -75,14 +79,20 @@ export class Enemy extends MovableObject {
     context.restore();
   }
 
-  /** Applies ground offset. */
+  /**
+   * Applies ground offset.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #applyGroundOffset(context) {
     if (!this.groundOffsets) return;
     const drawY = getGroundedSpriteY(this, this.groundOffsets);
     context.translate(0, drawY - this.y);
   }
 
-  /** Draws facing direction. */
+  /**
+   * Draws facing direction.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawFacingDirection(context) {
     if (this.facingDirection === this.nativeFacingDirection) {
       return super.draw(context);
@@ -94,7 +104,10 @@ export class Enemy extends MovableObject {
     context.restore();
   }
 
-  /** Applies elite glow. */
+  /**
+   * Applies elite glow.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #applyEliteGlow(context) {
     if (!this.isElite) return;
     context.shadowColor = "#ff9b32";
@@ -111,8 +124,8 @@ export class Enemy extends MovableObject {
 
   /**
    * Maintains locked hurt, attack, and death states.
-   * @param {number} deltaTimeSeconds
-   * @param {string} movementState
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {string} movementState Movement state supplied to update enemy state.
    * @returns {boolean}
    */
   updateEnemyState(deltaTimeSeconds, movementState) {
@@ -128,7 +141,7 @@ export class Enemy extends MovableObject {
 
   /**
    * Reduces enemy health and starts a hurt or mechanical death state.
-   * @param {Readonly<{amount:number}>} hit
+   * @param {Readonly<{amount:number}>} hit Hit data resolved against the target.
    * @returns {boolean}
    */
   receivePlayerHit(hit) {
@@ -141,7 +154,7 @@ export class Enemy extends MovableObject {
 
   /**
    * Creates a contact hit against Byte when the cooldown is ready.
-   * @param {Readonly<object>} target
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
    * @returns {Readonly<{amount:number,direction:number,source:string}>|null}
    */
   attack(target) {
@@ -175,7 +188,7 @@ export class Enemy extends MovableObject {
 
   /**
    * Starts an existing attack clip with a shared cooldown.
-   * @param {string} animationState
+   * @param {string} animationState Animation state activated for the action.
    * @returns {boolean}
    */
   startAttackState(animationState) {
@@ -185,14 +198,17 @@ export class Enemy extends MovableObject {
     return true;
   }
 
-  /** @param {number} seconds New attack cooldown in seconds. */
+  /**
+   * Runs set attack cooldown with validated inputs.
+   * @param {number} seconds New attack cooldown in seconds.
+   */
   setAttackCooldown(seconds) {
     this.#combatState.setAttackCooldown(seconds);
   }
 
   /**
    * Changes the animation state without exposing sprite knowledge to subclasses.
-   * @param {string} state
+   * @param {string} state State value processed by the operation.
    * @returns {boolean}
    */
   setAnimationState(state) {
@@ -202,7 +218,10 @@ export class Enemy extends MovableObject {
     return true;
   }
 
-  /** @param {number} deltaTimeSeconds Elapsed frame time. */
+  /**
+   * Runs update animation with validated inputs.
+   * @param {number} deltaTimeSeconds Elapsed frame time.
+   */
   updateAnimation(deltaTimeSeconds) {
     const frame = this.animationController.update(
       this.animationState,
@@ -211,7 +230,10 @@ export class Enemy extends MovableObject {
     this.setFrameIndex(frame);
   }
 
-  /** Applies visual size. */
+  /**
+   * Applies visual size.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #setVisualSize(config) {
     const nativeFacingDirection = config?.nativeFacingDirection ?? 1;
     const values = [config?.renderScale, config?.sprite?.frameWidth,
@@ -226,7 +248,10 @@ export class Enemy extends MovableObject {
     this.groundOffsets = this.#getGroundOffsets(config);
   }
 
-  /** Returns ground offsets. */
+  /**
+   * Returns ground offsets.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #getGroundOffsets(config) {
     if (config.groundOffsets === undefined) return null;
     const offsets = config.groundOffsets;
@@ -239,7 +264,10 @@ export class Enemy extends MovableObject {
     throw new TypeError("Die Bodenabstände der Gegnerdarstellung sind ungültig.");
   }
 
-  /** Applies enemy data. */
+  /**
+   * Applies enemy data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #setEnemyData(data) {
     this.id = data.id;
     this.type = data.type;
@@ -255,7 +283,10 @@ export class Enemy extends MovableObject {
     this.animationState = null;
   }
 
-  /** Applies boss data. */
+  /**
+   * Applies boss data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #setBossData(data) {
     this.isElite = Boolean(data.isElite);
     this.isBoss = Boolean(data.isBoss);
@@ -280,7 +311,10 @@ export class Enemy extends MovableObject {
     this.accelerationY = 0;
   }
 
-  /** Returns center x. */
+  /**
+   * Returns center x.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #getCenterX(target) {
     const bounds = typeof target.getCollisionBounds === "function"
       ? target.getCollisionBounds()
@@ -288,7 +322,10 @@ export class Enemy extends MovableObject {
     return bounds.x + bounds.width / 2;
   }
 
-  /** Validates target. */
+  /**
+   * Validates target.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #validateTarget(target) {
     const bounds = typeof target?.getCollisionBounds === "function"
       ? target.getCollisionBounds()
@@ -298,20 +335,30 @@ export class Enemy extends MovableObject {
     throw new TypeError("Das Angriffsziel ist ungültig.");
   }
 
-  /** Performs the turn at operation. */
+  /**
+   * Performs the turn at operation.
+   * @param {number} x Horizontal coordinate in canvas pixels.
+   * @param {string} direction Direction applied to the movement or impact.
+   */
   #turnAt(x, direction) {
     this.x = x;
     this.direction = direction;
     this.velocityX = 0;
   }
 
-  /** Validates enemy data. */
+  /**
+   * Validates enemy data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validateEnemyData(data) {
     if (this.#hasValidEnemyData(data)) return;
     throw new TypeError("Die Gegnerdaten sind ungültig.");
   }
 
-  /** Checks the valid enemy data condition. */
+  /**
+   * Checks the valid enemy data condition.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasValidEnemyData(data) {
     const textValues = [data?.id, data?.type];
     const numbers = [data?.x, data?.y, data?.patrolMinX, data?.patrolMaxX];
@@ -325,7 +372,10 @@ export class Enemy extends MovableObject {
       validDirection && this.#hasValidBossProfile(data);
   }
 
-  /** Checks the valid boss profile condition. */
+  /**
+   * Checks the valid boss profile condition.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasValidBossProfile(data) {
     if (!data?.isBoss) return !data?.isFinalBoss && !data?.bossName;
     return typeof data.bossName === "string" && data.bossName.length > 0 &&

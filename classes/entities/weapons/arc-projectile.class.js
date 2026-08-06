@@ -25,8 +25,9 @@ const ARC_VISUAL_CONFIG = Object.freeze({
  */
 export class ArcProjectile extends Projectile {
   /**
-   * @param {Readonly<object>} attack
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} attack Attack data processed by the operation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(attack, config) {
     validateArcInputs(attack, config);
@@ -50,7 +51,10 @@ export class ArcProjectile extends Projectile {
   }
 }
 
-/** Creates projectile data. */
+/**
+ * Creates projectile data.
+ * @param {Readonly<object>} attack Attack data processed by the operation.
+ */
 function createProjectileData(attack) {
   return {
     team: "player",
@@ -61,7 +65,11 @@ function createProjectileData(attack) {
   };
 }
 
-/** Validates arc inputs. */
+/**
+ * Validates arc inputs.
+ * @param {Readonly<object>} attack Attack data processed by the operation.
+ * @param {Readonly<object>} config Configuration values used by the operation.
+ */
 function validateArcInputs(attack, config) {
   const hasAttack = attack?.type === "projectile" &&
     attack.projectileKind === "arc" &&

@@ -34,8 +34,8 @@ const END_SCREEN_CONTENT = Object.freeze({
 
 /**
  * Returns a required DOM element or fails with a clear error.
- * @param {ParentNode} root
- * @param {string} selector
+ * @param {ParentNode} root Root DOM element queried or controlled by the instance.
+ * @param {string} selector CSS selector used to find the required element.
  * @returns {HTMLElement}
  */
 function getRequiredElement(root, selector) {
@@ -49,9 +49,10 @@ function getRequiredElement(root, selector) {
  */
 export class ScreenController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {HTMLElement} root
-   * @param {import("./story-sequence-controller.class.js").StorySequenceController|null} storySequences
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   * @param {import("./story-sequence-controller.class.js").StorySequenceController|null} storySequences Optional story controller used around game runs.
    */
   constructor(game, root, storySequences = null) {
     this.game = game;
@@ -152,7 +153,7 @@ export class ScreenController {
 
   /**
    * Executes the action of a clicked UI button.
-   * @param {MouseEvent} event
+   * @param {MouseEvent} event Input or gameplay event handled by the operation.
    */
   handleClick(event) {
     if (!(event.target instanceof Element)) return;
@@ -166,8 +167,8 @@ export class ScreenController {
 
   /**
    * Displays exactly the screen for the current game state.
-   * @param {string} state
-   * @param {boolean} [moveFocus=true]
+   * @param {string} state State value processed by the operation.
+   * @param {boolean} [moveFocus=true] Whether focus should move to the active screen.
    */
   render(state, moveFocus = true) {
     this.root.dataset.screenState = state;
@@ -180,7 +181,10 @@ export class ScreenController {
     this.dialogController.close(false);
   }
 
-  /** Applies screen visibility. */
+  /**
+   * Applies screen visibility.
+   * @param {string} state State value processed by the operation.
+   */
   #setScreenVisibility(state) {
     const endContent = this.#getEndContent(state);
     this.homeScreen.hidden = state !== GAME_STATES.HOME;
@@ -227,7 +231,10 @@ export class ScreenController {
       pause: () => this.game.togglePause(),
       /** Performs the resume operation. */
       resume: () => this.game.resume(),
-      /** Performs the upgrade operation. */
+      /**
+       * Performs the upgrade operation.
+       * @param {HTMLButtonElement} button Button supplied to upgrade.
+       */
       upgrade: (button) => this.game.chooseUpgrade(button.dataset.upgradeId),
       /** Performs the restart operation. */
       restart: () => this.game.reset(),
@@ -258,7 +265,7 @@ export class ScreenController {
 
   /**
    * Begins a selected available level.
-   * @param {string} levelId
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean}
    */
   startRun(levelId) {
@@ -271,7 +278,7 @@ export class ScreenController {
 
   /**
    * Focuses the most important button on the visible screen.
-   * @param {string} state
+   * @param {string} state State value processed by the operation.
    */
   focusScreen(state) {
     if (state === GAME_STATES.HOME) this.#getHomeFocusTarget().focus();
@@ -297,14 +304,21 @@ export class ScreenController {
       : this.tutorialButton;
   }
 
-  /** Returns regular or tutorial-specific end content. */
+  /**
+   * Returns regular or tutorial-specific end content.
+   * @param {string} state State value processed by the operation.
+   */
   #getEndContent(state) {
     const completedTutorial = state === GAME_STATES.WON &&
       this.game.levelId === GAME_LEVEL_IDS.TUTORIAL;
     return completedTutorial ? "tutorial.complete" : END_SCREEN_CONTENT[state];
   }
 
-  /** Draws render end screen. */
+  /**
+   * Draws render end screen.
+   * @param {string} state State value processed by the operation.
+   * @param {string} contentKey Content key supplied to render end screen.
+   */
   #renderEndScreen(state, contentKey) {
     const isTutorial = contentKey === "tutorial.complete";
     const stats = this.game.getHudSnapshot();
@@ -318,14 +332,20 @@ export class ScreenController {
     this.endScore.textContent = formatScore(stats.score);
   }
 
-  /** Switches between run results and tutorial completion actions. */
+  /**
+   * Switches between run results and tutorial completion actions.
+   * @param {boolean} isTutorial Whether the active run is the tutorial.
+   */
   #setEndSections(isTutorial) {
     this.endResult.hidden = isTutorial;
     this.endActions.hidden = isTutorial;
     this.tutorialEndActions.hidden = !isTutorial;
   }
 
-  /** Leaves an end state before selecting a fresh requested level. */
+  /**
+   * Leaves an end state before selecting a fresh requested level.
+   * @param {string} levelId Identifier of the level addressed by the operation.
+   */
   #startFromEnd(levelId) {
     if (![GAME_STATES.WON, GAME_STATES.LOST].includes(this.game.state)) {
       return false;

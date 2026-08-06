@@ -6,7 +6,11 @@ import { translate } from "../../js/i18n/localization.js";
 import { FallFeedback } from "./fall-feedback.class.js";
 import { HudAnnouncement } from "./hud-announcement.class.js";
 
-/** Applies text. */
+/**
+ * Applies text.
+ * @param {HTMLElement} element DOM element updated by the view.
+ * @param {string} value Value read, validated, or rendered by the operation.
+ */
 function setText(element, value) {
   const text = String(value);
   if (element.textContent !== text) element.textContent = text;
@@ -14,14 +18,21 @@ function setText(element, value) {
 
 /** Groups all short-lived HUD feedback. */
 export class HudFeedbackController {
-  /** @param {Readonly<Record<string, HTMLElement>>} elements HUD elements. @param {number} pixelsPerMeter World scale. */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<Record<string, HTMLElement>>} elements HUD elements.
+   * @param {number} pixelsPerMeter World scale.
+   */
   constructor(elements, pixelsPerMeter) {
     this.elements = elements;
     this.announcement = new HudAnnouncement(elements.announcement);
     this.fallFeedback = new FallFeedback(elements.fallFeedback, pixelsPerMeter);
   }
 
-  /** Connects a gameplay event to its brief HUD feedback. */
+  /**
+   * Connects a gameplay event to its brief HUD feedback.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   handle(event) {
     if (this.#handleAnnouncement(event)) return;
     if (event.type === GAMEPLAY_EVENTS.PLAYER_FALL) {
@@ -38,7 +49,10 @@ export class HudFeedbackController {
     this.fallFeedback.destroy();
   }
 
-  /** Handles announcement. */
+  /**
+   * Handles announcement.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   #handleAnnouncement(event) {
     if (event.type === GAMEPLAY_EVENTS.PICKUP) {
       this.announcement.showPickup(event.detail);
@@ -51,7 +65,10 @@ export class HudFeedbackController {
     return this.#handlePathOpened(event);
   }
 
-  /** Handles path opened. */
+  /**
+   * Handles path opened.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   #handlePathOpened(event) {
     const pathOpened = event.type === GAMEPLAY_EVENTS.WAVE_COMPLETE &&
       event.detail?.unlockPlatformId;
@@ -62,7 +79,10 @@ export class HudFeedbackController {
     return true;
   }
 
-  /** Draws render jump charge. */
+  /**
+   * Draws render jump charge.
+   * @param {Readonly<object>} charge Charge supplied to render jump charge.
+   */
   #renderJumpCharge(charge) {
     const percent = Math.max(0, Math.min(100, charge.percent));
     this.elements.jumpCharge.hidden = !charge.isCharging;
@@ -70,7 +90,10 @@ export class HudFeedbackController {
     this.#renderJumpChargeText(percent);
   }
 
-  /** Draws render jump charge text. */
+  /**
+   * Draws render jump charge text.
+   * @param {number} percent Percent supplied to render jump charge text.
+   */
   #renderJumpChargeText(percent) {
     this.elements.jumpChargeBar.setAttribute(
       "aria-valuetext",

@@ -23,20 +23,30 @@ const INDICATOR_CONFIGS = Object.freeze({
 
 /** Gives helpful and harmful world objects a consistent visual language. */
 export class WorldObjectIndicator {
-  /** @param {string} type A supported indicator type. */
+  /**
+   * Creates the configured instance.
+   * @param {string} type A supported indicator type.
+   */
   constructor(type) {
     this.config = INDICATOR_CONFIGS[type];
     if (!this.config) throw new RangeError(`Unknown object indicator: ${type}`);
     this.ageSeconds = 0;
   }
 
-  /** Advances the subtle marker pulse. */
+  /**
+   * Advances the subtle marker pulse.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.ageSeconds += deltaTimeSeconds;
   }
 
-  /** Draws a thin pulsing ring exactly where the object meets the ground. */
+  /**
+   * Draws a thin pulsing ring exactly where the object meets the ground.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} object World object represented by the indicator.
+   */
   drawGroundMarker(context, object) {
     const pulse = (Math.sin(this.ageSeconds * PULSE_SPEED) + 1) / 2;
     context.save();
@@ -47,13 +57,20 @@ export class WorldObjectIndicator {
     context.restore();
   }
 
-  /** Applies the matching outline glow to the sprite drawn afterwards. */
+  /**
+   * Applies the matching outline glow to the sprite drawn afterwards.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   applyGlow(context) {
     context.shadowColor = this.config.color;
     context.shadowBlur = this.config.shadowBlur;
   }
 
-  /** Applies ring style. */
+  /**
+   * Applies ring style.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} pulse Current animation pulse used for drawing.
+   */
   #applyRingStyle(context, pulse) {
     context.strokeStyle = this.config.color;
     context.lineWidth = 2;
@@ -61,7 +78,11 @@ export class WorldObjectIndicator {
     this.applyGlow(context);
   }
 
-  /** Returns ellipse. */
+  /**
+   * Returns ellipse.
+   * @param {Readonly<object>} object World object represented by the indicator.
+   * @param {number} pulse Current animation pulse used for drawing.
+   */
   #getEllipse(object, pulse) {
     const centerX = object.x + object.width / 2;
     const radiusX = object.width * this.config.radiusRatio + pulse * 3;

@@ -43,8 +43,9 @@ const VISUAL_CONFIGS = Object.freeze({
  */
 export class BossProjectile extends Projectile {
   /**
-   * @param {Readonly<object>} attackEvent
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} attackEvent Attack event used to create the projectile.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(attackEvent, config) {
     const visualConfig = VISUAL_CONFIGS[attackEvent?.kind];
@@ -57,7 +58,10 @@ export class BossProjectile extends Projectile {
   }
 }
 
-/** Creates projectile data. */
+/**
+ * Creates projectile data.
+ * @param {Event} attackEvent Attack event used to create the projectile.
+ */
 function createProjectileData(attackEvent) {
   return {
     team: "enemy",

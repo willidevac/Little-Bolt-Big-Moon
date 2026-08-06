@@ -14,8 +14,9 @@ const SKIP_KEYS = Object.freeze(["Escape", "Enter", "Space"]);
  */
 export class StorySequenceController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {HTMLElement} root
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
    */
   constructor(game, root) {
     this.game = game;
@@ -57,7 +58,7 @@ export class StorySequenceController {
 
   /**
    * Displays the wordless opening and then begins a fresh run.
-   * @param {string} levelId
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean}
    */
   playIntro(levelId) {
@@ -78,7 +79,7 @@ export class StorySequenceController {
 
   /**
    * Skips the sequence accessibly by keyboard.
-   * @param {KeyboardEvent} event
+   * @param {KeyboardEvent} event Input or gameplay event handled by the operation.
    */
   handleKeydown(event) {
     if (!this.activeSequence) return;
@@ -91,14 +92,18 @@ export class StorySequenceController {
 
   /**
    * Reacts to victory and safely cancels when a new run starts.
-   * @param {string} state
+   * @param {string} state State value processed by the operation.
    */
   handleState(state) {
     if (state === GAME_STATES.WON) this.#play(SEQUENCES.OUTRO);
     else if (this.activeSequence) this.#finish(false);
   }
 
-  /** Performs the play operation. */
+  /**
+   * Performs the play operation.
+   * @param {Readonly<object>} sequence Story sequence displayed by the controller.
+   * @param {Function} [onComplete=null] Optional callback invoked after the sequence finishes.
+   */
   #play(sequence, onComplete = null) {
     if (this.activeSequence) return false;
     this.activeSequence = Object.freeze({ name: sequence, onComplete });
@@ -107,7 +112,10 @@ export class StorySequenceController {
     return true;
   }
 
-  /** Performs the show operation. */
+  /**
+   * Performs the show operation.
+   * @param {Readonly<object>} sequence Story sequence displayed by the controller.
+   */
   #show(sequence) {
     this.view.dataset.sequence = sequence;
     this.#renderText();
@@ -116,7 +124,10 @@ export class StorySequenceController {
     this.skipButton.focus();
   }
 
-  /** Performs the finish operation. */
+  /**
+   * Performs the finish operation.
+   * @param {boolean} complete Complete supplied to finish.
+   */
   #finish(complete) {
     if (!this.activeSequence) return;
     const callback = complete ? this.activeSequence.onComplete : null;
@@ -150,13 +161,19 @@ export class StorySequenceController {
     return reduced ? REDUCED_DURATION_MILLISECONDS : DEFAULT_DURATION_MILLISECONDS;
   }
 
-  /** Performs the keep focus operation. */
+  /**
+   * Performs the keep focus operation.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   #keepFocus(event) {
     event.preventDefault();
     this.skipButton.focus();
   }
 
-  /** Returns element. */
+  /**
+   * Returns element.
+   * @param {string} selector CSS selector used to find the required element.
+   */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element) return element;

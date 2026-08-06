@@ -17,8 +17,9 @@ const WARNING_SHAKE_DISTANCE_PIXELS = 3;
  */
 export class FallingPlatform extends Platform {
   /**
-   * @param {Readonly<object>} platformData
-   * @param {Readonly<object>} tilesetConfig
+   * Creates the configured instance.
+   * @param {Readonly<object>} platformData Platform data supplied to constructor.
+   * @param {Readonly<object>} tilesetConfig Tileset config supplied to constructor.
    */
   constructor(platformData, tilesetConfig) {
     super(platformData, tilesetConfig);
@@ -36,7 +37,7 @@ export class FallingPlatform extends Platform {
 
   /**
    * Starts the warning phase only on Byte's first landing.
-   * @param {object} movableObject
+   * @param {object} movableObject Movable object supplied to on landed.
    * @returns {boolean}
    */
   onLanded(movableObject) {
@@ -49,8 +50,9 @@ export class FallingPlatform extends Platform {
   }
 
   /**
-   * @param {number} deltaTimeSeconds
-   * @param {Readonly<object>} world
+   * Runs update with validated inputs.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
    */
   update(deltaTimeSeconds, world) {
     this.setFrameDisplacement(0, 0);
@@ -73,7 +75,7 @@ export class FallingPlatform extends Platform {
 
   /**
    * Draws a clear shake and flash during the warning period.
-   * @param {CanvasRenderingContext2D} context
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
    */
   draw(context) {
     if (this.state === FALLING_PLATFORM_STATES.FALLEN) return;
@@ -87,7 +89,11 @@ export class FallingPlatform extends Platform {
     context.restore();
   }
 
-  /** Updates warning. */
+  /**
+   * Updates warning.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #updateWarning(deltaTimeSeconds, world) {
     this.warningElapsedSeconds += deltaTimeSeconds;
     this.warningSecondsRemaining -= deltaTimeSeconds;
@@ -98,7 +104,11 @@ export class FallingPlatform extends Platform {
     if (fallSeconds > 0) this.#fall(fallSeconds, world);
   }
 
-  /** Performs the fall operation. */
+  /**
+   * Performs the fall operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #fall(deltaTimeSeconds, world) {
     const previousY = this.y;
     const maximumY = this.#getMaximumY(world);
@@ -110,7 +120,10 @@ export class FallingPlatform extends Platform {
     if (this.y >= maximumY) this.#beginRespawnWait();
   }
 
-  /** Returns maximum y. */
+  /**
+   * Returns maximum y.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #getMaximumY(world) {
     const worldHeight = world?.config?.world?.height;
     const dropY = this.initialY + this.maximumDropPixels;
@@ -124,7 +137,10 @@ export class FallingPlatform extends Platform {
     this.respawnSecondsRemaining = this.respawnDelaySeconds;
   }
 
-  /** Updates respawn. */
+  /**
+   * Updates respawn.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateRespawn(deltaTimeSeconds) {
     this.respawnSecondsRemaining = Math.max(
       0, this.respawnSecondsRemaining - deltaTimeSeconds,
@@ -153,7 +169,10 @@ export class FallingPlatform extends Platform {
     return 0.7 + (Math.sin(angle) + 1) * 0.15;
   }
 
-  /** Validates fall. */
+  /**
+   * Validates fall.
+   * @param {Readonly<object>} fall Recorded fall data displayed to the player.
+   */
   #validateFall(fall) {
     const values = [
       fall?.warningDelaySeconds,

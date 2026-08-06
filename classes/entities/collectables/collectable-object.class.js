@@ -90,7 +90,11 @@ const ARC_CANNON_VISUAL = Object.freeze({
   groundOffsets: ARC_CANNON_GROUND_OFFSETS,
 });
 
-/** Creates clip. */
+/**
+ * Creates clip.
+ * @param {number} startFrame Start frame supplied to create clip.
+ * @param {number} frameCount Frame count supplied to create clip.
+ */
 function createClip(startFrame, frameCount) {
   return Object.freeze({
     startFrame,
@@ -105,7 +109,8 @@ function createClip(startFrame, frameCount) {
  */
 export class CollectableObject extends DrawableObject {
   /**
-   * @param {Readonly<object>} collectableData
+   * Creates the configured instance.
+   * @param {Readonly<object>} collectableData Collectable definition used to initialize the instance.
    */
   constructor(collectableData) {
     super();
@@ -119,7 +124,10 @@ export class CollectableObject extends DrawableObject {
     this.setFrameIndex(this.animationController.setState(this.animationState));
   }
 
-  /** Applies data. */
+  /**
+   * Applies data.
+   * @param {Readonly<object>} collectableData Collectable definition used to initialize the instance.
+   */
   #applyData(collectableData) {
     this.id = collectableData.id;
     this.type = collectableData.type;
@@ -132,7 +140,7 @@ export class CollectableObject extends DrawableObject {
 
   /**
    * Advances through the selected collectable's frames over time.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     const frame = this.animationController.update(
@@ -143,7 +151,10 @@ export class CollectableObject extends DrawableObject {
     this.indicator.update(deltaTimeSeconds);
   }
 
-  /** Draws the grounded sprite with the shared helpful-item marker. */
+  /**
+   * Draws the grounded sprite with the shared helpful-item marker.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     context.save();
     this.indicator.drawGroundMarker(context, this);
@@ -163,7 +174,10 @@ export class CollectableObject extends DrawableObject {
     return Object.freeze(pickup);
   }
 
-  /** Validates data. */
+  /**
+   * Validates data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validateData(data) {
     const hasIdentity = typeof data?.id === "string" && data.id.length > 0;
     const hasType = Object.values(COLLECTABLE_TYPES).includes(data?.type);
@@ -179,7 +193,10 @@ export class CollectableObject extends DrawableObject {
     throw new TypeError("Die Daten des Sammelobjekts sind ungültig.");
   }
 
-  /** Applies visual. */
+  /**
+   * Applies visual.
+   * @param {Readonly<object>} visual Visual supplied to apply visual.
+   */
   #applyVisual(visual) {
     this.width = visual.sprite.frameWidth * visual.renderScale;
     this.height = visual.sprite.frameHeight * visual.renderScale;
@@ -188,7 +205,10 @@ export class CollectableObject extends DrawableObject {
     this.loadSprite(visual.sprite);
   }
 
-  /** Returns visual. */
+  /**
+   * Returns visual.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #getVisual(data) {
     if (data.type === COLLECTABLE_TYPES.STORY_BADGE) return this.#getBadgeVisual(data);
     if (data.type === COLLECTABLE_TYPES.ARC_CHARGE) {
@@ -203,7 +223,10 @@ export class CollectableObject extends DrawableObject {
     return STANDARD_VISUAL;
   }
 
-  /** Returns badge visual. */
+  /**
+   * Returns badge visual.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #getBadgeVisual(data) {
     this.animationState = data.badgePart === "left" ? "badgeLeft" : "badgeRight";
     return STANDARD_VISUAL;

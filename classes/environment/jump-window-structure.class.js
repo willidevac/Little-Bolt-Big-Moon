@@ -2,7 +2,11 @@ import { DrawableObject } from "../base/drawable-object.class.js";
 
 /** Two animated wall wings forming one real collision opening. */
 export class JumpWindowStructure extends DrawableObject {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
@@ -11,7 +15,10 @@ export class JumpWindowStructure extends DrawableObject {
     this.loadSprite(spriteConfig);
   }
 
-  /** Advances the guidance lights around the open jump lane. */
+  /**
+   * Advances the guidance lights around the open jump lane.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.animationSeconds = (this.animationSeconds + deltaTimeSeconds) %
@@ -19,7 +26,10 @@ export class JumpWindowStructure extends DrawableObject {
     this.setFrameIndex(0);
   }
 
-  /** Draws both side wings without filling the transparent opening. */
+  /**
+   * Draws both side wings without filling the transparent opening.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     const { frameWidth, frameHeight } = this.spriteConfig;
     const sourceLeftWidth = Math.round(frameWidth * this.sourceOpeningStart);
@@ -31,7 +41,14 @@ export class JumpWindowStructure extends DrawableObject {
     this.#drawGuidanceLights(context);
   }
 
-  /** Draws wings. */
+  /**
+   * Draws wings.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} leftWidth Left width supplied to draw wings.
+   * @param {number} rightX Right x supplied to draw wings.
+   * @param {number} rightWidth Right width supplied to draw wings.
+   * @param {number} frameHeight Frame height supplied to draw wings.
+   */
   #drawWings(context, leftWidth, rightX, rightWidth, frameHeight) {
     context.drawImage(this.image,
       0, 0, leftWidth, frameHeight,
@@ -54,7 +71,14 @@ export class JumpWindowStructure extends DrawableObject {
       leftWallWidth, rightWallWidth, surfaceOffset);
   }
 
-  /** Creates colliders. */
+  /**
+   * Creates colliders.
+   * @param {number} leftWing Left wing supplied to create colliders.
+   * @param {number} rightWing Right wing supplied to create colliders.
+   * @param {number} leftWall Left wall supplied to create colliders.
+   * @param {number} rightWall Right wall supplied to create colliders.
+   * @param {number} offset Offset supplied to create colliders.
+   */
   #createColliders(leftWing, rightWing, leftWall, rightWall, offset) {
     const lowerY = this.y + offset;
     const lowerHeight = this.height - offset;
@@ -68,12 +92,21 @@ export class JumpWindowStructure extends DrawableObject {
     ]);
   }
 
-  /** Performs operation. */
+  /**
+   * Performs operation.
+   * @param {number} x Horizontal coordinate in canvas pixels.
+   * @param {number} y Vertical coordinate in canvas pixels.
+   * @param {number} width Width supplied to collider.
+   * @param {number} height Height supplied to collider.
+   */
   #collider(x, y, width, height) {
     return Object.freeze({ x, y, width, height, owner: this });
   }
 
-  /** Draws guidance lights. */
+  /**
+   * Draws guidance lights.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawGuidanceLights(context) {
     const phase = this.animationSeconds / this.animationFrameSeconds * Math.PI;
     const pulse = (Math.sin(phase) + 1) * 0.16;
@@ -88,7 +121,10 @@ export class JumpWindowStructure extends DrawableObject {
     context.restore();
   }
 
-  /** Validates operation. */
+  /**
+   * Validates operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validate(data) {
     const values = this.#getValidationValues(data);
     const hasPositiveGeometry = values.every(Number.isFinite) &&
@@ -104,13 +140,19 @@ export class JumpWindowStructure extends DrawableObject {
     throw new TypeError("The jump-window structure is invalid.");
   }
 
-  /** Performs fit. */
+  /**
+   * Performs fit.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #ratiosFit(data) {
     return data.surfaceOffsetRatio > 0 && data.surfaceOffsetRatio < 1 &&
       data.outerWallRatio > 0 && data.outerWallRatio < 1;
   }
 
-  /** Returns validation values. */
+  /**
+   * Returns validation values.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #getValidationValues(data) {
     return [data?.x, data?.y, data?.width, data?.height,
       data?.openingX, data?.openingWidth, data?.animationFrameSeconds,

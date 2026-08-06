@@ -3,7 +3,11 @@ import { FALLING_PLATFORM_STATES } from "./falling-platform.class.js";
 
 /** Newly illustrated falling platform with warning, drop and respawn phases. */
 export class SpriteFallingPlatform extends SpriteSurfacePlatform {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super(data, spriteConfig);
     this.#validateFall(data.fall);
@@ -26,7 +30,10 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     return this.frameDisplacement;
   }
 
-  /** Starts the visible warning after Byte lands. */
+  /**
+   * Starts the visible warning after Byte lands.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   onLanded(target) {
     if (this.state !== FALLING_PLATFORM_STATES.STABLE || target?.team === "enemy") {
       return false;
@@ -36,7 +43,11 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     return true;
   }
 
-  /** Advances warning, fall, hidden wait, and respawn. */
+  /**
+   * Advances warning, fall, hidden wait, and respawn.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   update(deltaTimeSeconds, world) {
     this.frameDisplacement.x = 0;
     this.frameDisplacement.y = 0;
@@ -52,14 +63,20 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     }
   }
 
-  /** Draws the stable platform or its pre-fall shake. */
+  /**
+   * Draws the stable platform or its pre-fall shake.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     if (this.state === FALLING_PLATFORM_STATES.FALLEN) return;
     if (this.state !== FALLING_PLATFORM_STATES.WARNING) return super.draw(context);
     this.#drawWarning(context);
   }
 
-  /** Draws warning. */
+  /**
+   * Draws warning.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawWarning(context) {
     const shake = Math.sin(this.warningElapsedSeconds * Math.PI * 16) * 3;
     context.save();
@@ -75,7 +92,11 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
-  /** Updates warning. */
+  /**
+   * Updates warning.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #updateWarning(deltaTimeSeconds, world) {
     this.warningElapsedSeconds += deltaTimeSeconds;
     this.warningSecondsRemaining -= deltaTimeSeconds;
@@ -86,7 +107,11 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     if (overflow > 0) this.#fall(overflow, world);
   }
 
-  /** Performs operation. */
+  /**
+   * Performs operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #fall(deltaTimeSeconds, world) {
     const previousY = this.y;
     const worldHeight = world?.config?.world?.height;
@@ -102,7 +127,10 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     this.respawnSecondsRemaining = this.respawnDelaySeconds;
   }
 
-  /** Updates respawn. */
+  /**
+   * Updates respawn.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateRespawn(deltaTimeSeconds) {
     this.respawnSecondsRemaining -= deltaTimeSeconds;
     if (this.respawnSecondsRemaining > 0) return;
@@ -112,7 +140,10 @@ export class SpriteFallingPlatform extends SpriteSurfacePlatform {
     this.state = FALLING_PLATFORM_STATES.STABLE;
   }
 
-  /** Validates fall. */
+  /**
+   * Validates fall.
+   * @param {Readonly<object>} fall Recorded fall data displayed to the player.
+   */
   #validateFall(fall) {
     const values = [fall?.warningDelaySeconds, fall?.speedPixelsPerSecond,
       fall?.maximumDropPixels, fall?.respawnDelaySeconds];

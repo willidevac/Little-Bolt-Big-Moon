@@ -5,8 +5,9 @@ import { CollectableObject } from "./collectable-object.class.js";
  */
 export class AnchoredCollectable extends CollectableObject {
   /**
-   * @param {Readonly<object>} data
-   * @param {Readonly<object>} anchorPlatform
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} anchorPlatform Anchor platform supplied to constructor.
    */
   constructor(data, anchorPlatform) {
     super(data);
@@ -17,7 +18,10 @@ export class AnchoredCollectable extends CollectableObject {
     this.y = anchorPlatform.y - this.height;
   }
 
-  /** Also follows a moving or reset platform. */
+  /**
+   * Also follows a moving or reset platform.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     super.update(deltaTimeSeconds);
     const movement = this.anchorPlatform.getFrameDisplacement();
@@ -30,12 +34,19 @@ export class AnchoredCollectable extends CollectableObject {
     return this.anchorPlatform.isCollidable !== false;
   }
 
-  /** Draws the pickup only together with its supporting platform. */
+  /**
+   * Draws the pickup only together with its supporting platform.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     if (this.isAvailable) super.draw(context);
   }
 
-  /** Validates anchor. */
+  /**
+   * Validates anchor.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} platform Platform used by the operation.
+   */
   #validateAnchor(data, platform) {
     const hasMatchingId = data?.anchorPlatformId === platform?.id;
     const hasMovement = typeof platform?.getFrameDisplacement === "function";

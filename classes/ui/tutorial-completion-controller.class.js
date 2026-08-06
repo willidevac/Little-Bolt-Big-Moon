@@ -12,10 +12,11 @@ export class TutorialCompletionController {
   #unsubscribers = [];
 
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {import("../systems/tutorial-director.class.js").TutorialDirector} director
-   * @param {import("../systems/game-storage.class.js").GameStorage} storage
-   * @param {HTMLElement} root
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {import("../systems/tutorial-director.class.js").TutorialDirector} director Tutorial director supplying lesson progress.
+   * @param {import("../systems/game-storage.class.js").GameStorage} storage Storage service used to persist local data.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
    */
   constructor(game, director, storage, root) {
     this.#validateDependencies(game, director, storage, root);
@@ -44,7 +45,10 @@ export class TutorialCompletionController {
     this.#handledCompletion = false;
   }
 
-  /** Saves and finishes a newly completed tutorial exactly once. */
+  /**
+   * Saves and finishes a newly completed tutorial exactly once.
+   * @param {Readonly<object>} snapshot Snapshot supplied to handle progress.
+   */
   handleProgress(snapshot) {
     if (snapshot.status !== TUTORIAL_STATUSES.COMPLETED) {
       this.#handledCompletion = false;
@@ -58,7 +62,10 @@ export class TutorialCompletionController {
     return true;
   }
 
-  /** Retries a pending completion when gameplay becomes active again. */
+  /**
+   * Retries a pending completion when gameplay becomes active again.
+   * @param {string} state State value processed by the operation.
+   */
   handleGameState(state) {
     if (state !== GAME_STATES.PLAYING) return false;
     return this.handleProgress(this.director.getSnapshot());
@@ -75,14 +82,23 @@ export class TutorialCompletionController {
     this.startButton.classList.toggle(PRIMARY_BUTTON_CLASS, completed);
   }
 
-  /** Returns one required menu button. */
+  /**
+   * Returns one required menu button.
+   * @param {string} selector CSS selector used to find the required element.
+   */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;
     throw new Error(`Tutorial-Menüelement nicht gefunden: ${selector}`);
   }
 
-  /** Validates completion, storage, and menu dependencies. */
+  /**
+   * Validates completion, storage, and menu dependencies.
+   * @param {Readonly<object>} game Game instance controlled by the view.
+   * @param {Readonly<object>} director Tutorial director supplying lesson progress.
+   * @param {Readonly<object>} storage Storage service used to persist local data.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   */
   #validateDependencies(game, director, storage, root) {
     const hasGame = typeof game?.win === "function" &&
       typeof game?.onStateChange === "function";

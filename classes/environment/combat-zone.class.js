@@ -11,7 +11,8 @@ export class CombatZone {
   #state;
 
   /**
-   * @param {Readonly<object>} zoneData
+   * Creates the configured instance.
+   * @param {Readonly<object>} zoneData Zone data supplied to constructor.
    */
   constructor(zoneData) {
     this.#validateData(zoneData);
@@ -49,9 +50,9 @@ export class CombatZone {
 
   /**
    * Checks whether the center of a target entered the waiting area.
-   * @param {Readonly<object>} target
-   * @param {ReadonlySet<string>|null} [activeEnemyIds]
-   * @param {ReadonlySet<string>|null} [completedZoneIds]
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   * @param {ReadonlySet<string>|null} [activeEnemyIds] Active enemy ids supplied to can trigger.
+   * @param {ReadonlySet<string>|null} [completedZoneIds] Completed zone ids supplied to can trigger.
    * @returns {boolean}
    */
   canTrigger(target, activeEnemyIds = null, completedZoneIds = null) {
@@ -67,7 +68,10 @@ export class CombatZone {
     return this.#contains(target);
   }
 
-  /** Checks whether the target center lies inside the physical trigger. */
+  /**
+   * Checks whether the target center lies inside the physical trigger.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #contains(target) {
     const centerX = target.x + target.width / 2;
     const centerY = target.y + target.height / 2;
@@ -98,7 +102,10 @@ export class CombatZone {
     return this.#state;
   }
 
-  /** Validates data. */
+  /**
+   * Validates data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validateData(data) {
     const hasId = typeof data?.id === "string" && data.id.length > 0;
     const position = [data?.x, data?.y];
@@ -114,14 +121,20 @@ export class CombatZone {
     throw new TypeError("Die Kampfzonendaten sind ungültig.");
   }
 
-  /** Checks the unlock platform id condition. */
+  /**
+   * Checks the unlock platform id condition.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasUnlockPlatformId(data) {
     const id = data?.unlockPlatformId;
     return id === undefined || id === null ||
       (typeof id === "string" && id.length > 0);
   }
 
-  /** Checks the optional defeat-trigger enemy id. */
+  /**
+   * Checks the optional defeat-trigger enemy id.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasTriggerEnemyId(data) {
     const id = data?.triggerEnemyId;
     const zoneId = data?.triggerZoneId;
@@ -132,7 +145,10 @@ export class CombatZone {
     return validEnemy && validZone && !(hasEnemy && hasZone);
   }
 
-  /** Checks the enemy ids condition. */
+  /**
+   * Checks the enemy ids condition.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasEnemyIds(data) {
     if (!Array.isArray(data?.enemyIds) || data.enemyIds.length === 0) return false;
     const uniqueIds = new Set(data.enemyIds);

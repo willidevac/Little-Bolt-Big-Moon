@@ -21,10 +21,11 @@ const SELECTORS = Object.freeze({
 /** Unlocks the hidden, unscored mentor review mode. */
 export class ReviewModeController {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {HTMLElement} root
-   * @param {Readonly<object>} config
-   * @param {Storage|null} [storage]
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Storage|null} [storage] Storage service used to persist local data.
    */
   constructor(game, root, config, storage = getSessionStorage()) {
     this.game = game;
@@ -123,7 +124,10 @@ export class ReviewModeController {
     this.code.focus();
   }
 
-  /** @param {SubmitEvent} event */
+  /**
+   * Runs handle submit with validated inputs.
+   * @param {SubmitEvent} event Input or gameplay event handled by the operation.
+   */
   handleSubmit(event) {
     event.preventDefault();
     if (this.#matchesAccessCode(this.code.value)) {
@@ -183,7 +187,10 @@ export class ReviewModeController {
     if (moved) this.syncBiomeControl();
   }
 
-  /** Reconnects review flight to the fresh world after a restart. */
+  /**
+   * Reconnects review flight to the fresh world after a restart.
+   * @param {string} state State value processed by the operation.
+   */
   handleStateChange(state) {
     if (!this.#isActive() || state !== GAME_STATES.PLAYING) return;
     if (this.flight?.character === this.game.world.character) return;
@@ -248,7 +255,10 @@ export class ReviewModeController {
       });
   }
 
-  /** Performs the matches access code operation. */
+  /**
+   * Performs the matches access code operation.
+   * @param {string} value Value read, validated, or rendered by the operation.
+   */
   #matchesAccessCode(value) {
     const normalized = value.trim().toUpperCase();
     const hash = [...normalized].reduce((result, character) => {
@@ -267,7 +277,10 @@ export class ReviewModeController {
     this.storage?.setItem(this.config.storageKey, "true");
   }
 
-  /** Returns element. */
+  /**
+   * Returns element.
+   * @param {string} selector CSS selector used to find the required element.
+   */
   #getElement(selector) {
     const element = this.root.querySelector(selector);
     if (element instanceof HTMLElement) return element;

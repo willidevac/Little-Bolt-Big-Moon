@@ -64,8 +64,9 @@ const VISUAL_CONFIG = Object.freeze({
  */
 export class SpringMine extends Enemy {
   /**
-   * @param {Readonly<object>} enemyData
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} enemyData Enemy definition used to initialize the instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(enemyData, config) {
     super(enemyData, VISUAL_CONFIG, config);
@@ -78,8 +79,8 @@ export class SpringMine extends Enemy {
 
   /**
    * Waits, warns, and leaps along a predictable trajectory.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../../core/world.class.js").World} world
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {import("../../core/world.class.js").World} world Active world providing runtime state and entities.
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
@@ -90,7 +91,10 @@ export class SpringMine extends Enemy {
     this.#updateMovement(deltaTimeSeconds, world, canAct);
   }
 
-  /** Draws a clearly visible warning before every leap. */
+  /**
+   * Draws a clearly visible warning before every leap.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     context.save();
     context.filter = "hue-rotate(145deg) saturate(1.25)";
@@ -101,7 +105,11 @@ export class SpringMine extends Enemy {
     }
   }
 
-  /** Updates behavior. */
+  /**
+   * Updates behavior.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #updateBehavior(deltaTimeSeconds, target) {
     if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
       if (this.isOnGround) this.#finishLeap();
@@ -114,7 +122,11 @@ export class SpringMine extends Enemy {
     this.#updateReadyState(deltaTimeSeconds, target);
   }
 
-  /** Updates ready state. */
+  /**
+   * Updates ready state.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #updateReadyState(deltaTimeSeconds, target) {
     this.velocityX = 0;
     this.leapCooldownSecondsRemaining = Math.max(
@@ -124,7 +136,10 @@ export class SpringMine extends Enemy {
     if (this.#canPrepareLeap(target)) this.#prepareLeap(target);
   }
 
-  /** Checks whether prepare leap. */
+  /**
+   * Checks whether prepare leap.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #canPrepareLeap(target) {
     if (!target || !this.isOnGround || this.leapCooldownSecondsRemaining > 0) {
       return false;
@@ -135,7 +150,10 @@ export class SpringMine extends Enemy {
       verticalDistance <= this.detectionHeightPixels;
   }
 
-  /** Prepares leap. */
+  /**
+   * Prepares leap.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #prepareLeap(target) {
     const targetDirection = this.#getTargetCenterX(target) < this.#getCenterX()
       ? -1
@@ -162,7 +180,12 @@ export class SpringMine extends Enemy {
     this.leapCooldownSecondsRemaining = this.jumpCooldownSeconds;
   }
 
-  /** Updates movement. */
+  /**
+   * Updates movement.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   * @param {boolean} updateAnimation Update animation supplied to update movement.
+   */
   #updateMovement(deltaTimeSeconds, world, updateAnimation) {
     super.update(deltaTimeSeconds, world);
     if (this.movementPhase === MOVEMENT_PHASES.AIRBORNE) {
@@ -176,7 +199,10 @@ export class SpringMine extends Enemy {
     return this.movementPhase === MOVEMENT_PHASES.AIRBORNE ? "jump" : "idle";
   }
 
-  /** Draws warning. */
+  /**
+   * Draws warning.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawWarning(context) {
     const progress = 1 - this.attackSecondsRemaining / this.attackStateSeconds;
     const centerX = this.x + this.width / 2;
@@ -191,7 +217,10 @@ export class SpringMine extends Enemy {
     context.restore();
   }
 
-  /** Applies config. */
+  /**
+   * Applies config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #applyConfig(config) {
     this.jumpHorizontalSpeedPixelsPerSecond =
       config.jumpHorizontalSpeedPixelsPerSecond;
@@ -201,7 +230,10 @@ export class SpringMine extends Enemy {
     this.detectionHeightPixels = config.detectionHeightPixels;
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     const values = [
       config?.jumpHorizontalSpeedPixelsPerSecond,
@@ -224,12 +256,18 @@ export class SpringMine extends Enemy {
     return this.y + this.height / 2;
   }
 
-  /** Returns target center x. */
+  /**
+   * Returns target center x.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #getTargetCenterX(target) {
     return target.x + target.width / 2;
   }
 
-  /** Returns target center y. */
+  /**
+   * Returns target center y.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #getTargetCenterY(target) {
     return target.y + target.height / 2;
   }

@@ -35,7 +35,7 @@ export class GameplayEventHub {
 
   /**
    * Registers an observer and returns its unsubscribe function.
-   * @param {(event:GameplayEvent) => void} listener
+   * @param {(event:GameplayEvent) => void} listener Listener notified when the observed value changes.
    * @returns {() => void}
    */
   on(listener) {
@@ -48,8 +48,8 @@ export class GameplayEventHub {
 
   /**
    * Distributes a known event with an immutable copy of its details.
-   * @param {GameplayEventType} type
-   * @param {GameplayEventDetail} [detail={}]
+   * @param {GameplayEventType} type Event or effect type processed by the operation.
+   * @param {GameplayEventDetail} [detail={}] Event-specific payload published with the event.
    */
   emit(type, detail = {}) {
     if (!KNOWN_EVENTS.has(type) || !detail || typeof detail !== "object") {

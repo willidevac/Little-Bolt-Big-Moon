@@ -26,7 +26,11 @@ const BURST_CONFIGS = Object.freeze({
 
 /** Draws a short, reproducible particle burst. */
 export class FeedbackBurst {
-  /** @param {string} type Burst type. @param {Readonly<object>} target Effect target. */
+  /**
+   * Creates the configured instance.
+   * @param {string} type Burst type.
+   * @param {Readonly<object>} target Effect target.
+   */
   constructor(type, target) {
     this.config = BURST_CONFIGS[type];
     this.#validateTarget(target);
@@ -36,7 +40,10 @@ export class FeedbackBurst {
     this.ageSeconds = 0;
   }
 
-  /** Advances the effect and reports whether it remains visible. */
+  /**
+   * Advances the effect and reports whether it remains visible.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0) {
       this.ageSeconds += deltaTimeSeconds;
@@ -44,7 +51,10 @@ export class FeedbackBurst {
     return this.ageSeconds < this.config.duration;
   }
 
-  /** Draws every particle at the current burst time. */
+  /**
+   * Draws every particle at the current burst time.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     const progress = Math.min(1, this.ageSeconds / this.config.duration);
     context.save();
@@ -55,7 +65,12 @@ export class FeedbackBurst {
     context.restore();
   }
 
-  /** Draws particle. */
+  /**
+   * Draws particle.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} index Zero-based item index used by the operation.
+   * @param {number} progress Normalized progress value used by the effect.
+   */
   #drawParticle(context, index, progress) {
     const angleStep = this.config.arc / Math.max(1, this.config.count - 1);
     const angle = this.config.startAngle + angleStep * index;
@@ -71,14 +86,20 @@ export class FeedbackBurst {
     );
   }
 
-  /** Returns anchor y. */
+  /**
+   * Returns anchor y.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #getAnchorY(target) {
     return this.config.anchor === "feet"
       ? target.y + target.height
       : target.y + target.height / 2;
   }
 
-  /** Validates target. */
+  /**
+   * Validates target.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #validateTarget(target) {
     const values = [target?.x, target?.y, target?.width, target?.height];
     if (values.every(Number.isFinite)) return;

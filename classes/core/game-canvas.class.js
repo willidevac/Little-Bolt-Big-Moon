@@ -3,7 +3,8 @@
  */
 export class GameCanvas {
   /**
-   * @param {HTMLCanvasElement} canvas
+   * Creates the configured instance.
+   * @param {HTMLCanvasElement} canvas Canvas element used for game rendering.
    */
   constructor(canvas) {
     const context = canvas?.getContext?.("2d");
@@ -24,7 +25,7 @@ export class GameCanvas {
 
   /**
    * Mirrors the loop state on the canvas for the UI and tests.
-   * @param {"running"|"paused"|"stopped"} state
+   * @param {"running"|"paused"|"stopped"} state State value processed by the operation.
    */
   setLoopState(state) {
     this.element.dataset.gameLoopState = state;

@@ -2,7 +2,11 @@ import { DrawableObject } from "../base/drawable-object.class.js";
 
 /** A one-way landing surface drawn from one newly generated environment sprite. */
 export class SpriteSurfacePlatform extends DrawableObject {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
@@ -16,7 +20,10 @@ export class SpriteSurfacePlatform extends DrawableObject {
     this.loadSprite(spriteConfig);
   }
 
-  /** Pulses the recessed indicator lights without changing geometry. */
+  /**
+   * Pulses the recessed indicator lights without changing geometry.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     this.#drawSprite(context);
     if (this.kind === "floor") return;
@@ -36,7 +43,10 @@ export class SpriteSurfacePlatform extends DrawableObject {
     return Object.freeze({ x: 0, y: 0 });
   }
 
-  /** Draws sprite. */
+  /**
+   * Draws sprite.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawSprite(context) {
     if (this.platformRole !== "launch" || this.suggestedDirection !== "left") {
       super.draw(context);
@@ -49,7 +59,11 @@ export class SpriteSurfacePlatform extends DrawableObject {
     context.restore();
   }
 
-  /** Draws role signal. */
+  /**
+   * Draws role signal.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} time Time supplied to draw role signal.
+   */
   #drawRoleSignal(context, time) {
     if (this.searchPathCue) this.#drawSearchPathCue(context, time);
     if (this.platformRole === "launch") return this.#drawLaunchSignal(context, time);
@@ -61,7 +75,11 @@ export class SpriteSurfacePlatform extends DrawableObject {
     }
   }
 
-  /** Draws search path cue. */
+  /**
+   * Draws search path cue.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} time Time supplied to draw search path cue.
+   */
   #drawSearchPathCue(context, time) {
     const direction = this.searchPathCue === "left" ? -1 : 1;
     const pulse = (Math.sin(time / 180) + 1) * 0.12;
@@ -74,7 +92,11 @@ export class SpriteSurfacePlatform extends DrawableObject {
     }
   }
 
-  /** Draws launch signal. */
+  /**
+   * Draws launch signal.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} time Time supplied to draw launch signal.
+   */
   #drawLaunchSignal(context, time) {
     const travel = Math.max(1, this.width - 54);
     const raw = (time / 3.2) % travel;
@@ -83,7 +105,11 @@ export class SpriteSurfacePlatform extends DrawableObject {
     context.fillRect(this.x + 12 + offset, this.y + 7, 42, 4);
   }
 
-  /** Draws rescue signal. */
+  /**
+   * Draws rescue signal.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} time Time supplied to draw rescue signal.
+   */
   #drawRescueSignal(context, time) {
     const blink = Math.floor(time / 240) % 2 === 0 ? 0.72 : 0.2;
     context.globalAlpha = blink;
@@ -92,7 +118,10 @@ export class SpriteSurfacePlatform extends DrawableObject {
     context.fillRect(this.x + this.width - 16, this.y + 8, 8, 5);
   }
 
-  /** Validates operation. */
+  /**
+   * Validates operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validate(data) {
     const values = [data?.x, data?.y, data?.width, data?.height];
     const hasValues = values.every(Number.isFinite) && data.width > 0 &&

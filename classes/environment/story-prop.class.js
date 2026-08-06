@@ -9,9 +9,10 @@ const ANIMATION_STATE = "active";
  */
 export class StoryProp extends DrawableObject {
   /**
-   * @param {Readonly<{id:string,type:string,x:number,y:number,anchorPlatformId:string}>} data
-   * @param {Readonly<object>} visualConfig
-   * @param {Readonly<object>} anchorPlatform
+   * Creates the configured instance.
+   * @param {Readonly<{id:string,type:string,x:number,y:number,anchorPlatformId:string}>} data Source data used to configure the instance.
+   * @param {Readonly<object>} visualConfig Visual configuration used for rendering.
+   * @param {Readonly<object>} anchorPlatform Anchor platform supplied to constructor.
    */
   constructor(data, visualConfig, anchorPlatform) {
     super();
@@ -26,7 +27,10 @@ export class StoryProp extends DrawableObject {
     this.#setInitialFrame(visualConfig.frameIndex);
   }
 
-  /** Applies visual config. */
+  /**
+   * Applies visual config.
+   * @param {Readonly<object>} visualConfig Visual configuration used for rendering.
+   */
   #applyVisualConfig(visualConfig) {
     this.width = visualConfig.sprite.frameWidth * visualConfig.renderScale;
     this.height = visualConfig.sprite.frameHeight * visualConfig.renderScale;
@@ -36,7 +40,7 @@ export class StoryProp extends DrawableObject {
 
   /**
    * Advances only existing clue animations over time.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     this.pulseTime += Math.max(0, deltaTimeSeconds);
@@ -55,7 +59,10 @@ export class StoryProp extends DrawableObject {
   /** @returns {boolean} Whether the supporting platform is currently visible. */
   get isAvailable() { return this.anchorPlatform.isCollidable !== false; }
 
-  /** Draws the visible bottom edge directly on the supporting platform. */
+  /**
+   * Draws the visible bottom edge directly on the supporting platform.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     if (!this.isAvailable) return;
     const drawY = getGroundedSpriteY(this, this.groundOffsets);
@@ -69,13 +76,19 @@ export class StoryProp extends DrawableObject {
     this.drawCurrentFrame(context, this.x, drawY, this.width, this.height);
   }
 
-  /** Creates animation. */
+  /**
+   * Creates animation.
+   * @param {Readonly<object>} animation Animation definition used to create the controller.
+   */
   #createAnimation(animation) {
     if (!animation) return null;
     return new AnimationController({ [ANIMATION_STATE]: animation });
   }
 
-  /** Applies initial frame. */
+  /**
+   * Applies initial frame.
+   * @param {number} frameIndex Sprite frame index selected for rendering.
+   */
   #setInitialFrame(frameIndex) {
     const frame = this.animationController
       ? this.animationController.setState(ANIMATION_STATE)
@@ -83,7 +96,10 @@ export class StoryProp extends DrawableObject {
     this.setFrameIndex(frame);
   }
 
-  /** Validates data. */
+  /**
+   * Validates data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validateData(data) {
     const text = [data?.id, data?.type, data?.anchorPlatformId];
     const position = [data?.x, data?.y];
@@ -91,7 +107,10 @@ export class StoryProp extends DrawableObject {
     throw new TypeError("Die Storyobjektdaten sind ungültig.");
   }
 
-  /** Validates visual config. */
+  /**
+   * Validates visual config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateVisualConfig(config) {
     const hasSprite = this.#hasValidSprite(config?.sprite);
     const hasScale = Number.isFinite(config?.renderScale) &&
@@ -104,7 +123,10 @@ export class StoryProp extends DrawableObject {
     throw new TypeError("Die Storyobjektdarstellung ist ungültig.");
   }
 
-  /** Performs the anchor to operation. */
+  /**
+   * Performs the anchor to operation.
+   * @param {Readonly<object>} platform Platform used by the operation.
+   */
   #anchorTo(platform) {
     const matches = this.anchorPlatformId === platform?.id;
     const hasMovement = typeof platform?.getFrameDisplacement === "function";
@@ -117,7 +139,10 @@ export class StoryProp extends DrawableObject {
     this.y = platform.y - this.height;
   }
 
-  /** Checks the valid sprite condition. */
+  /**
+   * Checks the valid sprite condition.
+   * @param {Readonly<object>} sprite Sprite supplied to has valid sprite.
+   */
   #hasValidSprite(sprite) {
     const values = [
       sprite?.frameWidth,
@@ -129,14 +154,20 @@ export class StoryProp extends DrawableObject {
       values.every((value) => Number.isInteger(value) && value > 0);
   }
 
-  /** Checks the valid frame condition. */
+  /**
+   * Checks the valid frame condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasValidFrame(config) {
     return Number.isInteger(config?.frameIndex) &&
       config.frameIndex >= 0 &&
       config.frameIndex < config?.sprite?.frameCount;
   }
 
-  /** Checks the valid ground offsets condition. */
+  /**
+   * Checks the valid ground offsets condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasValidGroundOffsets(config) {
     return Array.isArray(config?.groundOffsets) &&
       config.groundOffsets.length === config?.sprite?.frameCount &&
@@ -145,7 +176,10 @@ export class StoryProp extends DrawableObject {
       });
   }
 
-  /** Checks the text condition. */
+  /**
+   * Checks the text condition.
+   * @param {string} value Value read, validated, or rendered by the operation.
+   */
   #isText(value) {
     return typeof value === "string" && value.length > 0;
   }

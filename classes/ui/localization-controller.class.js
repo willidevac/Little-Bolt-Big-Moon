@@ -14,8 +14,9 @@ const LABEL_SELECTOR = "[data-i18n-aria-label]";
  */
 export class LocalizationController {
   /**
-   * @param {import("../systems/game-storage.class.js").GameStorage} storage
-   * @param {HTMLElement} root
+   * Creates the configured instance.
+   * @param {import("../systems/game-storage.class.js").GameStorage} storage Storage service used to persist local data.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
    */
   constructor(storage, root) {
     this.storage = storage;

@@ -3,9 +3,9 @@
  */
 export class Camera {
   /**
-   * @param {Readonly<object>} config
-   * @param {Readonly<{minimumY?:number,maximumY?:number,
-   * deadZoneTopPixels?:number,deadZoneBottomPixels?:number}>} [bounds]
+   * Creates the configured instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Readonly<{minimumY?:number,maximumY?:number, deadZoneTopPixels?:number,deadZoneBottomPixels?:number}>} [bounds] Optional movement limits applied to the camera.
    */
   constructor(config, bounds = {}) {
     const cameraConfig = Object.freeze({ ...config?.camera, ...bounds });
@@ -14,7 +14,12 @@ export class Camera {
     this.#assignState(config, cameraConfig, cameraBounds);
   }
 
-  /** Assigns validated camera state. */
+  /**
+   * Assigns validated camera state.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Readonly<object>} camera Camera providing the current world offset.
+   * @param {Readonly<object>} bounds Optional movement limits applied to the camera.
+   */
   #assignState(config, camera, bounds) {
     Object.assign(this, {
       x: 0, y: 0, viewportHeight: config.canvas.height,
@@ -29,7 +34,7 @@ export class Camera {
 
   /**
    * Resets the view to the start and immediately shows a valid target.
-   * @param {{y:number, height:number}|null} [target=null]
+   * @param {{y:number, height:number}|null} [target=null] Target affected or inspected by the operation.
    */
   reset(target = null) {
     this.x = 0;
@@ -41,8 +46,8 @@ export class Camera {
 
   /**
    * Follows a target within the vertical dead zone over time.
-   * @param {{y:number, height:number}} target
-   * @param {number} deltaTimeSeconds
+   * @param {{y:number, height:number}} target Target affected or inspected by the operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    * @returns {boolean} Whether the camera moved.
    */
   update(target, deltaTimeSeconds) {
@@ -57,7 +62,10 @@ export class Camera {
     return true;
   }
 
-  /** Temporarily accelerates camera tracking, for example during review flight. */
+  /**
+   * Temporarily accelerates camera tracking, for example during review flight.
+   * @param {number} [multiplier=1] Multiplier applied to the configured value.
+   */
   setFollowSpeedMultiplier(multiplier = 1) {
     if (!Number.isFinite(multiplier) || multiplier < 1) {
       throw new RangeError("Der Kamera-Folgefaktor muss mindestens 1 sein.");
@@ -65,7 +73,10 @@ export class Camera {
     this.followSpeedMultiplier = multiplier;
   }
 
-  /** Returns desired y. */
+  /**
+   * Returns desired y.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #getDesiredY(target) {
     const targetCenterY = target.y + target.height / 2;
     const screenY = targetCenterY - this.y;
@@ -74,7 +85,10 @@ export class Camera {
     return this.y;
   }
 
-  /** Returns follow speed. */
+  /**
+   * Returns follow speed.
+   * @param {number} desiredY Desired y supplied to get follow speed.
+   */
   #getFollowSpeed(desiredY) {
     const speed = desiredY < this.y
       ? this.upwardFollowSpeed
@@ -82,18 +96,30 @@ export class Camera {
     return speed * this.followSpeedMultiplier;
   }
 
-  /** Performs the move towards operation. */
+  /**
+   * Performs the move towards operation.
+   * @param {number} current Current supplied to move towards.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   * @param {number} maximumDistance Maximum distance allowed for the movement step.
+   */
   #moveTowards(current, target, maximumDistance) {
     if (current < target) return Math.min(current + maximumDistance, target);
     return Math.max(current - maximumDistance, target);
   }
 
-  /** Performs the clamp y operation. */
+  /**
+   * Performs the clamp y operation.
+   * @param {number} y Vertical coordinate in canvas pixels.
+   */
   #clampY(y) {
     return Math.min(Math.max(this.minimumY, y), this.maximumY);
   }
 
-  /** Creates validated level-specific camera limits. */
+  /**
+   * Creates validated level-specific camera limits.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Readonly<object>} bounds Optional movement limits applied to the camera.
+   */
   #createBounds(config, bounds) {
     const minimumY = bounds.minimumY ?? 0;
     const fallbackMaximum = Math.max(0, config.world.height - config.canvas.height);
@@ -104,7 +130,10 @@ export class Camera {
     return Object.freeze({ minimumY, maximumY });
   }
 
-  /** Checks the valid target condition. */
+  /**
+   * Checks the valid target condition.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #isValidTarget(target) {
     return (
       Number.isFinite(target?.y) &&
@@ -113,12 +142,19 @@ export class Camera {
     );
   }
 
-  /** Checks the valid delta time condition. */
+  /**
+   * Checks the valid delta time condition.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #isValidDeltaTime(deltaTimeSeconds) {
     return Number.isFinite(deltaTimeSeconds) && deltaTimeSeconds > 0;
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Readonly<object>} camera Camera providing the current world offset.
+   */
   #validateConfig(config, camera) {
     const hasValidWorld = Number.isFinite(config?.world?.height) &&
       Number.isFinite(config?.canvas?.height) &&
@@ -129,7 +165,11 @@ export class Camera {
     }
   }
 
-  /** Checks the valid camera config condition. */
+  /**
+   * Checks the valid camera config condition.
+   * @param {Readonly<object>} camera Camera providing the current world offset.
+   * @param {number} viewportHeight Viewport height supplied to has valid camera config.
+   */
   #hasValidCameraConfig(camera, viewportHeight) {
     const hasValidDeadZone = Number.isFinite(camera?.deadZoneTopPixels) &&
       Number.isFinite(camera?.deadZoneBottomPixels) &&

@@ -10,7 +10,8 @@ export class Weapon {
   #startingDamage;
 
   /**
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(config) {
     this.#validateConfig(config);
@@ -22,7 +23,7 @@ export class Weapon {
 
   /**
    * Reduces the cooldown over time.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
@@ -37,7 +38,7 @@ export class Weapon {
 
   /**
    * Checks the cooldown and ammunition only when the weapon consumes it.
-   * @param {number|null} [availableAmmo=null]
+   * @param {number|null} [availableAmmo=null] Available ammo supplied to can attack.
    * @returns {boolean}
    */
   canAttack(availableAmmo = null) {
@@ -48,7 +49,7 @@ export class Weapon {
 
   /**
    * Creates an immutable attack payload for later hit checks.
-   * @param {Readonly<object>} character
+   * @param {Readonly<object>} character Character affected by the operation.
    * @returns {Readonly<object>|null}
    */
   attack(character) {
@@ -69,7 +70,7 @@ export class Weapon {
 
   /**
    * Increases damage and the visible weapon level.
-   * @param {number} amount
+   * @param {number} amount Amount applied by the operation.
    * @returns {Readonly<object>}
    */
   increaseDamage(amount) {
@@ -97,14 +98,21 @@ export class Weapon {
     });
   }
 
-  /** Creates attack. */
+  /**
+   * Creates attack.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   #createAttack(character) {
     const direction = Math.sign(character.facingDirection) || 1;
     const origin = this.#createOrigin(character, direction);
     return Object.freeze(this.#createAttackDetails(origin, direction));
   }
 
-  /** Creates attack details. */
+  /**
+   * Creates attack details.
+   * @param {Readonly<object>} origin World-space origin used by the operation.
+   * @param {string} direction Direction applied to the movement or impact.
+   */
   #createAttackDetails(origin, direction) {
     return {
       weaponId: this.id,
@@ -120,13 +128,21 @@ export class Weapon {
     };
   }
 
-  /** Creates origin. */
+  /**
+   * Creates origin.
+   * @param {Readonly<object>} character Character affected by the operation.
+   * @param {string} direction Direction applied to the movement or impact.
+   */
   #createOrigin(character, direction) {
     const x = direction > 0 ? character.x + character.width : character.x;
     return Object.freeze({ x, y: character.y + this.attackOffsetY });
   }
 
-  /** Creates hitbox. */
+  /**
+   * Creates hitbox.
+   * @param {Readonly<object>} origin World-space origin used by the operation.
+   * @param {string} direction Direction applied to the movement or impact.
+   */
   #createHitbox(origin, direction) {
     if (this.type !== "melee") return null;
     const x = direction > 0 ? origin.x : origin.x - this.attackWidth;
@@ -138,13 +154,19 @@ export class Weapon {
     });
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     if (this.#isValidConfig(config)) return;
     throw new TypeError("Die Waffenkonfiguration ist ungültig.");
   }
 
-  /** Checks the valid config condition. */
+  /**
+   * Checks the valid config condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #isValidConfig(config) {
     const hasAmmo = Number.isInteger(config?.ammoCost) && config.ammoCost >= 0;
     const hasAmmoType = config?.ammoCost === 0
@@ -160,19 +182,28 @@ export class Weapon {
     );
   }
 
-  /** Checks the valid projectile kind condition. */
+  /**
+   * Checks the valid projectile kind condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasValidProjectileKind(config) {
     if (config.type === "melee") return true;
     return PROJECTILE_KINDS.includes(config.projectileKind);
   }
 
-  /** Checks the valid text condition. */
+  /**
+   * Checks the valid text condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasValidText(config) {
     const textValues = [config?.id, config?.name, config?.animationState];
     return textValues.every((value) => typeof value === "string" && value);
   }
 
-  /** Checks the valid numbers condition. */
+  /**
+   * Checks the valid numbers condition.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #hasValidNumbers(config) {
     const numberValues = [
       config?.damage,
@@ -185,7 +216,10 @@ export class Weapon {
     return numberValues.every((value) => Number.isFinite(value) && value > 0);
   }
 
-  /** Validates character. */
+  /**
+   * Validates character.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   #validateCharacter(character) {
     const values = [
       character?.x,

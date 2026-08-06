@@ -7,7 +7,8 @@ const SEAM_OVERLAP_PIXELS = 4;
  */
 export class BackgroundZone {
   /**
-   * @param {{id:string, topY:number, bottomY:number, backgroundLayers:ReadonlyArray<object>}} config
+   * Creates the configured instance.
+   * @param {{id:string, topY:number, bottomY:number, backgroundLayers:ReadonlyArray<object>}} config Configuration values used by the operation.
    */
   constructor(config) {
     this.#validateConfig(config);
@@ -21,9 +22,9 @@ export class BackgroundZone {
 
   /**
    * Draws only the visible area and overlaps neighboring zones by four pixels.
-   * @param {CanvasRenderingContext2D} context
-   * @param {{y:number}} camera
-   * @param {Readonly<{width:number, height:number}>} viewport
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {{y:number}} camera Camera providing the current world offset.
+   * @param {Readonly<{width:number, height:number}>} viewport Viewport dimensions used to position the effect.
    */
   draw(context, camera, viewport) {
     const visible = this.#getVisibleBounds(camera, viewport);
@@ -33,10 +34,10 @@ export class BackgroundZone {
 
   /**
    * Draws the complete panorama with an opacity for biome crossfades.
-   * @param {CanvasRenderingContext2D} context
-   * @param {{y:number}} camera
-   * @param {Readonly<{width:number, height:number}>} viewport
-   * @param {number} opacity
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {{y:number}} camera Camera providing the current world offset.
+   * @param {Readonly<{width:number, height:number}>} viewport Viewport dimensions used to position the effect.
+   * @param {number} opacity Opacity supplied to draw blended.
    */
   drawBlended(context, camera, viewport, opacity) {
     if (!Number.isFinite(opacity) || opacity <= 0) return;
@@ -48,7 +49,11 @@ export class BackgroundZone {
     context.restore();
   }
 
-  /** Returns visible bounds. */
+  /**
+   * Returns visible bounds.
+   * @param {Readonly<object>} camera Camera providing the current world offset.
+   * @param {Readonly<{width:number,height:number}>} viewport Viewport dimensions used to position the effect.
+   */
   #getVisibleBounds(camera, viewport) {
     const visibleTop = Math.max(
       0,
@@ -61,7 +66,13 @@ export class BackgroundZone {
     return { top: visibleTop, bottom: visibleBottom };
   }
 
-  /** Draws layers. */
+  /**
+   * Draws layers.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} camera Camera providing the current world offset.
+   * @param {Readonly<{width:number,height:number}>} viewport Viewport dimensions used to position the effect.
+   * @param {boolean} visible Visible supplied to draw layers.
+   */
   #drawLayers(context, camera, viewport, visible) {
     context.save();
     context.beginPath();
@@ -73,7 +84,10 @@ export class BackgroundZone {
     context.restore();
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     const hasValidBounds = Number.isFinite(config?.topY) &&
       Number.isFinite(config?.bottomY) &&

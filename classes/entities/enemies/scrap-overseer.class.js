@@ -16,7 +16,11 @@ const PHASES = Object.freeze([
 export class ScrapOverseer extends Enemy {
   #attackController;
 
-  /** @param {Readonly<object>} enemyData @param {Readonly<object>} config */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} enemyData Enemy definition used to initialize the instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   constructor(enemyData, config) {
     super(createBossData(enemyData), SCRAP_OVERSEER_VISUAL_CONFIG, config);
     this.#validateConfig(config);
@@ -34,13 +38,20 @@ export class ScrapOverseer extends Enemy {
     return activated;
   }
 
-  /** Draws the locked shot path before drawing the drone. */
+  /**
+   * Draws the locked shot path before drawing the drone.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     this.#drawTelegraph(context);
     super.draw(context);
   }
 
-  /** Advances patrol, hover, phases, and announced attacks. */
+  /**
+   * Advances patrol, hover, phases, and announced attacks.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.activateBoss();
@@ -53,7 +64,10 @@ export class ScrapOverseer extends Enemy {
     this.#beginAttack(world.character);
   }
 
-  /** Applies damage, phase changes, and death interruption. */
+  /**
+   * Applies damage, phase changes, and death interruption.
+   * @param {Readonly<object>} hit Hit data resolved against the target.
+   */
   receivePlayerHit(hit) {
     const accepted = super.receivePlayerHit(hit);
     if (!accepted) return false;
@@ -68,7 +82,10 @@ export class ScrapOverseer extends Enemy {
   /** @returns {ReadonlyArray<Readonly<object>>} Prepared shots exactly once. */
   takeAttackEvents() { return this.#attackController.takeEvents(); }
 
-  /** Draws a cyan aiming line and reactor pulse. */
+  /**
+   * Draws a cyan aiming line and reactor pulse.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawTelegraph(context) {
     const pending = this.getAttackTelegraph();
     if (!pending) return;
@@ -79,7 +96,13 @@ export class ScrapOverseer extends Enemy {
     this.#drawReactorPulse(context, origin, progress);
   }
 
-  /** Draws the fixed shot path. */
+  /**
+   * Draws the fixed shot path.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} origin World-space origin used by the operation.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   * @param {number} progress Normalized progress value used by the effect.
+   */
   #drawAimLine(context, origin, target, progress) {
     context.save();
     context.strokeStyle = "#65efff";
@@ -93,7 +116,12 @@ export class ScrapOverseer extends Enemy {
     context.restore();
   }
 
-  /** Draws a growing warning pulse around the weapon core. */
+  /**
+   * Draws a growing warning pulse around the weapon core.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} origin World-space origin used by the operation.
+   * @param {number} progress Normalized progress value used by the effect.
+   */
   #drawReactorPulse(context, origin, progress) {
     context.save();
     context.strokeStyle = "#ff9b32";
@@ -104,7 +132,12 @@ export class ScrapOverseer extends Enemy {
     context.restore();
   }
 
-  /** Updates horizontal patrol and hover without target pursuit. */
+  /**
+   * Updates horizontal patrol and hover without target pursuit.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   * @param {boolean} canAct Can act supplied to update flight.
+   */
   #updateFlight(deltaTimeSeconds, world, canAct) {
     const canPatrol = canAct && !this.#attackController.hasPendingAttack;
     this.velocityX = canPatrol ? this.direction * this.#getSpeed() : 0;
@@ -117,13 +150,19 @@ export class ScrapOverseer extends Enemy {
     if (canAct) this.updateAnimation(deltaTimeSeconds);
   }
 
-  /** Checks whether the next announced shot may begin. */
+  /**
+   * Checks whether the next announced shot may begin.
+   * @param {boolean} canAct Can act supplied to can begin attack.
+   */
   #canBeginAttack(canAct) {
     return canAct && this.isActive && !this.#attackController.hasPendingAttack &&
       this.attackCooldownSecondsRemaining === 0;
   }
 
-  /** Locks Byte's current position and begins a visible warning. */
+  /**
+   * Locks Byte's current position and begins a visible warning.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #beginAttack(target) {
     if (!target || !this.startAttackState("attack")) return false;
     const targetCenter = this.#getCenter(target);
@@ -134,7 +173,10 @@ export class ScrapOverseer extends Enemy {
     return true;
   }
 
-  /** Releases a due volley and applies the phase recovery time. */
+  /**
+   * Releases a due volley and applies the phase recovery time.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updatePendingAttack(deltaTimeSeconds) {
     if (!this.#attackController.hasPendingAttack || this.isHurt || this.isDead) {
       return false;
@@ -169,7 +211,10 @@ export class ScrapOverseer extends Enemy {
     });
   }
 
-  /** Returns the collision center of one entity or rectangle. */
+  /**
+   * Returns the collision center of one entity or rectangle.
+   * @param {number} entity World entity processed by the operation.
+   */
   #getCenter(entity) {
     const bounds = typeof entity?.getCollisionBounds === "function"
       ? entity.getCollisionBounds()
@@ -180,7 +225,10 @@ export class ScrapOverseer extends Enemy {
     });
   }
 
-  /** Validates all flight and attack values used by the boss. */
+  /**
+   * Validates all flight and attack values used by the boss.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     const values = [
       config?.speedPixelsPerSecond, config?.hoverAmplitudePixels,
@@ -192,7 +240,10 @@ export class ScrapOverseer extends Enemy {
   }
 }
 
-/** Creates the immutable tutorial-final boss identity. */
+/**
+ * Creates the immutable tutorial-final boss identity.
+ * @param {Readonly<object>} data Source data used to configure the instance.
+ */
 function createBossData(data) {
   return Object.freeze({
     ...data,

@@ -10,7 +10,10 @@ const PICKUP_TYPES = Object.freeze([
 
 /** Briefly displays important gameplay messages above the world accessibly. */
 export class HudAnnouncement {
-  /** @param {HTMLElement} element */
+  /**
+   * Creates the configured instance.
+   * @param {HTMLElement} element DOM element updated by the view.
+   */
   constructor(element) {
     if (!element?.classList) throw new TypeError("Die HUD-Mitteilung fehlt.");
     this.element = element;
@@ -20,7 +23,10 @@ export class HudAnnouncement {
     this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
-  /** Displays exactly one clear message for a new pickup. */
+  /**
+   * Displays exactly one clear message for a new pickup.
+   * @param {Readonly<object>} pickup Pickup supplied to show pickup.
+   */
   showPickup(pickup) {
     const priority = pickup?.type === "weapon" ? 2 : 1;
     return this.#show(
@@ -28,7 +34,10 @@ export class HudAnnouncement {
     );
   }
 
-  /** Announces a boss using its translatable name. */
+  /**
+   * Announces a boss using its translatable name.
+   * @param {number} nameKey Translation key used to resolve the displayed name.
+   */
   showBoss(nameKey) {
     if (typeof nameKey !== "string" || !nameKey) {
       throw new TypeError("Der Bossname für die HUD-Mitteilung fehlt.");
@@ -43,7 +52,10 @@ export class HudAnnouncement {
     return this.#show({ kind: "path" }, 4, PATH_DURATION_MILLISECONDS);
   }
 
-  /** Announces the newly reached biome after an intermediate boss. */
+  /**
+   * Announces the newly reached biome after an intermediate boss.
+   * @param {number} nameKey Translation key used to resolve the displayed name.
+   */
   showBiomeReached(nameKey) {
     if (typeof nameKey !== "string" || !nameKey) {
       throw new TypeError("The biome name for the HUD announcement is missing.");
@@ -70,7 +82,12 @@ export class HudAnnouncement {
     this.unsubscribeLanguage();
   }
 
-  /** Performs the show operation. */
+  /**
+   * Performs the show operation.
+   * @param {string|Readonly<object>} message Message displayed by the announcement.
+   * @param {number} priority Display priority assigned to the message.
+   * @param {number} duration Duration used by the operation.
+   */
   #show(message, priority, duration) {
     if (priority < this.activePriority) return false;
     this.activePriority = priority;
@@ -96,7 +113,10 @@ export class HudAnnouncement {
     this.element.textContent = this.#getMessage(this.currentMessage);
   }
 
-  /** Returns message. */
+  /**
+   * Returns message.
+   * @param {string|Readonly<object>} message Message displayed by the announcement.
+   */
   #getMessage(message) {
     if (message.kind === "boss") return this.#getBossMessage(message.nameKey);
     if (message.kind === "biome") {
@@ -108,12 +128,18 @@ export class HudAnnouncement {
     return this.#getPickupMessage(message.pickup);
   }
 
-  /** Returns boss message. */
+  /**
+   * Returns boss message.
+   * @param {number} nameKey Translation key used to resolve the displayed name.
+   */
   #getBossMessage(nameKey) {
     return translate("combat.bossStarted", { name: translate(nameKey) });
   }
 
-  /** Returns pickup message. */
+  /**
+   * Returns pickup message.
+   * @param {Readonly<object>} pickup Pickup supplied to get pickup message.
+   */
   #getPickupMessage(pickup) {
     if (pickup?.type === "weapon") return translate("pickup.weapon");
     const key = `pickup.${pickup?.type}`;

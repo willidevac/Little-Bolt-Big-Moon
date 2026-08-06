@@ -10,14 +10,22 @@ const EXIT_ASSIST_MINIMUM_HORIZONTAL_SPEED = 140;
 
 /** Draws one thin, animated, vertically tiled wall for a complete biome. */
 export class AnimatedBiomeWall extends DrawableObject {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
     this.#initialize(data, spriteConfig);
   }
 
-  /** Initializes operation. */
+  /**
+   * Initializes operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   #initialize(data, spriteConfig) {
     const width = data.role === "early-trickshot-wall" ? data.width : WALL_WIDTH;
     Object.assign(this, data, { width });
@@ -31,7 +39,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.loadSprite(spriteConfig);
   }
 
-  /** Advances the four light-flow frames. */
+  /**
+   * Advances the four light-flow frames.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.animationTime = (this.animationTime + deltaTimeSeconds) %
@@ -41,7 +52,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     if (this.contactSeconds === 0) this.contactTarget = null;
   }
 
-  /** Draws only wall modules intersecting the current camera view. */
+  /**
+   * Draws only wall modules intersecting the current camera view.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   draw(context, world) {
     if (this.imageState !== "ready") return;
     if (this.role === "early-trickshot-wall") {
@@ -52,7 +67,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#drawBiomeWall(context, world);
   }
 
-  /** Draws biome wall. */
+  /**
+   * Draws biome wall.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #drawBiomeWall(context, world) {
     const camera = world.camera;
     const top = Math.max(this.y, camera.y - DRAW_PADDING);
@@ -67,7 +86,12 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#drawMeaningfulLight(context, top, bottom);
   }
 
-  /** Draws tiles. */
+  /**
+   * Draws tiles.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} firstTile First tile supplied to draw tiles.
+   * @param {number} lastTile Last tile supplied to draw tiles.
+   */
   #drawTiles(context, firstTile, lastTile) {
     context.save();
     context.beginPath();
@@ -79,7 +103,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
-  /** Draws trickshot wall. */
+  /**
+   * Draws trickshot wall.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawTrickshotWall(context) {
     this.setFrameIndex(0);
     if (this.side === "left") {
@@ -95,7 +122,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
-  /** Makes a successful wall rebound immediately readable. */
+  /**
+   * Makes a successful wall rebound immediately readable.
+   * @param {Readonly<object>} character Character affected by the operation.
+   * @param {string} collisionDirection Collision direction supplied to on wall impact.
+   */
   onWallImpact(character, collisionDirection) {
     this.impactGlowSeconds = 0.3;
     if (!this.#isInnerImpact(collisionDirection)) return;
@@ -104,7 +135,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#applyReboundImpulse(character);
   }
 
-  /** Applies rebound impulse. */
+  /**
+   * Applies rebound impulse.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   #applyReboundImpulse(character) {
     if (this.role !== "wall-bounce-choke" || character?.isOnGround) return;
     const regularDirection = this.side === "left" ? 1 : -1;
@@ -117,7 +151,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#applyFallbackRebound(character, rebound);
   }
 
-  /** Creates rebound. */
+  /**
+   * Creates rebound.
+   * @param {boolean} exitAssist Exit assist supplied to create rebound.
+   * @param {string} regularDirection Default rebound direction before exit assistance.
+   */
   #createRebound(exitAssist, regularDirection) {
     return Object.freeze({
       direction: exitAssist?.direction ?? regularDirection,
@@ -132,7 +170,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     });
   }
 
-  /** Applies fallback rebound. */
+  /**
+   * Applies fallback rebound.
+   * @param {Readonly<object>} character Character affected by the operation.
+   * @param {Readonly<object>} rebound Controlled rebound values applied to the character.
+   */
   #applyFallbackRebound(character, rebound) {
     if (typeof character?.applyUpwardImpulse !== "function") return;
     const input = character.wallReboundInput ?? {};
@@ -148,7 +190,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     );
   }
 
-  /** Returns exit assist. */
+  /**
+   * Returns exit assist.
+   * @param {Readonly<object>} character Character affected by the operation.
+   * @param {string} regularDirection Default rebound direction before exit assistance.
+   */
   #getExitAssist(character, regularDirection) {
     if (!this.#canAssistExit(character)) return null;
     const { centerX, rise } = this.#getExitGeometry(character);
@@ -157,14 +203,20 @@ export class AnimatedBiomeWall extends DrawableObject {
       controlSeconds: this.exitAssistControlSeconds });
   }
 
-  /** Checks whether assist exit. */
+  /**
+   * Checks whether assist exit.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   #canAssistExit(character) {
     return Number.isFinite(character?.x) && Number.isFinite(character?.y) &&
       Number.isFinite(character?.width) && Number.isFinite(character?.height) &&
       character.y <= this.y + this.exitAssistBandPixels;
   }
 
-  /** Returns exit geometry. */
+  /**
+   * Returns exit geometry.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   #getExitGeometry(character) {
     const bounds = typeof character.getCollisionBounds === "function"
       ? character.getCollisionBounds()
@@ -180,7 +232,12 @@ export class AnimatedBiomeWall extends DrawableObject {
     return { centerX, rise };
   }
 
-  /** Returns exit motion. */
+  /**
+   * Returns exit motion.
+   * @param {number} rise Rise supplied to get exit motion.
+   * @param {number} centerX Center x supplied to get exit motion.
+   * @param {string} regularDirection Default rebound direction before exit assistance.
+   */
   #getExitMotion(rise, centerX, regularDirection) {
     const verticalSpeed = this.#getExitVerticalSpeed(rise);
     const discriminant = Math.max(
@@ -196,7 +253,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     return { direction, verticalSpeed, horizontalSpeed };
   }
 
-  /** Returns exit horizontal speed. */
+  /**
+   * Returns exit horizontal speed.
+   * @param {number} distance Distance supplied to get exit horizontal speed.
+   * @param {number} flightSeconds Flight seconds supplied to get exit horizontal speed.
+   */
   #getExitHorizontalSpeed(distance, flightSeconds) {
     return Math.min(
       this.exitAssistMaximumHorizontalSpeedPixelsPerSecond,
@@ -207,7 +268,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     );
   }
 
-  /** Returns exit vertical speed. */
+  /**
+   * Returns exit vertical speed.
+   * @param {number} rise Rise supplied to get exit vertical speed.
+   */
   #getExitVerticalSpeed(rise) {
     const minimum = Math.sqrt(
       2 * EXIT_ASSIST_GRAVITY * (rise + EXIT_ASSIST_LANDING_MARGIN),
@@ -215,14 +279,20 @@ export class AnimatedBiomeWall extends DrawableObject {
     return Math.max(this.exitAssistVerticalSpeedPixelsPerSecond, minimum);
   }
 
-  /** Checks whether inner impact. */
+  /**
+   * Checks whether inner impact.
+   * @param {string} collisionDirection Collision direction supplied to is inner impact.
+   */
   #isInnerImpact(collisionDirection) {
     if (this.role !== "wall-bounce-choke") return true;
     const innerDirection = this.side === "left" ? 1 : -1;
     return collisionDirection === innerDirection;
   }
 
-  /** Returns whether the character currently touches this wall. */
+  /**
+   * Returns whether the character currently touches this wall.
+   * @param {Readonly<object>} character Character affected by the operation.
+   */
   wasTouchedBy(character) {
     return this.contactSeconds > 0 && this.contactTarget === character;
   }
@@ -238,7 +308,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     })]);
   }
 
-  /** Draws tile. */
+  /**
+   * Draws tile.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} tileIndex Tile index supplied to draw tile.
+   */
   #drawTile(context, tileIndex) {
     const y = this.y + tileIndex * WALL_TILE_HEIGHT;
     if (y >= this.y + this.height) return;
@@ -252,7 +326,11 @@ export class AnimatedBiomeWall extends DrawableObject {
     this.#drawMirroredTile(context, y);
   }
 
-  /** Draws mirrored tile. */
+  /**
+   * Draws mirrored tile.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} y Vertical coordinate in canvas pixels.
+   */
   #drawMirroredTile(context, y) {
     context.save();
     context.translate(this.x * 2 + this.width, 0);
@@ -261,7 +339,12 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
-  /** Draws meaningful light. */
+  /**
+   * Draws meaningful light.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} top Top supplied to draw meaningful light.
+   * @param {number} bottom Bottom supplied to draw meaningful light.
+   */
   #drawMeaningfulLight(context, top, bottom) {
     if (bottom <= top || (!this.guidanceDirection &&
       this.impactGlowSeconds <= 0)) return;
@@ -276,7 +359,12 @@ export class AnimatedBiomeWall extends DrawableObject {
     context.restore();
   }
 
-  /** Draws guidance. */
+  /**
+   * Draws guidance.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} top Top supplied to draw guidance.
+   * @param {number} bottom Bottom supplied to draw guidance.
+   */
   #drawGuidance(context, top, bottom) {
     const span = Math.max(1, bottom - top);
     const travel = (this.animationTime * 180) % span;
@@ -288,7 +376,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     }
   }
 
-  /** Validates operation. */
+  /**
+   * Validates operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validate(data) {
     const values = [data?.x, data?.y, data?.height];
     const hasValues = values.every(Number.isFinite) && data.height > 0;
@@ -304,7 +395,10 @@ export class AnimatedBiomeWall extends DrawableObject {
     throw new TypeError("The animated biome wall definition is invalid.");
   }
 
-  /** Checks whether valid rebound. */
+  /**
+   * Checks whether valid rebound.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #hasValidRebound(data) {
     return data?.role !== "wall-bounce-choke" || [
       data.reboundHorizontalSpeedPixelsPerSecond,

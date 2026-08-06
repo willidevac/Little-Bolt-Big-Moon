@@ -2,7 +2,11 @@ import { SpriteSurfacePlatform } from "./sprite-surface-platform.class.js";
 
 /** Launches a landed character upward with a fixed readable impulse. */
 export class SpringPlatform extends SpriteSurfacePlatform {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super(data, spriteConfig);
     this.#validateSpring(data);
@@ -13,7 +17,10 @@ export class SpringPlatform extends SpriteSurfacePlatform {
     this.pulseSeconds = 0;
   }
 
-  /** Validates spring. */
+  /**
+   * Validates spring.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validateSpring(data) {
     const speeds = [data.bounceSpeedPixelsPerSecond,
       data.bounceHorizontalSpeedPixelsPerSecond];
@@ -22,7 +29,10 @@ export class SpringPlatform extends SpriteSurfacePlatform {
     throw new TypeError(`The spring platform ${this.id} is invalid.`);
   }
 
-  /** Applies the platform's fixed upward launch impulse. */
+  /**
+   * Applies the platform's fixed upward launch impulse.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   onLanded(target) {
     if (typeof target?.applyUpwardImpulse !== "function") return false;
     const direction = this.bounceDirection === "left" ? -1 : 1;
@@ -33,20 +43,29 @@ export class SpringPlatform extends SpriteSurfacePlatform {
     return true;
   }
 
-  /** Fades the short activation light. */
+  /**
+   * Fades the short activation light.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.pulseSeconds = Math.max(0, this.pulseSeconds - deltaTimeSeconds);
   }
 
-  /** Draws the sprite and the brief launch flash. */
+  /**
+   * Draws the sprite and the brief launch flash.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     super.draw(context);
     if (this.pulseSeconds <= 0) return;
     this.#drawLaunchFlash(context);
   }
 
-  /** Draws launch flash. */
+  /**
+   * Draws launch flash.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawLaunchFlash(context) {
     context.save();
     context.globalCompositeOperation = "lighter";

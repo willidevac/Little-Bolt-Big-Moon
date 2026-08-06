@@ -7,8 +7,9 @@ const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled
  */
 export class GameDialogController {
   /**
-   * @param {HTMLElement} root
-   * @param {ReadonlyArray<HTMLElement>} backgroundElements
+   * Creates the configured instance.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   * @param {ReadonlyArray<HTMLElement>} backgroundElements Page elements made inert while the dialog is open.
    */
   constructor(root, backgroundElements) {
     this.#validateDependencies(root, backgroundElements);
@@ -21,7 +22,7 @@ export class GameDialogController {
 
   /**
    * Handles Escape and Tab for an open dialog.
-   * @param {KeyboardEvent} event
+   * @param {KeyboardEvent} event Input or gameplay event handled by the operation.
    */
   handleKeydown(event) {
     if (!this.activeDialog) return;
@@ -31,7 +32,7 @@ export class GameDialogController {
 
   /**
    * Checks whether the dimmed dialog backdrop was clicked directly.
-   * @param {EventTarget|null} target
+   * @param {EventTarget|null} target Target affected or inspected by the operation.
    * @returns {boolean}
    */
   isBackdrop(target) {
@@ -40,7 +41,7 @@ export class GameDialogController {
 
   /**
    * Opens a named dialog and focuses its heading.
-   * @param {string} name
+   * @param {string} name Name addressed by the operation.
    */
   open(name) {
     if (this.activeDialog) return;
@@ -54,7 +55,7 @@ export class GameDialogController {
 
   /**
    * Closes the dialog and restores focus to its origin.
-   * @param {boolean} [restoreFocus=true]
+   * @param {boolean} [restoreFocus=true] Whether focus returns to the element that opened the dialog.
    */
   close(restoreFocus = true) {
     if (!this.activeDialog) return;
@@ -64,14 +65,20 @@ export class GameDialogController {
     if (restoreFocus) this.#restorePreviousFocus();
   }
 
-  /** Performs the close from key operation. */
+  /**
+   * Performs the close from key operation.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   #closeFromKey(event) {
     event.preventDefault();
     event.stopPropagation();
     this.close();
   }
 
-  /** Returns dialog. */
+  /**
+   * Returns dialog.
+   * @param {string} name Name addressed by the operation.
+   */
   #getDialog(name) {
     const dialog = this.dialogs.find((element) => {
       return element instanceof HTMLElement && element.dataset.gameDialog === name;
@@ -80,7 +87,10 @@ export class GameDialogController {
     throw new Error(`Dialog nicht gefunden: ${name}`);
   }
 
-  /** Performs the trap focus operation. */
+  /**
+   * Performs the trap focus operation.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   #trapFocus(event) {
     const focusable = [...this.activeDialog.querySelectorAll(FOCUSABLE_SELECTOR)];
     if (focusable.length === 0) return;
@@ -91,14 +101,21 @@ export class GameDialogController {
     if (!event.shiftKey && active === last) this.#moveFocus(event, first);
   }
 
-  /** Performs the move focus operation. */
+  /**
+   * Performs the move focus operation.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #moveFocus(event, target) {
     if (!(target instanceof HTMLElement)) return;
     event.preventDefault();
     target.focus();
   }
 
-  /** Applies background inert. */
+  /**
+   * Applies background inert.
+   * @param {boolean} isInert Whether background elements must be made inert.
+   */
   #setBackgroundInert(isInert) {
     this.backgroundElements.forEach((element) => {
       element.inert = isInert;
@@ -111,14 +128,21 @@ export class GameDialogController {
     this.previousFocus = null;
   }
 
-  /** Returns dialog focus. */
+  /**
+   * Returns dialog focus.
+   * @param {HTMLElement} dialog Dialog supplied to get dialog focus.
+   */
   #getDialogFocus(dialog) {
     const element = dialog.querySelector(DIALOG_FOCUS_SELECTOR);
     if (element instanceof HTMLElement) return element;
     throw new Error(`UI-Element nicht gefunden: ${DIALOG_FOCUS_SELECTOR}`);
   }
 
-  /** Validates dependencies. */
+  /**
+   * Validates dependencies.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
+   * @param {HTMLElement} backgroundElements Page elements made inert while the dialog is open.
+   */
   #validateDependencies(root, backgroundElements) {
     const hasRoot = root instanceof HTMLElement;
     const hasBackgrounds = Array.isArray(backgroundElements) &&

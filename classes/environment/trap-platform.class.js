@@ -8,7 +8,11 @@ export const TRAP_PLATFORM_STATES = Object.freeze({
 
 /** A solid floor that visibly warns before its electrical damage phase. */
 export class TrapPlatform extends SpriteSurfacePlatform {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super(data, spriteConfig);
     this.#validateTrap(data.trap);
@@ -27,7 +31,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     return this.state === TRAP_PLATFORM_STATES.ACTIVE;
   }
 
-  /** Advances the safe, warning, and active phases. */
+  /**
+   * Advances the safe, warning, and active phases.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.#updateContactGrace(deltaTimeSeconds);
@@ -42,12 +49,19 @@ export class TrapPlatform extends SpriteSurfacePlatform {
         : TRAP_PLATFORM_STATES.SAFE;
   }
 
-  /** @returns {boolean} Whether the target is standing on this surface. */
+  /**
+   * Runs was touched by with validated inputs.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   * @returns {boolean} Whether the target is standing on this surface.
+   */
   wasTouchedBy(target) {
     return target?.groundPlatform === this;
   }
 
-  /** Guarantees reaction time even when Byte lands during an active phase. */
+  /**
+   * Guarantees reaction time even when Byte lands during an active phase.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   onLanded(target) {
     const contact = this.contactGrace.get(target);
     if (contact) {
@@ -61,7 +75,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     return true;
   }
 
-  /** Creates one platform hit during the active phase. */
+  /**
+   * Creates one platform hit during the active phase.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   createHit(target) {
     if (!this.isDangerous || !this.wasTouchedBy(target) ||
       this.#hasLandingGrace(target)) return null;
@@ -71,7 +88,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     return Object.freeze({ amount: this.damage, direction });
   }
 
-  /** Draws the sprite plus an unambiguous warning or active glow. */
+  /**
+   * Draws the sprite plus an unambiguous warning or active glow.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     super.draw(context);
     const time = globalThis.performance?.now?.() ?? 0;
@@ -82,7 +102,11 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
-  /** Draws hazard segments. */
+  /**
+   * Draws hazard segments.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} pulse Current animation pulse used for drawing.
+   */
   #drawHazardSegments(context, pulse) {
     const isWarning = this.state === TRAP_PLATFORM_STATES.WARNING;
     context.fillStyle = this.isDangerous ? "#ff3b22" : "#ffc247";
@@ -97,7 +121,13 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     this.#drawHazardGlow(context, pulse, isWarning);
   }
 
-  /** Draws segments. */
+  /**
+   * Draws segments.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} count Count supplied to draw segments.
+   * @param {number} gap Gap supplied to draw segments.
+   * @param {number} width Width supplied to draw segments.
+   */
   #drawSegments(context, count, gap, width) {
     for (let index = 0; index < count; index += 1) {
       const x = this.x + 6 + index * (width + gap);
@@ -105,7 +135,12 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     }
   }
 
-  /** Draws hazard glow. */
+  /**
+   * Draws hazard glow.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} pulse Current animation pulse used for drawing.
+   * @param {boolean} isWarning Is warning supplied to draw hazard glow.
+   */
   #drawHazardGlow(context, pulse, isWarning) {
     if (!isWarning && !this.isDangerous) return;
     context.globalAlpha = this.isDangerous ? 0.2 + pulse * 0.16 : 0.1 + pulse * 0.12;
@@ -113,7 +148,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
       this.isDangerous ? 18 : 10);
   }
 
-  /** Updates contact grace. */
+  /**
+   * Updates contact grace.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateContactGrace(deltaTimeSeconds) {
     this.contactGrace.forEach((contact, target) => {
       if (!contact.seen) {
@@ -127,7 +165,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     });
   }
 
-  /** Checks whether landing grace. */
+  /**
+   * Checks whether landing grace.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #hasLandingGrace(target) {
     return (this.contactGrace.get(target)?.remainingSeconds ?? 0) > 0;
   }
@@ -139,7 +180,10 @@ export class TrapPlatform extends SpriteSurfacePlatform {
     return this.activeSeconds;
   }
 
-  /** Validates trap. */
+  /**
+   * Validates trap.
+   * @param {Readonly<object>} trap Trap supplied to validate trap.
+   */
   #validateTrap(trap) {
     const values = [
       trap?.safeSeconds, trap?.warningSeconds, trap?.activeSeconds,

@@ -51,8 +51,9 @@ const VISUAL_CONFIG = Object.freeze({
  */
 export class DroneGuard extends Enemy {
   /**
-   * @param {Readonly<object>} enemyData
-   * @param {Readonly<object>} config
+   * Creates the configured instance.
+   * @param {Readonly<object>} enemyData Enemy definition used to initialize the instance.
+   * @param {Readonly<object>} config Configuration values used by the operation.
    */
   constructor(enemyData, config) {
     super(enemyData, VISUAL_CONFIG, config);
@@ -71,8 +72,8 @@ export class DroneGuard extends Enemy {
 
   /**
    * Flies horizontally while hovering up and down in a sine wave.
-   * @param {number} deltaTimeSeconds
-   * @param {import("../../core/world.class.js").World} world
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {import("../../core/world.class.js").World} world Active world providing runtime state and entities.
    */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
@@ -85,7 +86,11 @@ export class DroneGuard extends Enemy {
     this.updateAnimation(deltaTimeSeconds);
   }
 
-  /** Updates hover. */
+  /**
+   * Updates hover.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #updateHover(deltaTimeSeconds, target) {
     this.#trackTarget(deltaTimeSeconds, target);
     this.hoverSeconds += deltaTimeSeconds;
@@ -94,7 +99,11 @@ export class DroneGuard extends Enemy {
     this.y = this.hoverCenterY + Math.sin(angle) * this.hoverAmplitudePixels;
   }
 
-  /** Performs the track target operation. */
+  /**
+   * Performs the track target operation.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} target Target affected or inspected by the operation.
+   */
   #trackTarget(deltaTimeSeconds, target) {
     if (!target) return;
     const desiredY = target.y + target.height / 2 - this.height / 2;
@@ -107,7 +116,10 @@ export class DroneGuard extends Enemy {
     this.hoverCenterY += clamp(distance, -maximumStep, maximumStep);
   }
 
-  /** Validates config. */
+  /**
+   * Validates config.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #validateConfig(config) {
     const values = [
       config?.speedPixelsPerSecond,

@@ -3,7 +3,10 @@ import { WORLD_ENTITY_GROUPS } from "../core/world-entity-groups.js";
 
 /** Seals the sole entry shaft only after Byte has activated the final boss. */
 export class BossArenaGate extends DrawableObject {
-  /** @param {Readonly<object>} data */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   constructor(data) {
     super();
     this.#validate(data);
@@ -19,7 +22,11 @@ export class BossArenaGate extends DrawableObject {
     });
   }
 
-  /** Closes the shaft when the boss is present inside the active world. */
+  /**
+   * Closes the shaft when the boss is present inside the active world.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   update(deltaTimeSeconds, world) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.lightTime += deltaTimeSeconds;
@@ -32,7 +39,10 @@ export class BossArenaGate extends DrawableObject {
     }
   }
 
-  /** Draws no obstruction while open and a clear energy floor while sealed. */
+  /**
+   * Draws no obstruction while open and a clear energy floor while sealed.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     if (this.sealProgress <= 0) return;
     const pulse = (Math.sin(this.lightTime * 7) + 1) / 2;
@@ -43,7 +53,13 @@ export class BossArenaGate extends DrawableObject {
     context.restore();
   }
 
-  /** Prepares seal. */
+  /**
+   * Prepares seal.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} pulse Current animation pulse used for drawing.
+   * @param {number} left Left drawing coordinate in canvas pixels.
+   * @param {boolean} visibleWidth Visible drawing width in canvas pixels.
+   */
   #prepareSeal(context, pulse, left, visibleWidth) {
     context.save();
     context.globalCompositeOperation = "lighter";
@@ -55,7 +71,12 @@ export class BossArenaGate extends DrawableObject {
     context.lineWidth = 2;
   }
 
-  /** Draws stripes. */
+  /**
+   * Draws stripes.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} left Left drawing coordinate in canvas pixels.
+   * @param {boolean} visibleWidth Visible drawing width in canvas pixels.
+   */
   #drawStripes(context, left, visibleWidth) {
     for (let x = left + 10; x < left + visibleWidth; x += 18) {
       context.beginPath();
@@ -70,7 +91,10 @@ export class BossArenaGate extends DrawableObject {
     return Object.freeze({ x: 0, y: 0 });
   }
 
-  /** Checks whether boss active. */
+  /**
+   * Checks whether boss active.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #isBossActive(world) {
     if (typeof world?.getEntities !== "function") return false;
     return world.getEntities(WORLD_ENTITY_GROUPS.ENEMIES).some(({ id }) => {
@@ -78,7 +102,10 @@ export class BossArenaGate extends DrawableObject {
     });
   }
 
-  /** Validates operation. */
+  /**
+   * Validates operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validate(data) {
     const values = [data?.x, data?.y, data?.width, data?.height];
     const hasValues = values.every(Number.isFinite) && data.width > 64 &&

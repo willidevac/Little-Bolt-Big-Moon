@@ -6,8 +6,9 @@ export class LevelSelection {
   #factories;
 
   /**
-   * @param {Readonly<Record<string, () => Readonly<object>>>} factories
-   * @param {string} initialLevelId
+   * Creates the configured instance.
+   * @param {Readonly<Record<string, () => Readonly<object>>>} factories Level factories available for selection.
+   * @param {string} initialLevelId Initial level id supplied to constructor.
    */
   constructor(factories, initialLevelId) {
     this.#factories = Object.freeze({ ...factories });
@@ -20,7 +21,7 @@ export class LevelSelection {
 
   /**
    * Checks whether a level factory is registered.
-   * @param {string} levelId
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean}
    */
   hasLevel(levelId) {
@@ -30,7 +31,7 @@ export class LevelSelection {
 
   /**
    * Selects the factory used for the next world creation.
-   * @param {string} levelId
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean} Whether the selection changed.
    */
   select(levelId) {
@@ -45,7 +46,10 @@ export class LevelSelection {
     return this.#factories[this.#activeLevelId]();
   }
 
-  /** Rejects unknown public level identifiers. */
+  /**
+   * Rejects unknown public level identifiers.
+   * @param {string} levelId Identifier of the level addressed by the operation.
+   */
   #assertKnownLevel(levelId) {
     if (this.hasLevel(levelId)) return;
     throw new RangeError(`Unbekanntes Level: ${levelId}`);

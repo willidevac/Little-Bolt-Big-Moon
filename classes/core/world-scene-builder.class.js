@@ -9,14 +9,17 @@ const FALLBACK_PLATFORM_BOUNDS = Object.freeze({
 
 /** Populates a new world with level objects and a safe starting scene. */
 export class WorldSceneBuilder {
-  /** @param {Readonly<object>|null} level Level definition to populate. */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>|null} level Level definition to populate.
+   */
   constructor(level) {
     this.level = level;
   }
 
   /**
    * Adds all starting objects in the required order.
-   * @param {import("./world.class.js").World} world
+   * @param {import("./world.class.js").World} world Active world providing runtime state and entities.
    * @returns {Character|object}
    */
   build(world) {
@@ -31,14 +34,22 @@ export class WorldSceneBuilder {
     return character;
   }
 
-  /** Applies level entities. */
+  /**
+   * Applies level entities.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {string} propertyName Property name supplied to add level entities.
+   */
   #addLevelEntities(world, groupName, propertyName) {
     const entities = this.level?.[propertyName];
     if (!Array.isArray(entities)) return;
     entities.forEach((entity) => world.addEntity(groupName, entity));
   }
 
-  /** Performs the ensure character operation. */
+  /**
+   * Performs the ensure character operation.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #ensureCharacter(world) {
     const characters = world.getEntities(WORLD_ENTITY_GROUPS.CHARACTERS);
     if (characters.length > 0) return characters[0];
@@ -49,7 +60,10 @@ export class WorldSceneBuilder {
     return character;
   }
 
-  /** Performs the ensure platform operation. */
+  /**
+   * Performs the ensure platform operation.
+   * @param {Readonly<object>} world Active world providing runtime state and entities.
+   */
   #ensurePlatform(world) {
     const platforms = world.getEntities(WORLD_ENTITY_GROUPS.PLATFORMS);
     const structures = world.getEntities(WORLD_ENTITY_GROUPS.STRUCTURES);

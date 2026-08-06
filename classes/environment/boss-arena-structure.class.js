@@ -2,7 +2,11 @@ import { DrawableObject } from "../base/drawable-object.class.js";
 
 /** Draws and animates the enclosed final arena around its single entrance. */
 export class BossArenaStructure extends DrawableObject {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super();
     this.#validate(data);
@@ -11,13 +15,19 @@ export class BossArenaStructure extends DrawableObject {
     this.loadSprite(spriteConfig);
   }
 
-  /** Advances the arena's cold energy flow. */
+  /**
+   * Advances the arena's cold energy flow.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     if (!Number.isFinite(deltaTimeSeconds) || deltaTimeSeconds <= 0) return;
     this.lightTime = (this.lightTime + deltaTimeSeconds) % 8;
   }
 
-  /** Keeps the generated artwork crisp and adds restrained living light. */
+  /**
+   * Keeps the generated artwork crisp and adds restrained living light.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     super.draw(context);
     this.#drawFloorEnergy(context);
@@ -38,7 +48,10 @@ export class BossArenaStructure extends DrawableObject {
     ]);
   }
 
-  /** Draws floor energy. */
+  /**
+   * Draws floor energy.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawFloorEnergy(context) {
     const pulse = (Math.sin(this.lightTime * 3.2) + 1) / 2;
     context.save();
@@ -50,7 +63,10 @@ export class BossArenaStructure extends DrawableObject {
     context.restore();
   }
 
-  /** Draws entrance signal. */
+  /**
+   * Draws entrance signal.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawEntranceSignal(context) {
     const travel = (this.lightTime * 120) % 126;
     context.save();
@@ -63,7 +79,12 @@ export class BossArenaStructure extends DrawableObject {
     context.restore();
   }
 
-  /** Draws entrance lights. */
+  /**
+   * Draws entrance lights.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} index Zero-based item index used by the operation.
+   * @param {number} y Vertical coordinate in canvas pixels.
+   */
   #drawEntranceLights(context, index, y) {
     context.globalAlpha = 0.2 + index * 0.09;
     context.fillRect(this.entranceCenterX - this.entranceWidth / 2 + 10,
@@ -72,7 +93,10 @@ export class BossArenaStructure extends DrawableObject {
       y, 5, 18);
   }
 
-  /** Draws wall flow. */
+  /**
+   * Draws wall flow.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawWallFlow(context) {
     const travel = (this.lightTime * 150) % 330;
     context.save();
@@ -87,12 +111,21 @@ export class BossArenaStructure extends DrawableObject {
     context.restore();
   }
 
-  /** Performs operation. */
+  /**
+   * Performs operation.
+   * @param {number} x Horizontal coordinate in canvas pixels.
+   * @param {number} y Vertical coordinate in canvas pixels.
+   * @param {number} width Width supplied to collider.
+   * @param {number} height Height supplied to collider.
+   */
   #collider(x, y, width, height) {
     return Object.freeze({ x, y, width, height, owner: this });
   }
 
-  /** Validates operation. */
+  /**
+   * Validates operation.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #validate(data) {
     const numbers = this.#getGeometryValues(data);
     const hasNumbers = numbers.every(Number.isFinite);
@@ -104,7 +137,10 @@ export class BossArenaStructure extends DrawableObject {
     throw new TypeError("Die Architektur der Bossarena ist ungültig.");
   }
 
-  /** Returns geometry values. */
+  /**
+   * Returns geometry values.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   */
   #getGeometryValues(data) {
     return [data?.x, data?.y, data?.width, data?.height, data?.floorY,
       data?.innerLeftX, data?.innerRightX, data?.wallThickness,

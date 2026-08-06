@@ -4,7 +4,11 @@ const FULL_CIRCLE_RADIANS = Math.PI * 2;
 
 /** A cable-mounted floor with slow, predictable crane movement. */
 export class CranePlatform extends SpriteSurfacePlatform {
-  /** @param {Readonly<object>} data @param {Readonly<object>} spriteConfig */
+  /**
+   * Creates the configured instance.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} spriteConfig Sprite configuration used for rendering.
+   */
   constructor(data, spriteConfig) {
     super(data, spriteConfig);
     this.#validateMotion(data.crane);
@@ -15,7 +19,10 @@ export class CranePlatform extends SpriteSurfacePlatform {
     this.frameDisplacement = Object.seal({ x: 0, y: 0 });
   }
 
-  /** Advances the crane travel and its four mechanical light frames. */
+  /**
+   * Advances the crane travel and its four mechanical light frames.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   update(deltaTimeSeconds) {
     this.frameDisplacement.x = 0;
     this.frameDisplacement.y = 0;
@@ -36,7 +43,10 @@ export class CranePlatform extends SpriteSurfacePlatform {
     return this.frameDisplacement;
   }
 
-  /** Draws the fixed overhead rail, live cables and native sprite frame. */
+  /**
+   * Draws the fixed overhead rail, live cables and native sprite frame.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   draw(context) {
     this.#drawCraneRig(context);
     const visualHeight = this.width * this.spriteConfig.frameHeight /
@@ -48,7 +58,10 @@ export class CranePlatform extends SpriteSurfacePlatform {
     this.#drawSurfaceGlow(context);
   }
 
-  /** Draws surface glow. */
+  /**
+   * Draws surface glow.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawSurfaceGlow(context) {
     context.save();
     context.globalCompositeOperation = "lighter";
@@ -72,7 +85,10 @@ export class CranePlatform extends SpriteSurfacePlatform {
     )) * this.travelPixels / 2;
   }
 
-  /** Draws crane rig. */
+  /**
+   * Draws crane rig.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   */
   #drawCraneRig(context) {
     const anchorY = this.initialY - this.cableLengthPixels;
     const travel = this.axis === "horizontal" ? this.travelPixels : 0;
@@ -83,7 +99,12 @@ export class CranePlatform extends SpriteSurfacePlatform {
     context.restore();
   }
 
-  /** Draws rail. */
+  /**
+   * Draws rail.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} anchorY Anchor y supplied to draw rail.
+   * @param {number} travel Travel supplied to draw rail.
+   */
   #drawRail(context, anchorY, travel) {
     context.fillStyle = "#17222b";
     context.fillRect(
@@ -96,7 +117,12 @@ export class CranePlatform extends SpriteSurfacePlatform {
       this.width + travel * 2, 2);
   }
 
-  /** Draws cable. */
+  /**
+   * Draws cable.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {number} x Horizontal coordinate in canvas pixels.
+   * @param {number} anchorY Anchor y supplied to draw cable.
+   */
   #drawCable(context, x, anchorY) {
     const cableBottom = this.y - 8;
     context.globalAlpha = 1;
@@ -109,7 +135,10 @@ export class CranePlatform extends SpriteSurfacePlatform {
       Math.max(0, cableBottom - anchorY - 8));
   }
 
-  /** Validates motion. */
+  /**
+   * Validates motion.
+   * @param {Readonly<object>} crane Crane supplied to validate motion.
+   */
   #validateMotion(crane) {
     const values = [
       crane?.travelPixels, crane?.cycleSeconds, crane?.cableLengthPixels,

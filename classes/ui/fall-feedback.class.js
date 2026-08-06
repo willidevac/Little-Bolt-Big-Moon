@@ -5,7 +5,11 @@ const SEVERITIES = Object.freeze(["normal", "hard", "severe"]);
 
 /** Briefly displays a completed fall in an accessible way. */
 export class FallFeedback {
-  /** @param {HTMLElement} element Output element. @param {number} pixelsPerMeter World scale. */
+  /**
+   * Creates the configured instance.
+   * @param {HTMLElement} element Output element.
+   * @param {number} pixelsPerMeter World scale.
+   */
   constructor(element, pixelsPerMeter) {
     if (!element?.classList) throw new TypeError("Die Sturzanzeige fehlt.");
     if (!Number.isFinite(pixelsPerMeter) || pixelsPerMeter <= 0) {
@@ -18,7 +22,10 @@ export class FallFeedback {
     this.unsubscribeLanguage = onLanguageChange(() => this.#renderCurrent());
   }
 
-  /** Displays the lost height with the appropriate severity. */
+  /**
+   * Displays the lost height with the appropriate severity.
+   * @param {Readonly<object>} fall Recorded fall data displayed to the player.
+   */
   show(fall) {
     this.#validateFall(fall);
     this.currentFall = this.#createVisibleFall(fall);
@@ -54,7 +61,10 @@ export class FallFeedback {
     this.element.textContent = translate(key, { meters: this.currentFall.meters });
   }
 
-  /** Creates visible fall. */
+  /**
+   * Creates visible fall.
+   * @param {Readonly<object>} fall Recorded fall data displayed to the player.
+   */
   #createVisibleFall(fall) {
     return Object.freeze({
       ...fall,
@@ -62,7 +72,10 @@ export class FallFeedback {
     });
   }
 
-  /** Validates fall. */
+  /**
+   * Validates fall.
+   * @param {Readonly<object>} fall Recorded fall data displayed to the player.
+   */
   #validateFall(fall) {
     const hasLoss = Number.isFinite(fall?.lossPixels) && fall.lossPixels > 0;
     if (hasLoss && SEVERITIES.includes(fall?.severity)) return;

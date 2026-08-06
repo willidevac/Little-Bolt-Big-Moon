@@ -21,14 +21,11 @@ export class Game {
   #stateMachine;
   #dependencies;
   /**
-   * @param {HTMLCanvasElement} canvas
-   * @param {Readonly<object>} config
-   * @param {EventTarget} inputTarget
-   * @param {Readonly<{
-   *   levelSelection: import("./level-selection.class.js").LevelSelection,
-   *   createCombatSystems: (config:Readonly<object>, game:Game) => Readonly<object>,
-   *   createResetController: (game:Game, createWorld:() => World) => object
-   * }>} dependencies
+   * Creates the configured instance.
+   * @param {HTMLCanvasElement} canvas Canvas element used for game rendering.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {EventTarget} inputTarget Event target receiving player input listeners.
+   * @param {Readonly<{ levelSelection: import("./level-selection.class.js").LevelSelection, createCombatSystems: (config:Readonly<object>, game:Game) => Readonly<object>, createResetController: (game:Game, createWorld:() => World) => object }>} dependencies Runtime dependencies required by the instance.
    */
   constructor(canvas, config, inputTarget, dependencies) {
     this.gameCanvas = new GameCanvas(canvas);
@@ -41,21 +38,30 @@ export class Game {
     this.#initializeResetController(dependencies);
   }
 
-  /** Initializes combat systems. */
+  /**
+   * Initializes combat systems.
+   * @param {Readonly<object>} systems Combat systems assigned to the active game.
+   */
   #initializeCombatSystems(systems) {
     this.combatSystem = systems.combatSystem;
     this.weaponSystem = systems.weaponSystem;
     this.upgradeFlow = systems.upgradeFlow;
   }
 
-  /** Initializes reset controller. */
+  /**
+   * Initializes reset controller.
+   * @param {Readonly<object>} dependencies Runtime dependencies required by the instance.
+   */
   #initializeResetController(dependencies) {
     this.#runResetController = dependencies.createResetController(
       this, () => this.#createWorld(),
     );
   }
 
-  /** Initializes runtime. */
+  /**
+   * Initializes runtime.
+   * @param {EventTarget} inputTarget Event target receiving player input listeners.
+   */
   #initializeRuntime(inputTarget) {
     this.isInitialized = false;
     this.#stateMachine = new GameStateMachine();
@@ -84,7 +90,8 @@ export class Game {
   get levelId() { return this.#dependencies.levelSelection.activeLevelId; }
 
   /**
-   * @param {string} levelId
+   * Runs is level available with validated inputs.
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean} Whether a level can be started.
    */
   isLevelAvailable(levelId) {
@@ -96,7 +103,7 @@ export class Game {
 
   /**
    * Notifies an observer about future state changes.
-   * @param {(state: string) => void} listener
+   * @param {(state: string) => void} listener Listener notified when the observed value changes.
    * @returns {() => void} Unsubscribe function.
    */
   onStateChange(listener) {
@@ -105,7 +112,7 @@ export class Game {
 
   /**
    * Notifies an observer about visible changes to the run values.
-   * @param {(snapshot: Readonly<object>) => void} listener
+   * @param {(snapshot: Readonly<object>) => void} listener Listener notified when the observed value changes.
    * @returns {() => void} Unsubscribe function.
    */
   onHudChange(listener) {
@@ -114,7 +121,7 @@ export class Game {
 
   /**
    * Notifies an observer about one-time gameplay events.
-   * @param {(event: Readonly<object>) => void} listener
+   * @param {(event: Readonly<object>) => void} listener Listener notified when the observed value changes.
    * @returns {() => void}
    */
   onGameplayEvent(listener) {
@@ -193,7 +200,7 @@ export class Game {
 
   /**
    * Applies an offered upgrade and resumes the run.
-   * @param {string} upgradeId
+   * @param {string} upgradeId Identifier of the selected upgrade.
    * @returns {boolean}
    */
   chooseUpgrade(upgradeId) {
@@ -229,7 +236,7 @@ export class Game {
 
   /**
    * Selects and starts a fresh level from the home screen.
-   * @param {string} levelId
+   * @param {string} levelId Identifier of the level addressed by the operation.
    * @returns {boolean} Whether a level was started.
    */
   startLevel(levelId) {
@@ -253,7 +260,7 @@ export class Game {
 
   /**
    * Processes a hit through energy loss, knockback, and possible death.
-   * @param {Readonly<{amount:number, direction:number}>} hit
+   * @param {Readonly<{amount:number, direction:number}>} hit Hit data resolved against the target.
    * @returns {boolean} Whether Byte accepted the hit.
    */
   takeDamage(hit) {
@@ -294,7 +301,7 @@ export class Game {
 
   /**
    * Rebuilds an active run at a supplied safe position without ending it.
-   * @param {Readonly<{x:number,y:number}>} position
+   * @param {Readonly<{x:number,y:number}>} position World-space position applied to the entity.
    * @returns {boolean}
    */
   restartWorldAt(position) {
@@ -304,7 +311,10 @@ export class Game {
     return true;
   }
 
-  /** Updates process frame. */
+  /**
+   * Updates process frame.
+   * @param {number} deltaTime Elapsed time since the previous frame.
+   */
   #processFrame(deltaTime) {
     this.#handleStateInput();
     if (this.#isPlaying()) this.update(deltaTime);
@@ -313,7 +323,7 @@ export class Game {
 
   /**
    * Updates all game systems over time.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     const attack = this.weaponSystem.update(deltaTimeSeconds, this.world.character);
@@ -357,14 +367,17 @@ export class Game {
 
   /**
    * Changes the state and mirrors it on the canvas.
-   * @param {string} nextState
+   * @param {string} nextState State requested for the next transition.
    * @returns {boolean}
    */
   #setGameState(nextState) {
     return this.#stateMachine.transitionTo(nextState);
   }
 
-  /** Performs the reflect state operation. */
+  /**
+   * Performs the reflect state operation.
+   * @param {string} state State value processed by the operation.
+   */
   #reflectState(state) {
     this.canvas.dataset.gameState = state;
   }
@@ -390,7 +403,7 @@ export class Game {
 
   /**
    * Sets an end state only from active gameplay.
-   * @param {string} endState
+   * @param {string} endState Terminal game state applied to the run.
    * @returns {boolean}
    */
   #finishGame(endState) {

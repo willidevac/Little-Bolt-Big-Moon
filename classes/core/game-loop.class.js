@@ -20,9 +20,10 @@ export class GameLoop {
   #requestFrame;
 
   /**
-   * @param {number} maximumDeltaTimeMilliseconds
-   * @param {(deltaTimeSeconds:number) => void} onFrame
-   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} [frameTarget=globalThis]
+   * Creates the configured instance.
+   * @param {number} maximumDeltaTimeMilliseconds Maximum accepted frame duration, in milliseconds.
+   * @param {(deltaTimeSeconds:number) => void} onFrame Callback invoked for every animation frame.
+   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} [frameTarget=globalThis] Animation-frame provider used by the loop.
    */
   constructor(maximumDeltaTimeMilliseconds, onFrame, frameTarget = globalThis) {
     this.#validateConfig(maximumDeltaTimeMilliseconds, onFrame, frameTarget);
@@ -60,7 +61,10 @@ export class GameLoop {
     this.#previousTimestamp = null;
   }
 
-  /** @param {number} timestamp */
+  /**
+   * Runs run frame with validated inputs.
+   * @param {number} timestamp Animation-frame timestamp in milliseconds.
+   */
   #runFrame(timestamp) {
     if (!this.#isRunning) return;
     this.#animationFrameId = null;
@@ -70,7 +74,10 @@ export class GameLoop {
     this.#requestNextFrame();
   }
 
-  /** @param {number} timestamp */
+  /**
+   * Runs calculate delta time with validated inputs.
+   * @param {number} timestamp Animation-frame timestamp in milliseconds.
+   */
   #calculateDeltaTime(timestamp) {
     if (this.#previousTimestamp === null) return 0;
     const elapsed = Math.max(0, timestamp - this.#previousTimestamp);
@@ -98,9 +105,10 @@ export class GameLoop {
   }
 
   /**
-   * @param {number} maximumDelta
-   * @param {(deltaTimeSeconds:number) => void} onFrame
-   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} frameTarget
+   * Runs validate config with validated inputs.
+   * @param {number} maximumDelta Maximum accepted frame duration.
+   * @param {(deltaTimeSeconds:number) => void} onFrame Callback invoked for every animation frame.
+   * @param {Pick<Window, "requestAnimationFrame"|"cancelAnimationFrame">} frameTarget Animation-frame provider used by the loop.
    */
   #validateConfig(maximumDelta, onFrame, frameTarget) {
     const hasDelta = Number.isFinite(maximumDelta) && maximumDelta > 0;

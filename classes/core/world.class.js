@@ -46,11 +46,12 @@ export class World {
   #sceneBuilder;
 
   /**
-   * @param {CanvasRenderingContext2D} context
-   * @param {Readonly<object>} config
-   * @param {Readonly<object>|null} [input=null]
-   * @param {Readonly<object>|null} [level=null]
-   * @param {GameplayEventHub} [gameplayEvents]
+   * Creates the configured instance.
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   * @param {Readonly<object>|null} [input=null] Current input source used by the simulation.
+   * @param {Readonly<object>|null} [level=null] Level definition used to populate the world.
+   * @param {GameplayEventHub} [gameplayEvents] Event hub receiving gameplay notifications.
    */
   constructor(context, config, input = null, level = null,
     gameplayEvents = new GameplayEventHub()) {
@@ -77,7 +78,10 @@ export class World {
     this.#damageEvents = [];
   }
 
-  /** Initializes simulation. */
+  /**
+   * Initializes simulation.
+   * @param {Readonly<object>} config Configuration values used by the operation.
+   */
   #initializeSimulation(config) {
     this.#collisionManager = new CollisionManager(config.physics);
     this.#fallTracker = new FallTracker(config.world);
@@ -105,8 +109,8 @@ export class World {
 
   /**
    * Adds a game object to a validated group.
-   * @param {string} groupName
-   * @param {object} entity
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
    * @returns {boolean} Whether the object was newly queued or added.
    */
   addEntity(groupName, entity) {
@@ -115,22 +119,26 @@ export class World {
 
   /**
    * Removes a game object without mutating active iterations.
-   * @param {string} groupName
-   * @param {object} entity
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
    * @returns {boolean} Whether the object was active or queued.
    */
   removeEntity(groupName, entity) {
     return this.#entityRegistry.remove(groupName, entity);
   }
 
-  /** @returns {ReadonlyArray<object>} Snapshot of an entity group. */
+  /**
+   * Runs get entities with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   * @returns {ReadonlyArray<object>} Snapshot of an entity group.
+   */
   getEntities(groupName) {
     return this.#entityRegistry.getSnapshot(groupName);
   }
 
   /**
    * Updates all eligible entities in a fixed order.
-   * @param {number} deltaTimeSeconds
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
    */
   update(deltaTimeSeconds) {
     if (!this.isInitialized) return;
@@ -143,7 +151,11 @@ export class World {
     this.eventReporter.report(this.character, this.bossFight.getSnapshot());
   }
 
-  /** Updates moving entities. */
+  /**
+   * Updates moving entities.
+   * @param {ReadonlyArray<object>} movableObjects Movable objects supplied to update moving entities.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateMovingEntities(movableObjects, deltaTimeSeconds) {
     this.#updateEntityGroups([WORLD_ENTITY_GROUPS.STRUCTURES], deltaTimeSeconds);
     this.#updateEntityGroups([WORLD_ENTITY_GROUPS.PLATFORMS], deltaTimeSeconds);
@@ -151,7 +163,12 @@ export class World {
     this.#updateEntityGroups(NON_PLATFORM_UPDATE_ORDER, deltaTimeSeconds);
   }
 
-  /** Returns resolve interactions. */
+  /**
+   * Returns resolve interactions.
+   * @param {ReadonlyArray<object>} movableObjects Movable objects supplied to resolve interactions.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} previousBounds Entity bounds captured before the movement step.
+   */
   #resolveInteractions(movableObjects, deltaTimeSeconds, previousBounds) {
     this.#damageEvents.push(...this.#projectileSystem.resolve(this));
     this.#resolveEnemyCombat(deltaTimeSeconds);
@@ -164,7 +181,10 @@ export class World {
     this.#resolveHazardHits();
   }
 
-  /** Updates world systems. */
+  /**
+   * Updates world systems.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateWorldSystems(deltaTimeSeconds) {
     this.waveManager.update(this);
     this.bossFight.update(this);
@@ -188,7 +208,7 @@ export class World {
 
   /**
    * Places the fresh character at a validated alternate run start.
-   * @param {Readonly<{x:number,y:number}>} position
+   * @param {Readonly<{x:number,y:number}>} position World-space position applied to the entity.
    * @returns {boolean}
    */
   placeCharacterAt(position) {
@@ -205,7 +225,7 @@ export class World {
 
   /**
    * Converts a new ranged attack into a projectile.
-   * @param {Readonly<object>|null} attack
+   * @param {Readonly<object>|null} attack Attack data processed by the operation.
    * @returns {import("../entities/weapons/bolt-projectile.class.js").BoltProjectile|null}
    */
   handlePlayerAttack(attack) {
@@ -262,7 +282,12 @@ export class World {
     this.isInitialized = false;
   }
 
-  /** Returns resolve platform landings. */
+  /**
+   * Returns resolve platform landings.
+   * @param {ReadonlyArray<object>} movableObjects Movable objects supplied to resolve platform landings.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   * @param {Readonly<object>} previousBounds Entity bounds captured before the movement step.
+   */
   #resolvePlatformLandings(movableObjects, deltaTimeSeconds, previousBounds) {
     const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     const landings = this.#collisionManager.resolvePlatformLandings(
@@ -274,7 +299,10 @@ export class World {
     landings.forEach((landing) => this.#reportPlatformActivation(landing));
   }
 
-  /** Reports a mechanic activated by Byte's landing. */
+  /**
+   * Reports a mechanic activated by Byte's landing.
+   * @param {Readonly<object>} activation Platform activation result reported to gameplay systems.
+   */
   #reportPlatformActivation({ movableObject, platform, activated }) {
     if (movableObject !== this.character || !activated || !platform.mechanic) return;
     this.gameplayEvents.emit(GAMEPLAY_EVENTS.PLATFORM_ACTIVATED, {
@@ -282,7 +310,10 @@ export class World {
     });
   }
 
-  /** Returns resolve structure collisions. */
+  /**
+   * Returns resolve structure collisions.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #resolveStructureCollisions(deltaTimeSeconds) {
     if (!this.character) return;
     const structures = this.#getGroup(WORLD_ENTITY_GROUPS.STRUCTURES);
@@ -302,13 +333,20 @@ export class World {
     return [...characters, ...groundEnemies];
   }
 
-  /** Captures movable and platform geometry before either group advances. */
+  /**
+   * Captures movable and platform geometry before either group advances.
+   * @param {ReadonlyArray<object>} movableObjects Movable objects supplied to capture frame bounds.
+   */
   #captureFrameBounds(movableObjects) {
     const platforms = this.#getGroup(WORLD_ENTITY_GROUPS.PLATFORMS);
     return this.#collisionManager.captureBounds([...movableObjects, ...platforms]);
   }
 
-  /** Updates entity groups. */
+  /**
+   * Updates entity groups.
+   * @param {ReadonlyArray<string>} groupOrder Ordered entity groups processed during the frame.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #updateEntityGroups(groupOrder, deltaTimeSeconds) {
     this.#processEntities(groupOrder, (entity) => {
       if (typeof entity.update === "function") {
@@ -317,7 +355,10 @@ export class World {
     });
   }
 
-  /** Returns resolve enemy combat. */
+  /**
+   * Returns resolve enemy combat.
+   * @param {number} deltaTimeSeconds Elapsed time since the previous frame, in seconds.
+   */
   #resolveEnemyCombat(deltaTimeSeconds) {
     const hit = this.#enemyCombatSystem.resolve(this, deltaTimeSeconds);
     if (hit) this.#damageEvents.push(hit);
@@ -334,7 +375,10 @@ export class World {
     overlaps.forEach((collectable) => this.#collect(collectable));
   }
 
-  /** Collects world entities. */
+  /**
+   * Collects world entities.
+   * @param {Readonly<object>} collectable Collectable processed by the operation.
+   */
   #collect(collectable) {
     const pickup = collectable.getPickup();
     this.#collectedPickups.push(pickup);
@@ -363,19 +407,29 @@ export class World {
     ];
   }
 
-  /** Returns damage sources from. */
+  /**
+   * Returns damage sources from.
+   * @param {string} groupName Entity group addressed by the operation.
+   */
   #getDamageSourcesFrom(groupName) {
     return this.#getGroup(groupName).filter((candidate) => {
       return typeof candidate.createHit === "function";
     });
   }
 
-  /** Updates process entities. */
+  /**
+   * Updates process entities.
+   * @param {ReadonlyArray<string>} groupOrder Ordered entity groups processed during the frame.
+   * @param {Function} callback Callback invoked for each matching item.
+   */
   #processEntities(groupOrder, callback) {
     this.#entityRegistry.process(groupOrder, callback);
   }
 
-  /** Returns group. */
+  /**
+   * Returns group.
+   * @param {string} groupName Entity group addressed by the operation.
+   */
   #getGroup(groupName) {
     return this.#entityRegistry.getSnapshot(groupName);
   }

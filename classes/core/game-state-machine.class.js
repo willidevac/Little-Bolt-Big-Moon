@@ -47,7 +47,8 @@ export class GameStateMachine {
   #listeners;
 
   /**
-   * @param {GameState} [initialState=GAME_STATES.HOME]
+   * Creates the configured instance.
+   * @param {GameState} [initialState=GAME_STATES.HOME] Initial state supplied to constructor.
    */
   constructor(initialState = GAME_STATES.HOME) {
     this.#validateState(initialState);
@@ -57,7 +58,7 @@ export class GameStateMachine {
 
   /**
    * Checks whether a specific state is active.
-   * @param {GameState} state
+   * @param {GameState} state State value processed by the operation.
    * @returns {boolean}
    */
   is(state) {
@@ -66,7 +67,7 @@ export class GameStateMachine {
 
   /**
    * Notifies an observer about future state changes.
-   * @param {(state:GameState) => void} listener
+   * @param {(state:GameState) => void} listener Listener notified when the observed value changes.
    * @returns {() => void}
    */
   onChange(listener) {
@@ -79,7 +80,7 @@ export class GameStateMachine {
 
   /**
    * Transitions to an allowed state.
-   * @param {GameState} nextState
+   * @param {GameState} nextState State requested for the next transition.
    * @returns {boolean} Whether the state changed.
    */
   transitionTo(nextState) {
@@ -106,7 +107,7 @@ export class GameStateMachine {
 
   /**
    * Checks whether a state belongs to the state model.
-   * @param {GameState} state
+   * @param {GameState} state State value processed by the operation.
    */
   #validateState(state) {
     if (Object.hasOwn(ALLOWED_TRANSITIONS, state)) return;
@@ -115,7 +116,7 @@ export class GameStateMachine {
 
   /**
    * Prevents invalid transitions between states.
-   * @param {GameState} nextState
+   * @param {GameState} nextState State requested for the next transition.
    */
   #validateTransition(nextState) {
     const allowedStates = ALLOWED_TRANSITIONS[this.#currentState];

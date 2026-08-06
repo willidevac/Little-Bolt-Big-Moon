@@ -5,8 +5,9 @@ import { DrawableObject } from "../base/drawable-object.class.js";
  */
 export class Platform extends DrawableObject {
   /**
-   * @param {Readonly<object>} [platformData]
-   * @param {Readonly<object>} [tilesetConfig]
+   * Creates the configured instance.
+   * @param {Readonly<object>} [platformData] Platform data supplied to constructor.
+   * @param {Readonly<object>} [tilesetConfig] Tileset config supplied to constructor.
    */
   constructor(platformData, tilesetConfig) {
     super();
@@ -16,7 +17,11 @@ export class Platform extends DrawableObject {
     this.loadSprite(tilesetConfig);
   }
 
-  /** Applies platform data. */
+  /**
+   * Applies platform data.
+   * @param {Readonly<object>} platformData Platform data supplied to apply platform data.
+   * @param {Readonly<object>} tilesetConfig Tileset config supplied to apply platform data.
+   */
   #applyPlatformData(platformData, tilesetConfig) {
     this.id = platformData.id;
     this.x = platformData.x;
@@ -32,8 +37,8 @@ export class Platform extends DrawableObject {
 
   /**
    * Stores this platform's actual movement during the current frame.
-   * @param {number} x
-   * @param {number} y
+   * @param {number} x Horizontal coordinate in canvas pixels.
+   * @param {number} y Vertical coordinate in canvas pixels.
    */
   setFrameDisplacement(x, y) {
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -61,7 +66,7 @@ export class Platform extends DrawableObject {
 
   /**
    * Draws every platform tile without distorting the sprite sheet.
-   * @param {CanvasRenderingContext2D} context
+   * @param {CanvasRenderingContext2D} context Canvas context used for rendering.
    */
   draw(context) {
     if (!this.tileFrames) return super.draw(context);
@@ -73,7 +78,11 @@ export class Platform extends DrawableObject {
     });
   }
 
-  /** Validates platform data. */
+  /**
+   * Validates platform data.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} tilesetConfig Tileset config supplied to validate platform data.
+   */
   #validatePlatformData(data, tilesetConfig) {
     if (typeof data?.id !== "string" || data.id.length === 0) {
       throw new TypeError("Eine Plattform benötigt eine ID.");
@@ -84,7 +93,11 @@ export class Platform extends DrawableObject {
     this.#validateTileFrames(data, tilesetConfig);
   }
 
-  /** Validates tile frames. */
+  /**
+   * Validates tile frames.
+   * @param {Readonly<object>} data Source data used to configure the instance.
+   * @param {Readonly<object>} tilesetConfig Tileset config supplied to validate tile frames.
+   */
   #validateTileFrames(data, tilesetConfig) {
     if (!Array.isArray(data.tileFrames) || data.tileFrames.length === 0) {
       throw new TypeError(`Plattform ${data.id} benötigt mindestens ein Feld.`);
@@ -97,7 +110,10 @@ export class Platform extends DrawableObject {
     this.#validateTilesetConfig(tilesetConfig);
   }
 
-  /** Validates tileset config. */
+  /**
+   * Validates tileset config.
+   * @param {Readonly<object>} tilesetConfig Tileset config supplied to validate tileset config.
+   */
   #validateTilesetConfig(tilesetConfig) {
     if (!Number.isInteger(tilesetConfig?.renderScale) || tilesetConfig.renderScale <= 0) {
       throw new TypeError("Die Plattform-Skalierung ist ungültig.");

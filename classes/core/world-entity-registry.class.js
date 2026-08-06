@@ -14,7 +14,8 @@ export class WorldEntityRegistry {
   #isProcessing;
 
   /**
-   * @param {ReadonlyArray<string>} groupNames
+   * Creates the configured instance.
+   * @param {ReadonlyArray<string>} groupNames Entity group names registered by the world.
    */
   constructor(groupNames) {
     this.#validateGroupNames(groupNames);
@@ -27,8 +28,8 @@ export class WorldEntityRegistry {
 
   /**
    * Adds an entity immediately or after the current processing pass.
-   * @param {string} groupName
-   * @param {object} entity
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
    * @returns {boolean}
    */
   add(groupName, entity) {
@@ -45,8 +46,8 @@ export class WorldEntityRegistry {
 
   /**
    * Removes an entity immediately or after the current processing pass.
-   * @param {string} groupName
-   * @param {object} entity
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
    * @returns {boolean}
    */
   remove(groupName, entity) {
@@ -62,7 +63,7 @@ export class WorldEntityRegistry {
 
   /**
    * Returns an immutable snapshot of an entity group.
-   * @param {string} groupName
+   * @param {string} groupName Entity group addressed by the operation.
    * @returns {ReadonlyArray<object>}
    */
   getSnapshot(groupName) {
@@ -81,8 +82,8 @@ export class WorldEntityRegistry {
 
   /**
    * Processes groups in order and applies deferred changes afterward.
-   * @param {ReadonlyArray<string>} groupOrder
-   * @param {(entity: object) => void} callback
+   * @param {ReadonlyArray<string>} groupOrder Ordered entity groups processed during the frame.
+   * @param {(entity: object) => void} callback Callback invoked for each matching item.
    */
   process(groupOrder, callback) {
     this.#validateProcess(groupOrder, callback);
@@ -107,15 +108,20 @@ export class WorldEntityRegistry {
     return new Map(this.#groupNames.map((name) => [name, new Set()]));
   }
 
-  /** @param {string} groupName @returns {object[]} */
+  /**
+   * Runs get group with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   * @returns {object[]}
+   */
   #getGroup(groupName) {
     this.#validateGroupName(groupName);
     return /** @type {object[]} */ (this.#groups.get(groupName));
   }
 
   /**
-   * @param {Map<string, Set<object>>} groups
-   * @param {string} groupName
+   * Runs get pending with validated inputs.
+   * @param {Map<string, Set<object>>} groups Groups supplied to get pending.
+   * @param {string} groupName Entity group addressed by the operation.
    * @returns {Set<object>}
    */
   #getPending(groups, groupName) {
@@ -131,7 +137,10 @@ export class WorldEntityRegistry {
     });
   }
 
-  /** @param {string} groupName */
+  /**
+   * Runs apply removals with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   */
   #applyRemovals(groupName) {
     const removals = this.#getPending(this.#pendingRemovals, groupName);
     if (removals.size === 0) return;
@@ -142,7 +151,10 @@ export class WorldEntityRegistry {
     removals.clear();
   }
 
-  /** @param {string} groupName */
+  /**
+   * Runs apply additions with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   */
   #applyAdditions(groupName) {
     const additions = this.#getPending(this.#pendingAdditions, groupName);
     if (additions.size === 0) return;
@@ -158,7 +170,11 @@ export class WorldEntityRegistry {
     });
   }
 
-  /** @param {string} groupName @param {object} entity */
+  /**
+   * Runs queue removal with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
+   */
   #queueRemoval(groupName, entity) {
     const removals = this.#getPending(this.#pendingRemovals, groupName);
     if (removals.has(entity)) return false;
@@ -166,20 +182,30 @@ export class WorldEntityRegistry {
     return true;
   }
 
-  /** @param {string} groupName @param {object} entity */
+  /**
+   * Runs validate entity with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   * @param {object} entity World entity processed by the operation.
+   */
   #validateEntity(groupName, entity) {
     this.#validateGroupName(groupName);
     if (entity && typeof entity === "object") return;
     throw new TypeError("Eine Entität muss ein Objekt sein.");
   }
 
-  /** @param {string} groupName */
+  /**
+   * Runs validate group name with validated inputs.
+   * @param {string} groupName Entity group addressed by the operation.
+   */
   #validateGroupName(groupName) {
     if (this.#groups.has(groupName)) return;
     throw new RangeError(`Unbekannte Entitätsgruppe: ${groupName}`);
   }
 
-  /** @param {ReadonlyArray<string>} groupNames */
+  /**
+   * Runs validate group names with validated inputs.
+   * @param {ReadonlyArray<string>} groupNames Entity group names registered by the world.
+   */
   #validateGroupNames(groupNames) {
     if (!Array.isArray(groupNames)) {
       throw new TypeError("Entitätsgruppen müssen als Liste übergeben werden.");
@@ -191,8 +217,9 @@ export class WorldEntityRegistry {
   }
 
   /**
-   * @param {ReadonlyArray<string>} groupOrder
-   * @param {(entity:object) => void} callback
+   * Runs validate process with validated inputs.
+   * @param {ReadonlyArray<string>} groupOrder Ordered entity groups processed during the frame.
+   * @param {(entity:object) => void} callback Callback invoked for each matching item.
    */
   #validateProcess(groupOrder, callback) {
     if (!Array.isArray(groupOrder) || typeof callback !== "function") {

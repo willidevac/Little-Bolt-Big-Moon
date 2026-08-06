@@ -32,8 +32,8 @@ const VALUE_SELECTORS = Object.freeze({
 
 /**
  * Returns a required HUD element or fails with a clear error.
- * @param {ParentNode} root
- * @param {string} selector
+ * @param {ParentNode} root Root DOM element queried or controlled by the instance.
+ * @param {string} selector CSS selector used to find the required element.
  * @returns {HTMLElement}
  */
 function getRequiredElement(root, selector) {
@@ -42,7 +42,12 @@ function getRequiredElement(root, selector) {
   throw new Error(`HUD-Element nicht gefunden: ${selector}`);
 }
 
-/** Draws render boss values. */
+/**
+ * Draws render boss values.
+ * @param {StatusBar} statusBar Status bar supplied to render boss values.
+ * @param {Readonly<object>} boss Boss snapshot rendered in the HUD.
+ * @param {string} bossName Boss name supplied to render boss values.
+ */
 function renderBossValues(statusBar, boss, bossName) {
   statusBar.setText(statusBar.elements.bossName, bossName);
   statusBar.setText(
@@ -52,7 +57,12 @@ function renderBossValues(statusBar, boss, bossName) {
   statusBar.setText(statusBar.elements.bossPhase, boss.phase);
 }
 
-/** Draws render boss bar. */
+/**
+ * Draws render boss bar.
+ * @param {StatusBar} statusBar Status bar supplied to render boss bar.
+ * @param {Readonly<object>} boss Boss snapshot rendered in the HUD.
+ * @param {string} bossName Boss name supplied to render boss bar.
+ */
 function renderBossBar(statusBar, boss, bossName) {
   const bar = statusBar.elements.bossBar;
   const percentage = Math.round((boss.health / boss.maximumHealth) * 100);
@@ -65,7 +75,11 @@ function renderBossBar(statusBar, boss, bossName) {
   ));
 }
 
-/** Draws render weapon value. */
+/**
+ * Draws render weapon value.
+ * @param {StatusBar} statusBar Status bar supplied to render weapon value.
+ * @param {Readonly<object>} weapon Weapon snapshot rendered in the HUD.
+ */
 function renderWeaponValue(statusBar, weapon) {
   statusBar.currentWeapon = weapon;
   statusBar.root.dataset.combatLocked = String(!weapon.isCombatUnlocked);
@@ -75,7 +89,10 @@ function renderWeaponValue(statusBar, weapon) {
   );
 }
 
-/** Returns biome translation key. */
+/**
+ * Returns biome translation key.
+ * @param {string} biomeId Biome id supplied to get biome translation key.
+ */
 function getBiomeTranslationKey(biomeId) {
   const suffix = biomeId.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
   return `biome.${suffix}`;
@@ -86,8 +103,9 @@ function getBiomeTranslationKey(biomeId) {
  */
 export class StatusBar {
   /**
-   * @param {import("../core/game.class.js").Game} game
-   * @param {HTMLElement} root
+   * Creates the configured instance.
+   * @param {import("../core/game.class.js").Game} game Game instance controlled by the view.
+   * @param {HTMLElement} root Root DOM element queried or controlled by the instance.
    */
   constructor(game, root) {
     this.game = game;
@@ -121,7 +139,10 @@ export class StatusBar {
     return this;
   }
 
-  /** Creates journey. */
+  /**
+   * Creates journey.
+   * @param {number} pixelsPerMeter Conversion factor between world pixels and meters.
+   */
   #createJourney(pixelsPerMeter) {
     return new JourneyProgress(
       this.game.world.level.sections,
@@ -147,7 +168,7 @@ export class StatusBar {
 
   /**
    * Displays a new snapshot.
-   * @param {Readonly<object>} data
+   * @param {Readonly<object>} data Source data used to configure the instance.
    */
   render(data) {
     this.renderEnergy(data.energy, data.maximumEnergy);
@@ -162,7 +183,7 @@ export class StatusBar {
 
   /**
    * Displays the count and multiplier only during an active chain.
-   * @param {Readonly<object>} combo
+   * @param {Readonly<object>} combo Combo snapshot rendered in the HUD.
    */
   renderCombo(combo) {
     this.elements.combo.hidden = !combo.isActive;
@@ -174,7 +195,10 @@ export class StatusBar {
     );
   }
 
-  /** Connects gameplay events to HUD values and brief messages. */
+  /**
+   * Connects gameplay events to HUD values and brief messages.
+   * @param {Event} event Input or gameplay event handled by the operation.
+   */
   handleGameplayEvent(event) {
     if (event.type === GAMEPLAY_EVENTS.WEAPON_CHANGED) {
       renderWeaponValue(this, event.detail);
@@ -185,7 +209,7 @@ export class StatusBar {
 
   /**
    * Displays the HUD only during gameplay and pause.
-   * @param {string} state
+   * @param {string} state State value processed by the operation.
    */
   renderState(state) {
     const isPlaying = state === GAME_STATES.PLAYING;
@@ -211,8 +235,8 @@ export class StatusBar {
 
   /**
    * Updates energy text, bar, and screen-reader values together.
-   * @param {number} energy
-   * @param {number} maximumEnergy
+   * @param {number} energy Energy supplied to render energy.
+   * @param {number} maximumEnergy Maximum energy value used to scale the bar.
    */
   renderEnergy(energy, maximumEnergy) {
     const percentage = Math.round((energy / maximumEnergy) * 100);
@@ -226,7 +250,10 @@ export class StatusBar {
     );
   }
 
-  /** Displays the reached biome and overall route percentage. */
+  /**
+   * Displays the reached biome and overall route percentage.
+   * @param {number} heightMeters Current world height expressed in meters.
+   */
   renderJourney(heightMeters) {
     const journey = this.journey.getSnapshot(heightMeters);
     const biome = translate(getBiomeTranslationKey(journey.biomeId));
@@ -241,7 +268,7 @@ export class StatusBar {
 
   /**
    * Displays the active biome boss with its name and exact health.
-   * @param {Readonly<object>|null} boss
+   * @param {Readonly<object>|null} boss Boss snapshot rendered in the HUD.
    */
   renderBoss(boss) {
     const isVisible = Boolean(boss?.isVisible);
@@ -258,15 +285,18 @@ export class StatusBar {
     if (this.currentWeapon) this.renderWeapon(this.currentWeapon);
   }
 
-  /** Displays the active weapon using its stable ID. */
+  /**
+   * Displays the active weapon using its stable ID.
+   * @param {Readonly<object>} weapon Weapon snapshot rendered in the HUD.
+   */
   renderWeapon(weapon) {
     renderWeaponValue(this, weapon);
   }
 
   /**
    * Changes DOM text only when the value actually changes.
-   * @param {HTMLElement} element
-   * @param {string|number} value
+   * @param {HTMLElement} element DOM element updated by the view.
+   * @param {string|number} value Value read, validated, or rendered by the operation.
    */
   setText(element, value) {
     const text = String(value);

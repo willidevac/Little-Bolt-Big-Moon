@@ -2,7 +2,12 @@ import { onLanguageChange, translate } from "../../js/i18n/localization.js";
 
 /** Keeps browser fullscreen state and the visible toggle synchronized. */
 export class FullscreenController {
-  /** @param {Document} documentTarget Browser document. @param {HTMLElement} root Game root. @param {HTMLElement} button Toggle button. */
+  /**
+   * Creates the configured instance.
+   * @param {Document} documentTarget Browser document.
+   * @param {HTMLElement} root Game root.
+   * @param {HTMLElement} button Toggle button.
+   */
   constructor(documentTarget, root, button) {
     this.document = documentTarget;
     this.root = root;
