@@ -29,6 +29,7 @@
   --color-ink: #06141e;
   --color-muted: #c6b899;
   --color-line: #8aa0aa;
+  --font-size-readable-min: 0.9375rem;
   --layer-hud: 5;
   --layer-touch: 7;
   --layer-screen: 10;

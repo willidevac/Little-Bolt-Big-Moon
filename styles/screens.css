@@ -51,7 +51,7 @@
 
 .start-screen__eyebrow {
   color: var(--color-cyan);
-  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  font-size: clamp(var(--font-size-readable-min), 1vw, 1rem);
   line-height: 1.4;
   text-transform: uppercase;
 }
@@ -59,7 +59,7 @@
 .start-screen__story {
   margin-top: 0.7rem;
   color: var(--color-cream);
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-size: clamp(var(--font-size-readable-min), 1.2vw, 1rem);
   line-height: 1.5;
   text-wrap: balance;
 }
@@ -72,14 +72,14 @@
   border-left: 3px solid var(--color-cyan);
   background: rgb(4 12 20 / 72%);
   color: var(--color-cream);
-  font-size: clamp(0.62rem, 0.85vw, 0.78rem);
+  font-size: clamp(var(--font-size-readable-min), 0.85vw, 1rem);
   line-height: 1.4;
 }
 
 .start-screen__mission-label,
 .start-screen__route {
   color: var(--color-cyan);
-  font-size: 0.72em;
+  font-size: var(--font-size-readable-min);
   text-transform: uppercase;
 }
 
@@ -110,7 +110,7 @@
 .menu-button {
   min-height: 3rem;
   padding: 0.65rem 1rem;
-  font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  font-size: clamp(var(--font-size-readable-min), 1.1vw, 1rem);
 }
 
 .menu-button--primary {

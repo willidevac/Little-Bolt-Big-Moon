@@ -5,7 +5,7 @@
   color: rgb(198 184 153 / 58%);
   background: transparent;
   font-family: "Silkscreen", monospace;
-  font-size: 0.55rem;
+  font-size: var(--font-size-readable-min);
 }
 
 .start-screen__version:focus-visible {

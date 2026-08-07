@@ -88,12 +88,12 @@
   .menu-button {
     min-height: 2.3rem;
     padding: 0.4rem;
-    font-size: clamp(0.5rem, 1.8vw, 0.7rem);
+    font-size: clamp(var(--font-size-readable-min), 1.8vw, 1rem);
   }
 
   .start-screen__hint {
     margin-top: 0.45rem;
-    font-size: clamp(0.45rem, 1.35vw, 0.58rem);
+    font-size: clamp(var(--font-size-readable-min), 1.35vw, 1rem);
     text-align: center;
   }
 
@@ -182,6 +182,19 @@
   .start-screen__menu {
     width: min(48%, 19rem);
     min-width: 16rem;
+  }
+
+  .game-shell[data-screen-state="home"] .start-screen__menu {
+    overflow-x: hidden;
+  }
+
+  .game-shell[data-screen-state="home"] .start-screen__mission,
+  .game-shell[data-screen-state="home"] .record-summary {
+    display: none;
+  }
+
+  .game-shell[data-screen-state="home"] .start-menu {
+    grid-template-columns: 1fr;
   }
 
   .start-screen__story {
